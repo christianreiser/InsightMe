@@ -4,6 +4,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
 
+import 'newManualEntry_screen.dart';
+
 //import 'api.dart';
 //import 'backdrop.dart';
 //import 'category.dart';
@@ -44,7 +46,7 @@ class _JournalScreenState extends State<JournalScreen> {
       appBar: AppBar(
         // Here we take the value from the JournalScreen object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: new Text("Journal?"),
+        title: new Text("Journal"),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -86,8 +88,11 @@ class _JournalScreenState extends State<JournalScreen> {
               child: Icon(Icons.border_color),
               label: "New Entry",
               onTap: () {
-                print("First");
-                //_navigateToNewManualEntry(context);
+                print("nav to add manually");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NewManualEntry()),
+                ); // Navigate to newManualEntry route when tapped.
               }
           )
           ,
