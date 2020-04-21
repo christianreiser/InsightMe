@@ -6,16 +6,18 @@ class NewManualEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manual Entry"),
+        title: Text("New manual entry"),
       ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);// Navigate back to Journal when tapped.
-          },
-          child: Text('Go back!'),
-        ),
+      body: new Card(
+          child: TextField(
+            //obscureText: true,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'search or create new attribute',
+            ),
+          )
       ),
+
     );
   }
 }
