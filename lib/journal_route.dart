@@ -1,10 +1,12 @@
-import 'dart:async';
 //import 'dart:convert';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
 
-import 'newManualEntry_screen.dart';
+import 'newManualEntry_route.dart';
+
+
 
 //import 'api.dart';
 //import 'backdrop.dart';
@@ -68,13 +70,35 @@ class _JournalScreenState extends State<JournalScreen> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Your journal entries should go here',
-            ),
-            Text(
-              'counter used to be here',
-              style: Theme.of(context).textTheme.display1,
-            ),
+            // List of previously used attributes
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: ListView(
+                  children: <Widget>[
+                  FlatButton(
+                    onPressed: () {},
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                          "First journal entry"
+                      ),
+                    )
+                  ),
+
+                  FlatButton(
+                    onPressed: () {},
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                            "Second journal entry"
+                        ),
+                      )
+                  ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

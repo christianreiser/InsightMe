@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'journal_screen.dart';
+import 'journal_route.dart';
 
 void main() => runApp(LifeTrackerApp());
 
