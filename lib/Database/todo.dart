@@ -1,7 +1,4 @@
-import 'dart:async';  // SQLite
-import 'package:path/path.dart';  // SQLite
-import 'package:sqflite/sqflite.dart';  // SQLite
-
+/* chrei
 // define the data that needs to be stored:
 class Attribute {
   final int id;
@@ -9,8 +6,10 @@ class Attribute {
   final int value;  // TODO float
 
   Attribute({this.id, this.name, this.value});
-}
+}*/
 
+// create the model class for the to-do item.
+// Title, description, date, and id for each to-do
 
 class Todo {
 

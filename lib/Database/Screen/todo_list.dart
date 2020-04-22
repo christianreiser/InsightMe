@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'todo.dart';
-import 'database_helper.dart';
-import 'Screens/todo_detail.dart';
+import '../todo.dart';
+import '../database_helper.dart';
+import 'todo_detail.dart';
 import 'package:sqflite/sqflite.dart';
+
+/*
+ * List view. On the list view, it displayed the to-dos that we have entered
+*/
 
 class TodoList extends StatefulWidget {
   @override
