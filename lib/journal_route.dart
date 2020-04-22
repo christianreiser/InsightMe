@@ -5,6 +5,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter/material.dart';
 
 import 'newManualEntry_route.dart';
+import 'Database/Screen/todo_detail.dart';
+import 'Database/Screen/todo_list.dart';
 
 
 
@@ -124,10 +126,16 @@ class _JournalScreenState extends State<JournalScreen> {
               backgroundColor: Colors.grey,
               child: Icon(Icons.timer),
               label: "-not implemented-",
-              onTap: () => print("not implemented yet")
+              onTap: () {
+                print("not implemented yet");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TodoList()),
+                ); // Navigate to newManualEntry route when tapped.
+              }
           )
         ],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      )
+    ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }

@@ -10,6 +10,7 @@ import 'package:sqflite/sqflite.dart';
  * List view which displays the entered to-dos
 */
 
+// CREATE STATEFUL TO-DO-LIST WIDGET
 class TodoList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -17,11 +18,13 @@ class TodoList extends StatefulWidget {
   }
 }
 
+// STATE OF TO-DO LIST
 class TodoListState extends State<TodoList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<Todo> todoList;
   int count = 0;
 
+  // NULL -> UPDATE
   @override
   Widget build(BuildContext context) {
     if (todoList == null) {
@@ -29,6 +32,7 @@ class TodoListState extends State<TodoList> {
       updateListView();
     }
 
+    // APP BAR AND FAB ADD BUTTON
     return Scaffold(
       appBar: AppBar(
         title: Text('Todos'),
@@ -45,6 +49,7 @@ class TodoListState extends State<TodoList> {
     );
   }
 
+  // TO-DO LIST
   ListView getTodoListView() {
     return ListView.builder(
       itemCount: count,
@@ -53,14 +58,22 @@ class TodoListState extends State<TodoList> {
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
+
+            // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
               child: Text(getFirstLetter(this.todoList[position].title),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
+
+            // TITLE
             title: Text(this.todoList[position].title,
                 style: TextStyle(fontWeight: FontWeight.bold)),
+
+            // SUBTITLE
             subtitle: Text(this.todoList[position].description),
+
+            // TRASH ICON
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -72,6 +85,8 @@ class TodoListState extends State<TodoList> {
                 ),
               ],
             ),
+
+            // onTAP TO EDIT
             onTap: () {
               debugPrint("ListTile Tapped");
               navigateToDetail(this.todoList[position], 'Edit Todo');
@@ -82,10 +97,12 @@ class TodoListState extends State<TodoList> {
     );
   }
 
+  // for yellow circle avatar
   getFirstLetter(String title) {
     return title.substring(0, 2);
   }
 
+  // delete
   void _delete(BuildContext context, Todo todo) async {
     int result = await databaseHelper.deleteTodo(todo.id);
     if (result != 0) {
@@ -94,11 +111,13 @@ class TodoListState extends State<TodoList> {
     }
   }
 
+  // SnackBar for deletion confirmation
   void _showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(content: Text(message));
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
+  // navigation for editing entry
   void navigateToDetail(Todo todo, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -110,6 +129,7 @@ class TodoListState extends State<TodoList> {
     }
   }
 
+  // updateListView depends on state
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {

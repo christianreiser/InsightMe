@@ -25,7 +25,7 @@ class TodoDetail extends StatefulWidget {
 
 class TodoDetailState extends State<TodoDetail> {
 
-  DatabaseHelper helper = DatabaseHelper();
+  DatabaseHelper helper = DatabaseHelper(); // probably needed?
 
   String appBarTitle;
   Todo todo;
@@ -49,6 +49,9 @@ class TodoDetailState extends State<TodoDetail> {
           moveToLastScreen();
         },
 
+
+        // APPBAR
+
         child: Scaffold(
           appBar: AppBar(
             title: Text(appBarTitle),
@@ -64,6 +67,9 @@ class TodoDetailState extends State<TodoDetail> {
             padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
             child: ListView(
               children: <Widget>[
+
+
+                // TITLE
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -83,6 +89,9 @@ class TodoDetailState extends State<TodoDetail> {
                     ),
                   ),
                 ),
+
+
+                // DESCRIPTION
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -105,6 +114,10 @@ class TodoDetailState extends State<TodoDetail> {
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+
+
+                  // SAVE BUTTON
+
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -125,6 +138,9 @@ class TodoDetailState extends State<TodoDetail> {
                       ),
 
                       Container(width: 5.0,),
+
+
+                      // DELETE BUTTON
 
                       Expanded(
                         child: RaisedButton(
@@ -169,12 +185,18 @@ class TodoDetailState extends State<TodoDetail> {
     todo.description = descriptionController.text;
   }
 
+
   // Save data to database
+
   void _save() async {
 
+    // NAVIGATE
     moveToLastScreen();
 
+    // TIMESTAMP
     todo.date = DateFormat.yMMMd().format(DateTime.now());
+
+    // Update Operation: Update a to-do object and save it to database
     int result;
     if (todo.id != null) {  // Case 1: Update operation
       result = await helper.updateTodo(todo);
@@ -182,6 +204,7 @@ class TodoDetailState extends State<TodoDetail> {
       result = await helper.insertTodo(todo);
     }
 
+    // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {  // Success
       _showAlertDialog('Status', 'Todo Saved Successfully');
     } else {  // Failure
@@ -190,6 +213,8 @@ class TodoDetailState extends State<TodoDetail> {
 
   }
 
+
+  // DELETE
 
   void _delete() async {
 
