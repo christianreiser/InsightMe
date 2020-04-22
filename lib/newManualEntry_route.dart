@@ -24,10 +24,18 @@ class NewManualEntry extends StatelessWidget {
                       border: OutlineInputBorder(),
                       labelText: 'search or create new attribute',
                     ),
+                    //controller: TextEditingController(),
+                    //style: Theme.of(context).textTheme.description,
                     onChanged: (value) {
                       debugPrint('Something changed search or create new attribute');
+                      //print(TextEditingController.text)
 /*
                        TODO:
+                       if textfield is not empty and content is not in list:
+                          show add button
+
+                       OR
+
                        search string in list of attributes
                        if found partially
                           if NOT matched exactly:
