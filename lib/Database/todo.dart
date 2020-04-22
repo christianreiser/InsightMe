@@ -8,6 +8,7 @@ class Attribute {
   Attribute({this.id, this.name, this.value});
 }*/
 
+// TODO create for me individually
 // create the model class for the to-do item.
 // Title, description, date, and id for each to-do
 

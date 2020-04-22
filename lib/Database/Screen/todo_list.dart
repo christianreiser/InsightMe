@@ -6,7 +6,8 @@ import 'todo_detail.dart';
 import 'package:sqflite/sqflite.dart';
 
 /*
- * List view. On the list view, it displayed the to-dos that we have entered
+ * NEW MANUAL ENTRY FILE: list view of buttons
+ * List view which displays the entered to-dos
 */
 
 class TodoList extends StatefulWidget {

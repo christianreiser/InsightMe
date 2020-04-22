@@ -5,6 +5,7 @@ import '../database_helper.dart';
 import 'package:intl/intl.dart';
 
 /*
+* NEW MANUAL ENTRY FILE: TEXT INPUT
 * creating another screen to add to-dos to Enter to-dos to the database.
 * */
 
