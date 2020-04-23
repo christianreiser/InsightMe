@@ -117,7 +117,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                               ),
                             ),
                             controller: attributeInputController,
-                            //style: Theme.of(context).textTheme.description,
+                            //style: Theme.of(context).textTheme.value_type_not_implemented,
 
 
                             onChanged: (value) {

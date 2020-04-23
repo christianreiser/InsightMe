@@ -71,7 +71,7 @@ class AttributeListState extends State<AttributeList> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
 
             // SUBTITLE
-            subtitle: Text(this.attributeList[position].description),
+            subtitle: Text(this.attributeList[position].value_type_not_implemented),
 
             // TRASH ICON
             trailing: Row(
