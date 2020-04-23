@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../todo.dart';
+import '../attribute.dart';
 import '../database_helper.dart';
 import 'package:intl/intl.dart';
 
@@ -9,39 +9,39 @@ import 'package:intl/intl.dart';
 * creating another screen to add to-dos to Enter to-dos to the database.
 * */
 
-class TodoDetail extends StatefulWidget {
+class AttributeDetail extends StatefulWidget {
 
   final String appBarTitle;
-  final Todo todo;
+  final Attribute attribute;
 
-  TodoDetail(this.todo, this.appBarTitle);
+  AttributeDetail(this.attribute, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
 
-    return TodoDetailState(this.todo, this.appBarTitle);
+    return AttributeDetailState(this.attribute, this.appBarTitle);
   }
 }
 
-class TodoDetailState extends State<TodoDetail> {
+class AttributeDetailState extends State<AttributeDetail> {
 
   DatabaseHelper helper = DatabaseHelper(); // probably needed?
 
   String appBarTitle;
-  Todo todo;
+  Attribute attribute;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  TodoDetailState(this.todo, this.appBarTitle);
+  AttributeDetailState(this.attribute, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
 
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
-    titleController.text = todo.title;
-    descriptionController.text = todo.description;
+    titleController.text = attribute.title;
+    descriptionController.text = attribute.description;
 
     return WillPopScope(
 
@@ -81,7 +81,7 @@ class TodoDetailState extends State<TodoDetail> {
                       updateTitle();
                     },
                     decoration: InputDecoration(
-                        labelText: 'Title',
+                        labelText: 'Name of Label',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0)
@@ -175,14 +175,14 @@ class TodoDetailState extends State<TodoDetail> {
     Navigator.pop(context, true);
   }
 
-  // Update the title of todo object
+  // Update the title of attribute object
   void updateTitle(){
-    todo.title = titleController.text;
+    attribute.title = titleController.text;
   }
 
-  // Update the description of todo object
+  // Update the description of attribute object
   void updateDescription() {
-    todo.description = descriptionController.text;
+    attribute.description = descriptionController.text;
   }
 
 
@@ -194,21 +194,21 @@ class TodoDetailState extends State<TodoDetail> {
     moveToLastScreen();
 
     // TIMESTAMP
-    todo.date = DateFormat.yMMMd().format(DateTime.now());
+    attribute.date = DateFormat.yMMMd().format(DateTime.now());
 
     // Update Operation: Update a to-do object and save it to database
     int result;
-    if (todo.id != null) {  // Case 1: Update operation
-      result = await helper.updateTodo(todo);
+    if (attribute.id != null) {  // Case 1: Update operation
+      result = await helper.updateAttribute(attribute);
     } else { // Case 2: Insert Operation
-      result = await helper.insertTodo(todo);
+      result = await helper.insertAttribute(attribute);
     }
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {  // Success
-      _showAlertDialog('Status', 'Todo Saved Successfully');
+      _showAlertDialog('Status', 'Attribute Saved Successfully');
     } else {  // Failure
-      _showAlertDialog('Status', 'Problem Saving Todo');
+      _showAlertDialog('Status', 'Problem Saving Attribute');
     }
 
   }
@@ -220,16 +220,16 @@ class TodoDetailState extends State<TodoDetail> {
 
     moveToLastScreen();
 
-    if (todo.id == null) {
-      _showAlertDialog('Status', 'No Todo was deleted');
+    if (attribute.id == null) {
+      _showAlertDialog('Status', 'No Attribute was deleted');
       return;
     }
 
-    int result = await helper.deleteTodo(todo.id);
+    int result = await helper.deleteAttribute(attribute.id);
     if (result != 0) {
-      _showAlertDialog('Status', 'Todo Deleted Successfully');
+      _showAlertDialog('Status', 'Attribute Deleted Successfully');
     } else {
-      _showAlertDialog('Status', 'Error Occured while Deleting Todo');
+      _showAlertDialog('Status', 'Error Occured while Deleting Attribute');
     }
   }
 

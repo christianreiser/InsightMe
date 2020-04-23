@@ -5,8 +5,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter/material.dart';
 
 import 'searchOrCreateAttribute.dart';
-import 'Database/Screen/todo_detail.dart';
-import 'Database/Screen/todo_list.dart';
+import 'Database/Screen/attribute_detail.dart';
+import 'Database/Screen/attribute_list.dart';
 
 
 
@@ -128,10 +128,10 @@ class _JournalScreenState extends State<JournalScreen> {
               label: "-not implemented-",
               onTap: () {
                 print("not implemented yet");
-                Navigator.push(
+                /*Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TodoList()),
-                ); // Navigate to newManualEntry route when tapped.
+                  MaterialPageRoute(builder: (context) => AttributeList()),
+                ); // Navigate to newManualEntry route when tapped.*/
               }
           )
         ],

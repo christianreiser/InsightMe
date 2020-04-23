@@ -3,25 +3,25 @@
 class Attribute {
   final int id;
   final String name;
-  final int value;  // TODO float
+  final int value;  // ATTRIBUTE float
 
   Attribute({this.id, this.name, this.value});
 }*/
 
-// TODO create for me individually
+// ATTRIBUTE create for me individually
 // create the model class for the to-do item.
 // Title, description, date, and id for each to-do
 
-class Todo {
+class Attribute {
 
   int _id;
   String _title;
   String _description;
   String _date;
 
-  Todo(this._title, this._date, [this._description] );
+  Attribute(this._title, this._date, [this._description] );
 
-  Todo.withId(this._id, this._title, this._date, [this._description]);
+  Attribute.withId(this._id, this._title, this._date, [this._description]);
 
   int get id => _id;
 
@@ -62,7 +62,7 @@ class Todo {
   }
 
   // Extract a Note object from a Map object
-  Todo.fromMapObject(Map<String, dynamic> map) {
+  Attribute.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
     this._title = map['title'];
     this._description = map['description'];

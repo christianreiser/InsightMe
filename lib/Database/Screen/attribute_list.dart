@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../todo.dart';
+import '../attribute.dart';
 import '../database_helper.dart';
-import 'todo_detail.dart';
+import 'attribute_detail.dart';
 import 'package:sqflite/sqflite.dart';
 
 /*
@@ -11,46 +11,46 @@ import 'package:sqflite/sqflite.dart';
 */
 
 // CREATE STATEFUL TO-DO-LIST WIDGET
-class TodoList extends StatefulWidget {
+class AttributeList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return TodoListState();
+    return AttributeListState();
   }
 }
 
 // STATE OF TO-DO LIST
-class TodoListState extends State<TodoList> {
+class AttributeListState extends State<AttributeList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  List<Todo> todoList;
+  List<Attribute> attributeList;
   int count = 0;
 
   // NULL -> UPDATE
   @override
   Widget build(BuildContext context) {
-    if (todoList == null) {
-      todoList = List<Todo>();
+    if (attributeList == null) {
+      attributeList = List<Attribute>();
       updateListView();
     }
 
     // APP BAR AND FAB ADD BUTTON
     return Scaffold(
       appBar: AppBar(
-        title: Text('Todos'),
+        title: Text('Attributes'),
       ),
-      body: getTodoListView(),
+      body: getAttributeListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint('FAB clicked');
-          navigateToDetail(Todo('', '', ''), 'Add Todo');
+          navigateToDetail(Attribute('', '', ''), 'Add Attribute');
         },
-        tooltip: 'Add Todo',
+        tooltip: 'Add Attribute',
         child: Icon(Icons.add),
       ),
     );
   }
 
   // TO-DO LIST
-  ListView getTodoListView() {
+  ListView getAttributeListView() {
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
@@ -62,16 +62,16 @@ class TodoListState extends State<TodoList> {
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
-              child: Text(getFirstLetter(this.todoList[position].title),
+              child: Text(getFirstLetter(this.attributeList[position].title),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
 
             // TITLE
-            title: Text(this.todoList[position].title,
+            title: Text(this.attributeList[position].title,
                 style: TextStyle(fontWeight: FontWeight.bold)),
 
             // SUBTITLE
-            subtitle: Text(this.todoList[position].description),
+            subtitle: Text(this.attributeList[position].description),
 
             // TRASH ICON
             trailing: Row(
@@ -80,7 +80,7 @@ class TodoListState extends State<TodoList> {
                 GestureDetector(
                   child: Icon(Icons.delete,color: Colors.red,),
                   onTap: () {
-                    _delete(context, todoList[position]);
+                    _delete(context, attributeList[position]);
                   },
                 ),
               ],
@@ -89,7 +89,7 @@ class TodoListState extends State<TodoList> {
             // onTAP TO EDIT
             onTap: () {
               debugPrint("ListTile Tapped");
-              navigateToDetail(this.todoList[position], 'Edit Todo');
+              navigateToDetail(this.attributeList[position], 'Edit Attribute');
             },
           ),
         );
@@ -103,10 +103,10 @@ class TodoListState extends State<TodoList> {
   }
 
   // delete
-  void _delete(BuildContext context, Todo todo) async {
-    int result = await databaseHelper.deleteTodo(todo.id);
+  void _delete(BuildContext context, Attribute attribute) async {
+    int result = await databaseHelper.deleteAttribute(attribute.id);
     if (result != 0) {
-      _showSnackBar(context, 'Todo Deleted Successfully');
+      _showSnackBar(context, 'Attribute Deleted Successfully');
       updateListView();
     }
   }
@@ -118,10 +118,10 @@ class TodoListState extends State<TodoList> {
   }
 
   // navigation for editing entry
-  void navigateToDetail(Todo todo, String title) async {
+  void navigateToDetail(Attribute attribute, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return TodoDetail(todo, title);
+      return AttributeDetail(attribute, title);
     }));
 
     if (result == true) {
@@ -133,11 +133,11 @@ class TodoListState extends State<TodoList> {
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Todo>> todoListFuture = databaseHelper.getTodoList();
-      todoListFuture.then((todoList) {
+      Future<List<Attribute>> attributeListFuture = databaseHelper.getAttributeList();
+      attributeListFuture.then((attributeList) {
         setState(() {
-          this.todoList = todoList;
-          this.count = todoList.length;
+          this.attributeList = attributeList;
+          this.count = attributeList.length;
         });
       });
     });
