@@ -4,7 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
 
-import 'newManualEntry_route.dart';
+import 'searchOrCreateAttribute.dart';
 import 'Database/Screen/todo_detail.dart';
 import 'Database/Screen/todo_list.dart';
 
@@ -117,7 +117,7 @@ class _JournalScreenState extends State<JournalScreen> {
                 print("nav to add manually");
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NewManualEntry()),
+                  MaterialPageRoute(builder: (context) => SearchOrCreateAttribute()),
                 ); // Navigate to newManualEntry route when tapped.
               }
           )
