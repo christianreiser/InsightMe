@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'Database/Screen/attribute_detail.dart';
-import 'Database/Screen/attribute_list.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper.dart';
 
@@ -130,8 +129,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                            if textfield is not empty and content is not in list:
                               show add button
                             */
-                              int lenAttributeInput = attributeInputController
-                                  .text.length;
+                              //int lenAttributeInput = attributeInputController.text.length;
 
                               /*if ()lenAttributeInput < 0) {
                             debugPrint("Second text field: ${attributeInputController.text}");}*/
@@ -276,18 +274,6 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return title.substring(0, 2);
   }
 
-  // delete
-  void _delete(BuildContext context, Attribute attribute) async {
-    int result = await databaseHelper.deleteAttribute(attribute.id);
-    if (result != 0) {
-      _showSnackBar(context, 'Attribute Deleted Successfully');
-      updateListView();
-    }
-  }
 
-  // SnackBar for deletion confirmation
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
+
 } // class

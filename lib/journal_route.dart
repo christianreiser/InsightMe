@@ -5,8 +5,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter/material.dart';
 
 import 'searchOrCreateAttribute.dart';
-import 'Database/Screen/attribute_detail.dart';
-import 'Database/Screen/attribute_list.dart';
+
 
 
 

@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import '../attribute.dart';
 import '../database_helper.dart';
 import 'package:intl/intl.dart';
-import '../../searchOrCreateAttribute.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
