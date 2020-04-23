@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../attribute.dart';
 import '../database_helper.dart';
 import 'package:intl/intl.dart';
+import '../../searchOrCreateAttribute.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
@@ -75,6 +76,7 @@ class AttributeDetailState extends State<AttributeDetail> {
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
                     controller: titleController,
+                    //controller: TextEditingController(text: attributeInputController.text),
                     style: textStyle,
                     onChanged: (value) {
                       debugPrint('Something changed in Title Text Field');

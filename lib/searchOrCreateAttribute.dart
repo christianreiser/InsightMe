@@ -22,7 +22,7 @@ class SearchOrCreateAttribute extends StatefulWidget {
 class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // Create a text controller. Later, use it to retrieve the
   // current value of the TextField.
-  final attributeInputController = TextEditingController();
+  var attributeInputController = TextEditingController();
 
 
   // Begin listening for changes when the _MyCustomFormState class is
@@ -174,7 +174,11 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                               });
 
                               navigateToDetail(
-                                  Attribute('', '', ''), 'Add Attribute');
+                                // attributeInputController.text is the Label
+                                // name which is automatically put in in add
+                                // attribute filed.
+                                // 'Add Attribute' is the App Bar name
+                                  Attribute(attributeInputController.text, '', ''), 'Add Attribute');
                             },
                           ),
                         ),
