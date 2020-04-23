@@ -10,24 +10,24 @@ class Attribute {
 
 // ATTRIBUTE create for me individually
 // create the model class for the to-do item.
-// Title, value_type_not_implemented, date, and id for each to-do
+// Title, description, date, and id for each to-do
 
 class Attribute {
 
   int _id;
   String _title;
-  String _value_type_not_implemented;
+  String _description;
   String _date;
 
-  Attribute(this._title, this._date, [this._value_type_not_implemented] );
+  Attribute(this._title, this._date, [this._description] );
 
-  Attribute.withId(this._id, this._title, this._date, [this._value_type_not_implemented]);
+  Attribute.withId(this._id, this._title, this._date, [this._description]);
 
   int get id => _id;
 
   String get title => _title;
 
-  String get value_type_not_implemented => _value_type_not_implemented;
+  String get description => _description;
 
   String get date => _date;
 
@@ -37,9 +37,9 @@ class Attribute {
       this._title = newTitle;
     }
   }
-  set value_type_not_implemented(String newValue_type_not_implemented) {
-    if (newValue_type_not_implemented.length <= 255) {
-      this._value_type_not_implemented = newValue_type_not_implemented;
+  set description(String newDescription) {
+    if (newDescription.length <= 255) {
+      this._description = newDescription;
     }
   }
 
@@ -55,7 +55,7 @@ class Attribute {
       map['id'] = _id;
     }
     map['title'] = _title;
-    map['value_type_not_implemented'] = _value_type_not_implemented;
+    map['description'] = _description;
     map['date'] = _date;
 
     return map;
@@ -65,7 +65,7 @@ class Attribute {
   Attribute.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
     this._title = map['title'];
-    this._value_type_not_implemented = map['value_type_not_implemented'];
+    this._description = map['description'];
     this._date = map['date'];
   }
 }

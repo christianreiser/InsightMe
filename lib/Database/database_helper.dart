@@ -12,7 +12,7 @@ class DatabaseHelper {
   String attributeTable = 'attribute_table';
   String colId = 'id';
   String colTitle = 'title';
-  String colValue_type_not_implemented = 'value_type_not_implemented';
+  String colDescription = 'description';
   String colDate = 'date';
 
   DatabaseHelper._createInstance(); // Named constructor to create instance of DatabaseHelper
@@ -57,7 +57,7 @@ class DatabaseHelper {
   void _createDb(Database db, int newVersion) async {
 
     await db.execute('CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
-        '$colValue_type_not_implemented TEXT, $colDate TEXT)');
+        '$colDescription TEXT, $colDate TEXT)');
   }
 
   // Fetch Operation: Get all attribute objects from database

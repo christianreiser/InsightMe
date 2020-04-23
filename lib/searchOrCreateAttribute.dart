@@ -116,7 +116,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                               ),
                             ),
                             controller: attributeInputController,
-                            //style: Theme.of(context).textTheme.value_type_not_implemented,
+                            //style: Theme.of(context).textTheme.description,
 
 
                             onChanged: (value) {
@@ -162,7 +162,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                             ),
                             onPressed: () {
                               setState(() {
-                                debugPrint("Save button clicked");
+                                debugPrint("Create button clicked");
 
 
                                 // TODO save button
@@ -176,7 +176,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                                 // name which is automatically put in in add
                                 // attribute filed.
                                 // 'Add Attribute' is the App Bar name
-                                  Attribute(attributeInputController.text, '', ''), 'Add Attribute');
+                                  Attribute(attributeInputController.text, 'val_not_impl', ''), 'Add Attribute');
                             },
                           ),
                         ),
@@ -241,7 +241,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
 
             // SUBTITLE
-/*            subtitle: Text(this.attributeList[position].value_type_not_implemented),*/
+/*            subtitle: Text(this.attributeList[position].description),*/
 
             // EDIT ICON
             trailing: Row(

@@ -30,7 +30,7 @@ class AttributeDetailState extends State<AttributeDetail> {
   Attribute attribute;
 
   TextEditingController titleController = TextEditingController();
-  TextEditingController value_type_not_implementedController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   AttributeDetailState(this.attribute, this.appBarTitle);
 
@@ -40,7 +40,7 @@ class AttributeDetailState extends State<AttributeDetail> {
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
     titleController.text = attribute.title;
-    value_type_not_implementedController.text = attribute.value_type_not_implemented;
+    descriptionController.text = attribute.description;
 
     return WillPopScope(
 
@@ -91,19 +91,19 @@ class AttributeDetailState extends State<AttributeDetail> {
                 ),
 
 
-                // VALUE_TYPE_NOT_IMPLEMENTED
+                // DESCRIPTION
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
-                    controller: value_type_not_implementedController,
+                    controller: descriptionController,
                     style: textStyle,
                     onChanged: (value) {
-                      debugPrint('Something changed in Value_type_not_implemented Text Field');
-                      updateValue_type_not_implemented();
+                      debugPrint('Something changed in Description Text Field');
+                      updateDescription();
                     },
                     decoration: InputDecoration(
-                        labelText: 'Value_type_not_implemented',
+                        labelText: 'Description',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0)
@@ -180,9 +180,9 @@ class AttributeDetailState extends State<AttributeDetail> {
     attribute.title = titleController.text;
   }
 
-  // Update the value_type_not_implemented of attribute object
-  void updateValue_type_not_implemented() {
-    attribute.value_type_not_implemented = value_type_not_implementedController.text;
+  // Update the description of attribute object
+  void updateDescription() {
+    attribute.description = descriptionController.text;
   }
 
 
