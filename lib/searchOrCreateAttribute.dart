@@ -109,7 +109,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                           TextField(
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'search or create new attribute',
+                              labelText: 'search or create new label',
                               suffixIcon: IconButton(
                                 onPressed: () =>
                                     attributeInputController.clear(),
@@ -192,30 +192,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                     // List of previously used attributes
                     Flexible(
-                      child: ListView(
-                        children: <Widget>[
-
-                          FlatButton(
-                              onPressed: () {},
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                    "second last used attribute"
-                                ),
-                              )
-                          ),
-
-                          FlatButton(
-                              onPressed: () {},
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                    "second last used attribute"
-                                ),
-                              )
-                          ),
-                        ],
-                      ),
+                      child: getAttributeListView()
                     )
                   ]
               )
@@ -244,5 +221,73 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       _showAlertDialog('Status', 'Problem Saving Todo');
     }
   }*/
+  // TO-DO LIST
+  ListView getAttributeListView() {
+    return ListView.builder(
+      itemCount: count,
+      itemBuilder: (BuildContext context, int position) {
+        return Card(
+          color: Colors.white,
+          elevation: 2.0,
+          child: ListTile(
 
+            // YELLOW CIRCLE AVATAR
+            leading: CircleAvatar(
+              backgroundColor: Colors.amber,
+              child: Text(getFirstLetter(this.attributeList[position].title),
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+
+            // TITLE
+            title: Text(this.attributeList[position].title,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+
+            // SUBTITLE
+/*            subtitle: Text(this.attributeList[position].value_type_not_implemented),*/
+
+            // EDIT ICON
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(Icons.edit,color: Colors.grey,),
+                  onTap: () {
+                    debugPrint("ListTile Tapped");
+                    navigateToDetail(this.attributeList[position], 'Edit Attribute');
+                  },
+                ),
+              ],
+            ),
+
+            // onTAP TO EDIT
+            onTap: () {
+              // TODO navigate to Route for entering value, free text, date, time;
+              //  TODO optional: feedback: compare to average.
+            },
+          ),
+        );
+      },
+    );
+  }
+
+
+  // for yellow circle avatar
+  getFirstLetter(String title) {
+    return title.substring(0, 2);
+  }
+
+  // delete
+  void _delete(BuildContext context, Attribute attribute) async {
+    int result = await databaseHelper.deleteAttribute(attribute.id);
+    if (result != 0) {
+      _showSnackBar(context, 'Attribute Deleted Successfully');
+      updateListView();
+    }
+  }
+
+  // SnackBar for deletion confirmation
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
 } // class
