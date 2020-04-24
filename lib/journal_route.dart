@@ -9,13 +9,6 @@ import 'searchOrCreateAttribute.dart';
 
 
 
-//import 'api.dart';
-//import 'backdrop.dart';
-//import 'category.dart';
-//import 'category_tile.dart';
-//import 'unit.dart';
-//import 'unit_converter.dart';
-
 class JournalScreen extends StatefulWidget {
   JournalScreen({Key key, this.title}) : super(key: key);
 

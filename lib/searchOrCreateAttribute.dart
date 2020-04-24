@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'Database/Screen/attribute_detail.dart';
+import 'Database/Screen/todo_detail.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper.dart';
+import 'Database/todo.dart';
 
 /*
 * TextEditingController from this cookbook:
@@ -22,6 +24,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // Create a text controller. Later, use it to retrieve the
   // current value of the TextField.
   var attributeInputController = TextEditingController();
+  var todoInputController = TextEditingController();
 
 
   // Begin listening for changes when the _MyCustomFormState class is
@@ -34,13 +37,21 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }*/
 
 
-  // Clean up the controller when the widget is removed from the
+/*  // Clean up the controller when the widget is removed from the
   // widget tree.
   @override
-  void dispose() {
+  void disposeAttribute() {
     attributeInputController.dispose();
     super.dispose();
   }
+
+  // Clean up the controller when the widget is removed from the
+  // widget tree.
+  @override
+  void disposeTodo() {
+    todoInputController.dispose();
+    super.dispose();
+  }*/
 
 
   // Function that runs every time the text changes.
@@ -50,7 +61,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }*/
 
   // navigation for editing entry
-  void navigateToDetail(Attribute attribute, String title) async {
+  void navigateToAttributeDetail(Attribute attribute, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return AttributeDetail(attribute, title);
@@ -61,6 +72,17 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
   }
 
+  // navigation for editing entry
+  void navigateToTodoDetail(Todo todo, String title) async {
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return TodoDetail(todo, title);
+    }));
+
+    if (result == true) {
+      updateListView();
+    }
+  }
 
   // updateListView depends on state
   void updateListView() {
@@ -171,7 +193,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                               });
 
-                              navigateToDetail(
+                              navigateToAttributeDetail(
                                 // attributeInputController.text is the Label
                                 // name which is automatically put in in add
                                 // attribute filed.
@@ -199,26 +221,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     } // widget
 
 
-/* // Save data to database
-  void _save() async {
-    // NAVIGATE
-    moveToLastScreen();
-    // TIMESTAMP
-    todo.date = DateFormat.yMMMd().format(DateTime.now());
-    // Update Operation: Update a to-do object and save it to database
-    int result;
-    if (todo.id != null) {  // Case 1: Update operation
-      result = await helper.updateTodo(todo);
-    } else { // Case 2: Insert Operation
-      result = await helper.insertTodo(todo);
-    }
-    // SUCCESS FAILURE STATUS DIALOG
-    if (result != 0) {  // Success
-      _showAlertDialog('Status', 'Todo Saved Successfully');
-    } else {  // Failure
-      _showAlertDialog('Status', 'Problem Saving Todo');
-    }
-  }*/
+
   // TO-DO LIST
   ListView getAttributeListView() {
     return ListView.builder(
@@ -251,16 +254,24 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   child: Icon(Icons.edit,color: Colors.grey,),
                   onTap: () {
                     debugPrint("ListTile Tapped");
-                    navigateToDetail(this.attributeList[position], 'Edit Attribute');
+                    navigateToAttributeDetail(this.attributeList[position], 'Edit Attribute');
                   },
                 ),
               ],
             ),
 
-            // onTAP TO EDIT
+            // onTAP for entry
             onTap: () {
-              // TODO navigate to Route for entering value, free text, date, time;
-              //  TODO optional: feedback: compare to average.
+              setState(() {
+                debugPrint("One Attribute selected");
+              });
+
+              navigateToTodoDetail(
+                // TodoInputController.text is the Label
+                // name which is automatically put in in add
+                // attribute filed.
+                // 'Add Attribute' is the App Bar name
+                  Todo(todoInputController.text, 'val_not_impl', ''), 'Add Todo');
             },
           ),
         );

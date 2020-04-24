@@ -1,3 +1,4 @@
+import 'package:lifetracker4/Database/todo.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -82,7 +83,6 @@ class DatabaseHelper {
     var result = await db.update(attributeTable, attribute.toMap(), where: '$colId = ?', whereArgs: [attribute.id]);
     return result;
   }
-
 
   // Delete Operation: Delete a attribute object from database
   Future<int> deleteAttribute(int id) async {
