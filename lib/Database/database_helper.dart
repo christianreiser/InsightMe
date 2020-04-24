@@ -1,4 +1,4 @@
-import 'package:lifetracker4/Database/todo.dart';
+import 'package:lifetracker4/Database/entry.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';

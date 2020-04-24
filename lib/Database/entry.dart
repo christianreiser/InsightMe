@@ -12,16 +12,16 @@ class Attribute {
 // create the model class for the to-do item.
 // Title, description, date, and id for each to-do
 
-class Todo {
+class Entry {
 
   int _id;
   String _title;
   String _description;
   String _date;
 
-  Todo(this._title, this._date, [this._description] );
+  Entry(this._title, this._date, [this._description] );
 
-  Todo.withId(this._id, this._title, this._date, [this._description]);
+  Entry.withId(this._id, this._title, this._date, [this._description]);
 
   int get id => _id;
 
@@ -62,7 +62,7 @@ class Todo {
   }
 
   // Extract a Note object from a Map object
-  Todo.fromMapObject(Map<String, dynamic> map) {
+  Entry.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
     this._title = map['title'];
     this._description = map['description'];

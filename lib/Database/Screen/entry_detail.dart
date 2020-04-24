@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../database_helper.dart';
 import '../db_help_one_att.dart';
-import '../todo.dart';
+import '../entry.dart';
 
 
 /*
@@ -12,41 +12,41 @@ import '../todo.dart';
 * creating another screen to add to-dos to Enter to-dos to the database.
 * */
 
-class TodoDetail extends StatefulWidget {
+class EntryDetail extends StatefulWidget {
 
   final String appBarTitle;
-  final Todo todo;
+  final Entry entry;
 
-  TodoDetail(this.todo, this.appBarTitle);
+  EntryDetail(this.entry, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
 
-    return TodoDetailState(this.todo, this.appBarTitle);
+    return EntryDetailState(this.entry, this.appBarTitle);
   }
 }
 
-class TodoDetailState extends State<TodoDetail> {
+class EntryDetailState extends State<EntryDetail> {
 
   DatabaseHelper helperAttribute = DatabaseHelper(); // probably needed?
-  DbHelpOneAtt helperTodo = DbHelpOneAtt(); // probably needed?
+  DbHelpOneAtt helperEntry = DbHelpOneAtt(); // probably needed?
 
 
   String appBarTitle;
-  Todo todo;
+  Entry entry;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  TodoDetailState(this.todo, this.appBarTitle);
+  EntryDetailState(this.entry, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
 
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
-    titleController.text = todo.title;
-    descriptionController.text = todo.description;
+    titleController.text = entry.title;
+    descriptionController.text = entry.description;
 
     return WillPopScope(
 
@@ -180,14 +180,14 @@ class TodoDetailState extends State<TodoDetail> {
     Navigator.pop(context, true);
   }
 
-  // Update the title of todo object
+  // Update the title of entry object
   void updateTitle(){
-    todo.title = titleController.text;
+    entry.title = titleController.text;
   }
 
-  // Update the description of todo object
+  // Update the description of entry object
   void updateDescription() {
-    todo.description = descriptionController.text;
+    entry.description = descriptionController.text;
   }
 
 
@@ -199,21 +199,21 @@ class TodoDetailState extends State<TodoDetail> {
     moveToLastScreen();
 
     // TIMESTAMP
-    todo.date = DateFormat.yMMMd().format(DateTime.now());
+    entry.date = DateFormat.yMMMd().format(DateTime.now());
 
     // Update Operation: Update a to-do object and save it to database
     int result;
-    if (todo.id != null) {  // Case 1: Update operation
-      result = await helperTodo.updateTodo(todo);
+    if (entry.id != null) {  // Case 1: Update operation
+      result = await helperEntry.updateEntry(entry);
     } else { // Case 2: Insert Operation
-      result = await helperTodo.insertTodo(todo);
+      result = await helperEntry.insertEntry(entry);
     }
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {  // Success
-      _showAlertDialog('Status', 'Todo Saved Successfully');
+      _showAlertDialog('Status', 'Entry Saved Successfully');
     } else {  // Failure
-      _showAlertDialog('Status', 'Problem Saving Todo');
+      _showAlertDialog('Status', 'Problem Saving Entry');
     }
 
   }
@@ -225,16 +225,16 @@ class TodoDetailState extends State<TodoDetail> {
 
     moveToLastScreen();
 
-    if (todo.id == null) {
-      _showAlertDialog('Status', 'No Todo was deleted');
+    if (entry.id == null) {
+      _showAlertDialog('Status', 'No Entry was deleted');
       return;
     }
 
-    int result = await helperTodo.deleteTodo(todo.id);
+    int result = await helperEntry.deleteEntry(entry.id);
     if (result != 0) {
-      _showAlertDialog('Status', 'Todo Deleted Successfully');
+      _showAlertDialog('Status', 'Entry Deleted Successfully');
     } else {
-      _showAlertDialog('Status', 'Error Occured while Deleting Todo');
+      _showAlertDialog('Status', 'Error Occured while Deleting Entry');
     }
   }
 

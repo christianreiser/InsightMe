@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'Database/Screen/attribute_detail.dart';
-import 'Database/Screen/todo_detail.dart';
+import 'Database/Screen/entry_detail.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper.dart';
-import 'Database/todo.dart';
+import 'Database/entry.dart';
 
 /*
 * TextEditingController from this cookbook:
@@ -24,7 +24,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // Create a text controller. Later, use it to retrieve the
   // current value of the TextField.
   var attributeInputController = TextEditingController();
-  var todoInputController = TextEditingController();
+  var entryInputController = TextEditingController();
 
 
   // Begin listening for changes when the _MyCustomFormState class is
@@ -48,8 +48,8 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // Clean up the controller when the widget is removed from the
   // widget tree.
   @override
-  void disposeTodo() {
-    todoInputController.dispose();
+  void disposeEntry() {
+    entryInputController.dispose();
     super.dispose();
   }*/
 
@@ -73,10 +73,10 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // navigation for editing entry
-  void navigateToTodoDetail(Todo todo, String title) async {
+  void navigateToEntryDetail(Entry entry, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return TodoDetail(todo, title);
+      return EntryDetail(entry, title);
     }));
 
     if (result == true) {
@@ -126,7 +126,6 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       Expanded(
                         //height: ,
                         child: // Input text field for search or create attribute
-                        // todo replace with
                         TextField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -266,12 +265,12 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 debugPrint("One Attribute selected");
               });
 
-              navigateToTodoDetail(
-                // TodoInputController.text is the Label
+              navigateToEntryDetail(
+                // EntryInputController.text is the Label
                 // name which is automatically put in in add
                 // attribute filed.
                 // 'Add Attribute' is the App Bar name
-                  Todo(todoInputController.text, 'val_not_impl', ''), 'Add Todo');
+                  Entry(entryInputController.text, 'val_not_impl', ''), 'Add Entry');
             },
           ),
         );

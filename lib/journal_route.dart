@@ -5,9 +5,9 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'Database/Screen/todo_detail.dart';
+import 'Database/Screen/entry_detail.dart';
 import 'Database/db_help_one_att.dart';
-import 'Database/todo.dart';
+import 'Database/entry.dart';
 import 'searchOrCreateAttribute.dart';
 
 
@@ -32,14 +32,14 @@ class JournalScreen extends StatefulWidget {
 }
 
 class _JournalScreenState extends State<JournalScreen> {
-  DbHelpOneAtt helperTodo = DbHelpOneAtt(); // probably needed?
-  List<Todo> todoList;
+  DbHelpOneAtt helperEntry = DbHelpOneAtt(); // probably needed?
+  List<Entry> entryList;
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    if (todoList == null) {
-      todoList = List<Todo>();
+    if (entryList == null) {
+      entryList = List<Entry>();
       updateListView();
     }
     // This method is rerun every time setState is called, for instance as done
@@ -54,7 +54,7 @@ class _JournalScreenState extends State<JournalScreen> {
         // the App.build method, and use it to set our appbar title.
         title: new Text("Journal"),
       ),
-      body: getTodoListView(),
+      body: getEntryListView(),
       floatingActionButton: SpeedDial(
         //floatingActionButton: FloatingActionButton(
         //onPressed: _incrementCounter,
@@ -91,8 +91,8 @@ class _JournalScreenState extends State<JournalScreen> {
   }
 
 
-  // TODO LIST
-  ListView getTodoListView() {
+  // ENTRY LIST
+  ListView getEntryListView() {
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
@@ -104,16 +104,16 @@ class _JournalScreenState extends State<JournalScreen> {
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
-              child: Text(getFirstLetter(this.todoList[position].title),
+              child: Text(getFirstLetter(this.entryList[position].title),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
 
             // TITLE
-            title: Text(this.todoList[position].title,
+            title: Text(this.entryList[position].title,
                 style: TextStyle(fontWeight: FontWeight.bold)),
 
             // SUBTITLE
-            subtitle: Text(this.todoList[position].description),
+            subtitle: Text(this.entryList[position].description),
 
             // TRASH ICON
             trailing: Row(
@@ -123,7 +123,7 @@ class _JournalScreenState extends State<JournalScreen> {
                   child: Icon(Icons.edit,color: Colors.grey,),
                   onTap: () {
                     debugPrint("ListTile Tapped");
-                    navigateToTodoDetail(this.todoList[position], 'Edit Attribute');
+                    navigateToEntryDetail(this.entryList[position], 'Edit Attribute');
                   },
                 ),
               ],
@@ -132,7 +132,7 @@ class _JournalScreenState extends State<JournalScreen> {
             // onTAP TO EDIT
             onTap: () {
               debugPrint("ListTile Tapped");
-              navigateToTodoDetail(this.todoList[position], 'Edit Todo');
+              navigateToEntryDetail(this.entryList[position], 'Edit Entry');
             },
           ),
         );
@@ -146,10 +146,10 @@ class _JournalScreenState extends State<JournalScreen> {
   }
 
   // navigation for editing entry
-  void navigateToTodoDetail(Todo todo, String title) async {
+  void navigateToEntryDetail(Entry entry, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return TodoDetail(todo, title);
+      return EntryDetail(entry, title);
     }));
 
     if (result == true) {
@@ -159,13 +159,13 @@ class _JournalScreenState extends State<JournalScreen> {
 
   // updateListView depends on state
   void updateListView() {
-    final Future<Database> dbFuture = helperTodo.initializeDatabase();
+    final Future<Database> dbFuture = helperEntry.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Todo>> todoListFuture = helperTodo.getTodoList();
-      todoListFuture.then((todoList) {
+      Future<List<Entry>> entryListFuture = helperEntry.getEntryList();
+      entryListFuture.then((entryList) {
         setState(() {
-          this.todoList = todoList;
-          this.count = todoList.length;
+          this.entryList = entryList;
+          this.count = entryList.length;
         });
       });
     });
