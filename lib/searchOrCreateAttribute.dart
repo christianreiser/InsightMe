@@ -106,123 +106,123 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
 
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
 
-        // APP BAR
-          appBar: AppBar(
-            title: Text("New manual entry"),
-          ),
+      // APP BAR
+        appBar: AppBar(
+          title: Text("New manual entry"),
+        ),
 
-          // FRAGMENT
-          body: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
+        // FRAGMENT
+        body: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
 
-                        Expanded(
-                          //height: ,
-                          child: // Input text field for search or create attribute
-                          // todo replace with
-                          TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'search or create new label',
-                              suffixIcon: IconButton(
-                                onPressed: () =>
-                                    attributeInputController.clear(),
-                                icon: Icon(Icons.clear),
-                              ),
+                      Expanded(
+                        //height: ,
+                        child: // Input text field for search or create attribute
+                        // todo replace with
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'search or create new label',
+                            suffixIcon: IconButton(
+                              onPressed: () =>
+                                  attributeInputController.clear(),
+                              icon: Icon(Icons.clear),
                             ),
-                            controller: attributeInputController,
-                            //style: Theme.of(context).textTheme.description,
-
-
-                            onChanged: (value) {
-                              //debugPrint('Something changed search or create new attribute');
-                              debugPrint(
-                                  "Second text field: ${attributeInputController
-                                      .text}");
-                              //print(TextEditingController.text)
-                              /*                       TODO:
-                           if textfield is not empty and content is not in list:
-                              show add button
-                            */
-                              //int lenAttributeInput = attributeInputController.text.length;
-
-                              /*if ()lenAttributeInput < 0) {
-                            debugPrint("Second text field: ${attributeInputController.text}");}*/
-
-                              /*                        OR
-                          search string in list of attributes
-                           if found partially
-                              if NOT matched exactly:
-                                  show found attributes in list below
-                                  display create new attribute button
-                              else if: exact match:
-                                  hide create new attribute button*/
-                            },
                           ),
+                          controller: attributeInputController,
+                          //style: Theme.of(context).textTheme.description,
+
+
+                          onChanged: (value) {
+                            //debugPrint('Something changed search or create new attribute');
+                            debugPrint(
+                                "Second text field: ${attributeInputController
+                                    .text}");
+                            //print(TextEditingController.text)
+                            /*                       TODO:
+                         if textfield is not empty and content is not in list:
+                            show add button
+                          */
+                            //int lenAttributeInput = attributeInputController.text.length;
+
+                            /*if ()lenAttributeInput < 0) {
+                          debugPrint("Second text field: ${attributeInputController.text}");}*/
+
+                            /*                        OR
+                        search string in list of attributes
+                         if found partially
+                            if NOT matched exactly:
+                                show found attributes in list below
+                                display create new attribute button
+                            else if: exact match:
+                                hide create new attribute button*/
+                          },
                         ),
+                      ),
 
-                        Padding(padding: EdgeInsets.all(4.0),),
+                      Padding(padding: EdgeInsets.all(4.0),),
 
-                        Container(
-                          child: RaisedButton(
-                            color: Theme
-                                .of(context)
-                                .primaryColorDark,
-                            textColor: Theme
-                                .of(context)
-                                .primaryColorLight,
-                            child: Text(
-                              'Create',
-                              textScaleFactor: 1.5,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                debugPrint("Create button clicked");
-
-
-                                // TODO save button
-                                //_save();
-
-
-                              });
-
-                              navigateToAttributeDetail(
-                                // attributeInputController.text is the Label
-                                // name which is automatically put in in add
-                                // attribute filed.
-                                // 'Add Attribute' is the App Bar name
-                                  Attribute(attributeInputController.text, 'val_not_impl', ''), 'Add Attribute');
-                            },
+                      Container(
+                        child: RaisedButton(
+                          color: Theme
+                              .of(context)
+                              .primaryColorDark,
+                          textColor: Theme
+                              .of(context)
+                              .primaryColorLight,
+                          child: Text(
+                            'Create',
+                            textScaleFactor: 1.5,
                           ),
+                          onPressed: () {
+                            setState(() {
+                              debugPrint("Create button clicked");
+
+
+                              // TODO save button
+                              //_save();
+
+
+                            });
+
+                            navigateToAttributeDetail(
+                              // attributeInputController.text is the Label
+                              // name which is automatically put in in add
+                              // attribute filed.
+                              // 'Add Attribute' is the App Bar name
+                                Attribute(attributeInputController.text, 'val_not_impl', ''), 'Add Attribute');
+                          },
                         ),
+                      ),
 
-                      ],
-                    ),
-
-
-                    // spacing between boxes
-                    SizedBox(height: 4),
-
-                    // List of previously used attributes
-                    Flexible(
-                      child: getAttributeListView()
-                    )
-                  ]
-              )
-          )
-      );
-    } // widget
+                    ],
+                  ),
 
 
+                  // spacing between boxes
+                  SizedBox(height: 4),
 
-  // TO-DO LIST
+                  // List of previously used attributes
+                  Flexible(
+                    child: getAttributeListView()
+                  )
+                ]
+            )
+        )
+    );
+  } // widget
+
+
+
+  // Attribute LIST
   ListView getAttributeListView() {
     return ListView.builder(
       itemCount: count,

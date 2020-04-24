@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
-* creating another screen to add to-dos to Enter to-dos to the database.
+* creating another screen to add attributes to Enter attributes to the database.
 * */
 
 class AttributeDetail extends StatefulWidget {
@@ -44,9 +44,11 @@ class AttributeDetailState extends State<AttributeDetail> {
 
     return WillPopScope(
 
+
+/*      not sure what it is for
         onWillPop: () {
           moveToLastScreen();
-        },
+        },*/
 
 
         // APPBAR
@@ -196,7 +198,7 @@ class AttributeDetailState extends State<AttributeDetail> {
     // TIMESTAMP
     attribute.date = DateFormat.yMMMd().format(DateTime.now());
 
-    // Update Operation: Update a to-do object and save it to database
+    // Update Operation: Update a attribute object and save it to database
     int result;
     if (attribute.id != null) {  // Case 1: Update operation
       result = await helper.updateAttribute(attribute);

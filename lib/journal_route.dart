@@ -91,7 +91,7 @@ class _JournalScreenState extends State<JournalScreen> {
   }
 
 
-  // TO-DO LIST
+  // TODO LIST
   ListView getTodoListView() {
     return ListView.builder(
       itemCount: count,
