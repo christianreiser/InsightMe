@@ -3,7 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
+import 'Database/Screen/todo_detail.dart';
+import 'Database/db_help_one_att.dart';
+import 'Database/todo.dart';
 import 'searchOrCreateAttribute.dart';
 
 
@@ -28,10 +32,16 @@ class JournalScreen extends StatefulWidget {
 }
 
 class _JournalScreenState extends State<JournalScreen> {
-
+  DbHelpOneAtt helperTodo = DbHelpOneAtt(); // probably needed?
+  List<Todo> todoList;
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
+    if (todoList == null) {
+      todoList = List<Todo>();
+      updateListView();
+    }
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -44,58 +54,7 @@ class _JournalScreenState extends State<JournalScreen> {
         // the App.build method, and use it to set our appbar title.
         title: new Text("Journal"),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // List of previously used attributes
-            Flexible(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: ListView(
-                  children: <Widget>[
-                  FlatButton(
-                    onPressed: () {},
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                          "First journal entry"
-                      ),
-                    )
-                  ),
-
-                  FlatButton(
-                    onPressed: () {},
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                            "Second journal entry"
-                        ),
-                      )
-                  ),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+      body: getTodoListView(),
       floatingActionButton: SpeedDial(
         //floatingActionButton: FloatingActionButton(
         //onPressed: _incrementCounter,
@@ -130,4 +89,86 @@ class _JournalScreenState extends State<JournalScreen> {
       )
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
+
+
+  // TO-DO LIST
+  ListView getTodoListView() {
+    return ListView.builder(
+      itemCount: count,
+      itemBuilder: (BuildContext context, int position) {
+        return Card(
+          color: Colors.white,
+          elevation: 2.0,
+          child: ListTile(
+
+            // YELLOW CIRCLE AVATAR
+            leading: CircleAvatar(
+              backgroundColor: Colors.amber,
+              child: Text(getFirstLetter(this.todoList[position].title),
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+
+            // TITLE
+            title: Text(this.todoList[position].title,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+
+            // SUBTITLE
+            subtitle: Text(this.todoList[position].description),
+
+            // TRASH ICON
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(Icons.edit,color: Colors.grey,),
+                  onTap: () {
+                    debugPrint("ListTile Tapped");
+                    navigateToTodoDetail(this.todoList[position], 'Edit Attribute');
+                  },
+                ),
+              ],
+            ),
+
+            // onTAP TO EDIT
+            onTap: () {
+              debugPrint("ListTile Tapped");
+              navigateToTodoDetail(this.todoList[position], 'Edit Todo');
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  // for yellow circle avatar
+  getFirstLetter(String title) {
+    return title.substring(0, 2);
+  }
+
+  // navigation for editing entry
+  void navigateToTodoDetail(Todo todo, String title) async {
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return TodoDetail(todo, title);
+    }));
+
+    if (result == true) {
+      updateListView();
+    }
+  }
+
+  // updateListView depends on state
+  void updateListView() {
+    final Future<Database> dbFuture = helperTodo.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Todo>> todoListFuture = helperTodo.getTodoList();
+      todoListFuture.then((todoList) {
+        setState(() {
+          this.todoList = todoList;
+          this.count = todoList.length;
+        });
+      });
+    });
+  }
 }
+
