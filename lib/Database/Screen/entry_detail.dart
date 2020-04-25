@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -9,7 +8,7 @@ import '../entry.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
-* creating another screen to add to-dos to Enter to-dos to the database.
+* creating another screen to add entries to Enter entries to the database.
 * */
 
 class EntryDetail extends StatefulWidget {
@@ -28,8 +27,8 @@ class EntryDetail extends StatefulWidget {
 
 class EntryDetailState extends State<EntryDetail> {
 
-  DatabaseHelper helperAttribute = DatabaseHelper(); // probably needed?
-  DbHelpOneAtt helperEntry = DbHelpOneAtt(); // probably needed?
+  DatabaseHelper helperAttribute = DatabaseHelper();
+  DbHelpOneAtt helperEntry = DbHelpOneAtt();
 
 
   String appBarTitle;

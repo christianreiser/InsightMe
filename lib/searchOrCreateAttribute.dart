@@ -6,6 +6,7 @@ import 'Database/Screen/attribute_detail.dart';
 import 'Database/Screen/entry_detail.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper.dart';
+import 'Database/db_help_one_att.dart';
 import 'Database/entry.dart';
 
 /*
@@ -68,7 +69,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }));
 
     if (result == true) {
-      updateListView();
+      updateAttributeListView();
     }
   }
 
@@ -80,12 +81,12 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }));
 
     if (result == true) {
-      updateListView();
+      updateEntryListView();  // TODO
     }
   }
 
-  // updateListView depends on state
-  void updateListView() {
+  // updateAttributeListView depends on state
+  void updateAttributeListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Attribute>> attributeListFuture = databaseHelper.getAttributeList();
@@ -98,9 +99,25 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     });
   }
 
+  // updateEntryListView depends on state
+  void updateEntryListView() {
+    final Future<Database> dbFuture = dbHelpOneAtt.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Entry>> entryListFuture = dbHelpOneAtt.getEntryList();
+      entryListFuture.then((entryList) {
+        setState(() {
+          this.entryList = entryList;
+          this.count = entryList.length;
+        });
+      });
+    });
+  }
+
 
   DatabaseHelper databaseHelper = DatabaseHelper();
+  DbHelpOneAtt dbHelpOneAtt = DbHelpOneAtt();
   List<Attribute> attributeList;
+  List<Entry> entryList;
   int count = 0;
 
 
@@ -211,7 +228,10 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                   // List of previously used attributes
                   Flexible(
-                    child: getAttributeListView()
+                    child: Container(// TODO remove after debugging
+                        color: Colors.blue,// TODO remove after debugging
+                          child: getAttributeListView()
+                        )
                   )
                 ]
             )
@@ -226,7 +246,9 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
-        return Card(
+        return Container( // TODO remove after debugging
+            color: Colors.red,// TODO remove after debugging
+            child:Card(
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
@@ -273,7 +295,9 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   Entry(entryInputController.text, 'val_not_impl', ''), 'Add Entry');
             },
           ),
+            )
         );
+
       },
     );
   }

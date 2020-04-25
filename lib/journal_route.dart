@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'Database/Screen/entry_detail.dart';
+import 'Database/attribute.dart';
+import 'Database/database_helper.dart';
 import 'Database/db_help_one_att.dart';
 import 'Database/entry.dart';
 import 'searchOrCreateAttribute.dart';
@@ -40,7 +42,7 @@ class _JournalScreenState extends State<JournalScreen> {
   Widget build(BuildContext context) {
     if (entryList == null) {
       entryList = List<Entry>();
-      updateListView();
+      updateEntryListView();
     }
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -61,18 +63,20 @@ class _JournalScreenState extends State<JournalScreen> {
         //tooltip: 'Increment',
         animatedIcon: AnimatedIcons.menu_close,
         children: [
+
+          // first speed dial button for new entry
           SpeedDialChild(
               child: Icon(Icons.border_color),
               label: "New Entry",
               onTap: () {
                 print("nav to add manually");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SearchOrCreateAttribute()),
-                ); // Navigate to newManualEntry route when tapped.
+                navigateToSearchOrCreateAttribute();
+
               }
-          )
-          ,
+          ),
+
+
+          // second speed dial button - no function yet
           SpeedDialChild(
               backgroundColor: Colors.grey,
               child: Icon(Icons.timer),
@@ -90,6 +94,34 @@ class _JournalScreenState extends State<JournalScreen> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
+  DatabaseHelper databaseHelper = DatabaseHelper();
+  List<Attribute> attributeList;
+
+  // updateAttributeListView depends on state
+  void updateAttributeListView() {
+    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Attribute>> attributeListFuture = databaseHelper.getAttributeList();
+      attributeListFuture.then((attributeList) {
+        setState(() {
+          this.attributeList = attributeList;
+          this.count = attributeList.length;
+        });
+      });
+    });
+  }
+
+  // navigation for editing entry
+  void navigateToSearchOrCreateAttribute() async {
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return SearchOrCreateAttribute();
+    }));
+
+    if (result == true) {
+      updateAttributeListView();  // TODO
+    }
+  }
 
   // ENTRY LIST
   ListView getEntryListView() {
@@ -115,8 +147,8 @@ class _JournalScreenState extends State<JournalScreen> {
             // SUBTITLE
             subtitle: Text(this.entryList[position].description),
 
-            // TRASH ICON
-            trailing: Row(
+            // Edit ICON
+/*            trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 GestureDetector(
@@ -127,7 +159,7 @@ class _JournalScreenState extends State<JournalScreen> {
                   },
                 ),
               ],
-            ),
+            ),*/
 
             // onTAP TO EDIT
             onTap: () {
@@ -153,15 +185,17 @@ class _JournalScreenState extends State<JournalScreen> {
     }));
 
     if (result == true) {
-      updateListView();
+      updateEntryListView();
     }
   }
 
-  // updateListView depends on state
-  void updateListView() {
-    final Future<Database> dbFuture = helperEntry.initializeDatabase();
+  DbHelpOneAtt dbHelpOneAtt = DbHelpOneAtt();
+
+  // updateEntryListView depends on state
+  void updateEntryListView() {
+    final Future<Database> dbFuture = dbHelpOneAtt.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = helperEntry.getEntryList();
+      Future<List<Entry>> entryListFuture = dbHelpOneAtt.getEntryList();
       entryListFuture.then((entryList) {
         setState(() {
           this.entryList = entryList;
@@ -170,5 +204,6 @@ class _JournalScreenState extends State<JournalScreen> {
       });
     });
   }
+
 }
 
