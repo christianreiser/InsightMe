@@ -292,7 +292,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 // name which is automatically put in in add
                 // attribute filed.
                 // 'Add Attribute' is the App Bar name
-                  Entry(entryInputController.text, 'val_not_impl', ''), 'Add Entry');
+                  Entry(this.attributeList[position].title, '10', ''), 'Add ${this.attributeList[position].title}Entry');
             },
           ),
             )

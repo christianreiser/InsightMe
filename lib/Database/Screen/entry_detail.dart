@@ -35,6 +35,7 @@ class EntryDetailState extends State<EntryDetail> {
   Entry entry;
 
   TextEditingController titleController = TextEditingController();
+  TextEditingController valueController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
   EntryDetailState(this.entry, this.appBarTitle);
@@ -45,6 +46,7 @@ class EntryDetailState extends State<EntryDetail> {
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
     titleController.text = entry.title;
+    valueController.text = entry.value;
     descriptionController.text = entry.description;
 
     return WillPopScope(
@@ -72,17 +74,25 @@ class EntryDetailState extends State<EntryDetail> {
             child: ListView(
               children: <Widget>[
 
-
-                // TITLE
-
+/*                // Attribute: text box with attribute name -> not needed due to app bar
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
                     controller: titleController,
+                  )
+                ),*/
+
+
+                // Value
+
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: TextField(
+                    controller: valueController,
                     style: textStyle,
                     onChanged: (value) {
-                      debugPrint('Something changed in Title Text Field');
-                      updateTitle();
+                      debugPrint('Something changed in Value Text Field');
+                      updateValue();
                     },
                     decoration: InputDecoration(
                         labelText: 'Value',
@@ -182,6 +192,11 @@ class EntryDetailState extends State<EntryDetail> {
   // Update the title of entry object
   void updateTitle(){
     entry.title = titleController.text;
+  }
+
+  // Update the value of entry object
+  void updateValue(){
+    entry.value = valueController.text;
   }
 
   // Update the description of entry object

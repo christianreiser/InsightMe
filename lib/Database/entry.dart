@@ -16,16 +16,19 @@ class Entry {
 
   int _id;
   String _title;
+  String _value;
   String _description;
   String _date;
 
-  Entry(this._title, this._date, [this._description] );
+  Entry(this._title, this._value, this._date, [this._description] );
 
-  Entry.withId(this._id, this._title, this._date, [this._description]);
+  Entry.withId(this._id, this._title, this._value, this._date, [this._description]);
 
   int get id => _id;
 
   String get title => _title;
+
+  String get value => _value;
 
   String get description => _description;
 
@@ -35,6 +38,11 @@ class Entry {
   set title(String newTitle) {
     if (newTitle.length <= 255) {
       this._title = newTitle;
+    }
+  }
+  set value(String newValue) {
+    if (newValue.length <= 255) {
+      this._title = newValue;
     }
   }
   set description(String newDescription) {
@@ -55,6 +63,7 @@ class Entry {
       map['id'] = _id;
     }
     map['title'] = _title;
+    map['value'] = _value;
     map['description'] = _description;
     map['date'] = _date;
 
@@ -65,6 +74,7 @@ class Entry {
   Entry.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
     this._title = map['title'];
+    this._value = map['value'];
     this._description = map['description'];
     this._date = map['date'];
   }
