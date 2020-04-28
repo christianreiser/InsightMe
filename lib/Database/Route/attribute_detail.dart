@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
-* creating another screen to add attributes to Enter attributes to the database.
+* creating another route to add attributes to Enter attributes to the database.
 * */
 
 class AttributeDetail extends StatefulWidget {
@@ -45,10 +45,10 @@ class AttributeDetailState extends State<AttributeDetail> {
     return WillPopScope(
 
 
-/*      not sure what it is for
+      //not sure what it is for
         onWillPop: () {
-          moveToLastScreen();
-        },*/
+          moveToLastRoute();
+        },
 
 
         // APPBAR
@@ -59,7 +59,7 @@ class AttributeDetailState extends State<AttributeDetail> {
             leading: IconButton(icon: Icon(
                 Icons.arrow_back),
                 onPressed: () {
-                  moveToLastScreen();
+                  moveToLastRoute();
                 }
             ),
           ),
@@ -173,7 +173,7 @@ class AttributeDetailState extends State<AttributeDetail> {
         ));
   }
 
-  void moveToLastScreen() {
+  void moveToLastRoute() {
     Navigator.pop(context, true);
   }
 
@@ -193,7 +193,7 @@ class AttributeDetailState extends State<AttributeDetail> {
   void _save() async {
 
     // NAVIGATE
-    moveToLastScreen();
+    moveToLastRoute();
 
     // TIMESTAMP
     attribute.date = DateFormat.yMMMd().format(DateTime.now());
@@ -220,7 +220,7 @@ class AttributeDetailState extends State<AttributeDetail> {
 
   void _delete() async {
 
-    moveToLastScreen();
+    moveToLastRoute();
 
     if (attribute.id == null) {
       _showAlertDialog('Status', 'No Attribute was deleted');

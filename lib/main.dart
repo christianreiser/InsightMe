@@ -22,7 +22,7 @@ class LifeTrackerApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.deepPurple,
       ),
-      home: JournalScreen(),
+      home: JournalRoute(),
     );
   }
 }

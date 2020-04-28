@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'Database/Screen/attribute_detail.dart';
-import 'Database/Screen/entry_detail.dart';
+import 'Database/Route/attribute_detail.dart';
+import 'Database/Route/entry_detail.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper.dart';
 import 'Database/db_help_one_att.dart';

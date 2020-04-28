@@ -5,7 +5,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'Database/Screen/entry_detail.dart';
+import 'Database/Route/entry_detail.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper.dart';
 import 'Database/db_help_one_att.dart';
@@ -15,8 +15,8 @@ import 'searchOrCreateAttribute.dart';
 
 
 
-class JournalScreen extends StatefulWidget {
-  JournalScreen({Key key, this.title}) : super(key: key);
+class JournalRoute extends StatefulWidget {
+  JournalRoute({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -30,10 +30,10 @@ class JournalScreen extends StatefulWidget {
   final String title;
 
   @override
-  _JournalScreenState createState() => _JournalScreenState();
+  _JournalRouteState createState() => _JournalRouteState();
 }
 
-class _JournalScreenState extends State<JournalScreen> {
+class _JournalRouteState extends State<JournalRoute> {
   DbHelpOneAtt helperEntry = DbHelpOneAtt(); // probably needed?
   List<Entry> entryList;
   int count = 0;
@@ -52,7 +52,7 @@ class _JournalScreenState extends State<JournalScreen> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the JournalScreen object that was created by
+        // Here we take the value from the JournalRoute object that was created by
         // the App.build method, and use it to set our appbar title.
         title: new Text("Journal"),
       ),
