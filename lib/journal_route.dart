@@ -12,9 +12,6 @@ import 'Database/db_help_one_att.dart';
 import 'Database/entry.dart';
 import 'searchOrCreateAttribute.dart';
 
-
-
-
 class JournalRoute extends StatefulWidget {
   JournalRoute({Key key, this.title}) : super(key: key);
 
@@ -63,7 +60,6 @@ class _JournalRouteState extends State<JournalRoute> {
         //tooltip: 'Increment',
         animatedIcon: AnimatedIcons.menu_close,
         children: [
-
           // first speed dial button for new entry
           SpeedDialChild(
               child: Icon(Icons.border_color),
@@ -71,10 +67,7 @@ class _JournalRouteState extends State<JournalRoute> {
               onTap: () {
                 print("nav to add manually");
                 navigateToSearchOrCreateAttribute();
-
-              }
-          ),
-
+              }),
 
           // second speed dial button - no function yet
           SpeedDialChild(
@@ -87,10 +80,9 @@ class _JournalRouteState extends State<JournalRoute> {
                   context,
                   MaterialPageRoute(builder: (context) => AttributeList()),
                 ); // Navigate to newManualEntry route when tapped.*/
-              }
-          )
+              }),
         ],
-      )
+      ),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
@@ -101,7 +93,8 @@ class _JournalRouteState extends State<JournalRoute> {
   void updateAttributeListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Attribute>> attributeListFuture = databaseHelper.getAttributeList();
+      Future<List<Attribute>> attributeListFuture =
+          databaseHelper.getAttributeList();
       attributeListFuture.then((attributeList) {
         setState(() {
           this.attributeList = attributeList;
@@ -114,12 +107,12 @@ class _JournalRouteState extends State<JournalRoute> {
   // navigation for editing entry
   void navigateToSearchOrCreateAttribute() async {
     bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return SearchOrCreateAttribute();
     }));
 
     if (result == true) {
-      updateAttributeListView();  // TODO
+      updateAttributeListView(); // TODO
     }
   }
 
@@ -132,7 +125,6 @@ class _JournalRouteState extends State<JournalRoute> {
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
-
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
@@ -180,7 +172,7 @@ class _JournalRouteState extends State<JournalRoute> {
   // navigation for editing entry
   void navigateToEntryDetail(Entry entry, String title) async {
     bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EntryDetail(entry, title);
     }));
 
@@ -204,6 +196,4 @@ class _JournalRouteState extends State<JournalRoute> {
       });
     });
   }
-
 }
-
