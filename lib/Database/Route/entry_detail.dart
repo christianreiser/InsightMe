@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
 
 //import '../database_helper.dart';
 import '../db_help_one_att.dart';
 import '../entry.dart';
+import '../../journal_route.dart';
+
 
 
 /*
@@ -146,6 +149,7 @@ class EntryDetailState extends State<EntryDetail> {
                             setState(() {
                               debugPrint("Save button clicked");
                               _save();
+
                             });
                           },
                         ),
@@ -185,6 +189,25 @@ class EntryDetailState extends State<EntryDetail> {
         ));
   }
 
+
+  // TODO remove method and call from journal_route.dart
+  // updateEntryListView depends on state
+  DbHelpOneAtt dbHelpOneAtt = DbHelpOneAtt();
+  List<Entry> entryList;
+  int countEntry = 0;
+  void updateEntryListView() {
+    final Future<Database> dbFuture = dbHelpOneAtt.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Entry>> entryListFuture = dbHelpOneAtt.getEntryList();
+      entryListFuture.then((entryList) {
+        setState(() {
+          this.entryList = entryList;
+          this.countEntry = entryList.length;
+        });
+      });
+    });
+  }
+
   void moveToLastScreen() {
     Navigator.pop(context, true);
   }
@@ -222,6 +245,7 @@ class EntryDetailState extends State<EntryDetail> {
     } else { // Case 2: Insert Operation
       result = await helperEntry.insertEntry(entry);
     }
+    updateEntryListView(); //TODO doesnt work
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {  // Success

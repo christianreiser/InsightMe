@@ -39,6 +39,9 @@ class _JournalRouteState extends State<JournalRoute> {
 
   @override
   Widget build(BuildContext context) {
+//    print('entryList=');
+//    print(entryList);
+//    updateEntryListView();
     if (entryList == null) {
       entryList = List<Entry>();
       updateEntryListView();
@@ -55,7 +58,13 @@ class _JournalRouteState extends State<JournalRoute> {
         // the App.build method, and use it to set our appbar title.
         title: new Text("Journal"),
       ),
-      body: getEntryListView(),
+      body: RefreshIndicator(
+        //key: refreshKey,
+        onRefresh: () async {
+            updateEntryListView();
+          },
+        child: getEntryListView(),
+      ),
       floatingActionButton: SpeedDial(
         //floatingActionButton: FloatingActionButton(
         //onPressed: _incrementCounter,
@@ -112,7 +121,6 @@ class _JournalRouteState extends State<JournalRoute> {
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return SearchOrCreateAttribute();
     }));
-
     if (result == true) {
       updateAttributeListView(); // TODO
     }

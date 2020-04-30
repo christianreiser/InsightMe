@@ -229,10 +229,13 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                   // List of previously used attributes
                   Flexible(
-                    child: Container(// TODO remove after debugging
-                        color: Colors.blue,// TODO remove after debugging
-                          child: getAttributeListView()
-                        )
+                    child: RefreshIndicator(
+                      //key: refreshKey,
+                      onRefresh: () async {
+                        updateAttributeListView();
+                      },
+                      child: getAttributeListView(),
+                    ),
                   )
                 ]
             )
@@ -247,9 +250,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return ListView.builder(
       itemCount: countAttribute,
       itemBuilder: (BuildContext context, int position) {
-        return Container( // TODO remove after debugging
-            color: Colors.red,// TODO remove after debugging
-            child:Card(
+        return Card(
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
@@ -296,8 +297,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   Entry(this.attributeList[position].title, '10_default', 'dateTimeToSave', 'TODO_default_current_time'), 'Add ${this.attributeList[position].title} Entry');
             },
           ),
-            )
-        );
+            );
 
       },
     );
