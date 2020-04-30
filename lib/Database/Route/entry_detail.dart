@@ -92,7 +92,7 @@ class EntryDetailState extends State<EntryDetail> {
                     style: textStyle,
                     onChanged: (value) {
                       debugPrint('Something changed in Value Text Field');
-                      updateValue();
+                      updateValue();  // with valueController.text = entry.value
                     },
                     decoration: InputDecoration(
                         labelText: 'Value',
@@ -213,7 +213,7 @@ class EntryDetailState extends State<EntryDetail> {
     moveToLastScreen();
 
     // TIMESTAMP
-    entry.date = DateFormat.yMMMd().format(DateTime.now());
+    entry.date = DateFormat.yMMMd().format(DateTime.now()); // TODO default current but changeable
 
     // Update Operation: Update a to-do object and save it to database
     int result;

@@ -20,9 +20,9 @@ class Entry {
   String _description;
   String _date;
 
-  Entry(this._title, this._value, this._date, [this._description] );
+  Entry(this._title, this._value, this._date, this._description );
 
-  Entry.withId(this._id, this._title, this._value, this._date, [this._description]);
+  Entry.withId(this._id, this._title, this._value, this._date, this._description);
 
   int get id => _id;
 
