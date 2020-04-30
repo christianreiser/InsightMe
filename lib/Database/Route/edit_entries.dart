@@ -31,7 +31,7 @@ class EditEntry extends StatefulWidget {
 class EditEntryState extends State<EditEntry> {
 
   //DatabaseHelper helperAttribute = DatabaseHelper();
-  DbHelpOneAtt helperEntry = DbHelpOneAtt();
+  DatabaseHelperEntry helperEntry = DatabaseHelperEntry();
 
 
   String appBarTitle;
@@ -212,13 +212,13 @@ class EditEntryState extends State<EditEntry> {
 
   // TODO remove method and call from journal_route.dart
   // updateEntryListView depends on state
-  DbHelpOneAtt dbHelpOneAtt = DbHelpOneAtt();
+  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   List<Entry> entryList;
   int countEntry = 0;
   void updateEntryListView() {
-    final Future<Database> dbFuture = dbHelpOneAtt.initializeDatabase();
+    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = dbHelpOneAtt.getEntryList();
+      Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
       entryListFuture.then((entryList) {
         setState(() {
           this.entryList = entryList;

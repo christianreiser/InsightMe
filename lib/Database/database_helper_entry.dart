@@ -5,9 +5,9 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'entry.dart';
 
-class DbHelpOneAtt {
+class DatabaseHelperEntry {
 
-  static DbHelpOneAtt _dbHelpOneAtt;    // Singleton DbHelpOneAtt
+  static DatabaseHelperEntry _databaseHelperEntry;    // Singleton DatabaseHelperEntry
   static Database _database;                // Singleton Database
 
   String entryTable = 'entry_table';
@@ -17,14 +17,14 @@ class DbHelpOneAtt {
   String colComment = 'comment';
   String colDate = 'date';
 
-  DbHelpOneAtt._createInstance(); // Named constructor to create instance of DbHelpOneAtt
+  DatabaseHelperEntry._createInstance(); // Named constructor to create instance of DatabaseHelperEntry
 
-  factory DbHelpOneAtt() {
+  factory DatabaseHelperEntry() {
 
-    if (_dbHelpOneAtt == null) {
-      _dbHelpOneAtt = DbHelpOneAtt._createInstance(); // This is executed only once, singleton object
+    if (_databaseHelperEntry == null) {
+      _databaseHelperEntry = DatabaseHelperEntry._createInstance(); // This is executed only once, singleton object
     }
-    return _dbHelpOneAtt;
+    return _databaseHelperEntry;
   }
 
 /*

@@ -31,7 +31,7 @@ class JournalRoute extends StatefulWidget {
 }
 
 class _JournalRouteState extends State<JournalRoute> {
-  DbHelpOneAtt helperEntry = DbHelpOneAtt(); // probably needed?
+  DatabaseHelperEntry helperEntry = DatabaseHelperEntry(); // probably needed?
   List<Entry> entryList;
   int countEntry = 0;
   int countAttribute = 0 ;
@@ -184,13 +184,13 @@ class _JournalRouteState extends State<JournalRoute> {
     }
   }
 
-  DbHelpOneAtt dbHelpOneAtt = DbHelpOneAtt();
+  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
   // updateEntryListView depends on state
   void updateEntryListView() {
-    final Future<Database> dbFuture = dbHelpOneAtt.initializeDatabase();
+    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = dbHelpOneAtt.getEntryList();
+      Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
       entryListFuture.then((entryList) {
         setState(() {
           this.entryList = entryList;
