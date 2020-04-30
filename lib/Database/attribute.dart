@@ -10,24 +10,21 @@ class Attribute {
 
 // ATTRIBUTE create for me individually
 // create the model class for the to-do item.
-// Title, description, date, and id for each to-do
+// Title, date, and id for each to-do
 
 class Attribute {
 
   int _id;
   String _title;
-  String _description;
   String _date;
 
-  Attribute(this._title, this._date, [this._description] );
+  Attribute(this._title, this._date);
 
-  Attribute.withId(this._id, this._title, this._date, [this._description]);
+  Attribute.withId(this._id, this._title, this._date);
 
   int get id => _id;
 
   String get title => _title;
-
-  String get description => _description;
 
   String get date => _date;
 
@@ -37,11 +34,7 @@ class Attribute {
       this._title = newTitle;
     }
   }
-  set description(String newDescription) {
-    if (newDescription.length <= 255) {
-      this._description = newDescription;
-    }
-  }
+
 
   set date(String newDate) {
     this._date = newDate;
@@ -55,7 +48,6 @@ class Attribute {
       map['id'] = _id;
     }
     map['title'] = _title;
-    map['description'] = _description;
     map['date'] = _date;
 
     return map;
@@ -65,7 +57,6 @@ class Attribute {
   Attribute.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
     this._title = map['title'];
-    this._description = map['description'];
     this._date = map['date'];
   }
 }

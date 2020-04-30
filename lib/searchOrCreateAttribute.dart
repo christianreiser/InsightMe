@@ -215,7 +215,8 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                               // name which is automatically put in in add
                               // attribute filed.
                               // 'Add Attribute' is the App Bar name
-                                Attribute(attributeInputController.text, 'val_not_impl', ''), 'Add Attribute');
+                              // TODO mby here default date
+                                Attribute(attributeInputController.text, ''), 'Add Attribute');
                           },
                         ),
                       ),
@@ -297,7 +298,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 // title, value default, description(time), description_default
                 // ,title for journal & value field default,,
 //                  Entry(this.attributeList[position].title, '10_default', 'dateTimeToSave', 'TODO_default_current_time'), 'Add ${this.attributeList[position].title} Entry');
-                  Entry(this.attributeList[position].title, '', this.attributeList[position].description, ''), 'Add ${this.attributeList[position].title} Entry');
+                  Entry(this.attributeList[position].title, '', '', ''), 'Add ${this.attributeList[position].title} Entry');
             },
           ),
             );

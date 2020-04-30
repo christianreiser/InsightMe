@@ -30,7 +30,6 @@ class AttributeDetailState extends State<AttributeDetail> {
   Attribute attribute;
 
   TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
 
   AttributeDetailState(this.attribute, this.appBarTitle);
 
@@ -40,7 +39,6 @@ class AttributeDetailState extends State<AttributeDetail> {
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
     titleController.text = attribute.title;
-    descriptionController.text = attribute.description;
 
     return WillPopScope(
 
@@ -92,27 +90,6 @@ class AttributeDetailState extends State<AttributeDetail> {
                   ),
                 ),
 
-
-                // DESCRIPTION
-
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextField(
-                    controller: descriptionController,
-                    style: textStyle,
-                    onChanged: (value) {
-                      debugPrint('Something changed in Description Text Field');
-                      updateDescription();
-                    },
-                    decoration: InputDecoration(
-                        labelText: 'Description',
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0)
-                        )
-                    ),
-                  ),
-                ),
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -180,11 +157,6 @@ class AttributeDetailState extends State<AttributeDetail> {
   // Update the title of attribute object
   void updateTitle(){
     attribute.title = titleController.text;
-  }
-
-  // Update the description of attribute object
-  void updateDescription() {
-    attribute.description = descriptionController.text;
   }
 
 
