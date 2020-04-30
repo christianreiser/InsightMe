@@ -24,7 +24,7 @@ class EditAttribute extends StatefulWidget {
 
 class EditAttributeState extends State<EditAttribute> {
 
-  DatabaseHelper helper = DatabaseHelper(); // probably needed?
+  DatabaseHelperAttribute helper = DatabaseHelperAttribute(); // probably needed?
 
   String appBarTitle;
   Attribute attribute;

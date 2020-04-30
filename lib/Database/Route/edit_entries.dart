@@ -30,7 +30,7 @@ class EditEntry extends StatefulWidget {
 
 class EditEntryState extends State<EditEntry> {
 
-  //DatabaseHelper helperAttribute = DatabaseHelper();
+  //DatabaseHelperAttribute helperAttribute = DatabaseHelperAttribute();
   DatabaseHelperEntry helperEntry = DatabaseHelperEntry();
 
 

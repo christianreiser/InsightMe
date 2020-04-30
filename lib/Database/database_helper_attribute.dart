@@ -1,13 +1,12 @@
-import 'package:lifetracker4/Database/entry.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'attribute.dart';
 
-class DatabaseHelper {
+class DatabaseHelperAttribute {
 
-  static DatabaseHelper _databaseHelper;    // Singleton DatabaseHelper
+  static DatabaseHelperAttribute _databaseHelperAttribute;    // Singleton DatabaseHelperAttribute
   static Database _database;                // Singleton Database
 
   String attributeTable = 'attribute_table';
@@ -15,14 +14,14 @@ class DatabaseHelper {
   String colTitle = 'title';
   String colDate = 'date';
 
-  DatabaseHelper._createInstance(); // Named constructor to create instance of DatabaseHelper
+  DatabaseHelperAttribute._createInstance(); // Named constructor to create instance of DatabaseHelperAttribute
 
-  factory DatabaseHelper() {
+  factory DatabaseHelperAttribute() {
 
-    if (_databaseHelper == null) {
-      _databaseHelper = DatabaseHelper._createInstance(); // This is executed only once, singleton object
+    if (_databaseHelperAttribute == null) {
+      _databaseHelperAttribute = DatabaseHelperAttribute._createInstance(); // This is executed only once, singleton object
     }
-    return _databaseHelper;
+    return _databaseHelperAttribute;
   }
 
 /*

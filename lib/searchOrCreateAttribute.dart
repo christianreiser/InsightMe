@@ -87,9 +87,9 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // updateAttributeListView depends on state
   void updateAttributeListView() {
-    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Attribute>> attributeListFuture = databaseHelper.getAttributeList();
+      Future<List<Attribute>> attributeListFuture = databaseHelperAttribute.getAttributeList();
       attributeListFuture.then((attributeList) {
         setState(() {
           this.attributeList = attributeList;
@@ -114,7 +114,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
 
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
   DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   List<Attribute> attributeList;
   List<Entry> entryList;

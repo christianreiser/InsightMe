@@ -94,15 +94,15 @@ class _JournalRouteState extends State<JournalRoute> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
   List<Attribute> attributeList;
 
   // updateAttributeListView depends on state
   void updateAttributeListView() {
-    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Attribute>> attributeListFuture =
-          databaseHelper.getAttributeList();
+          databaseHelperAttribute.getAttributeList();
       attributeListFuture.then((attributeList) {
         setState(() {
           this.attributeList = attributeList;
