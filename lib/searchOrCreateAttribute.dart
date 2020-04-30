@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'Database/Route/attribute_detail.dart';
-import 'Database/Route/entry_detail.dart';
+import 'Database/Route/edit_attributes.dart';
+import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper.dart';
 import 'Database/db_help_one_att.dart';
@@ -62,10 +62,10 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }*/
 
   // navigation for editing entry
-  void navigateToAttributeDetail(Attribute attribute, String title) async {
+  void navigateToEditAttribute(Attribute attribute, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return AttributeDetail(attribute, title);
+      return EditAttribute(attribute, title);
     }));
 
     if (result == true) {
@@ -74,10 +74,10 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // navigation for editing entry
-  void navigateToEntryDetail(Entry entry, String title) async {
+  void commentnavigateToEditEntry(Entry entry, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EntryDetail(entry, title);
+      return EditEntry(entry, title);
     }));
 
     if (result == true) {
@@ -210,7 +210,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                             });
 
-                            navigateToAttributeDetail(
+                            navigateToEditAttribute(
                               // attributeInputController.text is the Label
                               // name which is automatically put in in add
                               // attribute filed.
@@ -278,7 +278,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   child: Icon(Icons.edit,color: Colors.grey,),
                   onTap: () {
                     debugPrint("ListTile Tapped");
-                    navigateToAttributeDetail(this.attributeList[position], 'Edit Attribute');
+                    navigateToEditAttribute(this.attributeList[position], 'Edit Attribute');
                   },
                 ),
               ],
@@ -290,7 +290,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 debugPrint("One Attribute selected");
               });
 
-              navigateToEntryDetail(
+              commentnavigateToEditEntry(
                 // EntryInputController.text is the Label
                 // name which is automatically put in in add
                 // attribute filed.

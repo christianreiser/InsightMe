@@ -8,21 +8,21 @@ import 'package:intl/intl.dart';
 * creating another route to add attributes to Enter attributes to the database.
 * */
 
-class AttributeDetail extends StatefulWidget {
+class EditAttribute extends StatefulWidget {
 
   final String appBarTitle;
   final Attribute attribute;
 
-  AttributeDetail(this.attribute, this.appBarTitle);
+  EditAttribute(this.attribute, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
 
-    return AttributeDetailState(this.attribute, this.appBarTitle);
+    return EditAttributeState(this.attribute, this.appBarTitle);
   }
 }
 
-class AttributeDetailState extends State<AttributeDetail> {
+class EditAttributeState extends State<EditAttribute> {
 
   DatabaseHelper helper = DatabaseHelper(); // probably needed?
 
@@ -31,7 +31,7 @@ class AttributeDetailState extends State<AttributeDetail> {
 
   TextEditingController titleController = TextEditingController();
 
-  AttributeDetailState(this.attribute, this.appBarTitle);
+  EditAttributeState(this.attribute, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {

@@ -14,21 +14,21 @@ import '../../journal_route.dart';
 * creating another screen to add entries to Enter entries to the database.
 * */
 
-class EntryDetail extends StatefulWidget {
+class EditEntry extends StatefulWidget {
 
   final String appBarTitle;
   final Entry entry;
 
-  EntryDetail(this.entry, this.appBarTitle);
+  EditEntry(this.entry, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
 
-    return EntryDetailState(this.entry, this.appBarTitle);
+    return EditEntryState(this.entry, this.appBarTitle);
   }
 }
 
-class EntryDetailState extends State<EntryDetail> {
+class EditEntryState extends State<EditEntry> {
 
   //DatabaseHelper helperAttribute = DatabaseHelper();
   DbHelpOneAtt helperEntry = DbHelpOneAtt();
@@ -41,7 +41,7 @@ class EntryDetailState extends State<EntryDetail> {
   TextEditingController valueController = TextEditingController();
   TextEditingController commentController = TextEditingController();
 
-  EntryDetailState(this.entry, this.appBarTitle);
+  EditEntryState(this.entry, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {

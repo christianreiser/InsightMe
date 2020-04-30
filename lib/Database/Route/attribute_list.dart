@@ -2,7 +2,7 @@
 //import 'package:flutter/material.dart';
 //import '../attribute.dart';
 //import '../database_helper.dart';
-//import 'attribute_detail.dart';
+//import 'edit_attributes.dart';
 //import 'package:sqflite/sqflite.dart';
 //
 ///*

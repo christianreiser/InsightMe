@@ -5,7 +5,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'Database/Route/entry_detail.dart';
+import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper.dart';
 import 'Database/db_help_one_att.dart';
@@ -162,7 +162,7 @@ class _JournalRouteState extends State<JournalRoute> {
             // onTAP TO EDIT
             onTap: () {
               debugPrint("ListTile Tapped");
-              navigateToEntryDetail(this.entryList[position], 'Edit Entry');
+              commentnavigateToEditEntry(this.entryList[position], 'Edit Entry');
             },
           ),
         );
@@ -176,10 +176,10 @@ class _JournalRouteState extends State<JournalRoute> {
   }
 
   // navigation for editing entry
-  void navigateToEntryDetail(Entry entry, String title) async {
+  void commentnavigateToEditEntry(Entry entry, String title) async {
     bool result =
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EntryDetail(entry, title);
+      return EditEntry(entry, title);
     }));
 
     if (result == true) {
