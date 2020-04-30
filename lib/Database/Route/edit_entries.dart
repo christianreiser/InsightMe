@@ -37,6 +37,7 @@ class EditEntryState extends State<EditEntry> {
   //TextEditingController titleController = TextEditingController();
   TextEditingController valueController = TextEditingController();
   TextEditingController commentController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
 
   EditEntryState(this.entry, this.appBarTitle);
 
@@ -48,6 +49,7 @@ class EditEntryState extends State<EditEntry> {
     //titleController.text = entry.title;
     valueController.text = entry.value;
     commentController.text = entry.comment;
+    dateController.text = entry.date;
 
     return WillPopScope(
 
@@ -126,11 +128,11 @@ class EditEntryState extends State<EditEntry> {
                   ),
                 ),
 
-/*                // DATE TIME
+                // DATE TIME
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
-                    controller: dateController,
+                    controller: TextEditingController(text: DateFormat.yMMMd().add_Hms().format(DateTime.now())),
                     style: textStyle,
                     onChanged: (value) {
                       debugPrint('Something changed in date Text Field');
@@ -144,7 +146,7 @@ class EditEntryState extends State<EditEntry> {
                         )
                     ),
                   ),
-                ),*/
+                ),
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -242,6 +244,11 @@ class EditEntryState extends State<EditEntry> {
   // Update the comment of entry object
   void updateComment() {
     entry.comment = commentController.text;
+  }
+
+  // Update the comment of entry object
+  void updateDate() {
+    entry.date = dateController.text;
   }
 
 

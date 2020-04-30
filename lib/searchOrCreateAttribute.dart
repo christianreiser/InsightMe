@@ -203,7 +203,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                             setState(() {
                               debugPrint("Create button clicked");
                             });
-
+                            //EditAttributeState._save() TODO save directly
                             navigateToEditAttribute(
                               // attributeInputController.text is the Label
                               // name which is automatically put in in add
