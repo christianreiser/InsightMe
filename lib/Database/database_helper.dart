@@ -103,11 +103,11 @@ class DatabaseHelper {
   Future<List<Attribute>> getAttributeList() async {
 
     var attributeMapList = await getAttributeMapList(); // Get 'Map List' from database
-    int count = attributeMapList.length;         // Count the number of map entries in db table
+    int countAttribute = attributeMapList.length;         // Count the number of map entries in db table
 
     List<Attribute> attributeList = List<Attribute>();
     // For loop to create a 'attribute List' from a 'Map List'
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < countAttribute; i++) {
       attributeList.add(Attribute.fromMapObject(attributeMapList[i]));
     }
 
