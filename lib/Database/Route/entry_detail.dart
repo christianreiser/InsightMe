@@ -37,7 +37,7 @@ class EntryDetailState extends State<EntryDetail> {
   String appBarTitle;
   Entry entry;
 
-  TextEditingController titleController = TextEditingController();
+  //TextEditingController titleController = TextEditingController();
   TextEditingController valueController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
@@ -48,7 +48,7 @@ class EntryDetailState extends State<EntryDetail> {
 
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
-    titleController.text = entry.title;
+    //titleController.text = entry.title;
     valueController.text = entry.value;
     descriptionController.text = entry.description;
 
@@ -120,7 +120,7 @@ class EntryDetailState extends State<EntryDetail> {
                       updateDescription();
                     },
                     decoration: InputDecoration(
-                        labelText: 'Time',
+                        labelText: 'Comment',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0)
@@ -128,6 +128,26 @@ class EntryDetailState extends State<EntryDetail> {
                     ),
                   ),
                 ),
+
+/*                // DATE TIME
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: TextField(
+                    controller: dateController,
+                    style: textStyle,
+                    onChanged: (value) {
+                      debugPrint('Something changed in date Text Field');
+                      updateDate();
+                    },
+                    decoration: InputDecoration(
+                        labelText: 'Time',
+                        labelStyle: textStyle,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0)
+                        )
+                    ),
+                  ),
+                ),*/
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -212,10 +232,10 @@ class EntryDetailState extends State<EntryDetail> {
     Navigator.pop(context, true);
   }
 
-  // Update the title of entry object
+/*  // Update the title of entry object
   void updateTitle(){
     entry.title = titleController.text;
-  }
+  }*/
 
   // Update the value of entry object
   void updateValue(){

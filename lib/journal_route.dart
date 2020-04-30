@@ -147,21 +147,17 @@ class _JournalRouteState extends State<JournalRoute> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
 
             // SUBTITLE
-            subtitle: Text(this.entryList[position].description),
+            subtitle: Text(this.entryList[position].value),
+
 
             // Edit ICON
-/*            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
+            trailing: Column(
+              //mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                GestureDetector(
-                  child: Icon(Icons.edit,color: Colors.grey,),
-                  onTap: () {
-                    debugPrint("ListTile Tapped");
-                    navigateToEntryDetail(this.entryList[position], 'Edit Attribute');
-                  },
-                ),
+                Text(this.entryList[position].date),
+                Text(this.entryList[position].description),
               ],
-            ),*/
+            ),
 
             // onTAP TO EDIT
             onTap: () {
@@ -176,7 +172,7 @@ class _JournalRouteState extends State<JournalRoute> {
 
   // for yellow circle avatar
   getFirstLetter(String title) {
-    return title.substring(0, 2);
+    return title.substring(0, 1);
   }
 
   // navigation for editing entry

@@ -42,7 +42,7 @@ class Entry {
   }
   set value(String newValue) {
     if (newValue.length <= 255) {
-      this._title = newValue;
+      this._value = newValue;
     }
   }
   set description(String newDescription) {
