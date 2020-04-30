@@ -73,8 +73,8 @@ class DbHelpOneAtt {
 
   // Insert Operation: Insert a entry object to database
   Future<int> insertEntry(Entry entry) async {
-    Database db = await this.database;
-    var result = await db.insert(entryTable, entry.toMap());
+    Database db = await this.database; //  await keyword to wait for a future to complete
+    var result = await db.insert(entryTable, entry.toMap());  // insert(table, row)
     return result;
   }
 
@@ -104,11 +104,11 @@ class DbHelpOneAtt {
   Future<List<Entry>> getEntryList() async {
 
     var entryMapList = await getEntryMapList(); // Get 'Map List' from database
-    int count = entryMapList.length;         // Count the number of map entries in db table
+    int countEntry = entryMapList.length;         // Count the number of map entries in db table
 
     List<Entry> entryList = List<Entry>();
     // For loop to create a 'entry List' from a 'Map List'
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < countEntry; i++) {
       entryList.add(Entry.fromMapObject(entryMapList[i]));
     }
 

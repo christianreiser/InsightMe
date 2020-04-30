@@ -93,7 +93,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       attributeListFuture.then((attributeList) {
         setState(() {
           this.attributeList = attributeList;
-          this.count = attributeList.length;
+          this.countAttribute = attributeList.length;
         });
       });
     });
@@ -107,7 +107,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       entryListFuture.then((entryList) {
         setState(() {
           this.entryList = entryList;
-          this.count = entryList.length;
+          this.countEntry = entryList.length;
         });
       });
     });
@@ -118,7 +118,8 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   DbHelpOneAtt dbHelpOneAtt = DbHelpOneAtt();
   List<Attribute> attributeList;
   List<Entry> entryList;
-  int count = 0;
+  int countAttribute = 0;
+  int countEntry = 0;
 
 
 
@@ -244,7 +245,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // Attribute LIST
   ListView getAttributeListView() {
     return ListView.builder(
-      itemCount: count,
+      itemCount: countAttribute,
       itemBuilder: (BuildContext context, int position) {
         return Container( // TODO remove after debugging
             color: Colors.red,// TODO remove after debugging
@@ -292,7 +293,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 // name which is automatically put in in add
                 // attribute filed.
                 // 'Add Attribute' is the App Bar name
-                  Entry(this.attributeList[position].title, '10', ''), 'Add ${this.attributeList[position].title}Entry');
+                  Entry(this.attributeList[position].title, '10', 'dateTime', 'description'), 'Add ${this.attributeList[position].title} Entry');
             },
           ),
             )

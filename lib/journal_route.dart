@@ -36,7 +36,9 @@ class JournalRoute extends StatefulWidget {
 class _JournalRouteState extends State<JournalRoute> {
   DbHelpOneAtt helperEntry = DbHelpOneAtt(); // probably needed?
   List<Entry> entryList;
-  int count = 0;
+  int countEntry = 0;
+  int countAttribute = 0 ;
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +107,7 @@ class _JournalRouteState extends State<JournalRoute> {
       attributeListFuture.then((attributeList) {
         setState(() {
           this.attributeList = attributeList;
-          this.count = attributeList.length;
+          this.countAttribute = attributeList.length;
         });
       });
     });
@@ -126,7 +128,7 @@ class _JournalRouteState extends State<JournalRoute> {
   // ENTRY LIST
   ListView getEntryListView() {
     return ListView.builder(
-      itemCount: count,
+      itemCount: countEntry,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           color: Colors.white,
@@ -199,7 +201,7 @@ class _JournalRouteState extends State<JournalRoute> {
       entryListFuture.then((entryList) {
         setState(() {
           this.entryList = entryList;
-          this.count = entryList.length;
+          this.countEntry = entryList.length;
         });
       });
     });

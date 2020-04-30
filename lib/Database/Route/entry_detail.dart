@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../database_helper.dart';
+//import '../database_helper.dart';
 import '../db_help_one_att.dart';
 import '../entry.dart';
 
@@ -27,7 +27,7 @@ class EntryDetail extends StatefulWidget {
 
 class EntryDetailState extends State<EntryDetail> {
 
-  DatabaseHelper helperAttribute = DatabaseHelper();
+  //DatabaseHelper helperAttribute = DatabaseHelper();
   DbHelpOneAtt helperEntry = DbHelpOneAtt();
 
 
