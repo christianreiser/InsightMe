@@ -6,7 +6,7 @@ import 'Database/Route/edit_attributes.dart';
 import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper_attribute.dart';
-import 'Database/db_help_one_att.dart';
+import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
 
 /*

@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper_attribute.dart';
-import 'Database/db_help_one_att.dart';
+import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
 import 'searchOrCreateAttribute.dart';
 
@@ -39,9 +39,6 @@ class _JournalRouteState extends State<JournalRoute> {
 
   @override
   Widget build(BuildContext context) {
-//    print('entryList=');
-//    print(entryList);
-//    updateEntryListView();
     if (entryList == null) {
       entryList = List<Entry>();
       updateEntryListView();

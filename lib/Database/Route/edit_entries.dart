@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 
 //import '../database_helper_attribute.dart';
-import '../db_help_one_att.dart';
+import '../database_helper_entry.dart';
 import '../entry.dart';
 import '../../journal_route.dart';
 
