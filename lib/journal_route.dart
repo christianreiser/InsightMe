@@ -159,7 +159,7 @@ class _JournalRouteState extends State<JournalRoute> {
             // onTAP TO EDIT
             onTap: () {
               debugPrint("ListTile Tapped");
-              commentnavigateToEditEntry(this.entryList[position], 'Edit Entry');
+              navigateToEditEntry(this.entryList[position], 'Edit Entry');
             },
           ),
         );
@@ -173,7 +173,7 @@ class _JournalRouteState extends State<JournalRoute> {
   }
 
   // navigation for editing entry
-  void commentnavigateToEditEntry(Entry entry, String title) async {
+  void navigateToEditEntry(Entry entry, String title) async {
     bool result =
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);

@@ -74,7 +74,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // navigation for editing entry
-  void commentnavigateToEditEntry(Entry entry, String title) async {
+  void navigateToEditEntry(Entry entry, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
@@ -290,7 +290,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 debugPrint("One Attribute selected");
               });
 
-              commentnavigateToEditEntry(
+              navigateToEditEntry(
                 // EntryInputController.text is the Label
                 // name which is automatically put in in add
                 // attribute filed.

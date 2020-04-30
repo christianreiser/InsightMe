@@ -46,7 +46,7 @@ class EditEntryState extends State<EditEntry> {
   @override
   Widget build(BuildContext context) {
 
-    TextStyle textStyle = Theme.of(context).textTheme.title;
+    TextStyle textStyle = Theme.of(context).textTheme.headline6;
 
     //titleController.text = entry.title;
     valueController.text = entry.value;
