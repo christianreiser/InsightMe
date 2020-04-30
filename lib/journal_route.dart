@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
+import 'package:lifetracker4/visualize.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'Database/Route/edit_entries.dart';
@@ -91,8 +92,54 @@ class _JournalRouteState extends State<JournalRoute> {
               }),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.view_list),
+            title: Text('Journal'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.timeline),
+            title: Text('Visualize'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.device_hub),
+            title: Text('Correlate'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Theme.of(context).primaryColorDark,
+        onTap: _onItemTapped,
+      ),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
+
+
+  // bottom navigation bar:
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      debugPrint('_selectedIndex= ${_selectedIndex}');
+      navigateToVisualize();
+      // navigation for editing entry
+    });
+  }
+
+  void navigateToVisualize() async {
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return HomePage();
+    }));
+
+    if (result == true) {
+      updateAttributeListView();
+    }
+  }
+
+
 
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
   List<Attribute> attributeList;

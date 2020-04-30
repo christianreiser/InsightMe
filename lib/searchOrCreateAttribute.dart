@@ -155,8 +155,6 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                             ),
                           ),
                           controller: attributeInputController,
-                          //style: Theme.of(context).textTheme.comment,
-
 
                           onChanged: (value) {
                             //debugPrint('Something changed search or create new attribute');
