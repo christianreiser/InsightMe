@@ -10,19 +10,19 @@ class Attribute {
 
 // TODO create for me individually
 // create the model class for the to-do item.
-// Title, description, date, and id for each to-do
+// Title, comment, date, and id for each to-do
 
 class Entry {
 
   int _id;
   String _title;
   String _value;
-  String _description;
+  String _comment;
   String _date;
 
-  Entry(this._title, this._value, this._date, this._description );
+  Entry(this._title, this._value, this._date, this._comment );
 
-  Entry.withId(this._id, this._title, this._value, this._date, this._description);
+  Entry.withId(this._id, this._title, this._value, this._date, this._comment);
 
   int get id => _id;
 
@@ -30,7 +30,7 @@ class Entry {
 
   String get value => _value;
 
-  String get description => _description;
+  String get comment => _comment;
 
   String get date => _date;
 
@@ -45,9 +45,9 @@ class Entry {
       this._value = newValue;
     }
   }
-  set description(String newDescription) {
-    if (newDescription.length <= 255) {
-      this._description = newDescription;
+  set comment(String newComment) {
+    if (newComment.length <= 255) {
+      this._comment = newComment;
     }
   }
 
@@ -64,7 +64,7 @@ class Entry {
     }
     map['title'] = _title;
     map['value'] = _value;
-    map['description'] = _description;
+    map['comment'] = _comment;
     map['date'] = _date;
 
     return map;
@@ -75,7 +75,7 @@ class Entry {
     this._id = map['id'];
     this._title = map['title'];
     this._value = map['value'];
-    this._description = map['description'];
+    this._comment = map['comment'];
     this._date = map['date'];
   }
 }

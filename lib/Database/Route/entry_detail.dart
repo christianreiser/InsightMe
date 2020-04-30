@@ -39,7 +39,7 @@ class EntryDetailState extends State<EntryDetail> {
 
   //TextEditingController titleController = TextEditingController();
   TextEditingController valueController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  TextEditingController commentController = TextEditingController();
 
   EntryDetailState(this.entry, this.appBarTitle);
 
@@ -50,7 +50,7 @@ class EntryDetailState extends State<EntryDetail> {
 
     //titleController.text = entry.title;
     valueController.text = entry.value;
-    descriptionController.text = entry.description;
+    commentController.text = entry.comment;
 
     return WillPopScope(
 
@@ -108,16 +108,16 @@ class EntryDetailState extends State<EntryDetail> {
                 ),
 
 
-                // DESCRIPTION
+                // COMMENT
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
-                    controller: descriptionController,
+                    controller: commentController,
                     style: textStyle,
                     onChanged: (value) {
-                      debugPrint('Something changed in Description Text Field');
-                      updateDescription();
+                      debugPrint('Something changed in Comment Text Field');
+                      updateComment();
                     },
                     decoration: InputDecoration(
                         labelText: 'Comment',
@@ -242,9 +242,9 @@ class EntryDetailState extends State<EntryDetail> {
     entry.value = valueController.text;
   }
 
-  // Update the description of entry object
-  void updateDescription() {
-    entry.description = descriptionController.text;
+  // Update the comment of entry object
+  void updateComment() {
+    entry.comment = commentController.text;
   }
 
 

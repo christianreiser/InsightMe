@@ -155,7 +155,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                             ),
                           ),
                           controller: attributeInputController,
-                          //style: Theme.of(context).textTheme.description,
+                          //style: Theme.of(context).textTheme.comment,
 
 
                           onChanged: (value) {
@@ -268,7 +268,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
 
             // SUBTITLE
-/*            subtitle: Text(this.attributeList[position].description),*/
+/*            subtitle: Text(this.attributeList[position].comment),*/
 
             // EDIT ICON
             trailing: Row(
@@ -295,7 +295,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 // name which is automatically put in in add
                 // attribute filed.
                 // 'Add Attribute' is the App Bar name
-                // title, value default, description(time), description_default
+                // title, value default, comment(time), comment_default
                 // ,title for journal & value field default,,
 //                  Entry(this.attributeList[position].title, '10_default', 'dateTimeToSave', 'TODO_default_current_time'), 'Add ${this.attributeList[position].title} Entry');
                   Entry(this.attributeList[position].title, '', '', ''), 'Add ${this.attributeList[position].title} Entry');

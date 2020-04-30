@@ -155,7 +155,7 @@ class _JournalRouteState extends State<JournalRoute> {
               //mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(this.entryList[position].date),
-                Text(this.entryList[position].description),
+                Text(this.entryList[position].comment),
               ],
             ),
 

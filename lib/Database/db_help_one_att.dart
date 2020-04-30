@@ -14,7 +14,7 @@ class DbHelpOneAtt {
   String colId = 'id';
   String colTitle = 'title';
   String colValue = 'value';
-  String colDescription = 'description';
+  String colComment = 'comment';
   String colDate = 'date';
 
   DbHelpOneAtt._createInstance(); // Named constructor to create instance of DbHelpOneAtt
@@ -59,7 +59,7 @@ class DbHelpOneAtt {
   void _createDb(Database db, int newVersion) async {
 
     await db.execute('CREATE TABLE $entryTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colValue TEXT, '
-        '$colDescription TEXT, $colDate TEXT)');
+        '$colComment TEXT, $colDate TEXT)');
   }
 
   // Fetch Operation: Get all entry objects from database
