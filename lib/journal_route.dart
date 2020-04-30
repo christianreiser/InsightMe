@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
-import 'Database/database_helper.dart';
+import 'Database/database_helper_attribute.dart';
 import 'Database/db_help_one_att.dart';
 import 'Database/entry.dart';
 import 'searchOrCreateAttribute.dart';

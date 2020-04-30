@@ -1,7 +1,7 @@
 //import 'dart:async';
 //import 'package:flutter/material.dart';
 //import '../attribute.dart';
-//import '../database_helper.dart';
+//import '../database_helper_attribute.dart';
 //import 'edit_attributes.dart';
 //import 'package:sqflite/sqflite.dart';
 //
