@@ -119,7 +119,7 @@ class _JournalRouteState extends State<JournalRoute> {
       return SearchOrCreateAttribute();
     }));
     if (result == true) {
-      updateAttributeListView(); // TODO
+      updateAttributeListView();
     }
   }
 

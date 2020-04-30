@@ -81,7 +81,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }));
 
     if (result == true) {
-      updateEntryListView();  // TODO
+      updateEntryListView();
     }
   }
 
@@ -202,12 +202,6 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                           onPressed: () {
                             setState(() {
                               debugPrint("Create button clicked");
-
-
-                              // TODO save button
-                              //_save();
-
-
                             });
 
                             navigateToEditAttribute(

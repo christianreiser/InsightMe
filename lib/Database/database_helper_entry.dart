@@ -67,7 +67,7 @@ class DatabaseHelperEntry {
     Database db = await this.database;
 
 //		var result = await db.rawQuery('SELECT * FROM $entryTable order by $colTitle ASC');
-    var result = await db.query(entryTable, orderBy: '$colTitle ASC');
+    var result = await db.query(entryTable, orderBy: '$colDate DESC');
     return result;
   }
 

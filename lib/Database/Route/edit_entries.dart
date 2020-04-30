@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
-
-//import '../database_helper_attribute.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
-import '../../journal_route.dart';
 
 
 
@@ -256,7 +253,7 @@ class EditEntryState extends State<EditEntry> {
     moveToLastScreen();
 
     // TIMESTAMP
-    entry.date = DateFormat.yMMMd().format(DateTime.now()); // TODO default current but changeable
+    entry.date = DateFormat.yMMMd().add_Hms().format(DateTime.now()); // TODO default current but changeable
 
     // Update Operation: Update a to-do object and save it to database
     int result;
@@ -265,7 +262,6 @@ class EditEntryState extends State<EditEntry> {
     } else { // Case 2: Insert Operation
       result = await helperEntry.insertEntry(entry);
     }
-    updateEntryListView(); //TODO doesnt work
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {  // Success
