@@ -4,7 +4,6 @@ import 'package:sqflite/sqflite.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper_attribute.dart';
 import 'Database/database_helper_entry.dart';
-import 'Database/database_helper_visualize.dart';
 import 'Database/entry.dart';
 
 class VisChr extends StatefulWidget {
@@ -17,6 +16,7 @@ class VisChr extends StatefulWidget {
 
 class _VisChrState extends State<VisChr> {
   DatabaseHelperEntry helperEntry = DatabaseHelperEntry();
+
   List<Entry> entryList;
   int countEntry = 0;
   int countAttribute = 0 ;
@@ -60,8 +60,8 @@ class _VisChrState extends State<VisChr> {
 
             // onTAP TO EDIT
             onTap: () {
-              //debugPrint("entryList= ${entryList[0].title}");
-              _query();
+              debugPrint("tabbed");
+              helperEntry.getFilteredEntryMapList('Productivity'); //// TODO get from UI
             },
           ),
         );
@@ -69,32 +69,6 @@ class _VisChrState extends State<VisChr> {
     );
   }
 
-  /////////////
-  // visulization chr
-  _query() async {
-
-    // get a reference to the database
-    Database entryList = await DatabaseHelperVisualize.instance.database;
-
-    // get single row
-    List<String> columnsToSelect = [
-      DatabaseHelperVisualize.columnId,
-      DatabaseHelperVisualize.columnName,
-      DatabaseHelperVisualize.columnAge,
-    ];
-    String whereString = '${DatabaseHelperVisualize.columnId} = ?';
-    int rowId = 1;
-    List<dynamic> whereArguments = [rowId];
-    List<Map> result = await entryList.query(
-        DatabaseHelperVisualize.table,
-        columns: columnsToSelect,
-        where: whereString,
-        whereArgs: whereArguments);
-
-    // print the results
-    result.forEach((row) => print(row));
-    // {_id: 1, name: Bob, age: 23}
-  }
 
 
 

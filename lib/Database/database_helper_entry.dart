@@ -11,10 +11,10 @@ class DatabaseHelperEntry {
 
   static final  entryTable = 'entry_table';
   static final  colId = 'id';
-  static final  colTitle = 'title';
+  static final  colTitle = 'title'; // TODO rename to attribute also for attribute_helper
   static final  colValue = 'value';
   static final  colComment = 'comment';
-  static final  colDate = 'date';
+  static final  colDate = 'date'; // TODO rename to time
 
   DatabaseHelperEntry._createInstance(); // Named constructor to create instance of DatabaseHelperEntry
 
@@ -75,21 +75,18 @@ class DatabaseHelperEntry {
 
 
 
-/*  // CHREI Fetch Operation: Get entry objects from database filtered by attribute
+  // CHREI Fetch Operation: Get entry objects from database filtered by attribute
 
-
-  // get single row
-  List<String> columnsToSelect = [
-    DatabaseHelperEntry.colId,
-    DatabaseHelperEntry.columnName,
-    DatabaseHelperEntry.columnAge,
-  ];
-  String whereString = '${DatabaseHelperEntry.columnId} = ?';
-  int rowId = 1;
-  List<dynamic> whereArguments = [rowId];
-
-
-  Future<List<Map<String, dynamic>>> getFilteredEntryMapList() async {
+  Future<List<Map<String, dynamic>>> getFilteredEntryMapList(attributeToFilter) async {
+    // get single row
+    List<String> columnsToSelect = [
+      DatabaseHelperEntry.colId,
+      DatabaseHelperEntry.colTitle,
+      DatabaseHelperEntry.colDate,
+    ];
+    String whereString = '${DatabaseHelperEntry.colTitle} = ?';
+    var attributeToFilter = 'Productivity'; // TODO get from UI
+    List<dynamic> whereArguments = [attributeToFilter];
     Database db = await this.database;
 
 //		var result = await db.rawQuery('SELECT * FROM $entryTable order by $colTitle ASC');
@@ -97,9 +94,16 @@ class DatabaseHelperEntry {
         orderBy: '$colDate ASC',
         columns: columnsToSelect,
         where: whereString,
-        whereArgs: whereArguments););
+        whereArgs: whereArguments
+        );
+
+    // print the results
+    result.forEach((row) => print(row));
+    print('result+ $result');
+    // {_id: 1, name: Bob, age: 23}
+
     return result;
-  }*/
+  }
 
 
 
