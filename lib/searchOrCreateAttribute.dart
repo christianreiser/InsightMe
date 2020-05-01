@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-
 import 'Database/Route/edit_attributes.dart';
 import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
@@ -14,11 +13,11 @@ import 'Database/entry.dart';
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
   @override
-  _SearchOrCreateAttributeState createState() => _SearchOrCreateAttributeState();
+  SearchOrCreateAttributeState createState() => SearchOrCreateAttributeState();
 }
 
 // Define a corresponding State class, which holds data related to the Form.
-class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
+class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // Create a text controller. Later, use it to retrieve the
   // current value of the TextField.
   var attributeInputController = TextEditingController();
@@ -106,7 +105,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                               debugPrint("Create button clicked");
                             });
                             //EditAttributeState._save() TODO save directly
-                            navigateToEditAttribute(
+                            _navigateToEditAttribute(
                               // attributeInputController.text is the Label
                               // name which is automatically put in in add
                               // attribute filed.
@@ -129,7 +128,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     child: RefreshIndicator(
                       //key: refreshKey,
                       onRefresh: () async {
-                        updateAttributeListView();
+                        _updateAttributeListView();
                       },
                       child: getAttributeListView(),
                     ),
@@ -154,7 +153,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
-              child: Text(getFirstLetter(this.attributeList[position].title),
+              child: Text(_getFirstLetter(this.attributeList[position].title),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
 
@@ -173,7 +172,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   child: Icon(Icons.edit,color: Colors.grey,),
                   onTap: () {
                     debugPrint("ListTile Tapped");
-                    navigateToEditAttribute(this.attributeList[position], 'Edit Attribute');
+                    _navigateToEditAttribute(this.attributeList[position], 'Edit Attribute');
                   },
                 ),
               ],
@@ -185,14 +184,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 debugPrint("One Attribute selected");
               });
 
-              navigateToEditEntry(
-                // EntryInputController.text is the Label
-                // name which is automatically put in in add
-                // attribute filed.
-                // 'Add Attribute' is the App Bar name
-                // title, value default, comment(time), comment_default
-                // ,title for journal & value field default,,
-//                  Entry(this.attributeList[position].title, '10_default', 'dateTimeToSave', 'TODO_default_current_time'), 'Add ${this.attributeList[position].title} Entry');
+              _navigateToEditEntry(
                   Entry(this.attributeList[position].title, '', '', ''), 'Add ${this.attributeList[position].title} Entry');
             },
           ),
@@ -204,31 +196,32 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
 
   // navigation for editing entry
-  void navigateToEditAttribute(Attribute attribute, String title) async {
+  void _navigateToEditAttribute(Attribute attribute, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditAttribute(attribute, title);
     }));
 
     if (result == true) {
-      updateAttributeListView();
+      _updateAttributeListView();
     }
   }
 
   // navigation for editing entry
-  void navigateToEditEntry(Entry entry, String title) async {
+  void _navigateToEditEntry(Entry entry, String title) async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
     }));
 
     if (result == true) {
-      updateEntryListView();
+      _updateEntryListView();
     }
   }
 
+
   // updateAttributeListView depends on state
-  void updateAttributeListView() {
+  void _updateAttributeListView() {
     final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Attribute>> attributeListFuture = databaseHelperAttribute.getAttributeList();
@@ -242,7 +235,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // updateEntryListView depends on state
-  void updateEntryListView() {
+  void _updateEntryListView() {
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
@@ -266,7 +259,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
 
   // for yellow circle avatar
-  getFirstLetter(String title) {
+  _getFirstLetter(String title) {
     return title.substring(0, 2);
   }
 

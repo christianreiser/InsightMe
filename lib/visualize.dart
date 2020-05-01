@@ -12,6 +12,12 @@ class Visualize extends StatefulWidget {
 class _VisualizeState extends State<Visualize> {
   List<charts.Series<Value, int>> _seriesLineData;
 
+/*  _getDBData() {
+    List<Entry> entryList;
+
+    this.entryList[position].value
+  }*/
+
 
   _generateData() {
     var linevaluedata = [
