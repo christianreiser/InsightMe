@@ -11,16 +11,6 @@ import 'searchOrCreateAttribute.dart';
 
 class JournalRoute extends StatefulWidget {
   JournalRoute({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -33,19 +23,12 @@ class JournalRouteState extends State<JournalRoute> {
   int countEntry = 0;
   int countAttribute = 0 ;
 
-
   @override
   Widget build(BuildContext context) {
     if (entryList == null) {
       entryList = List<Entry>();
       updateEntryListView();
     }
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return RefreshIndicator(
       //key: refreshKey,
       onRefresh: () async {
@@ -55,51 +38,7 @@ class JournalRouteState extends State<JournalRoute> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
-
-
-  void navigateToVisualize() async {
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return Visualize();
-    }));
-
-    if (result == true) {
-      updateAttributeListView();
-    }
-  }
-
-
-
-  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
-  List<Attribute> attributeList;
-
-  // updateAttributeListView depends on state
-  void updateAttributeListView() {
-    final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Attribute>> attributeListFuture =
-      databaseHelperAttribute.getAttributeList();
-      attributeListFuture.then((attributeList) {
-        setState(() {
-          this.attributeList = attributeList;
-          this.countAttribute = attributeList.length;
-        });
-      });
-    });
-  }
-
-  // navigation for editing entry
-  void navigateToSearchOrCreateAttribute() async {
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return SearchOrCreateAttribute();
-    }));
-    if (result == true) {
-      updateAttributeListView();
-    }
-  }
-
-  // ENTRY LIST
+// ENTRY LIST
   ListView getEntryListView() {
     return ListView.builder(
       itemCount: countEntry,
@@ -142,6 +81,49 @@ class JournalRouteState extends State<JournalRoute> {
       },
     );
   }
+
+
+  void navigateToVisualize() async {
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Visualize();
+    }));
+
+    if (result == true) {
+      updateAttributeListView();
+    }
+  }
+
+
+  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
+  List<Attribute> attributeList;
+
+  // updateAttributeListView depends on state
+  void updateAttributeListView() {
+    final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Attribute>> attributeListFuture =
+      databaseHelperAttribute.getAttributeList();
+      attributeListFuture.then((attributeList) {
+        setState(() {
+          this.attributeList = attributeList;
+          this.countAttribute = attributeList.length;
+        });
+      });
+    });
+  }
+
+  // navigation for editing entry
+  void navigateToSearchOrCreateAttribute() async {
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return SearchOrCreateAttribute();
+    }));
+    if (result == true) {
+      updateAttributeListView();
+    }
+  }
+
 
   // for yellow circle avatar
   getFirstLetter(String title) {

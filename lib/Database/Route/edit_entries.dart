@@ -6,11 +6,6 @@ import '../entry.dart';
 
 
 
-/*
-* SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
-* creating another screen to add entries to Enter entries to the database.
-* */
-
 class EditEntry extends StatefulWidget {
 
   final String appBarTitle;

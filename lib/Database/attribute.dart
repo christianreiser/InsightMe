@@ -1,17 +1,3 @@
-/* chrei
-// define the data that needs to be stored:
-class Attribute {
-  final int id;
-  final String name;
-  final int value;  // ATTRIBUTE float
-
-  Attribute({this.id, this.name, this.value});
-}*/
-
-// ATTRIBUTE create for me individually
-// create the model class for the to-do item.
-// Title, date, and id for each to-do
-
 class Attribute {
 
   int _id;

@@ -9,10 +9,7 @@ import 'Database/database_helper_attribute.dart';
 import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
 
-/*
-* TextEditingController from this cookbook:
-* https://flutter.dev/docs/cookbook/forms/text-field-changes#2-use-a-texteditingcontroller
-* */
+
 
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
@@ -26,102 +23,6 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // current value of the TextField.
   var attributeInputController = TextEditingController();
   var entryInputController = TextEditingController();
-
-
-  // Begin listening for changes when the _MyCustomFormState class is
-  // initialized, and stop listening when the _MyCustomFormState is disposed.
-/*    @override
-    void initState() {
-      super.initState();
-      // Start listening to changes.
-      attributeInputController.addListener(_printLatestValue);
-    }*/
-
-
-/*  // Clean up the controller when the widget is removed from the
-  // widget tree.
-  @override
-  void disposeAttribute() {
-    attributeInputController.dispose();
-    super.dispose();
-  }
-
-  // Clean up the controller when the widget is removed from the
-  // widget tree.
-  @override
-  void disposeEntry() {
-    entryInputController.dispose();
-    super.dispose();
-  }*/
-
-
-  // Function that runs every time the text changes.
-  // It prints out the current value of the text field.
-/*    _printLatestValue() {
-      print("Second text field: ${attributeInputController.text}");
-    }*/
-
-  // navigation for editing entry
-  void navigateToEditAttribute(Attribute attribute, String title) async {
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EditAttribute(attribute, title);
-    }));
-
-    if (result == true) {
-      updateAttributeListView();
-    }
-  }
-
-  // navigation for editing entry
-  void navigateToEditEntry(Entry entry, String title) async {
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EditEntry(entry, title);
-    }));
-
-    if (result == true) {
-      updateEntryListView();
-    }
-  }
-
-  // updateAttributeListView depends on state
-  void updateAttributeListView() {
-    final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Attribute>> attributeListFuture = databaseHelperAttribute.getAttributeList();
-      attributeListFuture.then((attributeList) {
-        setState(() {
-          this.attributeList = attributeList;
-          this.countAttribute = attributeList.length;
-        });
-      });
-    });
-  }
-
-  // updateEntryListView depends on state
-  void updateEntryListView() {
-    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
-      entryListFuture.then((entryList) {
-        setState(() {
-          this.entryList = entryList;
-          this.countEntry = entryList.length;
-        });
-      });
-    });
-  }
-
-
-  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
-  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-  List<Attribute> attributeList;
-  List<Entry> entryList;
-  int countAttribute = 0;
-  int countEntry = 0;
-
-
 
 
   @override
@@ -240,7 +141,6 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   } // widget
 
 
-
   // Attribute LIST
   ListView getAttributeListView() {
     return ListView.builder(
@@ -296,11 +196,73 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   Entry(this.attributeList[position].title, '', '', ''), 'Add ${this.attributeList[position].title} Entry');
             },
           ),
-            );
+        );
 
       },
     );
   }
+
+
+  // navigation for editing entry
+  void navigateToEditAttribute(Attribute attribute, String title) async {
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return EditAttribute(attribute, title);
+    }));
+
+    if (result == true) {
+      updateAttributeListView();
+    }
+  }
+
+  // navigation for editing entry
+  void navigateToEditEntry(Entry entry, String title) async {
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return EditEntry(entry, title);
+    }));
+
+    if (result == true) {
+      updateEntryListView();
+    }
+  }
+
+  // updateAttributeListView depends on state
+  void updateAttributeListView() {
+    final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Attribute>> attributeListFuture = databaseHelperAttribute.getAttributeList();
+      attributeListFuture.then((attributeList) {
+        setState(() {
+          this.attributeList = attributeList;
+          this.countAttribute = attributeList.length;
+        });
+      });
+    });
+  }
+
+  // updateEntryListView depends on state
+  void updateEntryListView() {
+    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
+      entryListFuture.then((entryList) {
+        setState(() {
+          this.entryList = entryList;
+          this.countEntry = entryList.length;
+        });
+      });
+    });
+  }
+
+
+  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
+  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+  List<Attribute> attributeList;
+  List<Entry> entryList;
+  int countAttribute = 0;
+  int countEntry = 0;
+
 
 
   // for yellow circle avatar
