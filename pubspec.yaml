@@ -21,14 +21,13 @@ dependencies:
     sdk: flutter
   sqflite: # SQLite
   path_provider: # TODO needed? SQLite https://medium.com/@abeythilakeudara3/to-do-list-in-flutter-with-sqlite-as-local-database-8b26ba2b060e
-  intl: ^0.15.7  # TODO needed? SQLite https://medium.com/@abeythilakeudara3/to-do-list-in-flutter-with-sqlite-as-local-database-8b26ba2b060e
-  font_awesome_flutter: ^8.2.0
-  charts_flutter: ^0.6.0
+  intl:   # TODO needed? SQLite https://medium.com/@abeythilakeudara3/to-do-list-in-flutter-with-sqlite-as-local-database-8b26ba2b060e
+  charts_flutter:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  flutter_speed_dial: ^1.2.1 # chrei https://www.google.com/search?sxsrf=ALeKk03hRgZf1BYtKbWzW4-l0JQM2TCvYA%3A1587409658532&ei=-vKdXviDINqdjLsP6uGT8Ao&q=floating+action+button+flutter+speed+dial&oq=floating+action+button+flutter+speed+dial&gs_lcp=CgZwc3ktYWIQAzIGCAAQCBAeUNUFWNUFYPoLaABwAHgAgAHyAYgB8gGSAQMyLTGYAQCgAQGqAQdnd3Mtd2l6&sclient=psy-ab&ved=0ahUKEwj46Lzm2ffoAhXaDmMBHerwBK4Q4dUDCAw&uact=5#kpvalbx=__vKdXsCfB7aejLsP_dmpyAo22
+  cupertino_icons:
+  flutter_speed_dial: # chrei https://www.google.com/search?sxsrf=ALeKk03hRgZf1BYtKbWzW4-l0JQM2TCvYA%3A1587409658532&ei=-vKdXviDINqdjLsP6uGT8Ao&q=floating+action+button+flutter+speed+dial&oq=floating+action+button+flutter+speed+dial&gs_lcp=CgZwc3ktYWIQAzIGCAAQCBAeUNUFWNUFYPoLaABwAHgAgAHyAYgB8gGSAQMyLTGYAQCgAQGqAQdnd3Mtd2l6&sclient=psy-ab&ved=0ahUKEwj46Lzm2ffoAhXaDmMBHerwBK4Q4dUDCAw&uact=5#kpvalbx=__vKdXsCfB7aejLsP_dmpyAo22
 
 dev_dependencies:
   flutter_test:
