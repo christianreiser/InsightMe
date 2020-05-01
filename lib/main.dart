@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'journal_route.dart';
+import 'scaffold_route.dart';
 
 void main() => runApp(LifeTrackerApp());
 
@@ -27,7 +27,7 @@ class _LifeTrackerAppState extends State<LifeTrackerApp> {
         // is not restarted.
         primarySwatch: Colors.deepPurple,
       ),
-      home: JournalRoute(),
+      home: ScaffoldRoute(),
     );
   }
 }

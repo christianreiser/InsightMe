@@ -208,7 +208,7 @@ class EditEntryState extends State<EditEntry> {
   }
 
 
-  // TODO remove method and call from journal_route.dart
+  // TODO remove method and call from scaffold_route.dart
   // updateEntryListView depends on state
   DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   List<Entry> entryList;

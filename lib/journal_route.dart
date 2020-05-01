@@ -28,10 +28,10 @@ class JournalRoute extends StatefulWidget {
   final String title;
 
   @override
-  _JournalRouteState createState() => _JournalRouteState();
+  JournalRouteState createState() => JournalRouteState();
 }
 
-class _JournalRouteState extends State<JournalRoute> {
+class JournalRouteState extends State<JournalRoute> {
   DatabaseHelperEntry helperEntry = DatabaseHelperEntry(); // probably needed?
   List<Entry> entryList;
   int countEntry = 0;
@@ -50,67 +50,12 @@ class _JournalRouteState extends State<JournalRoute> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the JournalRoute object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: new Text("Journal"),
-      ),
-      body: RefreshIndicator(
-        //key: refreshKey,
-        onRefresh: () async {
-            updateEntryListView();
-          },
-        child: getEntryListView(),
-      ),
-      floatingActionButton: SpeedDial(
-        //floatingActionButton: FloatingActionButton(
-        //onPressed: _incrementCounter,
-        //tooltip: 'Increment',
-        animatedIcon: AnimatedIcons.menu_close,
-        children: [
-          // first speed dial button for new entry
-          SpeedDialChild(
-              child: Icon(Icons.border_color),
-              label: "New Entry",
-              onTap: () {
-                print("nav to add manually");
-                navigateToSearchOrCreateAttribute();
-              }),
-
-          // second speed dial button - no function yet
-          SpeedDialChild(
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.timer),
-              label: "-not implemented-",
-              onTap: () {
-                print("not implemented yet");
-                /*Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AttributeList()),
-                ); // Navigate to newManualEntry route when tapped.*/
-              }),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.view_list),
-            title: Text('Journal'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timeline),
-            title: Text('Visualize'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.device_hub),
-            title: Text('Correlate'),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).primaryColorDark,
-        onTap: _onItemTapped,
-      ),
+    return RefreshIndicator(
+      //key: refreshKey,
+      onRefresh: () async {
+        updateEntryListView();
+      },
+      child: getEntryListView(),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
@@ -149,7 +94,7 @@ class _JournalRouteState extends State<JournalRoute> {
     final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Attribute>> attributeListFuture =
-          databaseHelperAttribute.getAttributeList();
+      databaseHelperAttribute.getAttributeList();
       attributeListFuture.then((attributeList) {
         setState(() {
           this.attributeList = attributeList;
@@ -162,7 +107,7 @@ class _JournalRouteState extends State<JournalRoute> {
   // navigation for editing entry
   void navigateToSearchOrCreateAttribute() async {
     bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return SearchOrCreateAttribute();
     }));
     if (result == true) {
@@ -222,7 +167,7 @@ class _JournalRouteState extends State<JournalRoute> {
   // navigation for editing entry
   void navigateToEditEntry(Entry entry, String title) async {
     bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
     }));
 
