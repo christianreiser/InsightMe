@@ -4,13 +4,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
 import 'package:lifetracker4/visualize.dart';
-import 'package:sqflite/sqflite.dart';
-
-import 'Database/Route/edit_entries.dart';
-import 'Database/attribute.dart';
-import 'Database/database_helper_attribute.dart';
-import 'Database/database_helper_entry.dart';
-import 'Database/entry.dart';
 import 'journal_route.dart';
 import 'searchOrCreateAttribute.dart';
 
@@ -48,7 +41,9 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
         // the App.build method, and use it to set our appbar title.
         title: Text("Life Tracker"),
       ),
-      body: JournalRoute(),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
       floatingActionButton: SpeedDial(
         //floatingActionButton: FloatingActionButton(
         //onPressed: _incrementCounter,
@@ -61,7 +56,9 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               label: "New Entry",
               onTap: () {
                 print("nav to add manually");
-                JournalRouteState().navigateToSearchOrCreateAttribute();
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return SearchOrCreateAttribute();
+                }));
               }),
 
           // second speed dial button - no function yet
@@ -105,10 +102,16 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
 
   int _selectedIndex = 0;
 
+  static List<Widget> _widgetOptions = <Widget>[
+    JournalRoute(),
+    Visualize(),
+    JournalRoute(), // TODO set Correlate() here
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      debugPrint('_selectedIndex= ${_selectedIndex}');
+      debugPrint('_selectedIndex= $_selectedIndex');
       // navigation for editing entry
     });
   }

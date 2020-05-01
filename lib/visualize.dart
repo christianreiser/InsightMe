@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class HomePage extends StatefulWidget {
+class Visualize extends StatefulWidget {
   final Widget child;
 
-  HomePage({Key key, this.child}) : super(key: key);
+  Visualize({Key key, this.child}) : super(key: key);
 
-  _HomePageState createState() => _HomePageState();
+  _VisualizeState createState() => _VisualizeState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _VisualizeState extends State<Visualize> {
   List<charts.Series<Pollution, String>> _seriesData;
   List<charts.Series<Task, String>> _seriesPieData;
   List<charts.Series<Sales, int>> _seriesLineData;

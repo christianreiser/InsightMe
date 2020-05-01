@@ -1,11 +1,7 @@
-//import 'dart:convert';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-
 import 'package:flutter/material.dart';
 import 'package:lifetracker4/visualize.dart';
 import 'package:sqflite/sqflite.dart';
-
 import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper_attribute.dart';
@@ -60,23 +56,11 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
 
-  // bottom navigation bar:
-
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      debugPrint('_selectedIndex= ${_selectedIndex}');
-      // navigation for editing entry
-    });
-    navigateToVisualize();
-  }
 
   void navigateToVisualize() async {
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return HomePage();
+      return Visualize();
     }));
 
     if (result == true) {
