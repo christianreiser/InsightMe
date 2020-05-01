@@ -123,9 +123,9 @@ class _JournalRouteState extends State<JournalRoute> {
     setState(() {
       _selectedIndex = index;
       debugPrint('_selectedIndex= ${_selectedIndex}');
-      navigateToVisualize();
       // navigation for editing entry
     });
+    navigateToVisualize();
   }
 
   void navigateToVisualize() async {

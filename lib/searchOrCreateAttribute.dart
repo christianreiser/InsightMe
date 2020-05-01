@@ -133,7 +133,9 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           title: Text("New manual entry"),
         ),
 
+
         // FRAGMENT
+        // Input field search create attribute
         body: Padding(
             padding: EdgeInsets.all(10.0),
             child: Column(
@@ -185,6 +187,7 @@ class _SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                       Padding(padding: EdgeInsets.all(4.0),),
 
+                      // Save button search create attribute
                       Container(
                         child: RaisedButton(
                           color: Theme

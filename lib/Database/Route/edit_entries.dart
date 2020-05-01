@@ -168,7 +168,6 @@ class EditEntryState extends State<EditEntry> {
                             setState(() {
                               debugPrint("Save button clicked");
                               _save();
-
                             });
                           },
                         ),
