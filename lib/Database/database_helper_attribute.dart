@@ -1,3 +1,6 @@
+
+// TODO is this file redundant as entry is capable of handling it too?
+
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';

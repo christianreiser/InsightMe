@@ -17,51 +17,50 @@ class VisChr extends StatefulWidget {
 class _VisChrState extends State<VisChr> {
   DatabaseHelperEntry helperEntry = DatabaseHelperEntry();
 
-  List<Entry> entryList;
-  int countEntry = 0;
+  List<Entry> filteredEntryList;
+  int countEntryFiltered = 0;
   int countAttribute = 0 ;
 
   @override
   Widget build(BuildContext context) {
-    if (entryList == null) {
-      entryList = List<Entry>();
-      _updateEntryListView();
+    if (filteredEntryList == null) {
+      filteredEntryList = List<Entry>();
     }
     return RefreshIndicator(
       //key: refreshKey,
       onRefresh: () async {
-        _updateEntryListView();
+        _updateFilteredEntryListView();
       },
-      child: _getEntryListView(),
+      child: _getFilteredEntryListView(),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
 // ENTRY LIST
-  ListView _getEntryListView() {
+  ListView _getFilteredEntryListView() {
     return ListView.builder(
-      itemCount: countEntry,
+      itemCount: countEntryFiltered,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
 
-
             // Label
-            title: Text(this.entryList[position].title,
+            title: Text(this.filteredEntryList[position].title,
                 style: TextStyle(fontWeight: FontWeight.bold)),
 
             // Value
-            subtitle: Text(this.entryList[position].value),
+            subtitle: Text(this.filteredEntryList[position].value),
 
 
             // Edit ICON
-            trailing: Text(this.entryList[position].date),
+            trailing: Text(this.filteredEntryList[position].date),
 
             // onTAP TO EDIT
             onTap: () {
               debugPrint("tabbed");
-              helperEntry.getFilteredEntryMapList('Productivity'); //// TODO get from UI
+              //var filteredQueryResult = helperEntry.getFilteredEntryList('Productivity'); //// TODO get from UI
+              debugPrint("\nprint: ${this.filteredEntryList[position].title}\n");
             },
           ),
         );
@@ -79,14 +78,14 @@ class _VisChrState extends State<VisChr> {
   DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
   // updateEntryListView depends on state
-  void _updateEntryListView() {
+  void _updateFilteredEntryListView() {
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
-      entryListFuture.then((entryList) {
+      Future<List<Entry>> entryListFuture = databaseHelperEntry.getFilteredEntryList('Productivity');
+      entryListFuture.then((filteredEntryList) {
         setState(() {
-          this.entryList = entryList;
-          this.countEntry = entryList.length;
+          this.filteredEntryList = filteredEntryList;
+          this.countEntryFiltered = filteredEntryList.length;
         });
       });
     });
@@ -110,7 +109,7 @@ class Visualize extends StatefulWidget {
 
 class _VisualizeState extends State<Visualize> {
   List<charts.Series<Value, int>> _seriesLineData;
-  
+
   _generateData() {
     var linevaluedata = [
       new Value(0, 45),

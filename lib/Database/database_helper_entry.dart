@@ -75,12 +75,12 @@ class DatabaseHelperEntry {
 
 
 
-  // CHREI Fetch Operation: Get entry objects from database filtered by attribute
+  // CHREI Fetch Operation: Get entry objects from database FILTERED ATTRIBUTES
 
   Future<List<Map<String, dynamic>>> getFilteredEntryMapList(attributeToFilter) async {
     // get single row
     List<String> columnsToSelect = [
-      DatabaseHelperEntry.colId,
+      DatabaseHelperEntry.colValue,
       DatabaseHelperEntry.colTitle,
       DatabaseHelperEntry.colDate,
     ];
@@ -89,7 +89,6 @@ class DatabaseHelperEntry {
     List<dynamic> whereArguments = [attributeToFilter];
     Database db = await this.database;
 
-//		var result = await db.rawQuery('SELECT * FROM $entryTable order by $colTitle ASC');
     var result = await db.query(entryTable,
         orderBy: '$colDate ASC',
         columns: columnsToSelect,
@@ -97,10 +96,8 @@ class DatabaseHelperEntry {
         whereArgs: whereArguments
         );
 
-    // print the results
     result.forEach((row) => print(row));
     print('result+ $result');
-    // {_id: 1, name: Bob, age: 23}
 
     return result;
   }
@@ -142,9 +139,9 @@ class DatabaseHelperEntry {
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'entry List' [ List<Entry> ]
   Future<List<Entry>> getEntryList() async {
-
     var entryMapList = await getEntryMapList(); // Get 'Map List' from database
-    int countEntry = entryMapList.length;         // Count the number of map entries in db table
+    int countEntry = entryMapList
+        .length; // Count the number of map entries in db table
 
     List<Entry> entryList = List<Entry>();
     // For loop to create a 'entry List' from a 'Map List'
@@ -155,6 +152,22 @@ class DatabaseHelperEntry {
     return entryList;
   }
 
+    // todo probably not needed
+    // CHREI get the 'Map List' [ List<Map> ] FILTERED and convert it to 'entry List FILTERED' [ List<Entry> ]
+    Future<List<Entry>> getFilteredEntryList(attributeToFilter) async {
+
+      var filteredEntryMapList = await getFilteredEntryMapList(attributeToFilter); // Get 'Map List' from database
+      int countEntryFiltered = filteredEntryMapList.length;         // Count the number of map entries in db table
+
+      List<Entry> filteredEntryList = List<Entry>();
+      // For loop to create a 'entry List' from a 'Map List'
+      for (int i = 0; i < countEntryFiltered; i++) {
+        filteredEntryList.add(Entry.fromMapObject(filteredEntryMapList[i]));
+      }
+      print('filteredEntryList+ $filteredEntryList');
+      filteredEntryList.forEach((row) => print(row));
+      return filteredEntryList;
+  }
 
 
 }
