@@ -1,4 +1,3 @@
-import 'package:lifetracker4/Database/entry.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -10,12 +9,12 @@ class DatabaseHelperEntry {
   static DatabaseHelperEntry _databaseHelperEntry;    // Singleton DatabaseHelperEntry
   static Database _database;                // Singleton Database
 
-  String entryTable = 'entry_table';
-  String colId = 'id';
-  String colTitle = 'title';
-  String colValue = 'value';
-  String colComment = 'comment';
-  String colDate = 'date';
+  static final  entryTable = 'entry_table';
+  static final  colId = 'id';
+  static final  colTitle = 'title';
+  static final  colValue = 'value';
+  static final  colComment = 'comment';
+  static final  colDate = 'date';
 
   DatabaseHelperEntry._createInstance(); // Named constructor to create instance of DatabaseHelperEntry
 
@@ -42,7 +41,7 @@ class DatabaseHelperEntry {
 /*
 * If there is no object assigned to the database, we use the initializeDatabase
 * function to create the database. In this function, we will get the path for
-* storing the database and create the desired tables. I’m using entrys as the
+* storing the database and create the desired tables. I’m using entries as the
 * name of the database
 * */
   Future<Database> initializeDatabase() async {
@@ -70,6 +69,43 @@ class DatabaseHelperEntry {
     var result = await db.query(entryTable, orderBy: '$colDate DESC');
     return result;
   }
+
+
+
+
+
+
+/*  // CHREI Fetch Operation: Get entry objects from database filtered by attribute
+
+
+  // get single row
+  List<String> columnsToSelect = [
+    DatabaseHelperEntry.colId,
+    DatabaseHelperEntry.columnName,
+    DatabaseHelperEntry.columnAge,
+  ];
+  String whereString = '${DatabaseHelperEntry.columnId} = ?';
+  int rowId = 1;
+  List<dynamic> whereArguments = [rowId];
+
+
+  Future<List<Map<String, dynamic>>> getFilteredEntryMapList() async {
+    Database db = await this.database;
+
+//		var result = await db.rawQuery('SELECT * FROM $entryTable order by $colTitle ASC');
+    var result = await db.query(entryTable,
+        orderBy: '$colDate ASC',
+        columns: columnsToSelect,
+        where: whereString,
+        whereArgs: whereArguments););
+    return result;
+  }*/
+
+
+
+
+
+
 
   // Insert Operation: Insert a entry object to database
   Future<int> insertEntry(Entry entry) async {
@@ -114,5 +150,7 @@ class DatabaseHelperEntry {
 
     return entryList;
   }
+
+
 
 }

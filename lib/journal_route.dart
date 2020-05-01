@@ -16,7 +16,7 @@ class JournalRoute extends StatefulWidget {
 }
 
 class _JournalRouteState extends State<JournalRoute> {
-  DatabaseHelperEntry helperEntry = DatabaseHelperEntry(); // probably needed?
+  DatabaseHelperEntry helperEntry = DatabaseHelperEntry();
   List<Entry> entryList;
   int countEntry = 0;
   int countAttribute = 0 ;
@@ -52,15 +52,15 @@ class _JournalRouteState extends State<JournalRoute> {
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
 
-            // TITLE
+            // Label
             title: Text(this.entryList[position].title,
                 style: TextStyle(fontWeight: FontWeight.bold)),
 
-            // SUBTITLE
+            // Value
             subtitle: Text(this.entryList[position].value),
 
 
-            // Edit ICON
+            // Time and comment
             trailing: Column(
               //mainAxisSize: MainAxisSize.min,
               children: <Widget>[
