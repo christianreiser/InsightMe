@@ -85,6 +85,7 @@ class EditEntryState extends State<EditEntry> {
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
+                    keyboardType: TextInputType.number,
                     controller: valueController,
                     style: textStyle,
                     onChanged: (value) {

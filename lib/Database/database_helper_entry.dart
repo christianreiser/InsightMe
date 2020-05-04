@@ -57,7 +57,7 @@ class DatabaseHelperEntry {
   /*creating the table*/
   void _createDb(Database db, int newVersion) async {
 
-    await db.execute('CREATE TABLE $entryTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colValue TEXT, '
+    await db.execute('CREATE TABLE $entryTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colValue REAL, '
         '$colComment TEXT, $colDate TEXT)');
   }
 
@@ -97,7 +97,7 @@ class DatabaseHelperEntry {
         );
 
     result.forEach((row) => print(row));
-    print('result+ $result');
+    //print('result+ $result');
 
     return result;
   }
@@ -164,8 +164,8 @@ class DatabaseHelperEntry {
       for (int i = 0; i < countEntryFiltered; i++) {
         filteredEntryList.add(Entry.fromMapObject(filteredEntryMapList[i]));
       }
-      print('filteredEntryList+ $filteredEntryList');
-      filteredEntryList.forEach((row) => print(row));
+      //print('filteredEntryList+ $filteredEntryList');
+      //filteredEntryList.forEach((row) => print(row));
       return filteredEntryList;
   }
 

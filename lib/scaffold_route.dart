@@ -26,7 +26,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      floatingActionButton: SpeedDial(
+/*      floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
         children: [
 
@@ -48,13 +48,13 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               label: "-not implemented-",
               onTap: () {
                 print("not implemented yet");
-                /*Navigator.push(
+                *//*Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AttributeList()),
-                ); // Navigate to newManualEntry route when tapped.*/
+                ); // Navigate to newManualEntry route when tapped.*//*
               }),
         ],
-      ),
+      ),*/
 
       // bottom navigation bar
       bottomNavigationBar: BottomNavigationBar(

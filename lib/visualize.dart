@@ -61,6 +61,16 @@ class _VisChrState extends State<VisChr> {
               debugPrint("tabbed");
               //var filteredQueryResult = helperEntry.getFilteredEntryList('Productivity'); //// TODO get from UI
               debugPrint("\nprint: ${this.filteredEntryList[position].title}\n");
+              List<double>  valueList = [];
+              List<String>  dateList = [];
+              // TODO unnecessarily complicated from db to chart:
+              // TODO from map(db) to list(helper) to other list(here)
+              for (int i = 0; i < countEntryFiltered; i++) {
+                valueList.add(double.parse(this.filteredEntryList[i].value));
+                // TODO parsing to date type needed?
+                dateList.add((this.filteredEntryList[i].date));
+              }
+              print(valueList);
             },
           ),
         );
@@ -108,10 +118,57 @@ class Visualize extends StatefulWidget {
 }
 
 class _VisualizeState extends State<Visualize> {
-  List<charts.Series<Value, int>> _seriesLineData;
+
+  List<double>  valueList = [];
+  List<String>  dateList = [];
+  List<Entry> filteredEntryList;
+  int countEntryFiltered = 0;
+  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
+  List<Attribute> attributeList;
+
+  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+
+
+
+/*  // updateEntryListView depends on state
+  void _updateFilteredEntryListView() {
+    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Entry>> entryListFuture = databaseHelperEntry.getFilteredEntryList('Productivity');
+      entryListFuture.then((filteredEntryList) {
+        setState(() {
+          this.filteredEntryList = filteredEntryList;
+          this.countEntryFiltered = filteredEntryList.length;
+        });
+      });
+    });
+  }*/
+
+
+
+
+
+  List<charts.Series<double, int>> _seriesLineData;
 
   _generateData() {
-    var linevaluedata = [
+    if (filteredEntryList == null) {
+      filteredEntryList = List<Entry>();
+    }
+
+
+    // TODO unnecessarily complicated from db to chart:
+    // TODO from map(db) to list(helper) to other list(here)
+    for (int i = 0; i < countEntryFiltered; i++) {
+      valueList.add(double.parse(this.filteredEntryList[i].value));
+      // TODO parsing to date type needed?
+      dateList.add((this.filteredEntryList[i].date));
+    }
+    print(valueList);
+
+
+
+
+/*    var lineValueData = [
       new Value(0, 45),
       new Value(1, 56),
       new Value(2, 55),
@@ -119,7 +176,7 @@ class _VisualizeState extends State<Visualize> {
       new Value(4, 61),
       new Value(5, 70),
     ];
-    var linevaluedata1 = [
+    var lineValueData1 = [
       new Value(0, 35),
       new Value(1, 46),
       new Value(2, 45),
@@ -128,28 +185,28 @@ class _VisualizeState extends State<Visualize> {
       new Value(5, 60),
     ];
 
-    var linevaluedata2 = [
+    var lineValueData2 = [
       new Value(0, 20),
       new Value(1, 24),
       new Value(2, 25),
       new Value(3, 40),
       new Value(4, 45),
       new Value(5, 60),
-    ];
+    ];*/
     _seriesLineData.add(
       charts.Series(
         colorFn: (__, _) => charts.ColorUtil.fromDartColor(Color(0xff990099)),
         id: 'Air Pollution',
-        data: linevaluedata,
-        domainFn: (Value value, _) => value.timeval,
-        measureFn: (Value value, _) => value.valueval,
+        data: valueList,
+        domainFn: (double double, _) => 2, // chr: TODO: axis scaling?
+        measureFn: (double double, _) => 25,
       ),
     );
-    _seriesLineData.add(
+/*    _seriesLineData.add(
       charts.Series(
         colorFn: (__, _) => charts.ColorUtil.fromDartColor(Color(0xff109618)),
         id: 'Air Pollution',
-        data: linevaluedata1,
+        data: lineValueData1,
         domainFn: (Value value, _) => value.timeval,
         measureFn: (Value value, _) => value.valueval,
       ),
@@ -158,18 +215,20 @@ class _VisualizeState extends State<Visualize> {
       charts.Series(
         colorFn: (__, _) => charts.ColorUtil.fromDartColor(Color(0xffff9900)),
         id: 'Air Pollution',
-        data: linevaluedata2,
+        data: lineValueData2,
         domainFn: (Value value, _) => value.timeval,
         measureFn: (Value value, _) => value.valueval,
       ),
-    );
+    );*/
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _seriesLineData = List<charts.Series<Value, int>>();
+    _seriesLineData = List<charts.Series<double, int>>();
+    //List<charts.Series<double, String>> _seriesLineData;
+
     _generateData();
   }
 
