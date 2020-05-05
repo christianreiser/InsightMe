@@ -14,7 +14,7 @@ class Entry {
 
   String get title => _title;
 
-  String get value => _value;
+  String get value => _value;  // TODO change to double?
 
   String get comment => _comment;
 
