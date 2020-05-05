@@ -5,6 +5,8 @@ import 'Database/attribute.dart';
 import 'Database/database_helper_attribute.dart';
 import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
+import 'package:flutter_sparkline/flutter_sparkline.dart';
+
 
 class VisChr extends StatefulWidget {
   VisChr({Key key, this.title}) : super(key: key);
@@ -26,13 +28,20 @@ class _VisChrState extends State<VisChr> {
     if (filteredEntryList == null) {
       filteredEntryList = List<Entry>();
     }
-    return RefreshIndicator(
-      //key: refreshKey,
-      onRefresh: () async {
-        _updateFilteredEntryListView();
-      },
-      child: _getFilteredEntryListView(),
-    ); // This trailing comma makes auto-formatting nicer for build methods.
+    return Column(
+        children: <Widget>[
+          Flexible(
+            child: RefreshIndicator(
+              //key: refreshKey,
+              onRefresh: () async {
+                _updateFilteredEntryListView();
+              },
+              child: _getFilteredEntryListView(),
+            ),
+          ),
+            mychart1Items('Title', 'priceval','subtitle'),
+        ]
+    );// This trailing comma makes auto-formatting nicer for build methods.
   }
 
 // ENTRY LIST
@@ -100,8 +109,70 @@ class _VisChrState extends State<VisChr> {
       });
     });
   }
-}
 
+
+
+
+
+  //////////////////////
+  Material mychart1Items(String title, String priceVal,String subtitle) {
+    return Material(
+      color: Colors.white,
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(24.0),
+      shadowColor: Color(0x802196F3),
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+
+                  Padding(
+                    padding: EdgeInsets.all(1.0),
+                    child: Text(title, style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.blueAccent,
+                    ),),
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.all(1.0),
+                    child: Text(priceVal, style: TextStyle(
+                      fontSize: 30.0,
+                    ),),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(1.0),
+                    child: Text(subtitle, style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.blueGrey,
+                    ),),
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.all(1.0),
+                    child: Sparkline(
+                      data: data,
+                      lineColor: Color(0xffff6101),
+                      pointsMode: PointsMode.all,
+                      pointSize: 8.0,
+                    ),
+                  ),
+
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0]; // replace with db data
+}
 
 
 
