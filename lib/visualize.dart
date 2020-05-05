@@ -29,7 +29,7 @@ class _VisualizeState extends State<Visualize> {
     }
     return SingleChildScrollView(
         child:
-            mychart1Items('Title', 'priceval','subtitle'),
+            getChart('Title', 'priceval','subtitle'),
 
     );// This trailing comma makes auto-formatting nicer for build methods.
   }
@@ -80,7 +80,7 @@ class _VisualizeState extends State<Visualize> {
 
 
   //////////////////////
-  Widget mychart1Items(String title, String priceVal,String subtitle) {
+  Widget getChart(String title, String priceVal,String subtitle) {
     return Column(
     children: <Widget>[
       Padding(
