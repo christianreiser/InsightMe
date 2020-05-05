@@ -57,8 +57,9 @@ class DatabaseHelperEntry {
   /*creating the table*/
   void _createDb(Database db, int newVersion) async {
 
-    await db.execute('CREATE TABLE $entryTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colValue REAL, '
-        '$colComment TEXT, $colDate TEXT)');
+    await db.execute('CREATE TABLE $entryTable('
+        '$colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colValue TEXT, '
+        '$colComment TEXT, $colDate TEXT)');  // TODO $colValue REAL for double
   }
 
   // Fetch Operation: Get all entry objects from database
