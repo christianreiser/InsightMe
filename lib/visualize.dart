@@ -39,7 +39,7 @@ class _VisualizeState extends State<Visualize> {
   List<double> getValueList() {
     List<double>  valueList = [];
     List<String>  dateList = [];
-    _updateFilteredEntryListView();
+    //_updateFilteredEntryListView();
     // TODO unnecessarily complicated from db to chart:
     // TODO from map(db) to list(helper) to other list(here)
     for (int i = 0; i < countEntryFiltered; i++) {
@@ -47,7 +47,11 @@ class _VisualizeState extends State<Visualize> {
       // TODO parsing to date type needed?
       dateList.add((this.filteredEntryList[i].date));
     }
-    print('valueList: $valueList');
+    //print('valueList: $valueList');
+    //print('valueList.isEmpty ${valueList.isEmpty}');
+    if (valueList.isEmpty) {
+      _updateFilteredEntryListView();
+    }
     return valueList;
   }
 

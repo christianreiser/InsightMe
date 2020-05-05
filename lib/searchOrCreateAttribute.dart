@@ -26,6 +26,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   @override
   Widget build(BuildContext context) {
+    if (attributeList == null) {
+      attributeList = List<Attribute>();
+      _updateAttributeListView();
+    }
     return Scaffold(
 
       // APP BAR
