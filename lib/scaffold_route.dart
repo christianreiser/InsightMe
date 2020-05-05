@@ -87,7 +87,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   static List<Widget> _widgetOptions = <Widget>[
     JournalRoute(),
     Visualize(),
-    VisChr(), // TODO set Correlate() here
+    JournalRoute(), // TODO set Correlate() here
   ];
 
   void _onItemTapped(int index) {
