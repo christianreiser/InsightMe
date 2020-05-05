@@ -28,9 +28,9 @@ class _VisChrState extends State<VisChr> {
     if (filteredEntryList == null) {
       filteredEntryList = List<Entry>();
     }
-    return Column(
-        children: <Widget>[
-          Flexible(
+    return SingleChildScrollView(
+        child:
+/*          Flexible(
             child: RefreshIndicator(
               //key: refreshKey,
               onRefresh: () async {
@@ -38,9 +38,9 @@ class _VisChrState extends State<VisChr> {
               },
               child: _getFilteredEntryListView(),
             ),
-          ),
+          ),*/
             mychart1Items('Title', 'priceval','subtitle'),
-        ]
+
     );// This trailing comma makes auto-formatting nicer for build methods.
   }
 
@@ -70,16 +70,7 @@ class _VisChrState extends State<VisChr> {
               debugPrint("tabbed");
               //var filteredQueryResult = helperEntry.getFilteredEntryList('Productivity'); //// TODO get from UI
               debugPrint("\nprint: ${this.filteredEntryList[position].title}\n");
-              List<double>  valueList = [];
-              List<String>  dateList = [];
-              // TODO unnecessarily complicated from db to chart:
-              // TODO from map(db) to list(helper) to other list(here)
-              for (int i = 0; i < countEntryFiltered; i++) {
-                valueList.add(double.parse(this.filteredEntryList[i].value));
-                // TODO parsing to date type needed?
-                dateList.add((this.filteredEntryList[i].date));
-              }
-              print(valueList);
+
             },
           ),
         );
@@ -87,8 +78,24 @@ class _VisChrState extends State<VisChr> {
     );
   }
 
+  List<double> getValueList() {
+    List<double>  valueList = [];
+    List<String>  dateList = [];
+    _updateFilteredEntryListView();
+    // TODO unnecessarily complicated from db to chart:
+    // TODO from map(db) to list(helper) to other list(here)
+    for (int i = 0; i < countEntryFiltered; i++) {
+      valueList.add(double.parse(this.filteredEntryList[i].value));
+      // TODO parsing to date type needed?
+      dateList.add((this.filteredEntryList[i].date));
+    }
+    print('valueList: $valueList');
+    print('data $data');
+    return valueList;
+  }
 
 
+  List<double>  data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0]; // replace with db data
 
 
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
@@ -115,63 +122,24 @@ class _VisChrState extends State<VisChr> {
 
 
   //////////////////////
-  Material mychart1Items(String title, String priceVal,String subtitle) {
-    return Material(
-      color: Colors.white,
-      elevation: 14.0,
-      borderRadius: BorderRadius.circular(24.0),
-      shadowColor: Color(0x802196F3),
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+  Widget mychart1Items(String title, String priceVal,String subtitle) {
+    return Column(
+    children: <Widget>[
+      Padding(
+        padding: EdgeInsets.all(1.0),
+        child: Sparkline(
+          data: getValueList(), //getValueList(), // TODO give pointer
+          //lineColor: Color(0xffff6101),
+          //pointsMode: PointsMode.all,
+          //pointSize: 8.0,
 
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Text(title, style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.blueAccent,
-                    ),),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Text(priceVal, style: TextStyle(
-                      fontSize: 30.0,
-                    ),),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Text(subtitle, style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.blueGrey,
-                    ),),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Sparkline(
-                      data: data,
-                      lineColor: Color(0xffff6101),
-                      pointsMode: PointsMode.all,
-                      pointSize: 8.0,
-                    ),
-                  ),
-
-                ],
-              ),
-            ],
-          ),
         ),
       ),
+      Text('$data'),
+      Text('${getValueList()}'),
+    ]
     );
   }
-  var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0]; // replace with db data
 }
 
 
@@ -235,6 +203,7 @@ class _VisualizeState extends State<Visualize> {
       dateList.add((this.filteredEntryList[i].date));
     }
     print(valueList);
+
 
 
 

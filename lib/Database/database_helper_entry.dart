@@ -166,7 +166,7 @@ class DatabaseHelperEntry {
         filteredEntryList.add(Entry.fromMapObject(filteredEntryMapList[i]));
       }
       //print('filteredEntryList+ $filteredEntryList');
-      //filteredEntryList.forEach((row) => print(row));
+      filteredEntryList.forEach((row) => print(row));
       return filteredEntryList;
   }
 
