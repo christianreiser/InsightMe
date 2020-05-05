@@ -84,7 +84,9 @@ class EditEntryState extends State<EditEntry> {
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextField(
+                  child: TextFormField(
+                    // TODO use input type validation for number:
+                    // https://www.freecodecamp.org/forum/t/how-to-validate-forms-and-user-input-the-easy-way-using-flutter/190377
                     keyboardType: TextInputType.number,
                     controller: valueController,
                     style: textStyle,
