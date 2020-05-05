@@ -48,12 +48,10 @@ class _VisualizeState extends State<Visualize> {
       dateList.add((this.filteredEntryList[i].date));
     }
     print('valueList: $valueList');
-    print('data $data');
     return valueList;
   }
 
 
-  List<double>  data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0]; // replace with db data
 
 
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
@@ -93,7 +91,6 @@ class _VisualizeState extends State<Visualize> {
 
         ),
       ),
-      Text('$data'),
       Text('${getValueList()}'),
     ]
     );
