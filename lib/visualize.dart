@@ -80,11 +80,4 @@ class _VisualizeState extends State<Visualize> {
     );// This trailing comma makes auto-formatting nicer for build methods.
   }
 
-  Widget getChart() {
-    return Column(
-        children: <Widget>[
-          Text('{getValueList()}'),
-        ]
-    );
-  }
 }
