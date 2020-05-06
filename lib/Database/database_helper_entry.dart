@@ -82,7 +82,6 @@ class DatabaseHelperEntry {
     // get single row
     List<String> columnsToSelect = [
       DatabaseHelperEntry.colValue,
-      DatabaseHelperEntry.colTitle,
       DatabaseHelperEntry.colDate,
     ];
     String whereString = '${DatabaseHelperEntry.colTitle} = ?';
@@ -104,7 +103,30 @@ class DatabaseHelperEntry {
   }
 
 
-
+  // CHREI Fetch Operation: Get entry objects from database FILTERED ATTRIBUTES
+// TODO mby needed for refactoring
+//  Future<List<Map<DateTime, double>>> getFilteredDateTimeValueMapList(attributeToFilter) async {
+//    // get single row
+//    List<String> columnsToSelect = [
+//      DatabaseHelperEntry.colValue,
+//    ];
+//    String whereString = '${DatabaseHelperEntry.colTitle} = ?';
+//    var attributeToFilter = 'Productivity'; // TODO get from UI
+//    List<dynamic> whereArguments = [attributeToFilter];
+//    Database db = await this.database;
+//
+//    var dateTimeValueMap = await db.query(entryTable,
+//        orderBy: '$colDate ASC',
+//        columns: columnsToSelect,
+//        where: whereString,
+//        whereArgs: whereArguments
+//    );
+//
+//    dateTimeValueMap.forEach((row) => print(row));
+//    //print('result+ $result');
+//
+//    return dateTimeValueMap;
+//  }
 
 
 

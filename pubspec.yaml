@@ -24,6 +24,7 @@ dependencies:
   intl:   # TODO needed? SQLite https://medium.com/@abeythilakeudara3/to-do-list-in-flutter-with-sqlite-as-local-database-8b26ba2b060e
   charts_flutter:
   flutter_sparkline: #TODO needed for vis, correct?
+  fl_animated_linechart:  # TODO check if needed https://pub.dev/packages/fl_animated_linechart#-installing-tab-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

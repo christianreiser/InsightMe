@@ -257,7 +257,7 @@ class EditEntryState extends State<EditEntry> {
     moveToLastScreen();
 
     // TIMESTAMP
-    entry.date = DateFormat.yMMMd().add_Hms().format(DateTime.now()); // TODO default current but changeable
+    entry.date = DateTime.now().toString(); // TODO default current but changeable
 
     // Update Operation: Update a to-do object and save it to database
     int result;
