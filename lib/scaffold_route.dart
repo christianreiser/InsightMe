@@ -4,6 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
 import 'package:lifetracker4/visualize.dart';
+import 'package:lifetracker4/visualize_attribute_selection.dart';
 import 'journal_route.dart';
 import 'searchOrCreateAttribute.dart';
 
@@ -42,17 +43,17 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               }),
 
           // second speed dial button - no function yet
-/*          SpeedDialChild(
+          SpeedDialChild(
               backgroundColor: Colors.grey,
               child: Icon(Icons.timer),
-              label: "-not implemented-",
+              label: "-DropDown-",
               onTap: () {
-                print("not implemented yet");
+                print("DropDown");
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AttributeList()),
+                  MaterialPageRoute(builder: (context) => DropDown()),
                 ); // Navigate to newManualEntry route when tapped.
-              }),*/
+              }),
         ],
       ),
 
