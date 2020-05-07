@@ -2,8 +2,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Database/Route/edit_entries.dart';
-import 'Database/attribute.dart';
-import 'Database/database_helper_attribute.dart';
 import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
 
@@ -16,10 +14,9 @@ class JournalRoute extends StatefulWidget {
 }
 
 class _JournalRouteState extends State<JournalRoute> {
-  DatabaseHelperEntry helperEntry = DatabaseHelperEntry();
   List<Entry> entryList;
   int countEntry = 0;
-  int countAttribute = 0 ;
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +33,7 @@ class _JournalRouteState extends State<JournalRoute> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
+
 // ENTRY LIST
   ListView _getEntryListView() {
     return ListView.builder(
@@ -45,6 +43,7 @@ class _JournalRouteState extends State<JournalRoute> {
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
+
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
@@ -81,15 +80,11 @@ class _JournalRouteState extends State<JournalRoute> {
   }
 
 
-
-  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
-  List<Attribute> attributeList;
-
-
   // for yellow circle avatar
   getFirstLetter(String title) {
     return title.substring(0, 1);
   }
+
 
   // navigation for editing entry
   void _navigateToEditEntry(Entry entry, String title) async {
@@ -103,10 +98,11 @@ class _JournalRouteState extends State<JournalRoute> {
     }
   }
 
-  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
   // updateEntryListView depends on state
   void _updateEntryListView() {
+    DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();

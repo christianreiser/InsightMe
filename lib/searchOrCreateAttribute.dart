@@ -16,16 +16,17 @@ class SearchOrCreateAttribute extends StatefulWidget {
   SearchOrCreateAttributeState createState() => SearchOrCreateAttributeState();
 }
 
+
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
-  // Create a text controller. Later, use it to retrieve the
-  // current value of the TextField.
-  var attributeInputController = TextEditingController();
-  var entryInputController = TextEditingController();
+  List<Attribute> attributeList;
+  int countAttribute = 0;
 
 
   @override
   Widget build(BuildContext context) {
+    var attributeInputController = TextEditingController();
+
     if (attributeList == null) {
       attributeList = List<Attribute>();
       _updateAttributeListView();
@@ -134,7 +135,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       onRefresh: () async {
                         _updateAttributeListView();
                       },
-                      child: getAttributeListView(),
+                      child: _getAttributeListView(),
                     ),
                   )
                 ]
@@ -145,7 +146,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
 
   // Attribute LIST
-  ListView getAttributeListView() {
+  ListView _getAttributeListView() {
     return ListView.builder(
       itemCount: countAttribute,
       itemBuilder: (BuildContext context, int position) {
@@ -164,9 +165,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             // TITLE
             title: Text(this.attributeList[position].title,
                 style: TextStyle(fontWeight: FontWeight.bold)),
-
-            // SUBTITLE
-/*            subtitle: Text(this.attributeList[position].comment),*/
 
             // EDIT ICON
             trailing: Row(
@@ -211,6 +209,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
   }
 
+
   // navigation for editing entry
   void _navigateToEditEntry(Entry entry, String title) async {
     bool result =
@@ -226,7 +225,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // updateAttributeListView depends on state
   void _updateAttributeListView() {
+    DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
     final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
+
     dbFuture.then((database) {
       Future<List<Attribute>> attributeListFuture = databaseHelperAttribute.getAttributeList();
       attributeListFuture.then((attributeList) {
@@ -238,35 +239,30 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     });
   }
 
+
   // updateEntryListView depends on state
   void _updateEntryListView() {
+    int countEntry = 0;
+    List<Entry> entryList;
+    DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
       entryListFuture.then((entryList) {
         setState(() {
-          this.entryList = entryList;
-          this.countEntry = entryList.length;
+          entryList = entryList;
+          countEntry = entryList.length;
         });
       });
     });
   }
 
 
-  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
-  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-  List<Attribute> attributeList;
-  List<Entry> entryList;
-  int countAttribute = 0;
-  int countEntry = 0;
-
-
-
   // for yellow circle avatar
   _getFirstLetter(String title) {
     return title.substring(0, 2);
   }
-
 
 
 } // class
