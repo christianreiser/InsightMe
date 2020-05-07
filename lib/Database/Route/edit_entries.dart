@@ -4,10 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
 
-
-
 class EditEntry extends StatefulWidget {
-
   final String appBarTitle;
   final Entry entry;
 
@@ -15,16 +12,13 @@ class EditEntry extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-
     return EditEntryState(this.entry, this.appBarTitle);
   }
 }
 
 class EditEntryState extends State<EditEntry> {
-
   //DatabaseHelperAttribute helperAttribute = DatabaseHelperAttribute();
   DatabaseHelperEntry helperEntry = DatabaseHelperEntry();
-
 
   String appBarTitle;
   Entry entry;
@@ -38,7 +32,6 @@ class EditEntryState extends State<EditEntry> {
 
   @override
   Widget build(BuildContext context) {
-
     TextStyle textStyle = Theme.of(context).textTheme.headline6;
 
     //titleController.text = entry.title;
@@ -47,30 +40,25 @@ class EditEntryState extends State<EditEntry> {
     dateController.text = entry.date;
 
     return WillPopScope(
-
         onWillPop: () {
           moveToLastScreen();
         },
-
 
         // APPBAR
 
         child: Scaffold(
           appBar: AppBar(
             title: Text(appBarTitle),
-            leading: IconButton(icon: Icon(
-                Icons.arrow_back),
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back),
                 onPressed: () {
                   moveToLastScreen();
-                }
-            ),
+                }),
           ),
-
           body: Padding(
             padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
             child: ListView(
               children: <Widget>[
-
 /*                // Attribute: text box with attribute name -> not needed due to app bar
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -78,7 +66,6 @@ class EditEntryState extends State<EditEntry> {
                     controller: titleController,
                   )
                 ),*/
-
 
                 // Value
 
@@ -92,18 +79,15 @@ class EditEntryState extends State<EditEntry> {
                     style: textStyle,
                     onChanged: (value) {
                       debugPrint('Something changed in Value Text Field');
-                      updateValue();  // with valueController.text = entry.value
+                      updateValue(); // with valueController.text = entry.value
                     },
                     decoration: InputDecoration(
                         labelText: 'Value',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0)
-                        )
-                    ),
+                            borderRadius: BorderRadius.circular(5.0))),
                   ),
                 ),
-
 
                 // COMMENT
 
@@ -120,9 +104,7 @@ class EditEntryState extends State<EditEntry> {
                         labelText: 'Comment',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0)
-                        )
-                    ),
+                            borderRadius: BorderRadius.circular(5.0))),
                   ),
                 ),
 
@@ -130,7 +112,10 @@ class EditEntryState extends State<EditEntry> {
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
-                    controller: TextEditingController(text: DateFormat.yMMMd().add_Hms().format(DateTime.now())),
+                    controller: TextEditingController(
+                        text: DateFormat.yMMMd()
+                            .add_Hms()
+                            .format(DateTime.now())),
                     style: textStyle,
                     onChanged: (value) {
                       debugPrint('Something changed in date Text Field');
@@ -140,15 +125,12 @@ class EditEntryState extends State<EditEntry> {
                         labelText: 'Time',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0)
-                        )
-                    ),
+                            borderRadius: BorderRadius.circular(5.0))),
                   ),
                 ),
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-
 
                   // SAVE BUTTON
 
@@ -171,8 +153,9 @@ class EditEntryState extends State<EditEntry> {
                         ),
                       ),
 
-                      Container(width: 5.0,),
-
+                      Container(
+                        width: 5.0,
+                      ),
 
                       // DELETE BUTTON
 
@@ -192,19 +175,14 @@ class EditEntryState extends State<EditEntry> {
                           },
                         ),
                       ),
-
                     ],
                   ),
                 ),
-
-
               ],
             ),
           ),
-
         ));
   }
-
 
   // TODO remove method and call from scaffold_route.dart
   // updateEntryListView depends on state
@@ -234,7 +212,7 @@ class EditEntryState extends State<EditEntry> {
   }*/
 
   // Update the value of entry object
-  void updateValue(){
+  void updateValue() {
     entry.value = valueController.text;
   }
 
@@ -248,39 +226,39 @@ class EditEntryState extends State<EditEntry> {
     entry.date = dateController.text;
   }
 
-
   // Save data to database
 
   void _save() async {
-
     // NAVIGATE
     moveToLastScreen();
 
     // TIMESTAMP
-    entry.date = DateTime.now().toString(); // TODO default current but changeable
+    entry.date =
+        DateTime.now().toString(); // TODO default current but changeable
 
     // Update Operation: Update a to-do object and save it to database
     int result;
-    if (entry.id != null) {  // Case 1: Update operation
+    if (entry.id != null) {
+      // Case 1: Update operation
       result = await helperEntry.updateEntry(entry);
-    } else { // Case 2: Insert Operation
+    } else {
+      // Case 2: Insert Operation
       result = await helperEntry.insertEntry(entry);
     }
 
     // SUCCESS FAILURE STATUS DIALOG
-    if (result != 0) {  // Success
+    if (result != 0) {
+      // Success
       _showAlertDialog('Status', 'Entry Saved Successfully');
-    } else {  // Failure
+    } else {
+      // Failure
       _showAlertDialog('Status', 'Problem Saving Entry');
     }
-
   }
-
 
   // DELETE
 
   void _delete() async {
-
     moveToLastScreen();
 
     if (entry.id == null) {
@@ -297,15 +275,10 @@ class EditEntryState extends State<EditEntry> {
   }
 
   void _showAlertDialog(String title, String message) {
-
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
       content: Text(message),
     );
-    showDialog(
-        context: context,
-        builder: (_) => alertDialog
-    );
+    showDialog(context: context, builder: (_) => alertDialog);
   }
-
 }

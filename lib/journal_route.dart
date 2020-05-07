@@ -10,13 +10,12 @@ class JournalRoute extends StatefulWidget {
   final String title;
 
   @override
-  _JournalRouteState createState() => _JournalRouteState();
+  JournalRouteState createState() => JournalRouteState();
 }
 
-class _JournalRouteState extends State<JournalRoute> {
+class JournalRouteState extends State<JournalRoute> {
   List<Entry> entryList;
   int countEntry = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,6 @@ class _JournalRouteState extends State<JournalRoute> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
-
 // ENTRY LIST
   ListView _getEntryListView() {
     return ListView.builder(
@@ -43,7 +41,6 @@ class _JournalRouteState extends State<JournalRoute> {
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
-
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
@@ -58,7 +55,6 @@ class _JournalRouteState extends State<JournalRoute> {
             // Value
             subtitle: Text(this.entryList[position].value),
 
-
             // Time and comment
             trailing: Column(
               //mainAxisSize: MainAxisSize.min,
@@ -71,7 +67,7 @@ class _JournalRouteState extends State<JournalRoute> {
             // onTAP TO EDIT
             onTap: () {
               debugPrint("ListTile Tapped");
-              _navigateToEditEntry(this.entryList[position], 'Edit Entry');
+              navigateToEditEntry(this.entryList[position], 'Edit Entry');
             },
           ),
         );
@@ -79,17 +75,15 @@ class _JournalRouteState extends State<JournalRoute> {
     );
   }
 
-
   // for yellow circle avatar
   getFirstLetter(String title) {
     return title.substring(0, 1);
   }
 
-
   // navigation for editing entry
-  void _navigateToEditEntry(Entry entry, String title) async {
+  void navigateToEditEntry(Entry entry, String title) async {
     bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
     }));
 
@@ -97,7 +91,6 @@ class _JournalRouteState extends State<JournalRoute> {
       _updateEntryListView();
     }
   }
-
 
   // updateEntryListView depends on state
   void _updateEntryListView() {

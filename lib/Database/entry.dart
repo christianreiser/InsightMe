@@ -1,12 +1,11 @@
 class Entry {
-
   int _id;
   String _title;
   String _value;
   String _comment;
   String _date;
 
-  Entry(this._title, this._value, this._date, this._comment );
+  Entry(this._title, this._value, this._date, this._comment);
 
   Entry.withId(this._id, this._title, this._value, this._date, this._comment);
 
@@ -14,23 +13,24 @@ class Entry {
 
   String get title => _title;
 
-  String get value => _value;  // TODO change to double?
+  String get value => _value; // TODO change to double?
 
   String get comment => _comment;
 
   String get date => _date;
-
 
   set title(String newTitle) {
     if (newTitle.length <= 255) {
       this._title = newTitle;
     }
   }
+
   set value(String newValue) {
     if (newValue.length <= 255) {
       this._value = newValue;
     }
   }
+
   set comment(String newComment) {
     if (newComment.length <= 255) {
       this._comment = newComment;
@@ -43,7 +43,6 @@ class Entry {
 
   // Convert a Note object into a Map object
   Map<String, dynamic> toMap() {
-
     var map = Map<String, dynamic>();
     if (id != null) {
       map['id'] = _id;

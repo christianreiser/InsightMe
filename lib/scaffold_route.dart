@@ -17,7 +17,6 @@ class ScaffoldRoute extends StatefulWidget {
 }
 
 class _ScaffoldRouteState extends State<ScaffoldRoute> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +29,6 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
         children: [
-
           // first speed dial button for new entry
           SpeedDialChild(
               child: Icon(Icons.border_color),
@@ -80,7 +78,6 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
-
   // bottom navigation bar:
 
   int _selectedIndex = 0;
@@ -98,6 +95,4 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       // navigation for editing entry
     });
   }
-
-
 }
