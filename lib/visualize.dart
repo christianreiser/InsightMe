@@ -79,10 +79,16 @@ class _VisualizeState extends State<Visualize> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-          Expanded(
-            child: DropDown(),
-          ),
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  //height: ,
+                  child: // Input text field for search or create attribute
+                      DropDown(),
+                )
+              ],
+            ),
             Expanded(
               child: AnimatedLineChart(chart),
             ), // type lineChart
