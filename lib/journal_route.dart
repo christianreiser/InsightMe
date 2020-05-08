@@ -2,8 +2,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Database/Route/edit_entries.dart';
-import 'Database/attribute.dart';
-import 'Database/database_helper_attribute.dart';
 import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
 
@@ -16,10 +14,8 @@ class JournalRoute extends StatefulWidget {
 }
 
 class _JournalRouteState extends State<JournalRoute> {
-  DatabaseHelperEntry helperEntry = DatabaseHelperEntry();
   List<Entry> entryList;
   int countEntry = 0;
-  int countAttribute = 0 ;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +55,6 @@ class _JournalRouteState extends State<JournalRoute> {
             // Value
             subtitle: Text(this.entryList[position].value),
 
-
             // Time and comment
             trailing: Column(
               //mainAxisSize: MainAxisSize.min,
@@ -80,12 +75,6 @@ class _JournalRouteState extends State<JournalRoute> {
     );
   }
 
-
-
-  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
-  List<Attribute> attributeList;
-
-
   // for yellow circle avatar
   getFirstLetter(String title) {
     return title.substring(0, 1);
@@ -94,7 +83,7 @@ class _JournalRouteState extends State<JournalRoute> {
   // navigation for editing entry
   void _navigateToEditEntry(Entry entry, String title) async {
     bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
     }));
 
@@ -103,10 +92,10 @@ class _JournalRouteState extends State<JournalRoute> {
     }
   }
 
-  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-
   // updateEntryListView depends on state
   void _updateEntryListView() {
+    DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
