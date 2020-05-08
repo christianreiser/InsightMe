@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
-import 'package:lifetracker4/visualize.dart';
+import 'package:lifetracker4/visualize_chart.dart';
 import 'package:lifetracker4/visualize_attribute_selection.dart';
 import 'journal_route.dart';
 import 'searchOrCreateAttribute.dart';

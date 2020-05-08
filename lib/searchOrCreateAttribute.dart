@@ -135,6 +135,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
+
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
