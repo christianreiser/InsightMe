@@ -234,6 +234,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   List<Entry> entryList;
   int countEntry = 0;
   // updateEntryListView depends on state
+  // TODO functions also in journal_route but using it from there breaks it
   void _updateEntryListView() {
     DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();

@@ -9,87 +9,75 @@ class DropDown extends StatefulWidget {
   DropDownState createState() => DropDownState();
 }
 
-class Company {
+class Attribute {
   int id;
   String name;
 
-  Company(this.id, this.name);
+  Attribute(this.id, this.name);
 
-  static List<Company> getCompanies() {
-    return <Company>[
-      Company(1, 'Apple'),
-      Company(2, 'Google'),
-      Company(3, 'Samsung'),
-      Company(4, 'Sony'),
-      Company(5, 'LG'),
+  static List<Attribute> getCompanies() {
+    return <Attribute>[
+      Attribute(1, 'Apple'),
+      Attribute(2, 'Google'),
+      Attribute(3, 'Samsung'),
+      Attribute(4, 'Sony'),
+      Attribute(5, 'LG'),
     ];
   }
 }
 
 class DropDownState extends State<DropDown> {
   //
-  List<Company> _companies = Company.getCompanies();
-  List<DropdownMenuItem<Company>> _dropdownMenuItems;
-  Company _selectedCompany;
+  List<Attribute> _companies = Attribute.getCompanies();
+  List<DropdownMenuItem<Attribute>> _dropdownMenuItems;
+  Attribute _selectedAttribute;
 
   @override
   void initState() {
     _dropdownMenuItems = buildDropdownMenuItems(_companies);
-    _selectedCompany = _dropdownMenuItems[0].value;
+    _selectedAttribute = _dropdownMenuItems[0].value;
     super.initState();
   }
 
-  List<DropdownMenuItem<Company>> buildDropdownMenuItems(List companies) {
-    List<DropdownMenuItem<Company>> items = List();
-    for (Company company in companies) {
+  List<DropdownMenuItem<Attribute>> buildDropdownMenuItems(List companies) {
+    List<DropdownMenuItem<Attribute>> items = List();
+    for (Attribute attribute in companies) {
       items.add(
         DropdownMenuItem(
-          value: company,
-          child: Text(company.name),
+          value: attribute,
+          child: Text(attribute.name),
         ),
       );
     }
     return items;
   }
 
-  onChangeDropdownItem(Company selectedCompany) {
+  onChangeDropdownItem(Attribute selectedAttribute) {
     setState(() {
-      _selectedCompany = selectedCompany;
+      _selectedAttribute = selectedAttribute;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text("DropDown Button Example"),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text("Select a attribute"),
+        SizedBox(
+          height: 20.0,
         ),
-        body: new Container(
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Select a company"),
-                SizedBox(
-                  height: 20.0,
-                ),
-                DropdownButton(
-                  value: _selectedCompany,
-                  items: _dropdownMenuItems,
-                  onChanged: onChangeDropdownItem,
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Text('Selected: ${_selectedCompany.name}'),
-              ],
-            ),
-          ),
+        DropdownButton(
+          value: _selectedAttribute,
+          items: _dropdownMenuItems,
+          onChanged: onChangeDropdownItem,
         ),
-      ),
+        SizedBox(
+          height: 20.0,
+        ),
+        Text('Selected: ${_selectedAttribute.name}'),
+      ],
     );
   }
 }

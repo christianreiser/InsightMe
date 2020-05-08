@@ -99,7 +99,6 @@ class JournalRouteState extends State<JournalRoute> {
   // updateEntryListView depends on state
   void _updateEntryListView() {
     DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
