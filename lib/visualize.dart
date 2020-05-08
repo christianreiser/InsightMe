@@ -81,12 +81,11 @@ class _VisualizeState extends State<Visualize> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Expanded(
-                  //height: ,
-                  child: // Input text field for search or create attribute
-                      DropDown(),
-                )
+                DropDown(),
+                //Padding(padding: EdgeInsets.all(4.0)),
+                DropDown(),
               ],
             ),
             Expanded(
