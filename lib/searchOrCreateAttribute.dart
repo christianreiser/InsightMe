@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Database/Route/edit_attributes.dart';
+import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper_attribute.dart';
+import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
 import 'journal_route.dart';
+
 
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
@@ -15,13 +18,10 @@ class SearchOrCreateAttribute extends StatefulWidget {
 
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
-  List<Attribute> attributeList;
-  int countAttribute = 0;
 
   @override
   Widget build(BuildContext context) {
     var attributeInputController = TextEditingController();
-
     if (attributeList == null) {
       attributeList = List<Attribute>();
       _updateAttributeListView();
@@ -173,7 +173,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 debugPrint("One Attribute selected");
               });
 
-              JournalRouteState().navigateToEditEntry(
+
+              _navigateToEditEntry(
                   Entry(this.attributeList[position].title, '', '', ''),
                   'Add ${this.attributeList[position].title} Entry');
             },
@@ -195,7 +196,22 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
   }
 
+
+  // navigation for editing entry
+  void _navigateToEditEntry(Entry entry, String title) async {
+    bool result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return EditEntry(entry, title);
+    }));
+
+    if (result == true) {
+      _updateEntryListView();
+    }
+  }
+
   // updateAttributeListView depends on state
+  int countAttribute = 0;
+  List<Attribute> attributeList;
   void _updateAttributeListView() {
     DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
     final Future<Database> dbFuture =
@@ -211,5 +227,28 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         });
       });
     });
+  }
+
+
+  List<Entry> entryList;
+  int countEntry = 0;
+  // updateEntryListView depends on state
+  void _updateEntryListView() {
+    DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
+      entryListFuture.then((entryList) {
+        setState(() {
+          this.entryList = entryList;
+          this.countEntry = entryList.length;
+        });
+      });
+    });
+  }
+
+  // for yellow circle avatar
+  _getFirstLetter(String title) {
+    return title.substring(0, 2);
   }
 } // class

@@ -13,10 +13,10 @@ class JournalRoute extends StatefulWidget {
   JournalRouteState createState() => JournalRouteState();
 }
 
+
 class JournalRouteState extends State<JournalRoute> {
   List<Entry> entryList;
   int countEntry = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,6 @@ class JournalRouteState extends State<JournalRoute> {
             // Value
             subtitle: Text(this.entryList[position].value),
 
-
             // Time and comment
             trailing: Column(
               //mainAxisSize: MainAxisSize.min,
@@ -89,7 +88,7 @@ class JournalRouteState extends State<JournalRoute> {
   // navigation for editing entry
   void navigateToEditEntry(Entry entry, String title) async {
     bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
     }));
 
