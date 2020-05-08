@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 * */
 
 class EditAttribute extends StatefulWidget {
-
   final String appBarTitle;
   final Attribute attribute;
 
@@ -17,14 +16,13 @@ class EditAttribute extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-
     return EditAttributeState(this.attribute, this.appBarTitle);
   }
 }
 
 class EditAttributeState extends State<EditAttribute> {
-
-  DatabaseHelperAttribute helper = DatabaseHelperAttribute(); // probably needed?
+  DatabaseHelperAttribute helper =
+      DatabaseHelperAttribute(); // probably needed?
 
   String appBarTitle;
   Attribute attribute;
@@ -35,39 +33,32 @@ class EditAttributeState extends State<EditAttribute> {
 
   @override
   Widget build(BuildContext context) {
-
     TextStyle textStyle = Theme.of(context).textTheme.headline6;
 
     titleController.text = attribute.title;
 
     return WillPopScope(
 
-
-      //not sure what it is for
+        //not sure what it is for
         onWillPop: () {
           moveToLastRoute();
         },
-
 
         // APPBAR
 
         child: Scaffold(
           appBar: AppBar(
             title: Text(appBarTitle),
-            leading: IconButton(icon: Icon(
-                Icons.arrow_back),
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back),
                 onPressed: () {
                   moveToLastRoute();
-                }
-            ),
+                }),
           ),
-
           body: Padding(
             padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
             child: ListView(
               children: <Widget>[
-
-
                 // TITLE
 
                 Padding(
@@ -84,16 +75,12 @@ class EditAttributeState extends State<EditAttribute> {
                         labelText: 'Name of Label',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0)
-                        )
-                    ),
+                            borderRadius: BorderRadius.circular(5.0))),
                   ),
                 ),
 
-
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-
 
                   // SAVE BUTTON
 
@@ -116,8 +103,9 @@ class EditAttributeState extends State<EditAttribute> {
                         ),
                       ),
 
-                      Container(width: 5.0,),
-
+                      Container(
+                        width: 5.0,
+                      ),
 
                       // DELETE BUTTON
 
@@ -137,16 +125,12 @@ class EditAttributeState extends State<EditAttribute> {
                           },
                         ),
                       ),
-
                     ],
                   ),
                 ),
-
-
               ],
             ),
           ),
-
         ));
   }
 
@@ -155,15 +139,13 @@ class EditAttributeState extends State<EditAttribute> {
   }
 
   // Update the title of attribute object
-  void updateTitle(){
+  void updateTitle() {
     attribute.title = titleController.text;
   }
-
 
   // Save data to database
 
   void _save() async {
-
     // NAVIGATE
     moveToLastRoute();
 
@@ -172,26 +154,27 @@ class EditAttributeState extends State<EditAttribute> {
 
     // Update Operation: Update a attribute object and save it to database
     int result;
-    if (attribute.id != null) {  // Case 1: Update operation
+    if (attribute.id != null) {
+      // Case 1: Update operation
       result = await helper.updateAttribute(attribute);
-    } else { // Case 2: Insert Operation
+    } else {
+      // Case 2: Insert Operation
       result = await helper.insertAttribute(attribute);
     }
 
     // SUCCESS FAILURE STATUS DIALOG
-    if (result != 0) {  // Success
+    if (result != 0) {
+      // Success
       _showAlertDialog('Status', 'Attribute Saved Successfully');
-    } else {  // Failure
+    } else {
+      // Failure
       _showAlertDialog('Status', 'Problem Saving Attribute');
     }
-
   }
-
 
   // DELETE
 
   void _delete() async {
-
     moveToLastRoute();
 
     if (attribute.id == null) {
@@ -208,15 +191,10 @@ class EditAttributeState extends State<EditAttribute> {
   }
 
   void _showAlertDialog(String title, String message) {
-
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
       content: Text(message),
     );
-    showDialog(
-        context: context,
-        builder: (_) => alertDialog
-    );
+    showDialog(context: context, builder: (_) => alertDialog);
   }
-
 }

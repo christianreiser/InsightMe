@@ -40,25 +40,25 @@ class EditEntryState extends State<EditEntry> {
     dateController.text = entry.date;
 
     return WillPopScope(
-        onWillPop: () {
-          moveToLastScreen();
-        },
+      onWillPop: () {
+        moveToLastScreen();
+      },
 
-        // APPBAR
+      // APPBAR
 
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(appBarTitle),
-            leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  moveToLastScreen();
-                }),
-          ),
-          body: Padding(
-            padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
-            child: ListView(
-              children: <Widget>[
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(appBarTitle),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                moveToLastScreen();
+              }),
+        ),
+        body: Padding(
+          padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+          child: ListView(
+            children: <Widget>[
 /*                // Attribute: text box with attribute name -> not needed due to app bar
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -67,121 +67,129 @@ class EditEntryState extends State<EditEntry> {
                   )
                 ),*/
 
-                // Value
+              // Value
 
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextFormField(
-                    // TODO use input type validation for number:
-                    // https://www.freecodecamp.org/forum/t/how-to-validate-forms-and-user-input-the-easy-way-using-flutter/190377
-                    keyboardType: TextInputType.number,
-                    controller: valueController,
-                    style: textStyle,
-                    onChanged: (value) {
-                      debugPrint('Something changed in Value Text Field');
-                      updateValue(); // with valueController.text = entry.value
-                    },
-                    decoration: InputDecoration(
-                        labelText: 'Value',
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
+              Padding(
+                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                child: TextFormField(
+                  // TODO use input type validation for number:
+                  // https://www.freecodecamp.org/forum/t/how-to-validate-forms-and-user-input-the-easy-way-using-flutter/190377
+                  keyboardType: TextInputType.number,
+                  controller: valueController,
+                  style: textStyle,
+                  onChanged: (value) {
+                    debugPrint('Something changed in Value Text Field');
+                    updateValue(); // with valueController.text = entry.value
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Value',
+                    labelStyle: textStyle,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
                 ),
+              ),
 
-                // COMMENT
+              // COMMENT
 
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextField(
-                    controller: commentController,
-                    style: textStyle,
-                    onChanged: (value) {
-                      debugPrint('Something changed in Comment Text Field');
-                      updateComment();
-                    },
-                    decoration: InputDecoration(
-                        labelText: 'Comment',
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
+              Padding(
+                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                child: TextField(
+                  controller: commentController,
+                  style: textStyle,
+                  onChanged: (value) {
+                    debugPrint('Something changed in Comment Text Field');
+                    updateComment();
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Comment',
+                    labelStyle: textStyle,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
                 ),
+              ),
 
-                // DATE TIME
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextField(
-                    controller: TextEditingController(
-                        text: DateFormat.yMMMd()
-                            .add_Hms()
-                            .format(DateTime.now())),
-                    style: textStyle,
-                    onChanged: (value) {
-                      debugPrint('Something changed in date Text Field');
-                      updateDate();
-                    },
-                    decoration: InputDecoration(
-                        labelText: 'Time',
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
-                  ),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-
-                  // SAVE BUTTON
-
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Save',
-                            textScaleFactor: 1.5,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              debugPrint("Save button clicked");
-                              _save();
-                            });
-                          },
+              // DATE TIME
+              Padding(
+                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                child: TextField(
+                  controller: TextEditingController(
+                    text: DateFormat.yMMMd().add_Hms().format(
+                          DateTime.now(),
                         ),
-                      ),
-
-                      Container(
-                        width: 5.0,
-                      ),
-
-                      // DELETE BUTTON
-
-                      Expanded(
-                        child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Delete',
-                            textScaleFactor: 1.5,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              debugPrint("Delete button clicked");
-                              _delete();
-                            });
-                          },
-                        ),
-                      ),
-                    ],
+                  ),
+                  style: textStyle,
+                  onChanged: (value) {
+                    debugPrint('Something changed in date Text Field');
+                    updateDate();
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Time',
+                    labelStyle: textStyle,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+
+                // SAVE BUTTON
+
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        color: Theme.of(context).primaryColorDark,
+                        textColor: Theme.of(context).primaryColorLight,
+                        child: Text(
+                          'Save',
+                          textScaleFactor: 1.5,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            debugPrint("Save button clicked");
+                            _save();
+                          });
+                        },
+                      ),
+                    ),
+
+                    Container(
+                      width: 5.0,
+                    ),
+
+                    // DELETE BUTTON
+
+                    Expanded(
+                      child: RaisedButton(
+                        color: Theme.of(context).primaryColorDark,
+                        textColor: Theme.of(context).primaryColorLight,
+                        child: Text(
+                          'Delete',
+                          textScaleFactor: 1.5,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            debugPrint("Delete button clicked");
+                            _delete();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   // TODO remove method and call from scaffold_route.dart

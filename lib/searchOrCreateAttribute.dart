@@ -9,7 +9,6 @@ import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
 import 'journal_route.dart';
 
-
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
   @override
@@ -18,7 +17,6 @@ class SearchOrCreateAttribute extends StatefulWidget {
 
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
-
   @override
   Widget build(BuildContext context) {
     var attributeInputController = TextEditingController();
@@ -27,47 +25,46 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       _updateAttributeListView();
     }
     return Scaffold(
+      // APP BAR
+      appBar: AppBar(
+        title: Text("New manual entry"),
+      ),
 
-        // APP BAR
-        appBar: AppBar(
-          title: Text("New manual entry"),
-        ),
-
-        // FRAGMENT
-        // Input field search create attribute
-        body: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Column(children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    //height: ,
-                    child: // Input text field for search or create attribute
-                        TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'search or create new label',
-                        suffixIcon: IconButton(
-                          onPressed: () => attributeInputController.clear(),
-                          icon: Icon(Icons.clear),
-                        ),
-                      ),
-                      controller: attributeInputController,
-                      onChanged: (value) {
-                        //debugPrint('Something changed search or create new attribute');
-                        debugPrint(
-                            "Second text field: ${attributeInputController.text}");
-                        //print(TextEditingController.text)
-                        /*                       TODO:
+      // FRAGMENT
+      // Input field search create attribute
+      body: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                //height: ,
+                child: // Input text field for search or create attribute
+                    TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'search or create new label',
+                    suffixIcon: IconButton(
+                      onPressed: () => attributeInputController.clear(),
+                      icon: Icon(Icons.clear),
+                    ),
+                  ),
+                  controller: attributeInputController,
+                  onChanged: (value) {
+                    //debugPrint('Something changed search or create new attribute');
+                    debugPrint(
+                        "Second text field: ${attributeInputController.text}");
+                    //print(TextEditingController.text)
+                    /*                       TODO:
                          if textfield is not empty and content is not in list:
                             show add button
                           */
-                        //int lenAttributeInput = attributeInputController.text.length;
+                    //int lenAttributeInput = attributeInputController.text.length;
 
-                        /*if ()lenAttributeInput < 0) {
+                    /*if ()lenAttributeInput < 0) {
                           debugPrint("Second text field: ${attributeInputController.text}");}*/
 
-                        /*                        OR
+                    /*                        OR
                         search string in list of attributes
                          if found partially
                             if NOT matched exactly:
@@ -75,56 +72,58 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                                 display create new attribute button
                             else if: exact match:
                                 hide create new attribute button*/
-                      },
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.all(4.0),
-                  ),
-
-                  // Save button search create attribute
-                  Container(
-                    child: RaisedButton(
-                      color: Theme.of(context).primaryColorDark,
-                      textColor: Theme.of(context).primaryColorLight,
-                      child: Text(
-                        'Create',
-                        textScaleFactor: 1.5,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          debugPrint("Create button clicked");
-                        });
-                        //EditAttributeState._save() TODO save directly
-                        _navigateToEditAttribute(
-                            // attributeInputController.text is the Label
-                            // name which is automatically put in in add
-                            // attribute filed.
-                            // 'Add Attribute' is the App Bar name
-                            // TODO mby here default date
-                            Attribute(attributeInputController.text, ''),
-                            'Add Attribute');
-                      },
-                    ),
-                  ),
-                ],
+                  },
+                ),
               ),
 
-              // spacing between boxes
-              SizedBox(height: 4),
+              Padding(
+                padding: EdgeInsets.all(4.0),
+              ),
 
-              // List of previously used attributes
-              Flexible(
-                child: RefreshIndicator(
-                  //key: refreshKey,
-                  onRefresh: () async {
-                    _updateAttributeListView();
+              // Save button search create attribute
+              Container(
+                child: RaisedButton(
+                  color: Theme.of(context).primaryColorDark,
+                  textColor: Theme.of(context).primaryColorLight,
+                  child: Text(
+                    'Create',
+                    textScaleFactor: 1.5,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      debugPrint("Create button clicked");
+                    });
+                    //EditAttributeState._save() TODO save directly
+                    _navigateToEditAttribute(
+                        // attributeInputController.text is the Label
+                        // name which is automatically put in in add
+                        // attribute filed.
+                        // 'Add Attribute' is the App Bar name
+                        // TODO mby here default date
+                        Attribute(attributeInputController.text, ''),
+                        'Add Attribute');
                   },
-                  child: _getAttributeListView(),
                 ),
-              )
-            ])));
+              ),
+            ],
+          ),
+
+          // spacing between boxes
+          SizedBox(height: 4),
+
+          // List of previously used attributes
+          Flexible(
+            child: RefreshIndicator(
+              //key: refreshKey,
+              onRefresh: () async {
+                _updateAttributeListView();
+              },
+              child: _getAttributeListView(),
+            ),
+          )
+        ]),
+      ),
+    );
   } // widget
 
   // Attribute LIST
@@ -140,14 +139,17 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
               child: Text(
-                  JournalRouteState()
-                      .getFirstLetter(this.attributeList[position].title),
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+                JournalRouteState()
+                    .getFirstLetter(this.attributeList[position].title),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
 
             // TITLE
-            title: Text(this.attributeList[position].title,
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(
+              this.attributeList[position].title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
 
             // EDIT ICON
             trailing: Row(
@@ -173,7 +175,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 debugPrint("One Attribute selected");
               });
 
-
               _navigateToEditEntry(
                   Entry(this.attributeList[position].title, '', '', ''),
                   'Add ${this.attributeList[position].title} Entry');
@@ -196,13 +197,14 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
   }
 
-
   // navigation for editing entry
   void _navigateToEditEntry(Entry entry, String title) async {
-    bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EditEntry(entry, title);
-    }));
+    bool result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return EditEntry(entry, title);
+      }),
+    );
 
     if (result == true) {
       _updateEntryListView();
@@ -229,7 +231,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     });
   }
 
-
   List<Entry> entryList;
   int countEntry = 0;
   // updateEntryListView depends on state
@@ -247,8 +248,4 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     });
   }
 
-  // for yellow circle avatar
-  _getFirstLetter(String title) {
-    return title.substring(0, 2);
-  }
 } // class

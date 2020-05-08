@@ -35,9 +35,12 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               label: "New Entry",
               onTap: () {
                 print("nav to add manually");
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return SearchOrCreateAttribute();
-                }));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return SearchOrCreateAttribute();
+                  }),
+                );
               }),
 
           // second speed dial button - no function yet

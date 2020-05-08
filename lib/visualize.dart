@@ -42,9 +42,15 @@ class _VisualizeState extends State<Visualize> {
     List<DateTime> dateList = [];
 
     for (int i = 0; i < countEntryFiltered; i++) {
-      valueList.add(double.parse(this.filteredEntryList[i].value));
+      valueList.add(
+        double.parse(this.filteredEntryList[i].value),
+      );
       // TODO parsing to date type needed?
-      dateList.add(DateTime.parse((this.filteredEntryList[i].date)));
+      dateList.add(
+        DateTime.parse(
+          (this.filteredEntryList[i].date),
+        ),
+      );
     }
 
     // update if empty

@@ -13,7 +13,6 @@ class JournalRoute extends StatefulWidget {
   JournalRouteState createState() => JournalRouteState();
 }
 
-
 class JournalRouteState extends State<JournalRoute> {
   List<Entry> entryList;
   int countEntry = 0;
@@ -33,7 +32,6 @@ class JournalRouteState extends State<JournalRoute> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
-
 // ENTRY LIST
   ListView _getEntryListView() {
     return ListView.builder(
@@ -43,17 +41,20 @@ class JournalRouteState extends State<JournalRoute> {
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
-
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
-              child: Text(getFirstLetter(this.entryList[position].title),
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              child: Text(
+                getFirstLetter(this.entryList[position].title),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
 
             // Label
-            title: Text(this.entryList[position].title,
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(
+              this.entryList[position].title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
 
             // Value
             subtitle: Text(this.entryList[position].value),
@@ -78,12 +79,10 @@ class JournalRouteState extends State<JournalRoute> {
     );
   }
 
-
   // for yellow circle avatar
   getFirstLetter(String title) {
     return title.substring(0, 1);
   }
-
 
   // navigation for editing entry
   void navigateToEditEntry(Entry entry, String title) async {
@@ -96,7 +95,6 @@ class JournalRouteState extends State<JournalRoute> {
       _updateEntryListView();
     }
   }
-
 
   // updateEntryListView depends on state
   void _updateEntryListView() {
