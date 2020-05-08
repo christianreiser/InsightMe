@@ -17,6 +17,7 @@ class JournalRouteState extends State<JournalRoute> {
   List<Entry> entryList;
   int countEntry = 0;
 
+
   @override
   Widget build(BuildContext context) {
     if (entryList == null) {
@@ -32,6 +33,7 @@ class JournalRouteState extends State<JournalRoute> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
+
 // ENTRY LIST
   ListView _getEntryListView() {
     return ListView.builder(
@@ -41,6 +43,7 @@ class JournalRouteState extends State<JournalRoute> {
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
+
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
@@ -54,6 +57,7 @@ class JournalRouteState extends State<JournalRoute> {
 
             // Value
             subtitle: Text(this.entryList[position].value),
+
 
             // Time and comment
             trailing: Column(
@@ -75,15 +79,17 @@ class JournalRouteState extends State<JournalRoute> {
     );
   }
 
+
   // for yellow circle avatar
   getFirstLetter(String title) {
     return title.substring(0, 1);
   }
 
+
   // navigation for editing entry
   void navigateToEditEntry(Entry entry, String title) async {
     bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
     }));
 
@@ -91,6 +97,7 @@ class JournalRouteState extends State<JournalRoute> {
       _updateEntryListView();
     }
   }
+
 
   // updateEntryListView depends on state
   void _updateEntryListView() {
