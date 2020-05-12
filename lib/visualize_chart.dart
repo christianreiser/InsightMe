@@ -20,14 +20,18 @@ class _VisualizeState extends State<Visualize> {
 
   // updateEntryListView depends on state
   void _updateFilteredEntryListView() {
+    // TODO unnecessarily complicated from db to chart:
+    // TODO from map(db) to list(helper) to other list(here)
+    // TODO refactoring
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture =
-          databaseHelperEntry.getFilteredEntryList('Productivity');
+      Future<List<Entry>> entryListFuture = databaseHelperEntry
+          .getFilteredEntryList('Productivity');
       entryListFuture.then((filteredEntryList) {
         setState(() {
           this.filteredEntryList = filteredEntryList;
           this.countEntryFiltered = filteredEntryList.length;
+          //debugPrint('this.countEntryFiltered1 ${this.countEntryFiltered}');
         });
       });
     });
@@ -41,6 +45,7 @@ class _VisualizeState extends State<Visualize> {
     // TODO refactoring
     List<double> valueList = [];
     List<DateTime> dateList = [];
+    //debugPrint('this.countEntryFiltered2 ${this.countEntryFiltered}');
 
     for (int i = 0; i < countEntryFiltered; i++) {
       valueList.add(
@@ -58,6 +63,9 @@ class _VisualizeState extends State<Visualize> {
     if (valueList.isEmpty) {
       _updateFilteredEntryListView();
     }
+    //else { // TODO else doesnt work. try ? and :
+
+
     // create the lineCharts
     Map<DateTime, double> dateTimeMap = {};
     dateTimeMap[dateList[0]] = 1.0; //TODO removeme
@@ -95,3 +103,4 @@ class _VisualizeState extends State<Visualize> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }
+//}

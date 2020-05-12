@@ -14,7 +14,7 @@ class DatabaseHelperAttribute {
 
   String attributeTable = 'attribute_table';
   String colId = 'id';
-  String colTitle = 'title';
+  static final String colTitle = 'title';
   String colDate = 'date';
 
   DatabaseHelperAttribute._createInstance(); // Named constructor to create instance of DatabaseHelperAttribute
@@ -113,5 +113,8 @@ class DatabaseHelperAttribute {
 
     return attributeList;
   }
+
+
+
 
 }

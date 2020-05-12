@@ -9,13 +9,13 @@ class DatabaseHelperEntry {
       _databaseHelperEntry; // Singleton DatabaseHelperEntry
   static Database _database; // Singleton Database
 
-  static final entryTable = 'entry_table';
-  static final colId = 'id';
-  static final colTitle =
+  static final String entryTable = 'entry_table';
+  static final String colId = 'id';
+  static final String colTitle =
       'title'; // TODO rename to attribute also for attribute_helper
-  static final colValue = 'value';
-  static final colComment = 'comment';
-  static final colDate = 'date'; // TODO rename to time
+  static final String colValue = 'value';
+  static final String colComment = 'comment';
+  static final String colDate = 'date'; // TODO rename to time
 
   DatabaseHelperEntry._createInstance(); // Named constructor to create instance of DatabaseHelperEntry
 
