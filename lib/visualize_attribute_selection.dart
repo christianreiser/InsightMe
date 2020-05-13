@@ -16,7 +16,8 @@ class DropDown extends StatefulWidget {
 
 
 class DropDownState extends State<DropDown> {
-  // List of companies interface for companies
+  bool userSelection = false;
+// List of companies interface for companies
   //List<Company> _companies = Company.getCompanies();  // 2. get company list
   List<DropdownMenuItem<Attribute>> _dropdownMenuItems;  // ini item list
   Attribute _selectedCompany;
@@ -32,7 +33,7 @@ class DropDownState extends State<DropDown> {
 
 
     // updateEntryListView depends on state
-  Future<List<DropdownMenuItem<Attribute>>> _getAttributeListNew() async {
+  Future<List<DropdownMenuItem<Attribute>>> _getAttributeListNew(userSelection) async {
       // TODO unnecessarily complicated from db to chart:
       // TODO from map(db) to list(helper) to other list(here)
       // TODO refactoring
@@ -47,8 +48,12 @@ class DropDownState extends State<DropDown> {
       // init state
       _dropdownMenuItems = buildDropdownMenuItems(attributeList); // 3b. all items of list
       _selectedCompany = _dropdownMenuItems[0].value; // 4a. default company (apple)
-      debugPrint('future done!');
-      debugPrint('_dropdownMenuItems $_dropdownMenuItems');
+      debugPrint('userSelection $userSelection');
+//      if (userSelection == false) {
+//        _selectedCompany = _dropdownMenuItems[0].value; // 4a. default company (apple)
+//      }
+      //debugPrint('future done!');
+      //debugPrint('_selectedCompany bad ${_dropdownMenuItems[0].value}');
 
       return _dropdownMenuItems;
 
@@ -66,6 +71,7 @@ class DropDownState extends State<DropDown> {
   List<DropdownMenuItem<Attribute>> buildDropdownMenuItems(List attributes) {
     List<DropdownMenuItem<Attribute>> items = List();
     for (Attribute attribute in attributes) {
+      debugPrint('attribute ${attribute.title}');
       items.add(
         DropdownMenuItem(
           value: attribute, // The value to return if selected by user
@@ -78,28 +84,20 @@ class DropDownState extends State<DropDown> {
 
   onChangeDropdownItem(Attribute selectedCompany) {
     setState(() {
+      debugPrint('_selectedCompany good ${selectedCompany.title}');
       _selectedCompany = selectedCompany;
     });
+    userSelection = true;
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getAttributeListNew(),
+      future: _getAttributeListNew(userSelection),
       builder: (context, snapshot) {
-        debugPrint('snapshot.connectionState ${snapshot.connectionState}');
+        //debugPrint('snapshot.connectionState ${snapshot.connectionState}');
 
-        if (snapshot.hasError) {
-          debugPrint('hasError');
-          return Text(
-            'E',
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline1,
-          );
-
-        } else if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.done) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +114,7 @@ class DropDownState extends State<DropDown> {
               SizedBox(
                 height: 20.0,
               ),
-              //Text('Selected: ${_selectedCompany.value}'),
+              Text('Selected: ${_selectedCompany.title}'),
             ],
           );
 
