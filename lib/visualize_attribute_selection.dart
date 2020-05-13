@@ -32,30 +32,29 @@ class DropDownState extends State<DropDown> {
 
 
     // updateEntryListView depends on state
-    Future<List<Attribute>> _getAttributeListNew() {
+  Future<List<DropdownMenuItem<Attribute>>> _getAttributeListNew() async {
       // TODO unnecessarily complicated from db to chart:
       // TODO from map(db) to list(helper) to other list(here)
       // TODO refactoring
 
-
       // in the future there will be dbFuture
-      final Future<Database> dbFuture = databaseHelperAttribute.initializeDatabase();
-      dbFuture.then((database) {  // when dbFuture exists database is returned and do
-        Future<List<Attribute>> attributeListFuture = databaseHelperAttribute
-            .getAttributeList();
-        attributeListFuture.then((attributeList) {
+      final Database dbFuture = await databaseHelperAttribute.initializeDatabase();
+      final Database database = dbFuture;  // when dbFuture exists database is returned and do
+      List<Attribute> attributeListFuture = await databaseHelperAttribute.getAttributeList();
+      List<Attribute> attributeList = attributeListFuture;
           //this.attributeList = attributeList;
 
+      // init state
+      _dropdownMenuItems = buildDropdownMenuItems(attributeList); // 3b. all items of list
+      _selectedCompany = _dropdownMenuItems[0].value; // 4a. default company (apple)
+      debugPrint('future done!');
+      debugPrint('_dropdownMenuItems $_dropdownMenuItems');
 
-          // init state
-          _dropdownMenuItems = buildDropdownMenuItems(attributeList); // 3b. all items of list
-          _selectedCompany = _dropdownMenuItems[0].value; // 4a. default company (apple)
-          debugPrint('future done!');
-          debugPrint('_dropdownMenuItems $_dropdownMenuItems');
-        });
-      });
-      return databaseHelperAttribute.getAttributeList();
-    }
+      return _dropdownMenuItems;
+
+  }
+
+
 
 
 
@@ -85,7 +84,7 @@ class DropDownState extends State<DropDown> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Attribute>>(
+    return FutureBuilder(
       future: _getAttributeListNew(),
       builder: (context, snapshot) {
         debugPrint('snapshot.connectionState ${snapshot.connectionState}');
@@ -101,7 +100,6 @@ class DropDownState extends State<DropDown> {
           );
 
         } else if (snapshot.connectionState == ConnectionState.done) {
-          debugPrint('hasData');
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -123,32 +121,10 @@ class DropDownState extends State<DropDown> {
           );
 
         } else {
-          debugPrint('loading');
           return CircularProgressIndicator();
         } // snapshot is current state of future
       },
     );
-
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text("Select a company"),
-        SizedBox(
-          height: 20.0,
-        ),
-        DropdownButton(
-          value: _selectedCompany,  // selected item
-          items: _dropdownMenuItems,  // 4. list of all items
-          onChanged: onChangeDropdownItem,  // setState new selected company
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        //Text('Selected: ${_selectedCompany.value}'),
-      ],
-    );
-
   }
 }
 
