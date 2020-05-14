@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lifetracker4/visualize_attribute_selection.dart';
-import 'package:sqflite/sqflite.dart';
 import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
@@ -23,8 +22,6 @@ class _VisualizeState extends State<Visualize> {
     // TODO unnecessarily complicated from db to chart:
     // TODO from map(db) to list(helper) to other list(here)
     // TODO refactoring
-    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
-    Database database = await dbFuture;
     Future<List<Entry>> entryListFuture = databaseHelperEntry.getFilteredEntryList('Productivity'); //TODO selectedAttribute
     filteredEntryList = await entryListFuture;
     setState(() {
@@ -88,7 +85,7 @@ class _VisualizeState extends State<Visualize> {
               children: <Widget>[
                 DropDown(),
                 //Padding(padding: EdgeInsets.all(4.0)),
-                //DropDown(),
+                DropDown(),
               ],
             ),
             Expanded(
