@@ -83,9 +83,9 @@ class _VisualizeState extends State<Visualize> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                DropDown(),
+                DropDown('Mood'),
                 //Padding(padding: EdgeInsets.all(4.0)),
-                DropDown(),
+                DropDown('Productivity'),
               ],
             ),
             Expanded(

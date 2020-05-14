@@ -4,7 +4,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
 import 'package:lifetracker4/visualize_chart.dart';
-import 'package:lifetracker4/visualize_attribute_selection.dart';
 import 'journal_route.dart';
 import 'searchOrCreateAttribute.dart';
 
@@ -48,13 +47,14 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               backgroundColor: Colors.grey,
               child: Icon(Icons.timer),
               label: "-DropDown-",
-              onTap: () {
-                print("DropDown");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DropDown()),
-                ); // Navigate to newManualEntry route when tapped.
-              }),
+//              onTap: () {
+//                print("DropDown");
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(builder: (context) => DropDown(defaultAttribute)),
+//                ); // Navigate to newManualEntry route when tapped.
+//              }
+              ),
         ],
       ),
 

@@ -4,19 +4,23 @@ import 'Database/database_helper_attribute.dart';
 
 
 class DropDown extends StatefulWidget {
-  DropDown() : super();
+  final String defaultAttribute1;
 
-  final String title = "DropDown Demo";
+  DropDown(this.defaultAttribute1) : super();
 
   @override
-  DropDownState createState() => DropDownState();
+  DropDownState createState() => DropDownState(defaultAttribute1);
 }
 
 
 class DropDownState extends State<DropDown> {
+  String selectedAttribute;
+
+  DropDownState(this.selectedAttribute);
+
   List<DropdownMenuItem<String>> _dropdownMenuItems;  // ini item list
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
-  String selectedAttribute;
+
 
 
   // get Attributes from DB into a future list
@@ -34,7 +38,7 @@ class DropDownState extends State<DropDown> {
       }
 
       _dropdownMenuItems = buildDropdownMenuItems(itemList); // 3b. all items of list
-
+      debugPrint('selectedAttribute ${selectedAttribute}');
       return itemList;
   }
 
