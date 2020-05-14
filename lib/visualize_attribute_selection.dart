@@ -16,7 +16,7 @@ class DropDown extends StatefulWidget {
 class DropDownState extends State<DropDown> {
   List<DropdownMenuItem<String>> _dropdownMenuItems;  // ini item list
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
-  String _selectedAttribute;
+  String selectedAttribute;
 
 
   // get Attributes from DB into a future list
@@ -53,9 +53,9 @@ class DropDownState extends State<DropDown> {
     return items;
   }
 
-  onChangeDropdownItem(String selectedAttribute) {
+  onChangeDropdownItem(String selectedAttributeNew) {
     setState(() {
-      _selectedAttribute = selectedAttribute;
+      selectedAttribute = selectedAttributeNew;
     });
   }
 
@@ -75,7 +75,7 @@ class DropDownState extends State<DropDown> {
               ),
               DropdownButton<String>(
                 hint: Text('select label'),  // widget shown before selection
-                value: _selectedAttribute,  // selected item
+                value: selectedAttribute,  // selected item
                 items: _dropdownMenuItems,  // 4. list of all items
                 onChanged: onChangeDropdownItem,  // setState new selected attribute
               ),

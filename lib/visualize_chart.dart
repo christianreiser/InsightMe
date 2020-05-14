@@ -25,7 +25,7 @@ class _VisualizeState extends State<Visualize> {
     // TODO refactoring
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
     Database database = await dbFuture;
-    Future<List<Entry>> entryListFuture = databaseHelperEntry.getFilteredEntryList('Productivity');
+    Future<List<Entry>> entryListFuture = databaseHelperEntry.getFilteredEntryList('Productivity'); //TODO selectedAttribute
     filteredEntryList = await entryListFuture;
     setState(() {
       this.filteredEntryList = filteredEntryList;
@@ -88,7 +88,7 @@ class _VisualizeState extends State<Visualize> {
               children: <Widget>[
                 DropDown(),
                 //Padding(padding: EdgeInsets.all(4.0)),
-                DropDown(),
+                //DropDown(),
               ],
             ),
             Expanded(
