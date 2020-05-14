@@ -19,11 +19,11 @@ class DropDownState extends State<DropDown> {
   bool userSelection = false;
 // List of companies interface for companies
   //List<Company> _companies = Company.getCompanies();  // 2. get company list
-  List<DropdownMenuItem<Attribute>> _dropdownMenuItems;  // ini item list
-  Attribute _selectedCompany;
+  List<DropdownMenuItem<String>> _dropdownMenuItems;  // ini item list
+  String _selectedCompany;
 
 
-  int countAttribute = 0;
+  //int countAttribute = 0;
   //List<Attribute> attributeList;
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
 
@@ -33,29 +33,25 @@ class DropDownState extends State<DropDown> {
 
 
     // updateEntryListView depends on state
-  Future<List<DropdownMenuItem<Attribute>>> _getAttributeListNew(userSelection) async {
+  Future<List<String>> _getAttributeListNew() async {
+
       // TODO unnecessarily complicated from db to chart:
       // TODO from map(db) to list(helper) to other list(here)
       // TODO refactoring
 
       // in the future there will be dbFuture
-      final Database dbFuture = await databaseHelperAttribute.initializeDatabase();
-      final Database database = dbFuture;  // when dbFuture exists database is returned and do
-      List<Attribute> attributeListFuture = await databaseHelperAttribute.getAttributeList();
-      List<Attribute> attributeList = attributeListFuture;
-          //this.attributeList = attributeList;
+      //final Database dbFuture = await databaseHelperAttribute.initializeDatabase();
+      List<Attribute> attributeList = await databaseHelperAttribute.getAttributeList();
+      List<String> itemList = List(attributeList.length);
+      for (int ele = 0; ele < attributeList.length; ele++) {
+        itemList[ele] = attributeList[ele].title;
+      }
+      debugPrint('itemList: $itemList');
 
-      // init state
-      _dropdownMenuItems = buildDropdownMenuItems(attributeList); // 3b. all items of list
-      _selectedCompany = _dropdownMenuItems[0].value; // 4a. default company (apple)
-      debugPrint('userSelection $userSelection');
-//      if (userSelection == false) {
-//        _selectedCompany = _dropdownMenuItems[0].value; // 4a. default company (apple)
-//      }
-      //debugPrint('future done!');
-      //debugPrint('_selectedCompany bad ${_dropdownMenuItems[0].value}');
 
-      return _dropdownMenuItems;
+      _dropdownMenuItems = buildDropdownMenuItems(itemList); // 3b. all items of list
+
+      return itemList;
 
   }
 
@@ -66,38 +62,45 @@ class DropDownState extends State<DropDown> {
 
 
 
-
-  // 3a. all items in list
-  List<DropdownMenuItem<Attribute>> buildDropdownMenuItems(List attributes) {
-    List<DropdownMenuItem<Attribute>> items = List();
-    for (Attribute attribute in attributes) {
-      debugPrint('attribute ${attribute.title}');
+  // 3a. all items in list.value
+  List<DropdownMenuItem<String>> buildDropdownMenuItems(List itemList) {
+    List<DropdownMenuItem<String>> items = List();
+    for (String item in itemList) {
+      debugPrint('item ${item}');
       items.add(
         DropdownMenuItem(
-          value: attribute, // The value to return if selected by user
-          child: Text(attribute.title), // one item
+          value: item, // The value to return if selected by user
+          child: Text(item), // one item
         ),
       );
     }
+    debugPrint('2 items: $items');
     return items;
   }
 
-  onChangeDropdownItem(Attribute selectedCompany) {
+  onChangeDropdownItem(String selectedCompany) {
     setState(() {
-      debugPrint('_selectedCompany good ${selectedCompany.title}');
       _selectedCompany = selectedCompany;
+      //debugPrint('selectedCompany.title good ${selectedCompany.title}');
+      debugPrint('selectedCompany good ${selectedCompany}');
+      //debugPrint('1_selectedCompany.title good ${_selectedCompany.title}');
+      debugPrint('_selectedCompany good ${_selectedCompany}');
     });
-    userSelection = true;
+    debugPrint('1');
+    //debugPrint('2_selectedCompany.title good ${_selectedCompany.title}');
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('3');
     return FutureBuilder(
-      future: _getAttributeListNew(userSelection),
+      future: _getAttributeListNew(),
       builder: (context, snapshot) {
-        //debugPrint('snapshot.connectionState ${snapshot.connectionState}');
-
+        debugPrint('snapshot.connectionState ${snapshot.connectionState}');
+        //debugPrint('4 _selectedCompany $_selectedCompany');
+        //debugPrint('4 _selectedCompany.title ${_selectedCompany.title}');
         if (snapshot.connectionState == ConnectionState.done) {
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +109,7 @@ class DropDownState extends State<DropDown> {
               SizedBox(
                 height: 20.0,
               ),
-              DropdownButton(
+              DropdownButton<String>(
                 value: _selectedCompany,  // selected item
                 items: _dropdownMenuItems,  // 4. list of all items
                 onChanged: onChangeDropdownItem,  // setState new selected company
@@ -114,7 +117,7 @@ class DropDownState extends State<DropDown> {
               SizedBox(
                 height: 20.0,
               ),
-              Text('Selected: ${_selectedCompany.title}'),
+              //Text('Selected: ${_selectedCompany.title}'),
             ],
           );
 

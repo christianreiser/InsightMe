@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lifetracker4/tmp.dart';
 import 'package:lifetracker4/visualize_attribute_selection.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Database/database_helper_entry.dart';
@@ -91,7 +92,7 @@ class _VisualizeState extends State<Visualize> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                DropDown(),
+                DropDown2(),
                 //Padding(padding: EdgeInsets.all(4.0)),
                 DropDown(),
               ],
