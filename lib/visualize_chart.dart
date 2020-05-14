@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lifetracker4/tmp.dart';
 import 'package:lifetracker4/visualize_attribute_selection.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Database/database_helper_entry.dart';
@@ -20,21 +19,17 @@ class _VisualizeState extends State<Visualize> {
   DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
   // updateEntryListView depends on state
-  void _updateFilteredEntryListView() {
+  void _updateFilteredEntryListView() async {
     // TODO unnecessarily complicated from db to chart:
     // TODO from map(db) to list(helper) to other list(here)
     // TODO refactoring
     final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = databaseHelperEntry
-          .getFilteredEntryList('Productivity');
-      entryListFuture.then((filteredEntryList) {
-        setState(() {
-          this.filteredEntryList = filteredEntryList;
-          this.countEntryFiltered = filteredEntryList.length;
-          //debugPrint('this.countEntryFiltered1 ${this.countEntryFiltered}');
-        });
-      });
+    Database database = await dbFuture;
+    Future<List<Entry>> entryListFuture = databaseHelperEntry.getFilteredEntryList('Productivity');
+    filteredEntryList = await entryListFuture;
+    setState(() {
+      this.filteredEntryList = filteredEntryList;
+      this.countEntryFiltered = filteredEntryList.length;
     });
   }
 
@@ -46,7 +41,6 @@ class _VisualizeState extends State<Visualize> {
     // TODO refactoring
     List<double> valueList = [];
     List<DateTime> dateList = [];
-    //debugPrint('this.countEntryFiltered2 ${this.countEntryFiltered}');
 
     for (int i = 0; i < countEntryFiltered; i++) {
       valueList.add(
