@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'Database/attribute.dart';
 import 'Database/database_helper_attribute.dart';
 
-
 class DropDown extends StatefulWidget {
   final String defaultAttribute1;
 
@@ -13,35 +12,35 @@ class DropDown extends StatefulWidget {
 }
 
 
+
 class DropDownState extends State<DropDown> {
   String selectedAttribute;
 
   DropDownState(this.selectedAttribute);
 
-  List<DropdownMenuItem<String>> _dropdownMenuItems;  // ini item list
+  List<DropdownMenuItem<String>> _dropdownMenuItems; // ini item list
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
-
 
 
   // get Attributes from DB into a future list
   Future<List<String>> _getAttributeListNew() async {
+    // TODO unnecessarily complicated from db to chart:
+    // TODO from map(db) to list(helper) to other list(here)
+    // TODO refactoring
 
-      // TODO unnecessarily complicated from db to chart:
-      // TODO from map(db) to list(helper) to other list(here)
-      // TODO refactoring
+    // in the future there will be dbFuture
+    List<Attribute> attributeList =
+        await databaseHelperAttribute.getAttributeList();
+    List<String> itemList = List(attributeList.length);
+    for (int ele = 0; ele < attributeList.length; ele++) {
+      itemList[ele] = attributeList[ele].title;
+    }
 
-      // in the future there will be dbFuture
-      List<Attribute> attributeList = await databaseHelperAttribute.getAttributeList();
-      List<String> itemList = List(attributeList.length);
-      for (int ele = 0; ele < attributeList.length; ele++) {
-        itemList[ele] = attributeList[ele].title;
-      }
-
-      _dropdownMenuItems = buildDropdownMenuItems(itemList); // 3b. all items of list
-      debugPrint('selectedAttribute ${selectedAttribute}');
-      return itemList;
+    _dropdownMenuItems =
+        buildDropdownMenuItems(itemList); // 3b. all items of list
+    debugPrint('selectedAttribute ${selectedAttribute}');
+    return itemList;
   }
-
 
   // build Dropdown Menu Items
   List<DropdownMenuItem<String>> buildDropdownMenuItems(List itemList) {
@@ -69,7 +68,6 @@ class DropDownState extends State<DropDown> {
       future: _getAttributeListNew(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -78,22 +76,21 @@ class DropDownState extends State<DropDown> {
                 height: 10.0,
               ),
               DropdownButton<String>(
-                hint: Text('select label'),  // widget shown before selection
-                value: selectedAttribute,  // selected item
-                items: _dropdownMenuItems,  // 4. list of all items
-                onChanged: onChangeDropdownItem,  // setState new selected attribute
+                hint: Text('select label'), // widget shown before selection
+                value: selectedAttribute, // selected item
+                items: _dropdownMenuItems, // 4. list of all items
+                onChanged:
+                    onChangeDropdownItem, // setState new selected attribute
               ),
               SizedBox(
                 height: 10.0,
               ),
             ],
           );
-
         } else {
-          return CircularProgressIndicator();  // when Future doesn't get data
+          return CircularProgressIndicator(); // when Future doesn't get data
         } // snapshot is current state of future
       },
     );
   }
 }
-
