@@ -11,8 +11,6 @@ class DropDown extends StatefulWidget {
   DropDownState createState() => DropDownState(defaultAttribute1);
 }
 
-
-
 class DropDownState extends State<DropDown> {
   String selectedAttribute;
 
@@ -20,7 +18,6 @@ class DropDownState extends State<DropDown> {
 
   List<DropdownMenuItem<String>> _dropdownMenuItems; // ini item list
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
-
 
   // get Attributes from DB into a future list
   Future<List<String>> _getAttributeListNew() async {
@@ -63,27 +60,22 @@ class DropDownState extends State<DropDown> {
       future: _getAttributeListNew(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: 10.0,
-              ),
-              DropdownButton<String>(
-                hint: Text('select label'), // widget shown before selection
-                value: selectedAttribute, // selected item
-                items: _dropdownMenuItems, // 4. list of all items
-                onChanged:
-                    onChangeDropdownItem, // setState new selected attribute
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-            ],
+          return Expanded(  // needed
+            child: DropdownButton<String>(
+              // isExpanded: true is needed due to flutter bug:
+              // https://stackoverflow.com/questions/47032262/flutter-dropdownbutton-overflow
+              isExpanded: true,
+                  //hint: Text('select label'), // widget shown before selection
+                  value: selectedAttribute, // selected item
+                  items: _dropdownMenuItems, // 4. list of all items
+                  onChanged:
+                      onChangeDropdownItem, // setState new selected attribute
+                ),
+
           );
         } else {
-          return CircularProgressIndicator(); // when Future doesn't get data
+          return Expanded(
+              child: CircularProgressIndicator(),); // when Future doesn't get data
         } // snapshot is current state of future
       },
     );

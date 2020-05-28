@@ -18,7 +18,6 @@ class _ChartState extends State<Chart> {
 
   // get data from db delayed and set as state
   Future<bool> _getDateTimeMap() async {
-
     List<Entry> filteredEntryList = await databaseHelperEntry
         .getFilteredEntryList('Productivity'); //TODO selectedAttribute
     List<DateTime> dateList = [];
@@ -49,14 +48,13 @@ class _ChartState extends State<Chart> {
 
   @override
   Widget build(BuildContext context) {
-
-
 /*    setState(() {
       this.filteredEntryList = filteredEntryList;
       this.countEntryFiltered = filteredEntryList.length;
     });*/
 
-    return FutureBuilder(
+    return Expanded(
+      child: FutureBuilder(
         future: _getDateTimeMap(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -64,6 +62,8 @@ class _ChartState extends State<Chart> {
           } else {
             return CircularProgressIndicator(); // when Future doesn't get data
           } // snapshot is current state of future
-        }); // This trailing comma makes auto-formatting nicer for build methods.
+        },
+      ),
+    ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }
