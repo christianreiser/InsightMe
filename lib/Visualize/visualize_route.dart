@@ -30,9 +30,9 @@ class _VisualizeState extends State<Visualize> {
                 // start: child as close to the start of the main axis as possible
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  DropDown('Mood'),
+                  DropDown(true), // true/false do discriminate first and second
                   //Padding(padding: EdgeInsets.all(4.0)),
-                  DropDown('Productivity'),
+                  DropDown(false),// true/false do discriminate first and second
                 ],
               ),
               SizedBox(height: 20.0), // spacing between dropdown and chart

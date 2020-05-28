@@ -5,18 +5,18 @@ import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
 
 class DropDown extends StatefulWidget {
-  final String defaultAttribute1;
+  final bool boolFirst;
 
-  DropDown(this.defaultAttribute1) : super();
+  DropDown(this.boolFirst) : super();
 
   @override
-  DropDownState createState() => DropDownState(defaultAttribute1);
+  DropDownState createState() => DropDownState(boolFirst);
 }
 
 class DropDownState extends State<DropDown> {
-  String selectedAttribute1;
+  bool boolFirst;
 
-  DropDownState(this.selectedAttribute1);
+  DropDownState(this.boolFirst);
 
   List<DropdownMenuItem<String>> _dropdownMenuItems; // ini item list
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
@@ -63,19 +63,37 @@ class DropDownState extends State<DropDown> {
       future: _getAttributeListNew(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return Expanded(
-            // needed
+          if (boolFirst == true) {
+            return Expanded( // needed
+
             child: DropdownButton<String>(
-              // isExpanded: true is needed due to flutter bug:
-              // https://stackoverflow.com/questions/47032262/flutter-dropdownbutton-overflow
-              isExpanded: true,
-              //hint: Text('select label'), // widget shown before selection
-              value: schedule.selectedAttribute1, // selected item
-              items: _dropdownMenuItems, // 4. list of all items
-              onChanged: (value) => schedule.selectedAttribute1 = value,// state
-                  //onChangeDropdownItem, // setState new selected attribute
-            ),
-          );
+                // isExpanded: true is needed due to flutter bug:
+                // https://stackoverflow.com/questions/47032262/flutter-dropdownbutton-overflow
+                isExpanded: true,
+                //hint: Text('select label'), // widget shown before selection
+                value: schedule.selectedAttribute1, // selected item
+                items: _dropdownMenuItems, // 4. list of all items
+                onChanged: (value) =>
+                schedule.selectedAttribute1 = value, // state
+                //onChangeDropdownItem, // setState new selected attribute
+              ),
+            );
+          }
+          else {
+            return Expanded( // needed
+              child: DropdownButton<String>(
+                // isExpanded: true is needed due to flutter bug:
+                // https://stackoverflow.com/questions/47032262/flutter-dropdownbutton-overflow
+                isExpanded: true,
+                //hint: Text('select label'), // widget shown before selection
+                value: schedule.selectedAttribute2, // selected item
+                items: _dropdownMenuItems, // 4. list of all items
+                onChanged: (value) =>
+                schedule.selectedAttribute2 = value, // state
+                //onChangeDropdownItem, // setState new selected attribute
+              ),
+            );
+          }
         } else {
           return Expanded(
             child: CircularProgressIndicator(),
