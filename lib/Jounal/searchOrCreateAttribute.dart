@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'Database/Route/edit_attributes.dart';
-import 'Database/Route/edit_entries.dart';
-import 'Database/attribute.dart';
-import 'Database/database_helper_attribute.dart';
-import 'Database/database_helper_entry.dart';
-import 'Database/entry.dart';
+import '../Database/Route/edit_attributes.dart';
+import '../Database/Route/edit_entries.dart';
+import '../Database/attribute.dart';
+import '../Database/database_helper_attribute.dart';
+import '../Database/database_helper_entry.dart';
+import '../Database/entry.dart';
 import 'journal_route.dart';
 
 // Define SearchOrCreateAttribute widget.

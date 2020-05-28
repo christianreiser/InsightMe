@@ -1,9 +1,9 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'Database/Route/edit_entries.dart';
-import 'Database/database_helper_entry.dart';
-import 'Database/entry.dart';
+import '../Database/Route/edit_entries.dart';
+import '../Database/database_helper_entry.dart';
+import '../Database/entry.dart';
 
 class JournalRoute extends StatefulWidget {
   JournalRoute({Key key, this.title}) : super(key: key);

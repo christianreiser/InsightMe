@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Database/attribute.dart';
-import 'Database/database_helper_attribute.dart';
+import '../Database/attribute.dart';
+import '../Database/database_helper_attribute.dart';
 
 class DropDown extends StatefulWidget {
   final String defaultAttribute1;
@@ -24,10 +24,6 @@ class DropDownState extends State<DropDown> {
 
   // get Attributes from DB into a future list
   Future<List<String>> _getAttributeListNew() async {
-    // TODO unnecessarily complicated from db to chart:
-    // TODO from map(db) to list(helper) to other list(here)
-    // TODO refactoring
-
     // in the future there will be dbFuture
     List<Attribute> attributeList =
         await databaseHelperAttribute.getAttributeList();
@@ -38,7 +34,6 @@ class DropDownState extends State<DropDown> {
 
     _dropdownMenuItems =
         buildDropdownMenuItems(itemList); // 3b. all items of list
-    debugPrint('selectedAttribute ${selectedAttribute}');
     return itemList;
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lifetracker4/visualize_attribute_selection.dart';
+import 'package:lifetracker4/Visualize/attribute_selection.dart';
 import 'chart.dart';
 
 class Visualize extends StatefulWidget {
