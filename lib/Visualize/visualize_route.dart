@@ -13,9 +13,6 @@ class Visualize extends StatefulWidget {
 }
 
 class _VisualizeState extends State<Visualize> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +20,7 @@ class _VisualizeState extends State<Visualize> {
       child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,  // max chart width
+          crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
           children: <Widget>[
             Row(
               // start: child as close to the start of the main axis as possible
@@ -36,8 +33,7 @@ class _VisualizeState extends State<Visualize> {
             ),
             SizedBox(height: 20.0), // spacing between dropdown and chart
             Chart()
-          ]
-      ), // type lineChart
+          ]), // type lineChart
     ); // type lineChart
   }
 }
