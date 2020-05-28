@@ -25,6 +25,7 @@ dependencies:
   charts_flutter:
   flutter_sparkline: #TODO needed for vis, correct?
   fl_animated_linechart:  # TODO check if needed https://pub.dev/packages/fl_animated_linechart#-installing-tab-
+  provider:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

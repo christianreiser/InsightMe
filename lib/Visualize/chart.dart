@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lifetracker4/Visualize/schedule.dart';
+import 'package:provider/provider.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
@@ -17,9 +19,9 @@ class _ChartState extends State<Chart> {
   LineChart chart;
 
   // get data from db delayed and set as state
-  Future<bool> _getDateTimeMap() async {
+  Future<LineChart> _getDateTimeMap(selectedAttribute1, selectedAttribute2) async {
     List<Entry> filteredEntryList = await databaseHelperEntry
-        .getFilteredEntryList('Productivity'); //TODO selectedAttribute
+        .getFilteredEntryList(selectedAttribute1); //TODO selectedAttribute
     List<DateTime> dateList = [];
     debugPrint('filteredEntryList.length ${filteredEntryList.length}');
     for (int i = 0; i < filteredEntryList.length; i++) {
@@ -41,28 +43,31 @@ class _ChartState extends State<Chart> {
     chart = LineChart.fromDateTimeMaps(
         [dateTimeMap, dateTimeMap],
         [Colors.green, Colors.blue],
-        ['Productivity', 'Mood'], // TODO dateTimeMap change attribute
+        [selectedAttribute1, selectedAttribute2], // chart label name
         tapTextFontWeight: FontWeight.w400);
-    return true;
+    return chart;
   }
 
   @override
   Widget build(BuildContext context) {
+    
 /*    setState(() {
       this.filteredEntryList = filteredEntryList;
       this.countEntryFiltered = filteredEntryList.length;
     });*/
 
-    return Expanded(
-      child: FutureBuilder(
-        future: _getDateTimeMap(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return AnimatedLineChart(chart);
-          } else {
-            return CircularProgressIndicator(); // when Future doesn't get data
-          } // snapshot is current state of future
-        },
+    return Consumer<MySchedule>(
+      builder: (context, schedule, _) => Expanded(
+        child: FutureBuilder(
+          future: _getDateTimeMap(schedule.selectedAttribute1, schedule.selectedAttribute2),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return AnimatedLineChart(chart); // todo 2
+            } else {
+              return CircularProgressIndicator(); // when Future doesn't get data
+            } // snapshot is current state of future
+          },
+        ),
       ),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }

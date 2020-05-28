@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lifetracker4/Visualize/schedule.dart';
+import 'package:provider/provider.dart';
 import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
 
@@ -12,9 +14,9 @@ class DropDown extends StatefulWidget {
 }
 
 class DropDownState extends State<DropDown> {
-  String selectedAttribute;
+  String selectedAttribute1;
 
-  DropDownState(this.selectedAttribute);
+  DropDownState(this.selectedAttribute1);
 
   List<DropdownMenuItem<String>> _dropdownMenuItems; // ini item list
   DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
@@ -48,14 +50,15 @@ class DropDownState extends State<DropDown> {
     return items;
   }
 
-  onChangeDropdownItem(String selectedAttributeNew) {
-    setState(() {
-      selectedAttribute = selectedAttributeNew;
-    });
-  }
+//  onChangeDropdownItem(String selectedAttributeNew) {
+//    setState(() {
+//      selectedAttribute1 = selectedAttributeNew;
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
+    final schedule = Provider.of<MySchedule>(context); // send state up the tree
     return FutureBuilder(
       future: _getAttributeListNew(),
       builder: (context, snapshot) {
@@ -67,10 +70,10 @@ class DropDownState extends State<DropDown> {
               // https://stackoverflow.com/questions/47032262/flutter-dropdownbutton-overflow
               isExpanded: true,
               //hint: Text('select label'), // widget shown before selection
-              value: selectedAttribute, // selected item
+              value: schedule.selectedAttribute1, // selected item
               items: _dropdownMenuItems, // 4. list of all items
-              onChanged:
-                  onChangeDropdownItem, // setState new selected attribute
+              onChanged: (value) => schedule.selectedAttribute1 = value,// state
+                  //onChangeDropdownItem, // setState new selected attribute
             ),
           );
         } else {

@@ -81,7 +81,7 @@ class DatabaseHelperEntry {
       DatabaseHelperEntry.colDate,
     ];
     String whereString = '${DatabaseHelperEntry.colTitle} = ?';
-    var attributeToFilter = 'Productivity'; // TODO get from UI
+    //var attributeToFilter = selectedAttribute1; // TODO get from UI
     List<dynamic> whereArguments = [attributeToFilter];
     Database db = await this.database;
 
