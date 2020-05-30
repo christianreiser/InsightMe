@@ -23,7 +23,6 @@ class DropDownState extends State<DropDown> {
 
   // get Attributes from DB into a future list
   Future<List<String>> _getAttributeListNew() async {
-    // in the future there will be dbFuture
     List<Attribute> attributeList =
         await databaseHelperAttribute.getAttributeList();
     List<String> itemList = List(attributeList.length);
@@ -32,7 +31,7 @@ class DropDownState extends State<DropDown> {
     }
 
     _dropdownMenuItems =
-        buildDropdownMenuItems(itemList); // 3b. all items of list
+        buildDropdownMenuItems(itemList);
     return itemList;
   }
 
@@ -50,11 +49,6 @@ class DropDownState extends State<DropDown> {
     return items;
   }
 
-//  onChangeDropdownItem(String selectedAttributeNew) {
-//    setState(() {
-//      selectedAttribute1 = selectedAttributeNew;
-//    });
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +57,7 @@ class DropDownState extends State<DropDown> {
       future: _getAttributeListNew(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          if (boolFirst == true) {
+          if (boolFirst == true) { // for first dropdown
             return Expanded( // needed
 
             child: DropdownButton<String>(
@@ -79,7 +73,7 @@ class DropDownState extends State<DropDown> {
               ),
             );
           }
-          else {
+          else { // for second dropdown
             return Expanded( // needed
               child: DropdownButton<String>(
                 // isExpanded: true is needed due to flutter bug:

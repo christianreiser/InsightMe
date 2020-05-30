@@ -19,7 +19,8 @@ class _VisualizeState extends State<Visualize> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10),
-      child: ChangeNotifierProvider( // for state
+      // ChangeNotifierProvider for state management
+      child: ChangeNotifierProvider(
         create: (context) => MySchedule(), // builder -> create
         child: Column(
             mainAxisSize: MainAxisSize.max,

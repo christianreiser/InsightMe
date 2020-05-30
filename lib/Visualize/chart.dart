@@ -20,7 +20,7 @@ class _ChartState extends State<Chart> {
   // get data from db delayed and set as state
   Future<Map<DateTime, double>> _getDateTimeMap(selectedAttribute) async {
     List<Entry> filteredEntryList = await databaseHelperEntry
-        .getFilteredEntryList(selectedAttribute); //TODO selectedAttribute
+        .getFilteredEntryList(selectedAttribute);
     List<DateTime> dateList = [];
     debugPrint('filteredEntryList.length ${filteredEntryList.length}');
     for (int i = 0; i < filteredEntryList.length; i++) {
@@ -59,11 +59,22 @@ class _ChartState extends State<Chart> {
         child: FutureBuilder(
           future: _getChart(schedule.selectedAttribute1, schedule.selectedAttribute2),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return AnimatedLineChart(chart); // todo 2
+
+            // chart data arrived && data found
+            if (snapshot.connectionState == ConnectionState.done && chart != null) {
+              debugPrint('chart: $chart');
+              return AnimatedLineChart(chart);
+            }
+
+            // chart data arrived but no data found
+            else if (snapshot.connectionState == ConnectionState.done && chart == null) {
+              return Text('no data found for this label');
+
+            // else: i.e. data didn't arrive
             } else {
               return CircularProgressIndicator(); // when Future doesn't get data
             } // snapshot is current state of future
+
           },
         ),
       ),

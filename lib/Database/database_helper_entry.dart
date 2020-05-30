@@ -81,7 +81,6 @@ class DatabaseHelperEntry {
       DatabaseHelperEntry.colDate,
     ];
     String whereString = '${DatabaseHelperEntry.colTitle} = ?';
-    //var attributeToFilter = selectedAttribute1; // TODO get from UI
     List<dynamic> whereArguments = [attributeToFilter];
     Database db = await this.database;
 
@@ -97,30 +96,6 @@ class DatabaseHelperEntry {
     return result;
   }
 
-  // CHREI Fetch Operation: Get entry objects from database FILTERED ATTRIBUTES
-// TODO mby needed for refactoring
-//  Future<List<Map<DateTime, double>>> getFilteredDateTimeValueMapList(attributeToFilter) async {
-//    // get single row
-//    List<String> columnsToSelect = [
-//      DatabaseHelperEntry.colValue,
-//    ];
-//    String whereString = '${DatabaseHelperEntry.colTitle} = ?';
-//    var attributeToFilter = 'Productivity'; // TODO get from UI
-//    List<dynamic> whereArguments = [attributeToFilter];
-//    Database db = await this.database;
-//
-//    var dateTimeValueMap = await db.query(entryTable,
-//        orderBy: '$colDate ASC',
-//        columns: columnsToSelect,
-//        where: whereString,
-//        whereArgs: whereArguments
-//    );
-//
-//    dateTimeValueMap.forEach((row) => print(row));
-//    //print('result+ $result');
-//
-//    return dateTimeValueMap;
-//  }
 
   // Insert Operation: Insert a entry object to database
   Future<int> insertEntry(Entry entry) async {
@@ -171,7 +146,6 @@ class DatabaseHelperEntry {
     return entryList;
   }
 
-  // todo probably not needed
   // CHREI get the 'Map List' [ List<Map> ] FILTERED and convert it to 'entry List FILTERED' [ List<Entry> ]
   Future<List<Entry>> getFilteredEntryList(attributeToFilter) async {
     var filteredEntryMapList = await getFilteredEntryMapList(
