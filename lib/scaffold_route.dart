@@ -4,6 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:flutter/material.dart';
 import 'package:lifetracker4/Visualize/visualize_route.dart';
+import 'Intro/first.dart';
 import 'Jounal/journal_route.dart';
 import 'Jounal/searchOrCreateAttribute.dart';
 
@@ -88,7 +89,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   static List<Widget> _widgetOptions = <Widget>[
     JournalRoute(),
     Visualize(),
-    JournalRoute(), // TODO set Correlate() here
+    IntroRoute(), // TODO set Correlate() here
   ];
 
   void _onItemTapped(int index) {
