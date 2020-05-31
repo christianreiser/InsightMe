@@ -37,7 +37,8 @@ class _VisualizeState extends State<Visualize> {
                 ],
               ),
               SizedBox(height: 20.0), // spacing between dropdown and chart
-              Chart()
+              Chart(),
+              //Correlation(),
             ]),
       ), // type lineChart
     ); // type lineChart
