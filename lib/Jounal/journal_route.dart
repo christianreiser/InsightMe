@@ -97,17 +97,14 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   // updateEntryListView depends on state
-  void _updateEntryListView() {
+  // TODO functions also in journal_route but using it from there breaks it
+  void _updateEntryListView() async {
     DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
-      entryListFuture.then((entryList) {
-        setState(() {
-          this.entryList = entryList;
-          this.countEntry = entryList.length;
-        });
-      });
+    Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
+    entryList = await entryListFuture;
+    setState(() {
+      this.entryList = entryList;
+      this.countEntry = entryList.length;
     });
   }
 }

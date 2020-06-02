@@ -7,6 +7,7 @@ import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
+import '../scaffold_route.dart';
 import 'journal_route.dart';
 
 // Define SearchOrCreateAttribute widget.
@@ -28,6 +29,18 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       // APP BAR
       appBar: AppBar(
         title: Text("New manual entry"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () async {
+            _navigateToScaffoldRoute(); // refreshes
+          },
+          //child: _getAttributeListView(),
+
+//              {
+//                moveToLastRoute();
+//                _updateEntryListView();
+//              },
+        ),
       ),
 
       // FRAGMENT
@@ -135,7 +148,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
-
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
@@ -184,6 +196,22 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         );
       },
     );
+  }
+
+  void moveToLastRoute() {
+    Navigator.pop(context, true);
+  }
+
+  // navigation for editing entry
+  void _navigateToScaffoldRoute() async {
+    bool result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ScaffoldRoute();
+    }));
+
+    if (result == true) {
+      _updateEntryListView();
+    }
   }
 
   // navigation for editing entry
@@ -236,18 +264,13 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   int countEntry = 0;
   // updateEntryListView depends on state
   // TODO functions also in journal_route but using it from there breaks it
-  void _updateEntryListView() {
+  void _updateEntryListView() async {
     DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
-      entryListFuture.then((entryList) {
-        setState(() {
-          this.entryList = entryList;
-          this.countEntry = entryList.length;
-        });
-      });
+    Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
+    entryList = await entryListFuture;
+    setState(() {
+      this.entryList = entryList;
+      this.countEntry = entryList.length;
     });
   }
-
 } // class

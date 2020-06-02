@@ -49,11 +49,11 @@ class EditEntryState extends State<EditEntry> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                moveToLastScreen();
-              }),
+//          leading: IconButton(
+//              icon: Icon(Icons.arrow_back),
+//              onPressed: () {
+//                moveToLastScreen();
+//              }),
         ),
         body: Padding(
           padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
@@ -197,16 +197,15 @@ class EditEntryState extends State<EditEntry> {
   DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   List<Entry> entryList;
   int countEntry = 0;
-  void updateEntryListView() {
-    final Future<Database> dbFuture = databaseHelperEntry.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
-      entryListFuture.then((entryList) {
-        setState(() {
-          this.entryList = entryList;
-          this.countEntry = entryList.length;
-        });
-      });
+  // updateEntryListView depends on state
+  // TODO functions also in journal_route but using it from there breaks it
+  void _updateEntryListView() async {
+    DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+    Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
+    entryList = await entryListFuture;
+    setState(() {
+      this.entryList = entryList;
+      this.countEntry = entryList.length;
     });
   }
 
@@ -241,7 +240,7 @@ class EditEntryState extends State<EditEntry> {
     moveToLastScreen();
 
     // TIMESTAMP
-    entry.date =
+    entry.date = // TODO DON'T OVERWRITE DATE-TIME
         DateTime.now().toString(); // TODO default current but changeable
 
     // Update Operation: Update a to-do object and save it to database
@@ -265,7 +264,6 @@ class EditEntryState extends State<EditEntry> {
   }
 
   // DELETE
-
   void _delete() async {
     moveToLastScreen();
 
