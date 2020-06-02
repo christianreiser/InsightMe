@@ -43,7 +43,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'search or create new label',
+                    labelText: 'create new label', // TODO search
                     suffixIcon: IconButton(
                       onPressed: () => attributeInputController.clear(),
                       icon: Icon(Icons.clear),
@@ -176,7 +176,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 debugPrint("One Attribute selected");
               });
 
-              _navigateToEditEntry(
+              navigateToEditEntry(
                   Entry(this.attributeList[position].title, '', '', ''),
                   'Add ${this.attributeList[position].title} Entry');
             },
@@ -199,7 +199,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // navigation for editing entry
-  void _navigateToEditEntry(Entry entry, String title) async {
+  void navigateToEditEntry(Entry entry, String title) async {
     bool result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {

@@ -26,38 +26,53 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        children: [
-          // first speed dial button for new entry
-          SpeedDialChild(
-              child: Icon(Icons.border_color),
-              label: "New Entry",
-              onTap: () {
+
+        // use this block for only one floatingActionButton
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
                 print("nav to add manually");
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
                     return SearchOrCreateAttribute();
                   }),
-                );
-              }),
+                );          },
+          child: Icon(Icons.border_color),
+        ),
 
-          // second speed dial button - no function yet
-          SpeedDialChild(
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.timer),
-              label: "-DropDown-",
+        // use below when more then one floatingActionButton and remove top block
+//      floatingActionButton: SpeedDial(
+//        animatedIcon: AnimatedIcons.menu_close,
+//        children: [
+//          // first speed dial button for new entry
+//          SpeedDialChild(
+//              child: Icon(Icons.border_color),
+//              label: "New Entry",
 //              onTap: () {
-//                print("DropDown");
+//                print("nav to add manually");
 //                Navigator.push(
 //                  context,
-//                  MaterialPageRoute(builder: (context) => DropDown(defaultAttribute)),
-//                ); // Navigate to newManualEntry route when tapped.
-//              }
-              ),
-        ],
-      ),
+//                  MaterialPageRoute(builder: (context) {
+//                    return SearchOrCreateAttribute();
+//                  }),
+//                );
+//              }),
+//
+//          // second speed dial button - no function yet
+//          SpeedDialChild(
+//              backgroundColor: Colors.grey,
+//              child: Icon(Icons.timer),
+//              label: "-DropDown-",
+////              onTap: () {
+////                print("DropDown");
+////                Navigator.push(
+////                  context,
+////                  MaterialPageRoute(builder: (context) => DropDown(defaultAttribute)),
+////                ); // Navigate to newManualEntry route when tapped.
+////              }
+//              ),
+//        ],
+//      ),
 
       // bottom navigation bar
       bottomNavigationBar: BottomNavigationBar(
@@ -70,10 +85,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             icon: Icon(Icons.timeline),
             title: Text('Visualize'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.device_hub),
-            title: Text('Correlate'),
-          ),
+//          BottomNavigationBarItem(
+//            icon: Icon(Icons.device_hub),
+//            title: Text('Correlate'),
+//          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColorDark,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lifetracker4/Visualize/schedule.dart';
+import 'package:lifetracker4/Visualize/change_notifier.dart';
 import 'package:provider/provider.dart';
 import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
