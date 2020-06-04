@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
 
@@ -192,22 +191,6 @@ class EditEntryState extends State<EditEntry> {
     );
   }
 
-  // TODO remove method and call from scaffold_route.dart
-  // updateEntryListView depends on state
-  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-  List<Entry> entryList;
-  int countEntry = 0;
-  // updateEntryListView depends on state
-  // TODO functions also in journal_route but using it from there breaks it
-  void _updateEntryListView() async {
-    DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-    Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
-    entryList = await entryListFuture;
-    setState(() {
-      this.entryList = entryList;
-      this.countEntry = entryList.length;
-    });
-  }
 
   void moveToLastScreen() {
     Navigator.pop(context, true);
