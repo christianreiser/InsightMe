@@ -145,12 +145,12 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       itemCount: countAttribute,
       itemBuilder: (BuildContext context, int position) {
         return Card(
-          color: Colors.white,
+          //color: Colors.white,
           elevation: 2.0,
           child: ListTile(
             // YELLOW CIRCLE AVATAR
             leading: CircleAvatar(
-              backgroundColor: Colors.amber,
+              //backgroundColor: Colors.amber,
               child: Text(
                 JournalRouteState()
                     .getFirstLetter(this.attributeList[position].title),
