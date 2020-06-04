@@ -19,25 +19,34 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
     return Scaffold(
       appBar: AppBar(
         title: Text("InsightMe"),
+        leading: null,
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
 
-        // use this block for only one floatingActionButton
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-                print("nav to add manually");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return SearchOrCreateAttribute();
-                  }),
-                );          },
-          child: Icon(Icons.border_color),
-        ),
+      // use this block for only one floatingActionButton
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("nav to add manually");
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              opaque: false, // set to false
+              pageBuilder: (_, __, ___) => Container(
+                color: Colors.black.withOpacity(.6),
+              child: Padding(
+                  padding: EdgeInsets.fromLTRB(20,25,20,20),
 
-        // use below when more then one floatingActionButton and remove top block
+                  child: SearchOrCreateAttribute(),
+                ),
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.border_color),
+      ),
+
+      // use below when more then one floatingActionButton and remove top block
 //      floatingActionButton: SpeedDial(
 //        animatedIcon: AnimatedIcons.menu_close,
 //        children: [

@@ -28,9 +28,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return Scaffold(
       // APP BAR
       appBar: AppBar(
-        title: Text("New manual entry"),
+        title: Text("Add Entry"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.close),
           onPressed: () async {
             _navigateToScaffoldRoute(); // refreshes
           },
@@ -204,10 +204,12 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // navigation for editing entry
   void _navigateToScaffoldRoute() async {
+    // don't use pop because it doesn't refresh the page
+    // RemoveUntil is needed to remove the old outdated journal route
     bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context, ) {
       return ScaffoldRoute();
-    }));
+    }), (Route<dynamic> route) => false);
 
     if (result == true) {
       _updateEntryListView();
