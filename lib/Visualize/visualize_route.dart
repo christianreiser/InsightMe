@@ -21,7 +21,7 @@ class _VisualizeState extends State<Visualize> {
       margin: EdgeInsets.all(10),
       // ChangeNotifierProvider for state management
       child: ChangeNotifierProvider(
-        create: (context) => MySchedule(), // builder -> create
+        create: (context) => VisualizationChangeNotifier(), // builder -> create
         child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

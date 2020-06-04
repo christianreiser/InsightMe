@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-// ChangeNotifier adds listening capabilities 
-class VisualizationChangeNotifier with ChangeNotifier {
+// ChangeNotifier adds listening capabilities
+class JournalChangeNotifier with ChangeNotifier {
   String _selectedAttribute1;// = 'Productivity'; // TODO set default value here
 
   String get selectedAttribute1 => _selectedAttribute1;

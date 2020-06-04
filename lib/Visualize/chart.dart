@@ -54,7 +54,7 @@ class _ChartState extends State<Chart> {
   @override
   Widget build(BuildContext context) {
 
-    return Consumer<MySchedule>(
+    return Consumer<VisualizationChangeNotifier>(
       builder: (context, schedule, _) => Expanded(
         child: FutureBuilder(
           future: _getChart(schedule.selectedAttribute1, schedule.selectedAttribute2),

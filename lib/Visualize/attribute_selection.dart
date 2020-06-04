@@ -52,7 +52,7 @@ class DropDownState extends State<DropDown> {
 
   @override
   Widget build(BuildContext context) {
-    final schedule = Provider.of<MySchedule>(context); // send state up the tree
+    final schedule = Provider.of<VisualizationChangeNotifier>(context); // send state up the tree
     return FutureBuilder(
       future: _getAttributeListNew(),
       builder: (context, snapshot) {
