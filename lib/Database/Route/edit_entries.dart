@@ -67,7 +67,6 @@ class EditEntryState extends State<EditEntry> {
                 ),*/
 
               // Value
-
               Padding(
                 padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                 child: TextFormField(
@@ -91,7 +90,6 @@ class EditEntryState extends State<EditEntry> {
               ),
 
               // COMMENT
-
               Padding(
                 padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                 child: TextField(
@@ -115,14 +113,10 @@ class EditEntryState extends State<EditEntry> {
               Padding(
                 padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                 child: TextField(
-                  controller: TextEditingController(
-                    text: DateFormat.yMMMd().add_Hms().format(
-                          DateTime.now(),
-                        ),
-                  ),
+                  controller: dateController,
                   style: textStyle,
                   onChanged: (value) {
-                    debugPrint('Something changed in date Text Field');
+                    debugPrint('Something changed in date Text Field. entry.date: ${entry.date}, dateController.text: ${dateController.text}');
                     updateDate();
                   },
                   decoration: InputDecoration(
@@ -139,7 +133,6 @@ class EditEntryState extends State<EditEntry> {
                 padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
 
                 // SAVE BUTTON
-
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -164,7 +157,6 @@ class EditEntryState extends State<EditEntry> {
                     ),
 
                     // DELETE BUTTON
-
                     Expanded(
                       child: RaisedButton(
                         color: Theme.of(context).primaryColorDark,
@@ -223,8 +215,10 @@ class EditEntryState extends State<EditEntry> {
     moveToLastScreen();
 
     // TIMESTAMP
-    entry.date = // TODO DON'T OVERWRITE DATE-TIME
-        DateTime.now().toString(); // TODO default current but changeable
+//    entry.date = // TODO DON'T OVERWRITE DATE-TIME
+//        DateTime.now().toString(); // TODO default current but changeable
+    updateDate();
+
 
     // Update Operation: Update a to-do object and save it to database
     int result;
