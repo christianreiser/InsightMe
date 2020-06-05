@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
+import './../globals.dart' as globals;
 
 // ChangeNotifier adds listening capabilities 
 class VisualizationChangeNotifier with ChangeNotifier {
-  String _selectedAttribute1;// = 'Productivity'; // TODO set default value here
+  String _selectedAttribute1 = globals.mostRecentAddedEntryName; // default value
 
   String get selectedAttribute1 => _selectedAttribute1;
 
@@ -11,7 +12,7 @@ class VisualizationChangeNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedAttribute2; // = 'Mood'; // TODO set default value here
+  String _selectedAttribute2 = globals.secondMostRecentAddedEntryName; // default value
 
   String get selectedAttribute2 => _selectedAttribute2;
 

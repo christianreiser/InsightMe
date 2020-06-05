@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import './../../globals.dart' as globals;
 import '../database_helper_entry.dart';
 import '../entry.dart';
 
@@ -214,10 +214,8 @@ class EditEntryState extends State<EditEntry> {
     // NAVIGATE
     moveToLastScreen();
 
-    // TIMESTAMP
-//    entry.date = // TODO DON'T OVERWRITE DATE-TIME
-//        DateTime.now().toString(); // TODO default current but changeable
-    updateDate();
+    globals.secondMostRecentAddedEntryName = globals.mostRecentAddedEntryName;
+    globals.mostRecentAddedEntryName = entry.title;
 
 
     // Update Operation: Update a to-do object and save it to database

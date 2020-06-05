@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../Database/Route/edit_entries.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
+import './../globals.dart' as globals;
+
 
 class JournalRoute extends StatefulWidget {
   JournalRoute({Key key, this.title}) : super(key: key);
