@@ -26,6 +26,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       attributeList = List<Attribute>();
       _updateAttributeListView();
     }
+
     return Scaffold(
       // APP BAR
       appBar: AppBar(
@@ -113,7 +114,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                         // name which is automatically put in in add
                         // attribute filed.
                         // 'Add Attribute' is the App Bar name
-                        // TODO mby here default date
                         Attribute(attributeInputController.text, ''),
                         'Add Attribute');
                   },

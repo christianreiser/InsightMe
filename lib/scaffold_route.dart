@@ -110,7 +110,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   static List<Widget> _widgetOptions = <Widget>[
     JournalRoute(),
     Visualize(),
-    IntroRoute(), // TODO set Correlate() here
+    IntroRoute(),
   ];
 
   void _onItemTapped(int index) {

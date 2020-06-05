@@ -5,7 +5,6 @@ import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import './../globals.dart' as globals;
 
-
 class JournalRoute extends StatefulWidget {
   JournalRoute({Key key, this.title}) : super(key: key);
   final String title;
@@ -39,7 +38,7 @@ class JournalRouteState extends State<JournalRoute> {
       itemCount: countEntry,
       itemBuilder: (BuildContext context, int position) {
         return Container(
-          padding: EdgeInsets.fromLTRB(4,0,4,0),
+          padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
           color: Theme.of(context).backgroundColor,
           child: Card(
             //color: Colors.white,
@@ -58,7 +57,9 @@ class JournalRouteState extends State<JournalRoute> {
               // Label
               title: Text(
                 this.entryList[position].title,
-                style: TextStyle(fontWeight: FontWeight.bold,),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               // Value
@@ -112,5 +113,9 @@ class JournalRouteState extends State<JournalRoute> {
       this.entryList = entryList;
       this.countEntry = entryList.length;
     });
+
+    // take two most recent entries as defaults for visualization
+    globals.mostRecentAddedEntryName = entryList[0].title;
+    globals.secondMostRecentAddedEntryName = entryList[1].title;
   }
 }

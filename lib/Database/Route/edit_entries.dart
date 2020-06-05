@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import './../../globals.dart' as globals;
 import '../database_helper_entry.dart';
 import '../entry.dart';
 
@@ -70,8 +69,6 @@ class EditEntryState extends State<EditEntry> {
               Padding(
                 padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                 child: TextFormField(
-                  // TODO use input type validation for number:
-                  // https://www.freecodecamp.org/forum/t/how-to-validate-forms-and-user-input-the-easy-way-using-flutter/190377
                   keyboardType: TextInputType.number,
                   controller: valueController,
                   style: textStyle,
@@ -192,6 +189,7 @@ class EditEntryState extends State<EditEntry> {
     }
     // This is just a regular expression for email addresses
     //final String p = "[0-9\.]{1,256}";
+    // TODO RegExp input is all thats forbidden, better to input allowed characters: "[0-9\.]{1,256}"
     final RegExp regExp = RegExp(r'[¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
     Iterable iterableRegExp = regExp.allMatches(valueController);
     //debugPrint('iterableRegExp $iterableRegExp');
@@ -238,10 +236,6 @@ class EditEntryState extends State<EditEntry> {
   void _save() async {
     // NAVIGATE
     moveToLastScreen();
-
-    globals.secondMostRecentAddedEntryName = globals.mostRecentAddedEntryName;
-    globals.mostRecentAddedEntryName = entry.title;
-
 
     // Update Operation: Update a to-do object and save it to database
     int result;

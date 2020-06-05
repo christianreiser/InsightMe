@@ -6,6 +6,7 @@ import 'package:lifetracker4/Visualize/change_notifier.dart';
 import 'package:provider/provider.dart';
 import 'chart.dart';
 
+
 class Visualize extends StatefulWidget {
   Visualize({Key key, this.title}) : super(key: key);
   final String title;
@@ -15,6 +16,7 @@ class Visualize extends StatefulWidget {
 }
 
 class _VisualizeState extends State<Visualize> {
+
   @override
   Widget build(BuildContext context) {
     return Container(

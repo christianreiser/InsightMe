@@ -25,7 +25,7 @@ class _IntroRouteState extends State<IntroRoute> {
           children: <Widget>[
             Text(
               'Hi there,',
-              style: GoogleFonts.handlee(fontSize: 40, color: Colors.white), // TODO font not working
+              style: GoogleFonts.handlee(fontSize: 40, color: Colors.white),
             ),
             Text(
               'I\'m InsightMe',
@@ -36,7 +36,8 @@ class _IntroRouteState extends State<IntroRoute> {
                 style:
                     GoogleFonts.handlee(fontSize: 20, color: Colors.white70)),
             Text('I help to optimize your well-being and reach your goals. ',
-                style: GoogleFonts.handlee(fontSize: 20, color: Colors.white70)),
+                style:
+                    GoogleFonts.handlee(fontSize: 20, color: Colors.white70)),
             RaisedButton(
               color: Theme.of(context).primaryColorDark,
               textColor: Theme.of(context).primaryColorLight,
@@ -49,7 +50,7 @@ class _IntroRouteState extends State<IntroRoute> {
                   debugPrint("What can you do? button clicked");
                 });
                 navigateToEditEntry(
-                  // Entry(label, rating, ?, comment), routeTitle)
+                    // Entry(label, rating, ?, comment), routeTitle)
                     Entry('Productivity', '', '2', ''),
                     'Add Productivity Entry');
               },
@@ -62,19 +63,15 @@ class _IntroRouteState extends State<IntroRoute> {
 //                'I found a correlation of:'),
           ]),
     );
-
-
-
   }
 
   // navigation for editing entry
   void navigateToEditEntry(Entry entry, String title) async {
-    bool result = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
         return EditEntry(entry, title);
       }),
     );
   }
-
 }

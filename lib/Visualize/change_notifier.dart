@@ -4,7 +4,6 @@ import './../globals.dart' as globals;
 // ChangeNotifier adds listening capabilities 
 class VisualizationChangeNotifier with ChangeNotifier {
   String _selectedAttribute1 = globals.mostRecentAddedEntryName; // default value
-
   String get selectedAttribute1 => _selectedAttribute1;
 
   set selectedAttribute1(String newValue) {
