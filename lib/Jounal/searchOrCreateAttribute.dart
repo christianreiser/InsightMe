@@ -9,6 +9,7 @@ import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../scaffold_route.dart';
 import 'journal_route.dart';
+//import 'package:intl/intl.dart'; // DateFormat.yMMMd().add_Hms().format(DateTime.now())
 
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
@@ -189,7 +190,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
               });
 
               navigateToEditEntry(
-                  Entry(this.attributeList[position].title, '', '', ''),
+                  // title, value, time, comment
+                  Entry(this.attributeList[position].title, '',
+                      '${DateTime.now()}', ''),
                   'Add ${this.attributeList[position].title} Entry');
             },
           ),
@@ -207,7 +210,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     // don't use pop because it doesn't refresh the page
     // RemoveUntil is needed to remove the old outdated journal route
     bool result =
-        await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context, ) {
+        await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
+      context,
+    ) {
       return ScaffoldRoute();
     }), (Route<dynamic> route) => false);
 

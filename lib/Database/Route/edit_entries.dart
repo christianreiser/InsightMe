@@ -75,6 +75,8 @@ class EditEntryState extends State<EditEntry> {
                   keyboardType: TextInputType.number,
                   controller: valueController,
                   style: textStyle,
+                  validator: _validateValue,
+                  autovalidate: true,
                   onChanged: (value) {
                     debugPrint('Something changed in Value Text Field');
                     updateValue(); // with valueController.text = entry.value
@@ -120,7 +122,7 @@ class EditEntryState extends State<EditEntry> {
                     updateDate();
                   },
                   decoration: InputDecoration(
-                    labelText: 'Time',
+                    labelText: 'Time [yyyy-MM-dd hh:mm]',
                     labelStyle: textStyle,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -182,6 +184,29 @@ class EditEntryState extends State<EditEntry> {
       ),
     );
   }
+
+  String _validateValue(String valueController) {
+    if (valueController.isEmpty) {
+      // The form is empty
+      return "Enter value";
+    }
+    // This is just a regular expression for email addresses
+    //final String p = "[0-9\.]{1,256}";
+    final RegExp regExp = RegExp(r'[¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
+    Iterable iterableRegExp = regExp.allMatches(valueController);
+    //debugPrint('iterableRegExp $iterableRegExp');
+
+
+    if (iterableRegExp.every((n) => n == false)) {
+      debugPrint('iterableRegExp true $iterableRegExp');
+      // So, the value is valid
+      return null;
+    }
+
+    // The pattern of the email didn't match the regex above.
+    return 'Invalid: Only digits (0-9) and point (.) as decimal are allowed.';
+  }
+
 
 
   void moveToLastScreen() {
