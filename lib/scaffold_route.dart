@@ -1,9 +1,9 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
-import 'package:lifetracker4/Visualize/visualize_route.dart';
+import './Visualize/visualize_route.dart';
 import 'Intro/first.dart';
-import 'Jounal/journal_route.dart';
-import 'Jounal/searchOrCreateAttribute.dart';
+import 'Journal/journal_route.dart';
+import 'Journal/searchOrCreateAttribute.dart';
 
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute({Key key, this.title}) : super(key: key);
