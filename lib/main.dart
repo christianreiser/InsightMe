@@ -14,7 +14,7 @@ class _LifeTrackerAppState extends State<LifeTrackerApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'InsightMe',
+      title: 'insightMe',
       theme: ThemeData(
         // This is the theme of your application.
         //

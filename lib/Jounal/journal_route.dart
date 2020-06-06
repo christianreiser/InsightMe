@@ -14,19 +14,19 @@ class JournalRoute extends StatefulWidget {
 }
 
 class JournalRouteState extends State<JournalRoute> {
-  List<Entry> entryList;
-  int countEntry = 0;
+  List<Entry> _entryList;
+  int _countEntry = 0;
 
   @override
   Widget build(BuildContext context) {
-    if (entryList == null) {
-      entryList = List<Entry>();
-      _updateEntryListView();
+    if (_entryList == null) {
+      _entryList = List<Entry>();
+      updateEntryListView();
     }
     return RefreshIndicator(
       //key: refreshKey,
       onRefresh: () async {
-        _updateEntryListView();
+        updateEntryListView();
       },
       child: _getEntryListView(),
     ); // This trailing comma makes auto-formatting nicer for build methods.
@@ -35,7 +35,7 @@ class JournalRouteState extends State<JournalRoute> {
 // ENTRY LIST
   ListView _getEntryListView() {
     return ListView.builder(
-      itemCount: countEntry,
+      itemCount: _countEntry,
       itemBuilder: (BuildContext context, int position) {
         return Container(
           padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
@@ -49,35 +49,35 @@ class JournalRouteState extends State<JournalRoute> {
               leading: CircleAvatar(
                 backgroundColor: Theme.of(context).primaryColor,
                 child: Text(
-                  getFirstLetter(this.entryList[position].title),
+                  getFirstLetter(this._entryList[position].title),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
 
               // Label
               title: Text(
-                this.entryList[position].title,
+                this._entryList[position].title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
 
               // Value
-              subtitle: Text(this.entryList[position].value),
+              subtitle: Text(this._entryList[position].value),
 
               // Time and comment
               trailing: Column(
                 //mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(this.entryList[position].date),
-                  Text(this.entryList[position].comment),
+                  Text(this._entryList[position].date),
+                  Text(this._entryList[position].comment),
                 ],
               ),
 
               // onTAP TO EDIT
               onTap: () {
                 debugPrint("ListTile Tapped");
-                navigateToEditEntry(this.entryList[position], 'Edit Entry');
+                _navigateToEditEntry(this._entryList[position], 'Edit Entry');
               },
             ),
           ),
@@ -92,30 +92,30 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   // navigation for editing entry
-  void navigateToEditEntry(Entry entry, String title) async {
+  void _navigateToEditEntry(Entry entry, String title) async {
     bool result =
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
     }));
 
     if (result == true) {
-      _updateEntryListView();
+      updateEntryListView();
     }
   }
 
   // updateEntryListView depends on state
-  // TODO functions also in journal_route but using it from there breaks it
-  void _updateEntryListView() async {
+  // function also in createAttribute.dart but using it from there breaks it
+  void updateEntryListView() async {
     DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-    Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
-    entryList = await entryListFuture;
+    Future<List<Entry>> _entryListFuture = databaseHelperEntry.getEntryList();
+    _entryList = await _entryListFuture;
     setState(() {
-      this.entryList = entryList;
-      this.countEntry = entryList.length;
+      this._entryList = _entryList;
+      this._countEntry = _entryList.length;
     });
 
     // take two most recent entries as defaults for visualization
-    globals.mostRecentAddedEntryName = entryList[0].title;
-    globals.secondMostRecentAddedEntryName = entryList[1].title;
+    globals.mostRecentAddedEntryName = _entryList[0].title;
+    globals.secondMostRecentAddedEntryName = _entryList[1].title;
   }
 }

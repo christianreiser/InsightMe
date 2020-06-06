@@ -22,8 +22,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   @override
   Widget build(BuildContext context) {
     var attributeInputController = TextEditingController();
-    if (attributeList == null) {
-      attributeList = List<Attribute>();
+    if (_attributeList == null) {
+      _attributeList = List<Attribute>();
       _updateAttributeListView();
     }
 
@@ -108,7 +108,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     setState(() {
                       debugPrint("Create button clicked");
                     });
-                    //EditAttributeState._save() TODO save directly
                     _navigateToEditAttribute(
                         // attributeInputController.text is the Label
                         // name which is automatically put in in add
@@ -143,7 +142,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // Attribute LIST
   ListView _getAttributeListView() {
     return ListView.builder(
-      itemCount: countAttribute,
+      itemCount: _countAttribute,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           //color: Colors.white,
@@ -154,14 +153,14 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
               //backgroundColor: Colors.amber,
               child: Text(
                 JournalRouteState()
-                    .getFirstLetter(this.attributeList[position].title),
+                    .getFirstLetter(this._attributeList[position].title),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
 
             // TITLE
             title: Text(
-              this.attributeList[position].title,
+              this._attributeList[position].title,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
 
@@ -177,7 +176,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   onTap: () {
                     debugPrint("ListTile Tapped");
                     _navigateToEditAttribute(
-                        this.attributeList[position], 'Edit Attribute');
+                        this._attributeList[position], 'Edit Attribute');
                   },
                 ),
               ],
@@ -189,11 +188,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 debugPrint("One Attribute selected");
               });
 
-              navigateToEditEntry(
+              _navigateToEditEntry(
                   // title, value, time, comment
-                  Entry(this.attributeList[position].title, '',
+                  Entry(this._attributeList[position].title, '',
                       '${DateTime.now()}', ''),
-                  'Add ${this.attributeList[position].title} Entry');
+                  'Add ${this._attributeList[position].title} Entry');
             },
           ),
         );
@@ -205,7 +204,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     Navigator.pop(context, true);
   }
 
-  // navigation for editing entry
+  // navigation back to journal and refresh to show new entry
   void _navigateToScaffoldRoute() async {
     // don't use pop because it doesn't refresh the page
     // RemoveUntil is needed to remove the old outdated journal route
@@ -234,7 +233,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // navigation for editing entry
-  void navigateToEditEntry(Entry entry, String title) async {
+  // function exists also in journal_route.dart but when using it from there:
+  // state error
+  void _navigateToEditEntry(Entry entry, String title) async {
     bool result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
@@ -248,8 +249,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // updateAttributeListView depends on state
-  int countAttribute = 0;
-  List<Attribute> attributeList;
+  int _countAttribute = 0;
+  List<Attribute> _attributeList;
   void _updateAttributeListView() {
     DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
     final Future<Database> dbFuture =
@@ -260,24 +261,22 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           databaseHelperAttribute.getAttributeList();
       attributeListFuture.then((attributeList) {
         setState(() {
-          this.attributeList = attributeList;
-          this.countAttribute = attributeList.length;
+          this._attributeList = attributeList;
+          this._countAttribute = attributeList.length;
         });
       });
     });
   }
 
-  List<Entry> entryList;
-  int countEntry = 0;
+  List<Entry> _entryList;
   // updateEntryListView depends on state
-  // TODO functions also in journal_route but using it from there breaks it
+  // functions also in journal_route but using it from there breaks it
   void _updateEntryListView() async {
     DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
     Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
-    entryList = await entryListFuture;
+    _entryList = await entryListFuture;
     setState(() {
-      this.entryList = entryList;
-      this.countEntry = entryList.length;
+      this._entryList = _entryList;
     });
   }
 } // class

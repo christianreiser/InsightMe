@@ -18,7 +18,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("InsightMe"),
+        title: Text("insightMe"),
         leading: null,
       ),
       body: Center(

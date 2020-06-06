@@ -37,14 +37,7 @@ class EditEntryState extends State<EditEntry> {
     commentController.text = entry.comment;
     dateController.text = entry.date;
 
-    return WillPopScope(
-      onWillPop: () {
-        moveToLastScreen();
-      },
-
-      // APPBAR
-
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
 //          leading: IconButton(
@@ -178,7 +171,6 @@ class EditEntryState extends State<EditEntry> {
             ],
           ),
         ),
-      ),
     );
   }
 
