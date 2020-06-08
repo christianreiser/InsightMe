@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:lifetracker4/Visualize/attribute_selection.dart';
-import 'package:lifetracker4/Visualize/change_notifier.dart';
+import './attribute_selection.dart';
+import './change_notifier.dart';
 import 'package:provider/provider.dart';
 import 'chart.dart';
 

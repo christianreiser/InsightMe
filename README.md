@@ -1,6 +1,6 @@
-# lifetracker4
+# insightme
 
-Track anything about your life.
+A personal data-driven journal.
 
 ## Getting Started
 
