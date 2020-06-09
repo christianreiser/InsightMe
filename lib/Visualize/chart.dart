@@ -6,12 +6,7 @@ import '../Database/entry.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 
 class Chart extends StatelessWidget {
-  Chart({Key key, this.title}) : super(key: key);
-  final String title;
-
-
-  DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-  LineChart chart;
+  static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
   // get data from db delayed and set as state
   Future<Map<DateTime, double>> _getDateTimeMap(selectedAttribute) async {
@@ -36,6 +31,7 @@ class Chart extends StatelessWidget {
   }
 
   // create chart
+  LineChart chart;
   Future<LineChart> _getChart(selectedAttribute1, selectedAttribute2) async {
     Map<DateTime, double> dateTimeMap1 = await _getDateTimeMap(selectedAttribute1);
     Map<DateTime, double> dateTimeMap2 = await _getDateTimeMap(selectedAttribute2);
@@ -58,7 +54,6 @@ class Chart extends StatelessWidget {
 
             // chart data arrived && data found
             if (snapshot.connectionState == ConnectionState.done && chart != null) {
-              debugPrint('chart: $chart');
               return AnimatedLineChart(chart);
             }
 
