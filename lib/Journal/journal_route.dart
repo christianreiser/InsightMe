@@ -7,8 +7,7 @@ import './../globals.dart' as globals;
 import 'package:intl/intl.dart'; // for date time formatting
 
 class JournalRoute extends StatefulWidget {
-  JournalRoute({Key key, this.title}) : super(key: key);
-  final String title;
+  JournalRoute();
 
   @override
   JournalRouteState createState() => JournalRouteState();
