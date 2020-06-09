@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart'; // for date time formatting
 
 
 class EditEntry extends StatefulWidget {

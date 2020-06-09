@@ -4,6 +4,7 @@ import '../Database/Route/edit_entries.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import './../globals.dart' as globals;
+import 'package:intl/intl.dart'; // for date time formatting
 
 class JournalRoute extends StatefulWidget {
   JournalRoute({Key key, this.title}) : super(key: key);
@@ -69,7 +70,12 @@ class JournalRouteState extends State<JournalRoute> {
               trailing: Column(
                 //mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(this._entryList[position].date),
+                  // DateFormat formats DateFormat to better readable format but
+                  // needs type DateTime as input. DB doesn't support this type,
+                  // that's why the workaround with DateTime.parse from string
+                  Text(DateFormat.yMMMMd('en_US')
+                      .add_Hm()
+                      .format(DateTime.parse(this._entryList[position].date))),
                   Text(this._entryList[position].comment),
                 ],
               ),
