@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
+import 'package:intl/intl.dart';
+
 
 class EditEntry extends StatefulWidget {
   final String appBarTitle;
@@ -36,6 +39,7 @@ class EditEntryState extends State<EditEntry> {
     valueController.text = entry.value;
     commentController.text = entry.comment;
     dateController.text = entry.date;
+    DateTime _dateTime = DateTime.parse(entry.date); // ini datepicker value
 
     return Scaffold(
       appBar: AppBar(
@@ -105,23 +109,43 @@ class EditEntryState extends State<EditEntry> {
               // DATE TIME
               Padding(
                 padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                child: TextField(
-                  controller: dateController,
-                  style: textStyle,
-                  onChanged: (value) {
-                    debugPrint(
-                        'Something changed in date Text Field. entry.date: ${entry.date}, dateController.text: ${dateController.text}');
-                    updateDate();
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5.0),),
+                  child: FlatButton(
+                  onPressed: () {
+                    DatePicker.showDateTimePicker(context,
+                        showTitleActions: true,
+                        minTime: DateTime(2000, 1, 1),
+                        maxTime: DateTime.now(), onChanged: (_dateTime) {
+                      debugPrint(
+                          'Something changed in date Text Field. entry.date: ${entry.date}, dateController.text: ${dateController.text}');
+                      debugPrint('change $_dateTime');
+                    }, onConfirm: (dateTime) {
+                      updateDate(dateTime);
+                      debugPrint('confirm $dateTime');
+                      setState(() {
+                        _dateTime = dateTime;
+                      });
+                    }, currentTime: DateTime.now(), locale: LocaleType.en);
                   },
-                  decoration: InputDecoration(
-                    labelText: 'Time [yyyy-MM-dd hh:mm]',
-                    labelStyle: textStyle,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            DateFormat.yMMMMd('en_US').add_Hm().format(_dateTime),
+                          style: textStyle,
+                        ),
+                      ),
+
+                    ),
+
+
                     ),
                   ),
-                ),
-              ),
+
+
 
               Padding(
                 padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -220,8 +244,8 @@ class EditEntryState extends State<EditEntry> {
   }
 
   // Update the comment of entry object
-  void updateDate() {
-    entry.date = dateController.text;
+  void updateDate(_dateTime) {
+    entry.date = _dateTime.toString(); //dateController.text;
   }
 
   // Save data to database
