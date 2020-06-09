@@ -37,16 +37,7 @@ class EditAttributeState extends State<EditAttribute> {
 
     titleController.text = attribute.title;
 
-    return WillPopScope(
-
-        //not sure what it is for
-        onWillPop: () {
-          moveToLastRoute();
-        },
-
-        // APPBAR
-
-        child: Scaffold(
+    return Scaffold(
           appBar: AppBar(
             title: Text(appBarTitle),
             leading: IconButton(
@@ -131,7 +122,7 @@ class EditAttributeState extends State<EditAttribute> {
               ],
             ),
           ),
-        ));
+        );
   }
 
   void moveToLastRoute() {
