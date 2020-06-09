@@ -4,13 +4,7 @@ import 'scaffold_route.dart';
 
 void main() => runApp(LifeTrackerApp());
 
-class LifeTrackerApp extends StatefulWidget {
-  // This widget is the root of your application.
-  @override
-  _LifeTrackerAppState createState() => _LifeTrackerAppState();
-}
-
-class _LifeTrackerAppState extends State<LifeTrackerApp> {
+class LifeTrackerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
