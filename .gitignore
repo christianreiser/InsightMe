@@ -49,3 +49,4 @@ ios/Runner*
 pubspec.lock
 android/app/src/main/res/*
 android/settings_aar.gradle
+android/key.properties

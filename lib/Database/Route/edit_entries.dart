@@ -38,25 +38,26 @@ class EditEntryState extends State<EditEntry> {
     dateController.text = entry.date;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(appBarTitle),
+      appBar: AppBar(
+        title: Text(appBarTitle),
 //          leading: IconButton(
 //              icon: Icon(Icons.arrow_back),
 //              onPressed: () {
 //                moveToLastScreen();
 //              }),
-        ),
-        body: Padding(
+      ),
+      body: Builder(
+        builder: (scaffoldContext) => Padding(
           padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
           child: ListView(
             children: <Widget>[
 /*                // Attribute: text box with attribute name -> not needed due to app bar
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextField(
-                    controller: titleController,
-                  )
-                ),*/
+                  Padding(
+                    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                    child: TextField(
+                      controller: titleController,
+                    )
+                  ),*/
 
               // Value
               Padding(
@@ -108,7 +109,8 @@ class EditEntryState extends State<EditEntry> {
                   controller: dateController,
                   style: textStyle,
                   onChanged: (value) {
-                    debugPrint('Something changed in date Text Field. entry.date: ${entry.date}, dateController.text: ${dateController.text}');
+                    debugPrint(
+                        'Something changed in date Text Field. entry.date: ${entry.date}, dateController.text: ${dateController.text}');
                     updateDate();
                   },
                   decoration: InputDecoration(
@@ -138,7 +140,7 @@ class EditEntryState extends State<EditEntry> {
                         onPressed: () {
                           setState(() {
                             debugPrint("Save button clicked");
-                            _save();
+                            _save(scaffoldContext);
                           });
                         },
                       ),
@@ -171,6 +173,7 @@ class EditEntryState extends State<EditEntry> {
             ],
           ),
         ),
+      ),
     );
   }
 
@@ -182,10 +185,10 @@ class EditEntryState extends State<EditEntry> {
     // This is just a regular expression for email addresses
     //final String p = "[0-9\.]{1,256}";
     // TODO RegExp input is all thats forbidden, better to input allowed characters: "[0-9\.]{1,256}"
-    final RegExp regExp = RegExp(r'[¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
+    final RegExp regExp = RegExp(
+        r'[¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
     Iterable iterableRegExp = regExp.allMatches(valueController);
     //debugPrint('iterableRegExp $iterableRegExp');
-
 
     if (iterableRegExp.every((n) => n == false)) {
       debugPrint('iterableRegExp true $iterableRegExp');
@@ -196,8 +199,6 @@ class EditEntryState extends State<EditEntry> {
     // The pattern of the email didn't match the regex above.
     return 'Invalid: Only digits (0-9) and point (.) as decimal are allowed.';
   }
-
-
 
   void moveToLastScreen() {
     Navigator.pop(context, true);
@@ -225,7 +226,7 @@ class EditEntryState extends State<EditEntry> {
 
   // Save data to database
 
-  void _save() async {
+  void _save(scaffoldContext) async {
     // NAVIGATE
     moveToLastScreen();
 
@@ -242,7 +243,8 @@ class EditEntryState extends State<EditEntry> {
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {
       // Success
-      _showAlertDialog('Status', 'Entry Saved Successfully');
+      // TODO idk why it is not working. S.th. with context
+      _showSnackBar('Entry Saved Successfully', scaffoldContext);
     } else {
       // Failure
       _showAlertDialog('Status', 'Problem Saving Entry');
@@ -272,5 +274,14 @@ class EditEntryState extends State<EditEntry> {
       content: Text(message),
     );
     showDialog(context: context, builder: (_) => alertDialog);
+  }
+
+  // TODO idk why it is not working
+  void _showSnackBar(String message, scaffoldContext) {
+    Scaffold.of(scaffoldContext).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 }
