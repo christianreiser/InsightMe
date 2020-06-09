@@ -7,15 +7,7 @@ import 'package:provider/provider.dart';
 import 'chart.dart';
 
 
-class Visualize extends StatefulWidget {
-  Visualize({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _VisualizeState createState() => _VisualizeState();
-}
-
-class _VisualizeState extends State<Visualize> {
+class Visualize extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
