@@ -7,8 +7,7 @@ import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 
 class ScaffoldRoute extends StatefulWidget {
-  ScaffoldRoute({Key key, this.title}) : super(key: key);
-  final String title;
+  ScaffoldRoute();
 
   @override
   _ScaffoldRouteState createState() => _ScaffoldRouteState();
