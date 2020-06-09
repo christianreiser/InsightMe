@@ -4,6 +4,7 @@ import './Visualize/visualize_route.dart';
 import 'Intro/first.dart';
 import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
+import './strings.dart' as strings;
 
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute({Key key, this.title}) : super(key: key);
@@ -18,7 +19,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("insightMe"),
+        title: Text(strings.appTitle,),
         leading: null,
       ),
       body: Center(

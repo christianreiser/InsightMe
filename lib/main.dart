@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import './strings.dart' as strings;
 import 'scaffold_route.dart';
 
 void main() => runApp(LifeTrackerApp());
@@ -14,7 +14,7 @@ class _LifeTrackerAppState extends State<LifeTrackerApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'insightMe',
+      title: strings.appTitle,
       theme: ThemeData(
         // This is the theme of your application.
         //
