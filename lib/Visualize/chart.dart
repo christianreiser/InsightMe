@@ -5,15 +5,11 @@ import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 
-class Chart extends StatefulWidget {
+class Chart extends StatelessWidget {
   Chart({Key key, this.title}) : super(key: key);
   final String title;
 
-  @override
-  _ChartState createState() => _ChartState();
-}
 
-class _ChartState extends State<Chart> {
   DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   LineChart chart;
 

@@ -110,8 +110,8 @@ class JournalRouteState extends State<JournalRoute> {
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
+  static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   void updateEntryListView() async {
-    DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
     Future<List<Entry>> _entryListFuture = databaseHelperEntry.getEntryList();
     _entryList = await _entryListFuture;
     setState(() {

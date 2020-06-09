@@ -251,8 +251,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // updateAttributeListView depends on state
   int _countAttribute = 0;
   List<Attribute> _attributeList;
+  static DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
+
   void _updateAttributeListView() {
-    DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
     final Future<Database> dbFuture =
         databaseHelperAttribute.initializeDatabase();
 
@@ -269,10 +270,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   List<Entry> _entryList;
+  static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   // updateEntryListView depends on state
   // functions also in journal_route but using it from there breaks it
   void _updateEntryListView() async {
-    DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
     Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
     _entryList = await entryListFuture;
     setState(() {

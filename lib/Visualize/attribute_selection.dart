@@ -4,22 +4,14 @@ import 'package:provider/provider.dart';
 import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
 
-class DropDown extends StatefulWidget {
+class DropDown extends StatelessWidget {
   final bool boolFirst;
 
-  DropDown(this.boolFirst) : super();
+  DropDown(this.boolFirst);
 
-  @override
-  DropDownState createState() => DropDownState(boolFirst);
-}
-
-class DropDownState extends State<DropDown> {
-  bool boolFirst;
-
-  DropDownState(this.boolFirst);
 
   List<DropdownMenuItem<String>> _dropdownMenuItems; // ini item list
-  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
+  static DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
 
   // get Attributes from DB into a future list
   Future<List<String>> _getAttributeListNew() async {
