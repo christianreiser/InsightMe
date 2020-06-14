@@ -1,5 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
+import 'package:insightme/Covid19/covid19_route.dart';
 import './Visualize/visualize_route.dart';
 import 'Intro/first.dart';
 import 'Journal/journal_route.dart';
@@ -91,10 +92,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             icon: Icon(Icons.timeline),
             title: Text('Visualize'),
           ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.device_hub),
-//            title: Text('Correlate'),
-//          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_hospital),
+            title: Text('Covid-19'),
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColorDark,
@@ -110,7 +111,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   static List<Widget> _widgetOptions = <Widget>[
     JournalRoute(),
     Visualize(),
-    IntroRoute(),
+    Covid19(),//IntroRoute(),
   ];
 
   void _onItemTapped(int index) {
