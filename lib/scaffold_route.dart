@@ -94,7 +94,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_hospital),
-            title: Text('Covid-19'),
+            title: Text('COVID-19'),
           ),
         ],
         currentIndex: _selectedIndex,
