@@ -1,7 +1,9 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:insightme/Covid19/covid19_route.dart';
 import './Visualize/visualize_route.dart';
+import 'Import/import_from_json_route.dart';
 import 'Intro/first.dart';
 import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
@@ -27,59 +29,73 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       ),
 
       // use this block for only one floatingActionButton
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("nav to add manually");
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false, // set to false
-              pageBuilder: (_, __, ___) => Container(
-                color: Colors.black.withOpacity(.6),
-              child: Padding(
-                  padding: EdgeInsets.fromLTRB(20,25,20,20),
-
-                  child: SearchOrCreateAttribute(),
-                ),
-              ),
-            ),
-          );
-        },
-        child: Icon(Icons.border_color),
-      ),
+//      floatingActionButton: FloatingActionButton(
+//        onPressed: () {
+//          print("nav to add manually");
+//          Navigator.of(context).push(
+//            PageRouteBuilder(
+//              opaque: false, // set to false
+//              pageBuilder: (_, __, ___) => Container(
+//                color: Colors.black.withOpacity(.6),
+//              child: Padding(
+//                  padding: EdgeInsets.fromLTRB(20,25,20,20),
+//
+//                  child: SearchOrCreateAttribute(),
+//                ),
+//              ),
+//            ),
+//          );
+//        },
+//        child: Icon(Icons.border_color),
+//      ),
 
       // use below when more then one floatingActionButton and remove top block
-//      floatingActionButton: SpeedDial(
-//        animatedIcon: AnimatedIcons.menu_close,
-//        children: [
-//          // first speed dial button for new entry
-//          SpeedDialChild(
-//              child: Icon(Icons.border_color),
-//              label: "New Entry",
-//              onTap: () {
-//                print("nav to add manually");
-//                Navigator.push(
-//                  context,
-//                  MaterialPageRoute(builder: (context) {
-//                    return SearchOrCreateAttribute();
-//                  }),
-//                );
-//              }),
-//
-//          // second speed dial button - no function yet
-//          SpeedDialChild(
-//              backgroundColor: Colors.grey,
-//              child: Icon(Icons.timer),
-//              label: "-DropDown-",
-////              onTap: () {
-////                print("DropDown");
-////                Navigator.push(
-////                  context,
-////                  MaterialPageRoute(builder: (context) => DropDown(defaultAttribute)),
-////                ); // Navigate to newManualEntry route when tapped.
-////              }
-//              ),
-//        ],
-//      ),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          // first speed dial button for new entry
+          SpeedDialChild(
+              child: Icon(Icons.border_color),
+              label: "New Entry",
+              onTap: () {
+                print("nav to add manually");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return SearchOrCreateAttribute();
+                  }),
+                );
+              }),
+
+          // import from CSV
+          SpeedDialChild(
+              backgroundColor: Colors.grey,
+              child: Icon(Icons.input),
+              label: "Import",
+              onTap: () {
+                print("DropDown");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Import()),
+                ); // Navigate to newManualEntry route when tapped.
+              }
+              ),
+
+          // connect service
+          SpeedDialChild(
+              backgroundColor: Colors.grey,
+              child: Icon(Icons.input),
+              label: "Connect with Service (i.e. Apple Health, FitBit)",
+              onTap: () {
+                print("DropDown");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Import()),
+                ); // Navigate to newManualEntry route when tapped.
+              }
+          ),
+        ],
+      ),
 
       // bottom navigation bar
       bottomNavigationBar: BottomNavigationBar(
