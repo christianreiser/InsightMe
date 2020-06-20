@@ -8,6 +8,7 @@ import 'Intro/first.dart';
 import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
+import 'Recommend/recommendation_route.dart';
 
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute();
@@ -85,7 +86,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           SpeedDialChild(
               backgroundColor: Colors.grey,
               child: Icon(Icons.input),
-              label: "Connect with Service (i.e. Apple Health, FitBit)",
+              label: "Connect with Service (e.g. Apple Health, FitBit)",
               onTap: () {
                 print("DropDown");
                 Navigator.push(
@@ -109,9 +110,13 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             title: Text('Visualize'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_hospital),
-            title: Text('COVID-19'),
+            icon: Icon(Icons.widgets),
+            title: Text('Recommend'),
           ),
+//          BottomNavigationBarItem(
+//            icon: Icon(Icons.local_hospital),
+//            title: Text('COVID-19'),
+//          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColorDark,
@@ -127,6 +132,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   static List<Widget> _widgetOptions = <Widget>[
     JournalRoute(),
     Visualize(),
+    Recommend(),
     Covid19(),//IntroRoute(),
   ];
 
