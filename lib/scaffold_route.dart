@@ -100,6 +100,9 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
 
       // bottom navigation bar
       bottomNavigationBar: BottomNavigationBar(
+        unselectedIconTheme: IconThemeData(color: Colors.grey),
+        //showUnselectedLabels: true, // TODO fix theme/color
+        //unselectedLabelStyle: TextStyle(color: Colors.black),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.view_list),
@@ -113,10 +116,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             icon: Icon(Icons.widgets),
             title: Text('Recommend'),
           ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.local_hospital),
-//            title: Text('COVID-19'),
-//          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_hospital),
+            title: Text('COVID-19'),
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColorDark,
