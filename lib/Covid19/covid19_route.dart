@@ -10,12 +10,9 @@ class Covid19 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
+      padding: EdgeInsets.all(10),
       // ChangeNotifierProvider for state management
-      child: Column(
-          mainAxisSize: MainAxisSize.max,
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
+      child: ListView(
           children: <Widget>[
             // TITLE
             Row(children: <Widget>[
