@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   sqflite: # SQLite
   path_provider: # SQLite
+  file_picker: # csv file
   fl_animated_linechart:  # chart
   provider: # state management
   google_fonts:

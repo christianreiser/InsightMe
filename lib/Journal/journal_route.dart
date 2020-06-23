@@ -119,8 +119,13 @@ class JournalRouteState extends State<JournalRoute> {
       this._countEntry = _entryList.length;
     });
 
-    // take two most recent entries as defaults for visualization
-    globals.mostRecentAddedEntryName = _entryList[0].title;
-    globals.secondMostRecentAddedEntryName = _entryList[1].title;
+    // take two most recent entries as defaults for visualization.
+    // if statements are needed to catch error if list is empty.
+    if (_entryList.length > 0) {
+      globals.mostRecentAddedEntryName = _entryList[0].title;
+      if (_entryList.length > 1) {
+        globals.secondMostRecentAddedEntryName = _entryList[1].title;
+      }
+    }
   }
 }
