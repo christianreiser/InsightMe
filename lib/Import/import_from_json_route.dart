@@ -10,7 +10,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 
-
 import 'package:path_provider/path_provider.dart';
 
 class Import extends StatefulWidget {
@@ -20,7 +19,7 @@ class Import extends StatefulWidget {
 
 class _ImportState extends State<Import> {
   final DatabaseHelperEntry helperEntry = // error when static
-  DatabaseHelperEntry();
+      DatabaseHelperEntry();
 
   String file; // todo
 
@@ -73,6 +72,7 @@ class _ImportState extends State<Import> {
   String importCSVFile() {
     String successString;
     int lineCounter = 0;
+    int importCounter = 0;
     List<String> attributeNames = [];
     DateTime dateTimeStamp;
 
@@ -80,38 +80,42 @@ class _ImportState extends State<Import> {
 
     Stream<List> inputStream = file.openRead();
 
+    // iterate through lines
     inputStream
         .transform(utf8.decoder) // Decode bytes to UTF-8.
         .transform(new LineSplitter()) // Convert stream to individual lines.
         .listen((String line) {
-      // Process results.
 
       List column = line.split(','); // split by comma
 
-
-      // get attribute names
+      // iterate through columns
       for (int columnCount = 0; columnCount < column.length; columnCount++) {
+
+        // get attribute names
         if (lineCounter == 0) {
           attributeNames.add(column[columnCount]);
         } else {
-          if (column[columnCount] =! null) { // skip empty cells in csv-file
-            // add entry to db
-            dateTimeStamp = DateTime.parse(column[0]);
-            debugPrint('dateTimeStamp $dateTimeStamp');
 
-            // title, value, time, comment
-            Entry entry = Entry(
-                attributeNames[columnCount], column[columnCount],
-                '$dateTimeStamp', 'imported');
+          // skip empty cells in csv-file
+          if ((column[columnCount]).length > 0) {
 
-            _save(entry);
+            // get DateTime which is in first column
+            if (columnCount == 0) {
+              dateTimeStamp = DateTime.parse(column[0]);
+            } else {
+              // add entry to db
+
+
+              // title, value, time, comment
+              Entry entry = Entry(attributeNames[columnCount],
+                  column[columnCount], '$dateTimeStamp', 'csv import');
+
+              _save(entry);
+            }
           }
         }
       }
 
-
-
-      debugPrint('${column[0]}, ${column[1]}, ${column[2]}');
       lineCounter += 1;
     }, onDone: () {
       print('File is now closed!');
@@ -149,7 +153,6 @@ class _ImportState extends State<Import> {
   }
 
   void _save(entry) async {
-
     // Update Operation: Update a to-do object and save it to database
     int result;
     if (entry.id != null) {
