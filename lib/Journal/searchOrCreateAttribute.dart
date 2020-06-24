@@ -20,6 +20,7 @@ class SearchOrCreateAttribute extends StatefulWidget {
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   List _searchResult = new List();
+  List _attributesToDisplay = new List();
   var _attributeInputController = TextEditingController();
 
   @override
@@ -94,7 +95,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     setState(() {
                       debugPrint("Create button clicked");
                     });
-                    _navigateToEditAttribute( // TODO don't navigate but create directly
+                    _navigateToEditAttribute(
+                        // TODO don't navigate but create directly
                         // _attributeInputController.text is the Label
                         // name which is automatically put in in add
                         // attribute filed.
@@ -122,129 +124,69 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return Flexible(
       // pull to refresh
       child: RefreshIndicator(
-          onRefresh: () async {
-            _updateAttributeListView();
+        onRefresh: () async {
+          _updateAttributeListView();
+        },
+
+        // if typed into search field only show matches
+        child: ListView.builder(
+          itemCount: _attributesToDisplay.length,
+          itemBuilder: (BuildContext context, int position) {
+            return Card(
+              //color: Colors.white,
+              elevation: 2.0,
+              child: ListTile(
+                // YELLOW CIRCLE AVATAR
+                leading: CircleAvatar(
+                  //backgroundColor: Colors.amber,
+                  child: Text(
+                    JournalRouteState()
+                        .getFirstLetter(this._attributesToDisplay[position]),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+
+                // TITLE
+                title: Text(
+                  _attributesToDisplay[position].toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+
+                // EDIT ICON
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    GestureDetector(
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.grey,
+                      ),
+                      onTap: () {
+                        debugPrint("ListTile Tapped");
+                        _navigateToEditAttribute(
+                            this._attributesToDisplay[position], 'Edit Attribute');
+                      },
+                    ),
+                  ],
+                ),
+
+                // onTAP for entry
+                onTap: () {
+                  setState(() {
+                    debugPrint("One Attribute selected");
+                  });
+
+                  _navigateToEditEntry(
+                      // title, value, time, comment
+                      Entry(this._attributesToDisplay[position].title, '',
+                          '${DateTime.now()}', ''),
+                      'Add ${this._attributesToDisplay[position].title} Entry');
+                },
+              ),
+            );
           },
-
-          // if typed into search field only show matches
-          child: _searchResult.length != 0 ||
-                  _attributeInputController.text.isNotEmpty
-              ? ListView.builder(
-                  itemCount: _searchResult.length,
-                  itemBuilder: (BuildContext context, int position) {
-                    return Card(
-                      //color: Colors.white,
-                      elevation: 2.0,
-                      child: ListTile(
-                        // YELLOW CIRCLE AVATAR
-                        leading: CircleAvatar(
-                          //backgroundColor: Colors.amber,
-                          child: Text(
-                            JournalRouteState().getFirstLetter(
-                                this._searchResult[position]),
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-
-                        // TITLE
-                        title: Text(
-                          _searchResult[position].toString(),
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-
-                        // EDIT ICON
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            GestureDetector(
-                              child: Icon(
-                                Icons.edit,
-                                color: Colors.grey,
-                              ),
-                              onTap: () {
-                                debugPrint("ListTile Tapped");
-                                _navigateToEditAttribute(
-                                    this._attributeList[position],
-                                    'Edit Attribute');
-                              },
-                            ),
-                          ],
-                        ),
-
-                        // onTAP for entry
-                        onTap: () {
-                          setState(() {
-                            debugPrint("One Attribute selected");
-                          });
-
-                          _navigateToEditEntry(
-                              // title, value, time, comment
-                              Entry(this._attributeList[position].title, '',
-                                  '${DateTime.now()}', ''),
-                              'Add ${this._attributeList[position].title} Entry');
-                        },
-                      ),
-                    );
-                  },
-                )
-              : ListView.builder( // TODO don't copy and paste
-                  itemCount: _countAttribute,
-                  itemBuilder: (BuildContext context, int position) {
-                    return Card(
-                      //color: Colors.white,
-                      elevation: 2.0,
-                      child: ListTile(
-                        // YELLOW CIRCLE AVATAR
-                        leading: CircleAvatar(
-                          //backgroundColor: Colors.amber,
-                          child: Text(
-                            JournalRouteState().getFirstLetter(
-                                this._attributeList[position].title),
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-
-                        // TITLE
-                        title: Text(
-                          this._attributeList[position].title,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-
-                        // EDIT ICON
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            GestureDetector(
-                              child: Icon(
-                                Icons.edit,
-                                color: Colors.grey,
-                              ),
-                              onTap: () {
-                                debugPrint("ListTile Tapped");
-                                _navigateToEditAttribute(
-                                    this._attributeList[position],
-                                    'Edit Attribute');
-                              },
-                            ),
-                          ],
-                        ),
-
-                        // onTAP for entry
-                        onTap: () {
-                          setState(() {
-                            debugPrint("One Attribute selected");
-                          });
-
-                          _navigateToEditEntry(
-                              // title, value, time, comment
-                              Entry(this._attributeList[position].title, '',
-                                  '${DateTime.now()}', ''),
-                              'Add ${this._attributeList[position].title} Entry');
-                        },
-                      ),
-                    );
-                  },
-                )),
+        ),
+      ),
     );
   }
 
@@ -331,10 +273,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // SEARCH OPERATION
-  // _searchResult = remaining tiles
-  // searchText = user input = _attributeInputController.text
-  // _list = _attributeList.title
-  void _searchOperation() { // TODO _?
+  void _searchOperation() {
+    // TODO _?
     _searchResult.clear(); // should be names of tiles
     //if (_isSearching != null) {
     for (int i = 0; i < _attributeList.length; i++) {
@@ -346,6 +286,14 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         _searchResult.add(data); // list of results
       }
     }
-    //}
+
+    //
+    if (_searchResult.length != 0 ||
+        _attributeInputController.text.isNotEmpty) {
+      _attributesToDisplay =
+          _searchResult; // show results and not all attributes
+    } else {
+      _attributesToDisplay = _attributeList;
+    }
   }
 } // class
