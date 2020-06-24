@@ -99,6 +99,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       _save(Attribute(_attributeInputController.text,
                           '')); // TODO check if it shoud be inside of setState and if it works
                       debugPrint("Create button clicked");
+
                     });
                   },
                 ),
@@ -108,6 +109,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
           // spacing between boxes
           SizedBox(height: 4),
+          Text('_attributesToDisplay: $_attributesToDisplay'),
 
           // List of previously used attributes
           _getAttributeListView(),
@@ -118,6 +120,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // Attribute LIST
   Flexible _getAttributeListView() {
+    _searchOperation(); // one search operation to get attributes to display
     return Flexible(
       // pull to refresh
       child: RefreshIndicator(

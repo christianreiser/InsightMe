@@ -201,7 +201,7 @@ class EditEntryState extends State<EditEntry> {
     }
     // This is just a regular expression for email addresses
     //final String p = "[0-9\.]{1,256}";
-    // TODO RegExp input is all thats forbidden, better to input allowed characters: "[0-9\.]{1,256}"
+    // TODO RegExp input is all that's forbidden, better to input allowed characters: "[0-9\.]{1,256}"
     final RegExp regExp = RegExp(
         r'[¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
     Iterable iterableRegExp = regExp.allMatches(valueController);
