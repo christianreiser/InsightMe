@@ -19,9 +19,11 @@ class SearchOrCreateAttribute extends StatefulWidget {
 
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
+  List _searchResult = new List();
+  var _attributeInputController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    var attributeInputController = TextEditingController();
     if (_attributeList == null) {
       _attributeList = List<Attribute>();
       _updateAttributeListView();
@@ -58,35 +60,19 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'create new label', // TODO search
+                    labelText: 'create new label',
                     suffixIcon: IconButton(
-                      onPressed: () => attributeInputController.clear(),
+                      onPressed: () => _attributeInputController.clear(),
                       icon: Icon(Icons.clear),
                     ),
                   ),
-                  controller: attributeInputController,
+                  controller: _attributeInputController,
                   onChanged: (value) {
-                    //debugPrint('Something changed search or create new attribute');
                     debugPrint(
-                        "Second text field: ${attributeInputController.text}");
-                    //print(TextEditingController.text)
-                    /*                       TODO:
-                         if textfield is not empty and content is not in list:
-                            show add button
-                          */
-                    //int lenAttributeInput = attributeInputController.text.length;
-
-                    /*if ()lenAttributeInput < 0) {
-                          debugPrint("Second text field: ${attributeInputController.text}");}*/
-
-                    /*                        OR
-                        search string in list of attributes
-                         if found partially
-                            if NOT matched exactly:
-                                show found attributes in list below
-                                display create new attribute button
-                            else if: exact match:
-                                hide create new attribute button*/
+                        "Something changed search or create new attribute:"
+                        " ${_attributeInputController.text}");
+                    _searchOperation();
+                    _updateAttributeListView(); // update after search
                   },
                 ),
               ),
@@ -108,12 +94,12 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     setState(() {
                       debugPrint("Create button clicked");
                     });
-                    _navigateToEditAttribute(
-                        // attributeInputController.text is the Label
+                    _navigateToEditAttribute( // TODO don't navigate but create directly
+                        // _attributeInputController.text is the Label
                         // name which is automatically put in in add
                         // attribute filed.
                         // 'Add Attribute' is the App Bar name
-                        Attribute(attributeInputController.text, ''),
+                        Attribute(_attributeInputController.text, ''),
                         'Add Attribute');
                   },
                 ),
@@ -125,78 +111,140 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           SizedBox(height: 4),
 
           // List of previously used attributes
-          Flexible(
-            child: RefreshIndicator(
-              //key: refreshKey,
-              onRefresh: () async {
-                _updateAttributeListView();
-              },
-              child: _getAttributeListView(),
-            ),
-          )
+          _getAttributeListView(),
         ]),
       ),
     );
   } // widget
 
   // Attribute LIST
-  ListView _getAttributeListView() {
-    return ListView.builder(
-      itemCount: _countAttribute,
-      itemBuilder: (BuildContext context, int position) {
-        return Card(
-          //color: Colors.white,
-          elevation: 2.0,
-          child: ListTile(
-            // YELLOW CIRCLE AVATAR
-            leading: CircleAvatar(
-              //backgroundColor: Colors.amber,
-              child: Text(
-                JournalRouteState()
-                    .getFirstLetter(this._attributeList[position].title),
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
+  Flexible _getAttributeListView() {
+    return Flexible(
+      // pull to refresh
+      child: RefreshIndicator(
+          onRefresh: () async {
+            _updateAttributeListView();
+          },
 
-            // TITLE
-            title: Text(
-              this._attributeList[position].title,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+          // if typed into search field only show matches
+          child: _searchResult.length != 0 ||
+                  _attributeInputController.text.isNotEmpty
+              ? ListView.builder(
+                  itemCount: _searchResult.length,
+                  itemBuilder: (BuildContext context, int position) {
+                    return Card(
+                      //color: Colors.white,
+                      elevation: 2.0,
+                      child: ListTile(
+                        // YELLOW CIRCLE AVATAR
+                        leading: CircleAvatar(
+                          //backgroundColor: Colors.amber,
+                          child: Text(
+                            JournalRouteState().getFirstLetter(
+                                this._searchResult[position]),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
 
-            // EDIT ICON
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.grey,
-                  ),
-                  onTap: () {
-                    debugPrint("ListTile Tapped");
-                    _navigateToEditAttribute(
-                        this._attributeList[position], 'Edit Attribute');
+                        // TITLE
+                        title: Text(
+                          _searchResult[position].toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+
+                        // EDIT ICON
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            GestureDetector(
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.grey,
+                              ),
+                              onTap: () {
+                                debugPrint("ListTile Tapped");
+                                _navigateToEditAttribute(
+                                    this._attributeList[position],
+                                    'Edit Attribute');
+                              },
+                            ),
+                          ],
+                        ),
+
+                        // onTAP for entry
+                        onTap: () {
+                          setState(() {
+                            debugPrint("One Attribute selected");
+                          });
+
+                          _navigateToEditEntry(
+                              // title, value, time, comment
+                              Entry(this._attributeList[position].title, '',
+                                  '${DateTime.now()}', ''),
+                              'Add ${this._attributeList[position].title} Entry');
+                        },
+                      ),
+                    );
                   },
-                ),
-              ],
-            ),
+                )
+              : ListView.builder( // TODO don't copy and paste
+                  itemCount: _countAttribute,
+                  itemBuilder: (BuildContext context, int position) {
+                    return Card(
+                      //color: Colors.white,
+                      elevation: 2.0,
+                      child: ListTile(
+                        // YELLOW CIRCLE AVATAR
+                        leading: CircleAvatar(
+                          //backgroundColor: Colors.amber,
+                          child: Text(
+                            JournalRouteState().getFirstLetter(
+                                this._attributeList[position].title),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
 
-            // onTAP for entry
-            onTap: () {
-              setState(() {
-                debugPrint("One Attribute selected");
-              });
+                        // TITLE
+                        title: Text(
+                          this._attributeList[position].title,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
 
-              _navigateToEditEntry(
-                  // title, value, time, comment
-                  Entry(this._attributeList[position].title, '',
-                      '${DateTime.now()}', ''),
-                  'Add ${this._attributeList[position].title} Entry');
-            },
-          ),
-        );
-      },
+                        // EDIT ICON
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            GestureDetector(
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.grey,
+                              ),
+                              onTap: () {
+                                debugPrint("ListTile Tapped");
+                                _navigateToEditAttribute(
+                                    this._attributeList[position],
+                                    'Edit Attribute');
+                              },
+                            ),
+                          ],
+                        ),
+
+                        // onTAP for entry
+                        onTap: () {
+                          setState(() {
+                            debugPrint("One Attribute selected");
+                          });
+
+                          _navigateToEditEntry(
+                              // title, value, time, comment
+                              Entry(this._attributeList[position].title, '',
+                                  '${DateTime.now()}', ''),
+                              'Add ${this._attributeList[position].title} Entry');
+                        },
+                      ),
+                    );
+                  },
+                )),
     );
   }
 
@@ -251,7 +299,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // updateAttributeListView depends on state
   int _countAttribute = 0;
   List<Attribute> _attributeList;
-  static DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
+  static DatabaseHelperAttribute databaseHelperAttribute =
+      DatabaseHelperAttribute();
 
   void _updateAttributeListView() {
     final Future<Database> dbFuture =
@@ -279,5 +328,24 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     setState(() {
       this._entryList = _entryList;
     });
+  }
+
+  // SEARCH OPERATION
+  // _searchResult = remaining tiles
+  // searchText = user input = _attributeInputController.text
+  // _list = _attributeList.title
+  void _searchOperation() { // TODO _?
+    _searchResult.clear(); // should be names of tiles
+    //if (_isSearching != null) {
+    for (int i = 0; i < _attributeList.length; i++) {
+      String data = _attributeList[i]
+          .title; // data will be compared against input (search-text)
+      if (data
+          .toLowerCase()
+          .contains(_attributeInputController.text.toLowerCase())) {
+        _searchResult.add(data); // list of results
+      }
+    }
+    //}
   }
 } // class

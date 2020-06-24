@@ -92,6 +92,8 @@ class _ImportState extends State<Import> {
       }
 
       lineCounter += 1;
+
+      // TODO feedback if import was successful
     }, onDone: () {
       _showAlertDialog('Status', 'Import started in the background');
       print('File is now closed!');
