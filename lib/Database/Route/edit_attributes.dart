@@ -22,8 +22,7 @@ class EditAttribute extends StatefulWidget {
 }
 
 class EditAttributeState extends State<EditAttribute> {
-  static DatabaseHelperAttribute helper =
-      DatabaseHelperAttribute();
+  static DatabaseHelperAttribute helper = DatabaseHelperAttribute();
 
   String appBarTitle;
   Attribute attribute;
@@ -39,96 +38,92 @@ class EditAttributeState extends State<EditAttribute> {
     titleController.text = attribute.title;
 
     return Scaffold(
-          appBar: AppBar(
-            title: Text(appBarTitle),
-            leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  _navigateToSearchOrCreateAttributeRoute();
-                }),
-          ),
-          body: Padding(
-            padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
-            child: ListView(
-              children: <Widget>[
-                // TITLE
+      appBar: AppBar(
+        title: Text(appBarTitle),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              _navigateToSearchOrCreateAttributeRoute();
+            }),
+      ),
+      body: Padding(
+        padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+        child: ListView(
+          children: <Widget>[
+            // TITLE
 
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextField(
-                    controller: titleController,
-                    //controller: TextEditingController(text: attributeInputController.text),
-                    style: textStyle,
-                    onChanged: (value) {
-                      debugPrint('Something changed in Title Text Field');
-                      updateTitle();
-                    },
-                    decoration: InputDecoration(
-                        labelText: 'Name of Label',
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
-                  ),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-
-                  // SAVE BUTTON
-
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Save',
-                            textScaleFactor: 1.5,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              debugPrint("Save button clicked");
-                              _save();
-                            });
-                          },
-                        ),
-                      ),
-
-                      Container(
-                        width: 5.0,
-                      ),
-
-                      // DELETE BUTTON
-
-                      Expanded(
-                        child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Delete',
-                            textScaleFactor: 1.5,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              debugPrint("Delete button clicked");
-                              _delete();
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+              child: TextField(
+                controller: titleController,
+                //controller: TextEditingController(text: attributeInputController.text),
+                style: textStyle,
+                onChanged: (value) {
+                  debugPrint('Something changed in Title Text Field');
+                  updateTitle();
+                },
+                decoration: InputDecoration(
+                    labelText: 'Name of Label',
+                    labelStyle: textStyle,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0))),
+              ),
             ),
-          ),
-        );
-  }
 
-//  void moveToLastRoute() { // test if it works
-//    Navigator.pop(context, true);
-//  }
+            Padding(
+              padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+
+              // SAVE BUTTON
+
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: RaisedButton(
+                      color: Theme.of(context).primaryColorDark,
+                      textColor: Theme.of(context).primaryColorLight,
+                      child: Text(
+                        'Save',
+                        textScaleFactor: 1.5,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          debugPrint("Save button clicked");
+                          _save();
+                        });
+                      },
+                    ),
+                  ),
+
+                  Container(
+                    width: 5.0,
+                  ),
+
+                  // DELETE BUTTON
+
+                  Expanded(
+                    child: RaisedButton(
+                      color: Theme.of(context).primaryColorDark,
+                      textColor: Theme.of(context).primaryColorLight,
+                      child: Text(
+                        'Delete',
+                        textScaleFactor: 1.5,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          debugPrint("Delete button clicked");
+                          _delete();
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   // Update the title of attribute object
   void updateTitle() {
@@ -194,15 +189,10 @@ class EditAttributeState extends State<EditAttribute> {
   void _navigateToSearchOrCreateAttributeRoute() async {
     // don't use pop because it doesn't refresh the page
     // RemoveUntil is needed to remove the old outdated journal route
-    bool result =
     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
-        context,
-        ) {
+      context,
+    ) {
       return SearchOrCreateAttribute();
     }), (Route<dynamic> route) => false);
-
-//    if (result == true) {
-//      _updateEntryListView();
-//    } // todo needed?
   }
 }
