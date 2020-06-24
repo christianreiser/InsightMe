@@ -9,7 +9,7 @@ import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../scaffold_route.dart';
 import 'journal_route.dart';
-//import 'package:intl/intl.dart'; // DateFormat.yMMMd().add_Hms().format(DateTime.now())
+import 'package:intl/intl.dart'; // DateFormat.yMMMd().add_Hms().format(DateTime.now())
 
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
@@ -19,13 +19,15 @@ class SearchOrCreateAttribute extends StatefulWidget {
 
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
-  List _searchResult = new List();
-  List _attributesToDisplay = new List();
+  List _searchResult = List<Attribute>();
+  List _attributesToDisplay = List<Attribute>();
+
   var _attributeInputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     if (_attributeList == null) {
+      // TODO needed for _searchResult and _attributesToDisplay?
       _attributeList = List<Attribute>();
       _updateAttributeListView();
     }
@@ -58,10 +60,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
               Expanded(
                 //height: ,
                 child: // Input text field for search or create attribute
+                    // TEXT FIELD
                     TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'create new label',
+                    labelText: 'search or create new label',
                     suffixIcon: IconButton(
                       onPressed: () => _attributeInputController.clear(),
                       icon: Icon(Icons.clear),
@@ -82,7 +85,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 padding: EdgeInsets.all(4.0),
               ),
 
-              // Save button search create attribute
+              // "CREATE" button
               Container(
                 child: RaisedButton(
                   color: Theme.of(context).primaryColorDark,
@@ -93,16 +96,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   ),
                   onPressed: () {
                     setState(() {
+                      _save(Attribute(_attributeInputController.text,
+                          '')); // TODO check if it shoud be inside of setState and if it works
                       debugPrint("Create button clicked");
                     });
-                    _navigateToEditAttribute(
-                        // TODO don't navigate but create directly
-                        // _attributeInputController.text is the Label
-                        // name which is automatically put in in add
-                        // attribute filed.
-                        // 'Add Attribute' is the App Bar name
-                        Attribute(_attributeInputController.text, ''),
-                        'Add Attribute');
                   },
                 ),
               ),
@@ -140,15 +137,15 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 leading: CircleAvatar(
                   //backgroundColor: Colors.amber,
                   child: Text(
-                    JournalRouteState()
-                        .getFirstLetter(this._attributesToDisplay[position]),
+                    JournalRouteState().getFirstLetter(
+                        this._attributesToDisplay[position].title),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
 
                 // TITLE
                 title: Text(
-                  _attributesToDisplay[position].toString(),
+                  _attributesToDisplay[position].title.toString(), // Todo to string needed?
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
 
@@ -164,7 +161,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       onTap: () {
                         debugPrint("ListTile Tapped");
                         _navigateToEditAttribute(
-                            this._attributesToDisplay[position], 'Edit Attribute');
+                            _attributesToDisplay[position], // todo works? check git for old version
+                            'Edit Attribute');
                       },
                     ),
                   ],
@@ -239,7 +237,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // updateAttributeListView depends on state
-  int _countAttribute = 0;
+  int _countAttribute = 0; // todo understand why needed
   List<Attribute> _attributeList;
   static DatabaseHelperAttribute databaseHelperAttribute =
       DatabaseHelperAttribute();
@@ -249,12 +247,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         databaseHelperAttribute.initializeDatabase();
 
     dbFuture.then((database) {
-      Future<List<Attribute>> attributeListFuture =
+      Future<List> attributeListFuture =
           databaseHelperAttribute.getAttributeList();
       attributeListFuture.then((attributeList) {
         setState(() {
-          this._attributeList = attributeList;
-          this._countAttribute = attributeList.length;
+          this._attributeList = attributeList; // todo check if setState is proper
         });
       });
     });
@@ -274,26 +271,67 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // SEARCH OPERATION
   void _searchOperation() {
-    // TODO _?
+    debugPrint('_searchResult1 $_searchResult');
     _searchResult.clear(); // should be names of tiles
-    //if (_isSearching != null) {
+    //if (_isSearching != null) { // todo needed?
+    debugPrint('_searchResult2 $_searchResult');
+    debugPrint('_attributeList.length ${_attributeList.length}');
+    debugPrint('_attributeList ${_attributeList}');
     for (int i = 0; i < _attributeList.length; i++) {
-      String data = _attributeList[i]
-          .title; // data will be compared against input (search-text)
-      if (data
+      debugPrint('_attributeList[i].title ${_attributeList[i].title}');
+      if (_attributeList[i].title
           .toLowerCase()
           .contains(_attributeInputController.text.toLowerCase())) {
-        _searchResult.add(data); // list of results
+        debugPrint('_searchResult4 $_searchResult');
+        _searchResult.add(_attributeList[i]); // list of results
       }
+      debugPrint('_searchResult5 $_searchResult');
     }
+    debugPrint('_searchResultE $_searchResult');
 
-    //
+    // show search results if user input and results
     if (_searchResult.length != 0 ||
         _attributeInputController.text.isNotEmpty) {
       _attributesToDisplay =
           _searchResult; // show results and not all attributes
+
+      // show all attributes if no user input
     } else {
       _attributesToDisplay = _attributeList;
     }
+  }
+
+  void _save(attribute) async {
+    final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
+
+    // TIMESTAMP
+    attribute.date = DateFormat.yMMMd().add_Hms().format(DateTime.now());
+
+    // Update Operation: Update a attribute object and save it to database
+    int result;
+    if (attribute.id != null) {
+      // Case 1: Update operation
+      result = await helper.updateAttribute(attribute);
+    } else {
+      // Case 2: Insert Operation
+      result = await helper.insertAttribute(attribute);
+    }
+
+    // SUCCESS FAILURE STATUS DIALOG
+    if (result != 0) {
+      // Success
+      _showAlertDialog('Status', 'Attribute Saved Successfully');
+    } else {
+      // Failure
+      _showAlertDialog('Status', 'Problem Saving Attribute');
+    }
+  }
+
+  void _showAlertDialog(String title, String message) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
   }
 } // class
