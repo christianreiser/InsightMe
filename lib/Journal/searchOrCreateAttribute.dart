@@ -27,7 +27,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   @override
   Widget build(BuildContext context) {
     if (_attributeList == null) {
-      // TODO needed for _searchResult and _attributesToDisplay?
       _attributeList = List<Attribute>();
       _updateAttributeListView();
     }
@@ -97,7 +96,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   onPressed: () {
                     setState(() {
                       _save(Attribute(_attributeInputController.text,
-                          '')); // TODO check if it shoud be inside of setState and if it works
+                          ''));
                       debugPrint("Create button clicked");
 
                     });
@@ -109,7 +108,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
           // spacing between boxes
           SizedBox(height: 4),
-          Text('_attributesToDisplay: $_attributesToDisplay'),
 
           // List of previously used attributes
           _getAttributeListView(),
@@ -148,7 +146,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                 // TITLE
                 title: Text(
-                  _attributesToDisplay[position].title.toString(), // Todo to string needed?
+                  _attributesToDisplay[position].title,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
 
@@ -164,7 +162,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       onTap: () {
                         debugPrint("ListTile Tapped");
                         _navigateToEditAttribute(
-                            _attributesToDisplay[position], // todo works? check git for old version
+                            _attributesToDisplay[position],
                             'Edit Attribute');
                       },
                     ),
@@ -240,7 +238,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // updateAttributeListView depends on state
-  int _countAttribute = 0; // todo understand why needed
   List<Attribute> _attributeList;
   static DatabaseHelperAttribute databaseHelperAttribute =
       DatabaseHelperAttribute();
@@ -254,7 +251,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           databaseHelperAttribute.getAttributeList();
       attributeListFuture.then((attributeList) {
         setState(() {
-          this._attributeList = attributeList; // todo check if setState is proper
+          this._attributeList = attributeList;
         });
       });
     });
@@ -276,21 +273,13 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   void _searchOperation() {
     debugPrint('_searchResult1 $_searchResult');
     _searchResult.clear(); // should be names of tiles
-    //if (_isSearching != null) { // todo needed?
-    debugPrint('_searchResult2 $_searchResult');
-    debugPrint('_attributeList.length ${_attributeList.length}');
-    debugPrint('_attributeList ${_attributeList}');
     for (int i = 0; i < _attributeList.length; i++) {
-      debugPrint('_attributeList[i].title ${_attributeList[i].title}');
       if (_attributeList[i].title
           .toLowerCase()
           .contains(_attributeInputController.text.toLowerCase())) {
-        debugPrint('_searchResult4 $_searchResult');
         _searchResult.add(_attributeList[i]); // list of results
       }
-      debugPrint('_searchResult5 $_searchResult');
     }
-    debugPrint('_searchResultE $_searchResult');
 
     // show search results if user input and results
     if (_searchResult.length != 0 ||
@@ -306,7 +295,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   void _save(attribute) async {
     final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
-
     // TIMESTAMP
     attribute.date = DateFormat.yMMMd().add_Hms().format(DateTime.now());
 
@@ -319,6 +307,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       // Case 2: Insert Operation
       result = await helper.insertAttribute(attribute);
     }
+
+    // update after creation
+    _updateAttributeListView(); // update from db
+    _searchOperation(); // search after update from db
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {
