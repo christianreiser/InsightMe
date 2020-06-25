@@ -7,8 +7,13 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
+import 'package:insightme/Database/attribute.dart';
+import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 import '../Database/entry.dart';
+import 'package:intl/intl.dart'; // DateFormat.yMMMd().add_Hms().format(DateTime.now())
+import '../Journal/searchOrCreateAttribute.dart' as soca;
+
 
 class Import extends StatefulWidget {
   @override
@@ -70,14 +75,16 @@ class _ImportState extends State<Import> {
       // iterate through columns
       for (int columnCount = 0; columnCount < column.length; columnCount++) {
         // get attribute names
+        String _attributeName = column[columnCount];
         if (lineCounter == 0) {
-          attributeNames.add(column[columnCount]);
+          attributeNames.add(_attributeName);
+          _saveAttributeToDBIfNew(_attributeName);
 
 
 
         } else {
           // skip empty cells in csv-file
-          if ((column[columnCount]).length > 0) {
+          if ((_attributeName).length > 0) {
             // get DateTime which is in first column
             if (columnCount == 0) {
               dateTimeStamp = DateTime.parse(column[0]);
@@ -86,7 +93,7 @@ class _ImportState extends State<Import> {
             } else {
               // title, value, time, comment
               Entry entry = Entry(attributeNames[columnCount],
-                  column[columnCount], '$dateTimeStamp', 'csv import');
+                  _attributeName, '$dateTimeStamp', 'csv import');
 
               _save(entry);
             }
@@ -138,32 +145,24 @@ class _ImportState extends State<Import> {
     return result;
   }
 
+  static DatabaseHelperAttribute databaseHelperAttribute =
+  DatabaseHelperAttribute();
+// add attributes to DB if new
+  void _saveAttributeToDBIfNew(_attribute) async {
+    List<Attribute> _dBAttributeList = await databaseHelperAttribute.getAttributeList();
 
-//// add attributes to DB if new
-//  void _searchOperation() {
-//    debugPrint('_searchResult1 $_searchResult');
-//    _searchResult.clear();
-//
-//    // go through all attributes one by one
-//    for (int i = 0; i < attributeList.length; i++) {
-//      // search for attributes that contain input
-//      if (attributeList[i]
-//          .title
-//          .toLowerCase()
-//          .contains(_attributeInputController.text.toLowerCase())) {
-//        _searchResult.add(attributeList[i]); // list of results
-//
-//        // hide create button if exact search match
-//        if (attributeList[i]
-//            .title
-//            .toLowerCase()
-//            .compareTo(_attributeInputController.text.toLowerCase()) ==
-//            0) {
-//          createButtonVisible = false;
-//        }
-//      }
-//    }
-//
+    // go through all attributes one by one
+    for (int i = 0; i < _dBAttributeList.length; i++) {
+      // if there is no exact match -> create attribute in DB
+        if (_dBAttributeList[i]
+            .title
+            .toLowerCase()
+            .compareTo(_attribute.toLowerCase()) !=
+            0) {
+          soca.SearchOrCreateAttributeState().saveAttribute(Attribute(_attribute, DateFormat.yMMMd().add_Hms().format(DateTime.now())));
+        }
+    }
+
 //    // show search results if user input and results available
 //    if (_searchResult.length != 0 ||
 //        _attributeInputController.text.isNotEmpty) {
@@ -174,5 +173,5 @@ class _ImportState extends State<Import> {
 //    } else {
 //      _attributesToDisplay = attributeList;
 //    }
-//  }
+  }
 }

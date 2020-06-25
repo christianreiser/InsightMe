@@ -22,6 +22,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   List _attributesToDisplay = List<Attribute>();
   bool createButtonVisible = true;
   var _attributeInputController = TextEditingController();
+  List<Attribute> attributeList; // todo check if _
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +99,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _save(Attribute(_attributeInputController.text, ''));
+                        saveAttribute(Attribute(_attributeInputController.text, ''));
                         debugPrint("Create button clicked");
                       });
                     },
@@ -238,14 +240,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // updateAttributeListView depends on state
-  List<Attribute> attributeList; // todo check if _
   static DatabaseHelperAttribute databaseHelperAttribute =
       DatabaseHelperAttribute();
 
   void _updateAttributeListView() async {
-    Future<List> attributeListFuture =
-        databaseHelperAttribute.getAttributeList();
-    attributeList = await attributeListFuture;
+    attributeList = await databaseHelperAttribute.getAttributeList();
     setState(() {
       this.attributeList = attributeList;
     });
@@ -256,8 +255,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // updateEntryListView depends on state
   // functions also in journal_route but using it from there breaks it
   void _updateEntryListView() async {
-    Future<List<Entry>> entryListFuture = databaseHelperEntry.getEntryList();
-    _entryList = await entryListFuture;
+    _entryList = await databaseHelperEntry.getEntryList();
     setState(() {
       this._entryList = _entryList;
     });
@@ -301,7 +299,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
   }
 
-  void _save(attribute) async {
+  void saveAttribute(attribute) async {
     final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
     // TIMESTAMP
     attribute.date = DateFormat.yMMMd().add_Hms().format(DateTime.now());
