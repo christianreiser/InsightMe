@@ -21,7 +21,7 @@ class SearchOrCreateAttribute extends StatefulWidget {
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   List _searchResult = List<Attribute>();
   List _attributesToDisplay = List<Attribute>();
-
+  bool createButtonVisible = true;
   var _attributeInputController = TextEditingController();
 
   @override
@@ -86,21 +86,23 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
               // "CREATE" button
               Container(
-                child: RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text(
-                    'Create',
-                    textScaleFactor: 1.5,
+                child: Visibility(
+                  visible: createButtonVisible,
+                  replacement: Container(), // don't occupy space if hidden
+                  child: RaisedButton(
+                    color: Theme.of(context).primaryColorDark,
+                    textColor: Theme.of(context).primaryColorLight,
+                    child: Text(
+                      'Create',
+                      textScaleFactor: 1.5,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _save(Attribute(_attributeInputController.text, ''));
+                        debugPrint("Create button clicked");
+                      });
+                    },
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _save(Attribute(_attributeInputController.text,
-                          ''));
-                      debugPrint("Create button clicked");
-
-                    });
-                  },
                 ),
               ),
             ],
@@ -162,8 +164,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       onTap: () {
                         debugPrint("ListTile Tapped");
                         _navigateToEditAttribute(
-                            _attributesToDisplay[position],
-                            'Edit Attribute');
+                            _attributesToDisplay[position], 'Edit Attribute');
                       },
                     ),
                   ],
@@ -271,17 +272,31 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // SEARCH OPERATION
   void _searchOperation() {
+    createButtonVisible = true;
     debugPrint('_searchResult1 $_searchResult');
-    _searchResult.clear(); // should be names of tiles
+    _searchResult.clear();
+
+    // go through all attributes one by one
     for (int i = 0; i < _attributeList.length; i++) {
-      if (_attributeList[i].title
+      // search for attributes that contain input
+      if (_attributeList[i]
+          .title
           .toLowerCase()
           .contains(_attributeInputController.text.toLowerCase())) {
         _searchResult.add(_attributeList[i]); // list of results
+
+        // hide create button if exact search match
+        if (_attributeList[i]
+                .title
+                .toLowerCase()
+                .compareTo(_attributeInputController.text.toLowerCase()) ==
+            0) {
+          createButtonVisible = false;
+        }
       }
     }
 
-    // show search results if user input and results
+    // show search results if user input and results available
     if (_searchResult.length != 0 ||
         _attributeInputController.text.isNotEmpty) {
       _attributesToDisplay =
