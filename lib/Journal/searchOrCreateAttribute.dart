@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import '../Database/Route/edit_attributes.dart';
 import '../Database/Route/edit_entries.dart';
 import '../Database/attribute.dart';
@@ -26,8 +25,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   @override
   Widget build(BuildContext context) {
-    if (_attributeList == null) {
-      _attributeList = List<Attribute>();
+    if (attributeList == null) {
+      attributeList = List<Attribute>();
       _updateAttributeListView();
     }
 
@@ -239,22 +238,16 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   // updateAttributeListView depends on state
-  List<Attribute> _attributeList;
+  List<Attribute> attributeList; // todo check if _
   static DatabaseHelperAttribute databaseHelperAttribute =
       DatabaseHelperAttribute();
 
-  void _updateAttributeListView() {
-    final Future<Database> dbFuture =
-        databaseHelperAttribute.initializeDatabase();
-
-    dbFuture.then((database) {
-      Future<List> attributeListFuture =
-          databaseHelperAttribute.getAttributeList();
-      attributeListFuture.then((attributeList) {
-        setState(() {
-          this._attributeList = attributeList;
-        });
-      });
+  void _updateAttributeListView() async {
+    Future<List> attributeListFuture =
+        databaseHelperAttribute.getAttributeList();
+    attributeList = await attributeListFuture;
+    setState(() {
+      this.attributeList = attributeList;
     });
   }
 
@@ -277,16 +270,16 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     _searchResult.clear();
 
     // go through all attributes one by one
-    for (int i = 0; i < _attributeList.length; i++) {
+    for (int i = 0; i < attributeList.length; i++) {
       // search for attributes that contain input
-      if (_attributeList[i]
+      if (attributeList[i]
           .title
           .toLowerCase()
           .contains(_attributeInputController.text.toLowerCase())) {
-        _searchResult.add(_attributeList[i]); // list of results
+        _searchResult.add(attributeList[i]); // list of results
 
         // hide create button if exact search match
-        if (_attributeList[i]
+        if (attributeList[i]
                 .title
                 .toLowerCase()
                 .compareTo(_attributeInputController.text.toLowerCase()) ==
@@ -304,7 +297,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
       // show all attributes if no user input
     } else {
-      _attributesToDisplay = _attributeList;
+      _attributesToDisplay = attributeList;
     }
   }
 

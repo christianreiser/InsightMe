@@ -72,6 +72,9 @@ class _ImportState extends State<Import> {
         // get attribute names
         if (lineCounter == 0) {
           attributeNames.add(column[columnCount]);
+
+
+
         } else {
           // skip empty cells in csv-file
           if ((column[columnCount]).length > 0) {
@@ -134,4 +137,42 @@ class _ImportState extends State<Import> {
     }
     return result;
   }
+
+
+//// add attributes to DB if new
+//  void _searchOperation() {
+//    debugPrint('_searchResult1 $_searchResult');
+//    _searchResult.clear();
+//
+//    // go through all attributes one by one
+//    for (int i = 0; i < attributeList.length; i++) {
+//      // search for attributes that contain input
+//      if (attributeList[i]
+//          .title
+//          .toLowerCase()
+//          .contains(_attributeInputController.text.toLowerCase())) {
+//        _searchResult.add(attributeList[i]); // list of results
+//
+//        // hide create button if exact search match
+//        if (attributeList[i]
+//            .title
+//            .toLowerCase()
+//            .compareTo(_attributeInputController.text.toLowerCase()) ==
+//            0) {
+//          createButtonVisible = false;
+//        }
+//      }
+//    }
+//
+//    // show search results if user input and results available
+//    if (_searchResult.length != 0 ||
+//        _attributeInputController.text.isNotEmpty) {
+//      _attributesToDisplay =
+//          _searchResult; // show results and not all attributes
+//
+//      // show all attributes if no user input
+//    } else {
+//      _attributesToDisplay = attributeList;
+//    }
+//  }
 }

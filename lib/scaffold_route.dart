@@ -4,7 +4,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:insightme/Covid19/covid19_route.dart';
 import './Visualize/visualize_route.dart';
 import 'Import/import_from_json_route.dart';
-import 'Intro/first.dart';
 import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
