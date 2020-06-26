@@ -15,6 +15,8 @@ class JournalRoute extends StatefulWidget {
 
 class JournalRouteState extends State<JournalRoute> {
   List<Entry> _entryList;
+  List<bool> isSelected = []; // true if long pressed
+
   int _countEntry = 0;
 
   @override
@@ -34,17 +36,29 @@ class JournalRouteState extends State<JournalRoute> {
 
 // ENTRY LIST
   ListView _getEntryListView() {
+    debugPrint('isSelected $isSelected');
     return ListView.builder(
       itemCount: _countEntry,
       itemBuilder: (BuildContext context, int position) {
+        //debugPrint('isSelected $isSelected');// todo select
         return Container(
           padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
           color: Theme.of(context).backgroundColor,
           child: Card(
-            //color: Colors.white,
+            // gives monoton tiles a card shape
+            // color: isSelected[position] == false? Colors.white : Colors.grey, // todo select
             //shadowColor: Colors.black,
             //elevation: 3.0,
             child: ListTile(
+              // todo select
+//              onLongPress: () {
+//                setState(
+//                  () {
+//                    isSelected[position] = true;
+//                    debugPrint('isSelected $isSelected');
+//                  },
+//                );
+//              },
               // YELLOW CIRCLE AVATAR
               leading: CircleAvatar(
                 backgroundColor: Theme.of(context).primaryColor,
@@ -112,11 +126,13 @@ class JournalRouteState extends State<JournalRoute> {
   // function also in createAttribute.dart but using it from there breaks it
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   void updateEntryListView() async {
+
     Future<List<Entry>> _entryListFuture = databaseHelperEntry.getEntryList();
     _entryList = await _entryListFuture;
     setState(() {
       this._entryList = _entryList;
       this._countEntry = _entryList.length;
+      //isSelected = List.filled(_entryList.length, false); // todo select
     });
 
     // take two most recent entries as defaults for visualization.
