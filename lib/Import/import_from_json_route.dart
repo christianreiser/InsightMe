@@ -11,7 +11,6 @@ import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 import '../Database/entry.dart';
-import 'package:intl/intl.dart'; // DateFormat.yMMMd().add_Hms().format(DateTime.now())
 import '../Journal/searchOrCreateAttribute.dart' as soca;
 
 
@@ -159,7 +158,7 @@ class _ImportState extends State<Import> {
             .toLowerCase()
             .compareTo(_attribute.toLowerCase()) !=
             0) {
-          soca.SearchOrCreateAttributeState().saveAttribute(Attribute(_attribute, DateFormat.yMMMd().add_Hms().format(DateTime.now())));
+          soca.SearchOrCreateAttributeState().saveAttribute(Attribute(_attribute));
         }
     }
 

@@ -99,7 +99,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     ),
                     onPressed: () {
                       setState(() {
-                        saveAttribute(Attribute(_attributeInputController.text, ''));
+                        saveAttribute(Attribute(_attributeInputController.text));
                         debugPrint("Create button clicked");
                       });
                     },

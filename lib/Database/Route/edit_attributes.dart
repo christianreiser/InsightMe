@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:insightme/Journal/searchOrCreateAttribute.dart';
 import '../attribute.dart';
 import '../database_helper_attribute.dart';
-import 'package:intl/intl.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
@@ -135,9 +134,6 @@ class EditAttributeState extends State<EditAttribute> {
   void _save() async {
     // NAVIGATE
     _navigateToSearchOrCreateAttributeRoute();
-
-    // TIMESTAMP
-    attribute.date = DateFormat.yMMMd().add_Hms().format(DateTime.now());
 
     // Update Operation: Update a attribute object and save it to database
     int result;
