@@ -119,7 +119,8 @@ class EditEntryState extends State<EditEntry> {
                           minTime: DateTime(2000, 1, 1),
                           maxTime: DateTime.now(), onChanged: (_dateTime) {
                         debugPrint(
-                            'Something changed in date Text Field. entry.date: ${entry.date}, dateController.text: ${dateController.text}');
+                            'Text Field change: entry.date: ${entry.date}, '
+                            'dateController.text: ${dateController.text}');
                         debugPrint('change $_dateTime');
                       }, onConfirm: (dateTime) {
                         updateDate(dateTime);
@@ -127,7 +128,7 @@ class EditEntryState extends State<EditEntry> {
                         setState(() {
                           _dateTime = dateTime;
                         });
-                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                      }, currentTime: _dateTime, locale: LocaleType.en);
                     },
                     child: Align(
                       alignment: Alignment.centerLeft,
