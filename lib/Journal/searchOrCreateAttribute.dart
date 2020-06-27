@@ -297,8 +297,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   void saveAttribute(attribute) async {
     final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
-    // TIMESTAMP
-    attribute.date = DateFormat.yMMMd().add_Hms().format(DateTime.now());
 
     // Update Operation: Update a attribute object and save it to database
     int result;
