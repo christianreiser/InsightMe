@@ -43,14 +43,24 @@ class JournalRouteState extends State<JournalRoute> {
       isSelected.contains(true)
           ? AppBar(
               leading: FlatButton(
-                child: Icon(Icons.delete),
                 onPressed: () {
-                  _showAlertDialog('Sure you want to delete?','');
-                  setState(() {
-                    debugPrint("Delete button clicked");
-
-                  });
+                  _deselectAll();
                 },
+                child: Icon(Icons.close),
+              ),
+              title: Row(
+                children: [
+                  Text('${_countSelected()}',style: TextStyle(color: Colors.black)),
+                  FlatButton(
+                    child: Icon(Icons.delete),
+                    onPressed: () {
+                      _showAlertDialog('Delete?', '');
+                      setState(() {
+                        debugPrint("Delete button clicked");
+                      });
+                    },
+                  )
+                ],
               ),
               backgroundColor: Colors.grey,
             )
@@ -59,7 +69,6 @@ class JournalRouteState extends State<JournalRoute> {
         child: ListView.builder(
           itemCount: _countEntry,
           itemBuilder: (BuildContext context, int position) {
-            //debugPrint('isSelected $isSelected');// todo select
             return Container(
               padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
               color: Theme.of(context).backgroundColor,
@@ -153,6 +162,7 @@ class JournalRouteState extends State<JournalRoute> {
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+
   void updateEntryListView() async {
     Future<List<Entry>> _entryListFuture = databaseHelperEntry.getEntryList();
     _entryList = await _entryListFuture;
@@ -177,24 +187,51 @@ class JournalRouteState extends State<JournalRoute> {
     for (int position = 0; position < isSelected.length; position++) {
       if (isSelected[position] == true) {
         int result = await helperEntry.deleteEntry(_entryList[position].id);
-        updateEntryListView();
       }
     }
-    //_showAlertDialog('Deleted', 'Pull to Refresh');
+    updateEntryListView();
+//_showAlertDialog('Deleted', 'Pull to Refresh');
   }
 
   void _showAlertDialog(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
-      actions: [FlatButton(
-        child: Text('Approve'),
-        onPressed: () {
-          _delete(isSelected);
-          Navigator.of(context).pop();
-        },
-      ),],
+      actions: [
+        FlatButton(
+          child: Row(
+            children: [Icon(Icons.delete), Text('Yes')],
+          ),
+          onPressed: () {
+            _delete(isSelected);
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
       title: Text(title),
       content: Text(message),
     );
     showDialog(context: context, builder: (_) => alertDialog);
+  }
+
+  int _countSelected() {
+    if (isSelected == null || isSelected.isEmpty) {
+      return 0;
+    }
+
+    int count = 0;
+    for (int i = 0; i < isSelected.length; i++) {
+      if (isSelected[i] == true) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  _deselectAll() {
+//    for (int i = 0; i < isSelected.length; i++) {
+//      debugPrint('_deselectAll Pressed');
+//      isSelected[i] = false;
+//    }
+//    debugPrint('isSelected $isSelected');
+    updateEntryListView();
   }
 }

@@ -19,6 +19,8 @@ class EditEntry extends StatefulWidget {
 class EditEntryState extends State<EditEntry> {
   final DatabaseHelperEntry helperEntry = // error when static
       DatabaseHelperEntry();
+  static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+
 
   String appBarTitle;
   Entry entry;
@@ -159,6 +161,7 @@ class EditEntryState extends State<EditEntry> {
                           setState(() {
                             debugPrint("Save button clicked");
                             _save(scaffoldContext);
+                            _renameAllEntries();
                           });
                         },
                       ),
@@ -301,5 +304,14 @@ class EditEntryState extends State<EditEntry> {
         content: Text(message),
       ),
     );
+  }
+
+
+  Future<bool> _renameAllEntries() async {
+    List<Entry> filteredEntryList = await databaseHelperEntry.getFilteredEntryList(entry.title);
+
+    for (int ele = 0; ele < filteredEntryList.length; ele++) {
+      filteredEntryList[ele].title = filteredEntryList[ele].title;
+    }
   }
 }

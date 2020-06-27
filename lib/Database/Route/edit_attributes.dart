@@ -140,6 +140,7 @@ class EditAttributeState extends State<EditAttribute> {
     if (attribute.id != null) {
       // Case 1: Update operation
       result = await helper.updateAttribute(attribute);
+      // todo update Entry
     } else {
       // Case 2: Insert Operation
       result = await helper.insertAttribute(attribute);
@@ -191,4 +192,5 @@ class EditAttributeState extends State<EditAttribute> {
       return SearchOrCreateAttribute();
     }), (Route<dynamic> route) => false);
   }
+
 }
