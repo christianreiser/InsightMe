@@ -161,7 +161,7 @@ class EditEntryState extends State<EditEntry> {
                           setState(() {
                             debugPrint("Save button clicked");
                             _save(scaffoldContext);
-                            _renameAllEntries();
+                            //_renameAllEntries();
                           });
                         },
                       ),

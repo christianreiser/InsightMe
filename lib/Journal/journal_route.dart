@@ -32,8 +32,8 @@ class JournalRouteState extends State<JournalRoute> {
       onRefresh: () async {
         updateEntryListView();
       },
-      child: _entryList.length > 0 ? _getEntryListView() : Container(),
-    ); // This trailing comma makes auto-formatting nicer for build methods.
+      child: _getEntryListView(),
+    );
   }
 
 // ENTRY LIST

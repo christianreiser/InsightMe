@@ -154,10 +154,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 ),
 
                 // EDIT ICON
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    GestureDetector(
+                trailing: GestureDetector(
                       child: Icon(
                         Icons.edit,
                         color: Colors.grey,
@@ -168,8 +165,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                             _attributesToDisplay[position], 'Edit Attribute');
                       },
                     ),
-                  ],
-                ),
+
 
                 // onTAP for entry
                 onTap: () {
