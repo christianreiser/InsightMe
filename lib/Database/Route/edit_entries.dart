@@ -17,9 +17,8 @@ class EditEntry extends StatefulWidget {
 }
 
 class EditEntryState extends State<EditEntry> {
-  final DatabaseHelperEntry helperEntry = // error when static
+  final DatabaseHelperEntry databaseHelperEntry = // error when static
       DatabaseHelperEntry();
-  static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
 
   String appBarTitle;
@@ -74,7 +73,7 @@ class EditEntryState extends State<EditEntry> {
                   autovalidate: true,
                   onChanged: (value) {
                     debugPrint('Something changed in Value Text Field');
-                    updateValue(); // with valueController.text = entry.value
+                    _updateValue(); // with valueController.text = entry.value
                   },
                   decoration: InputDecoration(
                     labelText: 'Value',
@@ -94,7 +93,7 @@ class EditEntryState extends State<EditEntry> {
                   style: textStyle,
                   onChanged: (value) {
                     debugPrint('Something changed in Comment Text Field');
-                    updateComment();
+                    _updateComment();
                   },
                   decoration: InputDecoration(
                     labelText: 'Comment',
@@ -125,7 +124,7 @@ class EditEntryState extends State<EditEntry> {
                             'dateController.text: ${dateController.text}');
                         debugPrint('change $_dateTime');
                       }, onConfirm: (dateTime) {
-                        updateDate(dateTime);
+                        _updateDate(dateTime);
                         debugPrint('confirm $dateTime');
                         setState(() {
                           _dateTime = dateTime;
@@ -161,7 +160,6 @@ class EditEntryState extends State<EditEntry> {
                           setState(() {
                             debugPrint("Save button clicked");
                             _save(scaffoldContext);
-                            //_renameAllEntries();
                           });
                         },
                       ),
@@ -198,6 +196,7 @@ class EditEntryState extends State<EditEntry> {
     );
   }
 
+  // validate value user input for allowed characters
   String _validateValue(String valueController) {
     if (valueController.isEmpty) {
       // The form is empty
@@ -231,17 +230,17 @@ class EditEntryState extends State<EditEntry> {
   }*/
 
   // Update the value of entry object
-  void updateValue() {
+  void _updateValue() {
     entry.value = valueController.text;
   }
 
   // Update the comment of entry object
-  void updateComment() {
+  void _updateComment() {
     entry.comment = commentController.text;
   }
 
   // Update the comment of entry object
-  void updateDate(_dateTime) {
+  void _updateDate(_dateTime) {
     entry.date = _dateTime.toString(); //dateController.text;
   }
 
@@ -255,10 +254,10 @@ class EditEntryState extends State<EditEntry> {
     int result;
     if (entry.id != null) {
       // Case 1: Update operation
-      result = await helperEntry.updateEntry(entry);
+      result = await databaseHelperEntry.updateEntry(entry);
     } else {
       // Case 2: Insert Operation
-      result = await helperEntry.insertEntry(entry);
+      result = await databaseHelperEntry.insertEntry(entry);
     }
 
     // SUCCESS FAILURE STATUS DIALOG
@@ -281,7 +280,7 @@ class EditEntryState extends State<EditEntry> {
       return;
     }
 
-    int result = await helperEntry.deleteEntry(entry.id);
+    int result = await databaseHelperEntry.deleteEntry(entry.id);
     if (result != 0) {
       _showAlertDialog('Status', 'Entry Deleted Successfully');
     } else {
@@ -307,7 +306,8 @@ class EditEntryState extends State<EditEntry> {
   }
 
 
-  Future<bool> _renameAllEntries() async {
+  // function called from edit attribute. If changed there, then rename all entry-titles
+  Future<bool> renameAllEntriesWithGivenTitle() async {
     List<Entry> filteredEntryList = await databaseHelperEntry.getFilteredEntryList(entry.title);
 
     for (int ele = 0; ele < filteredEntryList.length; ele++) {

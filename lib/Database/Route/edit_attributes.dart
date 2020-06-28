@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insightme/Journal/searchOrCreateAttribute.dart';
 import '../attribute.dart';
 import '../database_helper_attribute.dart';
+import '../database_helper_entry.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
@@ -9,26 +10,28 @@ import '../database_helper_attribute.dart';
 * */
 
 class EditAttribute extends StatefulWidget {
-  final String appBarTitle;
+  final String oldAttributeTitle;
   final Attribute attribute;
 
-  EditAttribute(this.attribute, this.appBarTitle);
+  EditAttribute(this.attribute, this.oldAttributeTitle);
 
   @override
   State<StatefulWidget> createState() {
-    return EditAttributeState(this.attribute, this.appBarTitle);
+    return EditAttributeState(this.attribute, this.oldAttributeTitle);
   }
 }
 
 class EditAttributeState extends State<EditAttribute> {
-  static DatabaseHelperAttribute helper = DatabaseHelperAttribute();
+  static DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
+  static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
-  String appBarTitle;
+  String oldAttributeTitle;
   Attribute attribute;
+
 
   TextEditingController titleController = TextEditingController();
 
-  EditAttributeState(this.attribute, this.appBarTitle);
+  EditAttributeState(this.attribute, this.oldAttributeTitle); //todo oldAttributeTitle not a state
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class EditAttributeState extends State<EditAttribute> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(appBarTitle),
+        title: Text('Edit Attribute'),
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -85,10 +88,8 @@ class EditAttributeState extends State<EditAttribute> {
                         textScaleFactor: 1.5,
                       ),
                       onPressed: () {
-                        setState(() {
                           debugPrint("Save button clicked");
                           _save();
-                        });
                       },
                     ),
                   ),
@@ -133,18 +134,27 @@ class EditAttributeState extends State<EditAttribute> {
 
   void _save() async {
     // NAVIGATE
-    _navigateToSearchOrCreateAttributeRoute();
 
     // Update Operation: Update a attribute object and save it to database
     int result;
+    List<int> resultList;
     if (attribute.id != null) {
       // Case 1: Update operation
-      result = await helper.updateAttribute(attribute);
-      // todo update Entry
+      resultList = await databaseHelperEntry.renameEntry(attribute.title, oldAttributeTitle);
+      result = await databaseHelperAttribute.updateAttribute(attribute);
+
+      // if result == 0 then s.th. went wrong
+      resultList.add(result);
+      if (resultList.contains(0)) {
+        result = 0;
+      }
     } else {
       // Case 2: Insert Operation
-      result = await helper.insertAttribute(attribute);
+      result = await databaseHelperAttribute.insertAttribute(attribute);
     }
+
+    // navigate and rebuild
+    _navigateToSearchOrCreateAttributeRoute();
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {
@@ -154,6 +164,10 @@ class EditAttributeState extends State<EditAttribute> {
       // Failure
       _showAlertDialog('Status', 'Problem Saving Attribute');
     }
+
+
+
+
   }
 
   // DELETE
@@ -166,7 +180,7 @@ class EditAttributeState extends State<EditAttribute> {
       return;
     }
 
-    int result = await helper.deleteAttribute(attribute.id);
+    int result = await databaseHelperAttribute.deleteAttribute(attribute.id);
     if (result != 0) {
       _showAlertDialog('Status', 'Attribute Deleted Successfully');
     } else {

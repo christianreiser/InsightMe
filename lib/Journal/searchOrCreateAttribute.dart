@@ -29,7 +29,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   Widget build(BuildContext context) {
     if (attributeList == null) {
       attributeList = List<Attribute>();
-      _updateAttributeListView();
+      updateAttributeListView();
     }
 
     return Scaffold(
@@ -77,7 +77,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                         "Something changed search or create new attribute:"
                         " ${_attributeInputController.text}");
                     _searchOperation();
-                    _updateAttributeListView(); // update after search
+                    updateAttributeListView(); // update after search
                   },
                 ),
               ),
@@ -131,7 +131,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       // pull to refresh
       child: RefreshIndicator(
         onRefresh: () async {
-          _updateAttributeListView();
+          updateAttributeListView();
         },
 
         // if typed into search field only show matches
@@ -167,7 +167,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   onTap: () {
                     debugPrint("ListTile Tapped");
                     _navigateToEditAttribute(
-                        _attributesToDisplay[position], 'Edit Attribute');
+                        // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
+                        _attributesToDisplay[position],
+                        _attributesToDisplay[position].title);
                   },
                 ),
 
@@ -219,7 +221,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }));
 
     if (result == true) {
-      _updateAttributeListView();
+      updateAttributeListView();
     }
   }
 
@@ -243,7 +245,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   static DatabaseHelperAttribute databaseHelperAttribute =
       DatabaseHelperAttribute();
 
-  void _updateAttributeListView() async {
+  void updateAttributeListView() async {
     attributeList = await databaseHelperAttribute.getAttributeList();
     setState(() {
       this.attributeList = attributeList;
@@ -264,10 +266,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // SEARCH OPERATION
   void _searchOperation() {
-    debugPrint('_searchResult1 $_searchResult');
     _searchResult.clear();
     bool userInput = _attributeInputController.text.isNotEmpty;
-    debugPrint('userInput new ini $userInput');
     bool match = false;
     bool exactMatch = false;
 
@@ -320,22 +320,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       _attributesToDisplay = attributeList;
       createButtonVisible = false;
     }
-    debugPrint(
-        'userInput: $userInput. match: $match. exactmatch: $exactMatch. _attributeInputController.text.isNotEmpty: ${_attributeInputController.text.isNotEmpty}');
-
-    //    //
-//    // show search results if user input and results available
-//    if (_searchResult.length != 0 ||
-//        _attributeInputController.text.isNotEmpty) {
-//      _attributesToDisplay =
-//          _searchResult; // show results and not all attributes
-//      //createButtonVisible = true;
-//
-//      // show all attributes if no user input and hide button
-//    } else {
-//      _attributesToDisplay = attributeList;
-//      createButtonVisible = false;
-//    }
   }
 
   void saveAttribute(attribute) async {
@@ -352,7 +336,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
 
     // update after creation
-    _updateAttributeListView(); // update from db
+    updateAttributeListView(); // update from db
     _searchOperation(); // search after update from db
 
     // SUCCESS FAILURE STATUS DIALOG

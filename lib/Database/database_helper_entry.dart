@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -79,6 +80,10 @@ class DatabaseHelperEntry {
     List<String> columnsToSelect = [
       DatabaseHelperEntry.colValue,
       DatabaseHelperEntry.colDate,
+      DatabaseHelperEntry.colId,
+      DatabaseHelperEntry.colTitle,
+      DatabaseHelperEntry.colComment,
+
     ];
     String whereString = '${DatabaseHelperEntry.colTitle} = ?';
     List<dynamic> whereArguments = [attributeToFilter];
@@ -96,7 +101,6 @@ class DatabaseHelperEntry {
     return result;
   }
 
-
   // Insert Operation: Insert a entry object to database
   Future<int> insertEntry(Entry entry) async {
     Database db =
@@ -112,6 +116,32 @@ class DatabaseHelperEntry {
     var result = await db.update(entryTable, entry.toMap(),
         where: '$colId = ?', whereArgs: [entry.id]);
     return result;
+  }
+
+  // CHREI: Rename Operation: Rename all entry object with given title and save it
+  // to database
+  Future<List<int>> renameEntry(newAttributeTitle, oldAttributeTitle) async {
+    List<int> resultList = [];
+    var db = await this.database;
+    List<Entry> filteredEntryList = await getFilteredEntryList(oldAttributeTitle);
+    debugPrint('filteredEntryList.length ${filteredEntryList.length}');
+    for (int i = 0; i < filteredEntryList.length; i++) {
+      debugPrint('filteredEntryList[i].title ${filteredEntryList[i].title}');
+      debugPrint('filteredEntryList[i].id ${filteredEntryList[i].id}');
+      debugPrint('filteredEntryList[i].value ${filteredEntryList[i].value}');
+      debugPrint('filteredEntryList[i].comment ${filteredEntryList[i].comment}');
+      debugPrint('filteredEntryList[i].date ${filteredEntryList[i].date}');
+      filteredEntryList[i].title = newAttributeTitle;
+      debugPrint('2');
+      debugPrint('filteredEntryList[i].title ${filteredEntryList[i].title}');
+
+      var result = await db.update(entryTable, filteredEntryList[i].toMap(),
+          where: '$colId = ?', whereArgs: [filteredEntryList[i].id]);
+      debugPrint('3');
+      resultList.add(result);
+    }
+    debugPrint('resultList $resultList');
+    return resultList;
   }
 
   // Delete Operation: Delete a entry object from database
@@ -147,11 +177,14 @@ class DatabaseHelperEntry {
   }
 
   // CHREI get the 'Map List' [ List<Map> ] FILTERED and convert it to 'entry List FILTERED' [ List<Entry> ]
-  Future<List<Entry>> getFilteredEntryList(attributeToFilter) async {
+  Future<List<Entry>> getFilteredEntryList(attributeNameToFilter) async {
+    debugPrint('attributeNameToFilter: $attributeNameToFilter');
     var filteredEntryMapList = await getFilteredEntryMapList(
-        attributeToFilter); // Get 'Map List' from database
+        attributeNameToFilter); // Get 'Map List' from database
+    debugPrint('filteredEntryMapList $filteredEntryMapList');
     int countEntryFiltered = filteredEntryMapList
         .length; // Count the number of map entries in db table
+    debugPrint('countEntryFiltered $countEntryFiltered');
 
     List<Entry> filteredEntryList = List<Entry>();
     // For loop to create a 'entry List' from a 'Map List'
