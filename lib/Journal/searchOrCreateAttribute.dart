@@ -8,7 +8,6 @@ import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../scaffold_route.dart';
 import 'journal_route.dart';
-import 'package:intl/intl.dart'; // DateFormat.yMMMd().add_Hms().format(DateTime.now())
 
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
@@ -23,7 +22,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   bool createButtonVisible = true;
   var _attributeInputController = TextEditingController();
   List<Attribute> attributeList; // todo check if _
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,14 +80,15 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
               ),
 
               Padding(
-                padding: EdgeInsets.all(4.0),
+                padding: EdgeInsets.all(3.0),
               ),
 
               // "CREATE" button
-              Container(
-                child: Visibility(
-                  visible: createButtonVisible,
-                  replacement: Container(), // don't occupy space if hidden
+              Visibility(
+                visible: createButtonVisible,
+                replacement: Container(), // don't occupy space if hidden
+                child: ButtonTheme(
+                  minWidth: 0,
                   child: RaisedButton(
                     color: Theme.of(context).primaryColorDark,
                     textColor: Theme.of(context).primaryColorLight,
@@ -99,7 +98,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     ),
                     onPressed: () {
                       setState(() {
-                        saveAttribute(Attribute(_attributeInputController.text));
+                        saveAttribute(
+                          Attribute(_attributeInputController.text),
+                        );
                         debugPrint("Create button clicked");
                       });
                     },
@@ -155,17 +156,16 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                 // EDIT ICON
                 trailing: GestureDetector(
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.grey,
-                      ),
-                      onTap: () {
-                        debugPrint("ListTile Tapped");
-                        _navigateToEditAttribute(
-                            _attributesToDisplay[position], 'Edit Attribute');
-                      },
-                    ),
-
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.grey,
+                  ),
+                  onTap: () {
+                    debugPrint("ListTile Tapped");
+                    _navigateToEditAttribute(
+                        _attributesToDisplay[position], 'Edit Attribute');
+                  },
+                ),
 
                 // onTAP for entry
                 onTap: () {
@@ -248,6 +248,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   List<Entry> _entryList;
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+
   // updateEntryListView depends on state
   // functions also in journal_route but using it from there breaks it
   void _updateEntryListView() async {
@@ -259,40 +260,78 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // SEARCH OPERATION
   void _searchOperation() {
-    createButtonVisible = true;
     debugPrint('_searchResult1 $_searchResult');
     _searchResult.clear();
+    bool userInput = _attributeInputController.text.isNotEmpty;
+    debugPrint('userInput new ini $userInput');
+    bool match = false;
+    bool exactMatch = false;
 
     // go through all attributes one by one
-    for (int i = 0; i < attributeList.length; i++) {
-      // search for attributes that contain input
-      if (attributeList[i]
-          .title
-          .toLowerCase()
-          .contains(_attributeInputController.text.toLowerCase())) {
-        _searchResult.add(attributeList[i]); // list of results
-
-        // hide create button if exact search match
+    if (userInput) {
+      for (int i = 0; i < attributeList.length; i++) {
+        // PARTIAL OR EXACT SEARCH MATCH
+        // search for attributes that contain input
         if (attributeList[i]
-                .title
-                .toLowerCase()
-                .compareTo(_attributeInputController.text.toLowerCase()) ==
-            0) {
-          createButtonVisible = false;
+            .title
+            .toLowerCase()
+            .contains(_attributeInputController.text.toLowerCase())) {
+          _searchResult.add(attributeList[i]); // list of results
+          match = true;
+          userInput = true;
+
+          // hide create button if EXACT search match
+          if (attributeList[i]
+                  .title
+                  .toLowerCase()
+                  .compareTo(_attributeInputController.text.toLowerCase()) ==
+              0) {
+            exactMatch = true;
+          }
         }
       }
     }
 
-    // show search results if user input and results available
-    if (_searchResult.length != 0 ||
-        _attributeInputController.text.isNotEmpty) {
-      _attributesToDisplay =
-          _searchResult; // show results and not all attributes
-
-      // show all attributes if no user input
+    // LOGIC OF WHEN TO SHOW BUTTON AND SEARCH RESULTS
+    // exact match: no button but results
+    // no input: no button no results
+    // no match: button but no results
+    // partial match: button and results
+    if (userInput) {
+      if (match) {
+        if (exactMatch) {
+          createButtonVisible = false;
+          _attributesToDisplay =
+              _searchResult; // show results and not all attributes
+        } else {
+          createButtonVisible = true;
+          _attributesToDisplay =
+              _searchResult; // show results and not all attributes
+        }
+      } else {
+        createButtonVisible = true;
+        _attributesToDisplay = attributeList;
+      }
     } else {
       _attributesToDisplay = attributeList;
+      createButtonVisible = false;
     }
+    debugPrint(
+        'userInput: $userInput. match: $match. exactmatch: $exactMatch. _attributeInputController.text.isNotEmpty: ${_attributeInputController.text.isNotEmpty}');
+
+    //    //
+//    // show search results if user input and results available
+//    if (_searchResult.length != 0 ||
+//        _attributeInputController.text.isNotEmpty) {
+//      _attributesToDisplay =
+//          _searchResult; // show results and not all attributes
+//      //createButtonVisible = true;
+//
+//      // show all attributes if no user input and hide button
+//    } else {
+//      _attributesToDisplay = attributeList;
+//      createButtonVisible = false;
+//    }
   }
 
   void saveAttribute(attribute) async {

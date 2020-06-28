@@ -21,7 +21,9 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(strings.appTitle,),
+        title: Text(
+          strings.appTitle,
+        ),
         leading: null,
       ),
       body: Center(
@@ -53,18 +55,30 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
         children: [
-          // first speed dial button for new entry
+          // NEW ENTRY
           SpeedDialChild(
               child: Icon(Icons.border_color),
               label: "New Entry",
               onTap: () {
                 print("nav to add manually");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return SearchOrCreateAttribute();
-                  }),
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    opaque: false, // set to false
+                    pageBuilder: (_, __, ___) => Container(
+                      color: Colors.black.withOpacity(.6),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(20, 25, 20, 20),
+                        child: SearchOrCreateAttribute(),
+                      ),
+                    ),
+                  ),
                 );
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(builder: (context) {
+//                    return SearchOrCreateAttribute();
+//                  }),
+//                );
               }),
 
           // import from CSV
@@ -78,8 +92,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
                   context,
                   MaterialPageRoute(builder: (context) => Import()),
                 ); // Navigate to newManualEntry route when tapped.
-              }
-              ),
+              }),
 
           // connect service
           SpeedDialChild(
@@ -92,8 +105,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
                   context,
                   MaterialPageRoute(builder: (context) => Import()),
                 ); // Navigate to newManualEntry route when tapped.
-              }
-          ),
+              }),
         ],
       ),
 
@@ -135,7 +147,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
     JournalRoute(),
     Visualize(),
     Recommend(),
-    Covid19(),//IntroRoute(),
+    Covid19(), //IntroRoute(),
   ];
 
   void _onItemTapped(int index) {
