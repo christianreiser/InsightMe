@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Database/Route/edit_attributes.dart';
@@ -61,6 +63,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     // TEXT FIELD
                     TextField(
                   decoration: InputDecoration(
+                    isDense: true, // for smaller height
                     border: OutlineInputBorder(),
                     labelText: 'search or create new label',
                     suffixIcon: IconButton(
@@ -89,6 +92,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 replacement: Container(), // don't occupy space if hidden
                 child: ButtonTheme(
                   minWidth: 0,
+                  height: 48, // should be same height as TextField
                   child: RaisedButton(
                     color: Theme.of(context).primaryColorDark,
                     textColor: Theme.of(context).primaryColorLight,
