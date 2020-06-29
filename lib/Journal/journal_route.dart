@@ -17,7 +17,7 @@ class JournalRouteState extends State<JournalRoute> {
   List<Entry> _entryList;
   List<bool> isSelected = []; // true if long pressed
   final DatabaseHelperEntry helperEntry = // error when static
-      DatabaseHelperEntry();
+  DatabaseHelperEntry();
 
   int _countEntry = 0;
 
@@ -38,32 +38,32 @@ class JournalRouteState extends State<JournalRoute> {
 
 // ENTRY LIST
   Widget _getEntryListView() {
-    debugPrint('isSelected $isSelected');
     return Column(children: [
       isSelected.contains(true)
           ? AppBar(
-              leading: FlatButton(
-                onPressed: () {
-                  _deselectAll();
-                },
-                child: Icon(Icons.close),
-              ),
-              title: Row(
-                children: [
-                  Text('${_countSelected()}',style: TextStyle(color: Colors.black)),
-                  FlatButton(
-                    child: Icon(Icons.delete),
-                    onPressed: () {
-                      _showAlertDialog('Delete?', '');
-                      setState(() {
-                        debugPrint("Delete button clicked");
-                      });
-                    },
-                  )
-                ],
-              ),
-              backgroundColor: Colors.grey,
+        leading: FlatButton(
+          onPressed: () {
+            _deselectAll();
+          },
+          child: Icon(Icons.close),
+        ),
+        title: Row(
+          children: [
+            Text('${_countSelected()}',
+                style: TextStyle(color: Colors.black)),
+            FlatButton(
+              child: Icon(Icons.delete),
+              onPressed: () {
+                _showAlertDialog('Delete?', '');
+                setState(() {
+                  debugPrint("Delete button clicked");
+                });
+              },
             )
+          ],
+        ),
+        backgroundColor: Colors.grey,
+      )
           : Container(),
       Expanded(
         child: ListView.builder(
@@ -71,7 +71,9 @@ class JournalRouteState extends State<JournalRoute> {
           itemBuilder: (BuildContext context, int position) {
             return Container(
               padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-              color: Theme.of(context).backgroundColor,
+              color: Theme
+                  .of(context)
+                  .backgroundColor,
               child: Card(
                 // gives monoton tiles a card shape
                 color: isSelected[position] == false
@@ -80,18 +82,19 @@ class JournalRouteState extends State<JournalRoute> {
                 //shadowColor: Colors.black,
                 //elevation: 3.0,
                 child: ListTile(
-                    // todo select
+                  // todo select
                     onLongPress: () {
                       setState(
-                        () {
+                            () {
                           isSelected[position] = true;
-                          debugPrint('isSelected $isSelected');
                         },
                       );
                     },
                     // YELLOW CIRCLE AVATAR
                     leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: Theme
+                          .of(context)
+                          .primaryColor,
                       child: Text(
                         getFirstLetter(this._entryList[position].title),
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -150,7 +153,7 @@ class JournalRouteState extends State<JournalRoute> {
   // navigation for editing entry
   void _navigateToEditEntry(Entry entry, String title) async {
     bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
     }));
 
@@ -159,10 +162,10 @@ class JournalRouteState extends State<JournalRoute> {
     }
   }
 
-  // updateEntryListView depends on state
-  // function also in createAttribute.dart but using it from there breaks it
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
+  // updateEntryListView depends on state
+  // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
     Future<List<Entry>> _entryListFuture = databaseHelperEntry.getEntryList();
     _entryList = await _entryListFuture;
@@ -173,12 +176,21 @@ class JournalRouteState extends State<JournalRoute> {
     });
 
     // take two most recent entries as defaults for visualization.
+    _getDefaultVisAttributes();
+  }
+
+  void _getDefaultVisAttributes() {
+    // take two most recent entries as defaults for visualization.
     // if statements are needed to catch error if list is empty.
     if (_entryList.length > 0) {
       globals.mostRecentAddedEntryName = _entryList[0].title;
       if (_entryList.length > 1) {
         globals.secondMostRecentAddedEntryName = _entryList[1].title;
+      } else {
+        globals.secondMostRecentAddedEntryName = null;
       }
+    } else {
+      globals.mostRecentAddedEntryName = null;
     }
   }
 
@@ -227,11 +239,6 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   _deselectAll() {
-//    for (int i = 0; i < isSelected.length; i++) {
-//      debugPrint('_deselectAll Pressed');
-//      isSelected[i] = false;
-//    }
-//    debugPrint('isSelected $isSelected');
     updateEntryListView();
   }
 }

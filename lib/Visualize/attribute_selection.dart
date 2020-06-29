@@ -14,7 +14,7 @@ class DropDown extends StatelessWidget {
   static DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
 
   // get Attributes from DB into a future list
-  Future<List<String>> _getAttributeListNew() async {
+  Future<List<String>> _getAttributeList() async {
     List<Attribute> attributeList =
         await databaseHelperAttribute.getAttributeList();
     List<String> itemList = List(attributeList.length);
@@ -24,6 +24,7 @@ class DropDown extends StatelessWidget {
 
     _dropdownMenuItems =
         buildDropdownMenuItems(itemList);
+    debugPrint('itemList $itemList');
     return itemList;
   }
 
@@ -44,12 +45,13 @@ class DropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final schedule = Provider.of<VisualizationChangeNotifier>(context); // send state up the tree
+    final changeNotifier = Provider.of<VisualizationChangeNotifier>(context); // send state up the tree // todo _private ?
     return FutureBuilder(
-      future: _getAttributeListNew(),
+      future: _getAttributeList(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (boolFirst == true) { // for first dropdown
+            debugPrint('_dropdownMenuItems $_dropdownMenuItems');
             return Expanded( // needed
 
             child: DropdownButton<String>(
@@ -57,10 +59,10 @@ class DropDown extends StatelessWidget {
                 // https://stackoverflow.com/questions/47032262/flutter-dropdownbutton-overflow
                 isExpanded: true,
                 //hint: Text('select label'), // widget shown before selection
-                value: schedule.selectedAttribute1, // selected item
-                items: _dropdownMenuItems, // 4. list of all items
+                value: changeNotifier.selectedAttribute1, // selected item
+                items: _dropdownMenuItems, // list of all items
                 onChanged: (value) =>
-                schedule.selectedAttribute1 = value, // state
+                changeNotifier.selectedAttribute1 = value, // state
                 //onChangeDropdownItem, // setState new selected attribute
               ),
             );
@@ -72,10 +74,10 @@ class DropDown extends StatelessWidget {
                 // https://stackoverflow.com/questions/47032262/flutter-dropdownbutton-overflow
                 isExpanded: true,
                 //hint: Text('select label'), // widget shown before selection
-                value: schedule.selectedAttribute2, // selected item
+                value: changeNotifier.selectedAttribute2, // selected item
                 items: _dropdownMenuItems, // 4. list of all items
                 onChanged: (value) =>
-                schedule.selectedAttribute2 = value, // state
+                changeNotifier.selectedAttribute2 = value, // state
                 //onChangeDropdownItem, // setState new selected attribute
               ),
             );

@@ -25,8 +25,8 @@ class EditAttributeState extends State<EditAttribute> {
   static DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
-  String oldAttributeTitle;
   Attribute attribute;
+  final String oldAttributeTitle;
 
 
   TextEditingController titleController = TextEditingController();
