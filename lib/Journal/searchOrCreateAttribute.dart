@@ -10,6 +10,8 @@ import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../scaffold_route.dart';
 import 'journal_route.dart';
+import './../globals.dart' as globals;
+
 
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
@@ -338,6 +340,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     // update after creation
     updateAttributeListView(); // update from db
     _searchOperation(); // search after update from db
+    globals.Global().updateAttributeList();
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {

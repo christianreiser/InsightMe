@@ -3,6 +3,8 @@ import 'package:insightme/Journal/searchOrCreateAttribute.dart';
 import '../attribute.dart';
 import '../database_helper_attribute.dart';
 import '../database_helper_entry.dart';
+import './../../globals.dart' as globals;
+
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
@@ -152,6 +154,8 @@ class EditAttributeState extends State<EditAttribute> {
       // Case 2: Insert Operation
       result = await databaseHelperAttribute.insertAttribute(attribute);
     }
+
+
 
     // navigate and rebuild
     _navigateToSearchOrCreateAttributeRoute();

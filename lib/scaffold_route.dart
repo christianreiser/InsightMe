@@ -8,16 +8,21 @@ import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 import 'Recommend/recommendation_route.dart';
+import './globals.dart' as globals;
+
 
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute();
+
 
   @override
   _ScaffoldRouteState createState() => _ScaffoldRouteState();
 }
 
 class _ScaffoldRouteState extends State<ScaffoldRoute> {
+
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

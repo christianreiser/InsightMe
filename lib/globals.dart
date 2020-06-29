@@ -10,14 +10,17 @@ DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
 
 String mostRecentAddedEntryName;
 String secondMostRecentAddedEntryName;
-List<Attribute> attributeList;
+List<Attribute> attributeList; // list to avoid async db operations
 
 class Global {
+  //
   updateAttributeList() async {
     debugPrint('attributeListOld $attributeList');
     attributeList = await databaseHelperAttribute.getAttributeList();
     debugPrint('attributeListNew $attributeList');
   }
+
+
 }
 
 //// Read

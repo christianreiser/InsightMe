@@ -23,10 +23,19 @@ class JournalRouteState extends State<JournalRoute> {
 
   @override
   Widget build(BuildContext context) {
+
+    // build entry list if null
     if (_entryList == null) {
       _entryList = List<Entry>();
       updateEntryListView();
     }
+
+    // update local attribute list if null
+    if (globals.attributeList == null) {
+      debugPrint('globals.attributeListEmpty? ${globals.attributeList}');
+      globals.Global().updateAttributeList();
+    }
+
     return RefreshIndicator(
       //key: refreshKey,
       onRefresh: () async {
