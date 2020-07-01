@@ -15,15 +15,14 @@ class JournalRoute extends StatefulWidget {
 
 class JournalRouteState extends State<JournalRoute> {
   List<Entry> _entryList;
-  List<bool> isSelected = []; // true if long pressed
-  final DatabaseHelperEntry helperEntry = // error when static
-  DatabaseHelperEntry();
+  List<bool> _isSelected = []; // true if long pressed
+  final DatabaseHelperEntry databaseHelperEntry = // error when static
+      DatabaseHelperEntry();
 
   int _countEntry = 0;
 
   @override
   Widget build(BuildContext context) {
-
     // build entry list if null
     if (_entryList == null) {
       _entryList = List<Entry>();
@@ -48,31 +47,31 @@ class JournalRouteState extends State<JournalRoute> {
 // ENTRY LIST
   Widget _getEntryListView() {
     return Column(children: [
-      isSelected.contains(true)
+      _isSelected.contains(true)
           ? AppBar(
-        leading: FlatButton(
-          onPressed: () {
-            _deselectAll();
-          },
-          child: Icon(Icons.close),
-        ),
-        title: Row(
-          children: [
-            Text('${_countSelected()}',
-                style: TextStyle(color: Colors.black)),
-            FlatButton(
-              child: Icon(Icons.delete),
-              onPressed: () {
-                _showAlertDialog('Delete?', '');
-                setState(() {
-                  debugPrint("Delete button clicked");
-                });
-              },
+              leading: FlatButton(
+                onPressed: () {
+                  _deselectAll();
+                },
+                child: Icon(Icons.close),
+              ),
+              title: Row(
+                children: [
+                  Text('${_countSelected()}',
+                      style: TextStyle(color: Colors.black)),
+                  FlatButton(
+                    child: Icon(Icons.delete),
+                    onPressed: () {
+                      _showAlertDialogWithDelete('Delete?', '');
+                      setState(() {
+                        debugPrint("Delete button clicked");
+                      });
+                    },
+                  )
+                ],
+              ),
+              backgroundColor: Colors.grey,
             )
-          ],
-        ),
-        backgroundColor: Colors.grey,
-      )
           : Container(),
       Expanded(
         child: ListView.builder(
@@ -80,30 +79,23 @@ class JournalRouteState extends State<JournalRoute> {
           itemBuilder: (BuildContext context, int position) {
             return Container(
               padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-              color: Theme
-                  .of(context)
-                  .backgroundColor,
+              color: Theme.of(context).backgroundColor,
               child: Card(
                 // gives monoton tiles a card shape
-                color: isSelected[position] == false
+                color: _isSelected[position] == false
                     ? Colors.white
-                    : Colors.grey, // todo select
-                //shadowColor: Colors.black,
-                //elevation: 3.0,
+                    : Colors.grey, // when selected
                 child: ListTile(
-                  // todo select
                     onLongPress: () {
                       setState(
-                            () {
-                          isSelected[position] = true;
+                        () {
+                          _isSelected[position] = true;
                         },
                       );
                     },
                     // YELLOW CIRCLE AVATAR
                     leading: CircleAvatar(
-                      backgroundColor: Theme
-                          .of(context)
-                          .primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor, // todo needed?
                       child: Text(
                         getFirstLetter(this._entryList[position].title),
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -137,8 +129,8 @@ class JournalRouteState extends State<JournalRoute> {
                     // onTAP TO EDIT
                     onTap: () {
                       setState(() {
-                        if (isSelected.contains(true)) {
-                          isSelected[position] = !isSelected[position];
+                        if (_isSelected.contains(true)) {
+                          _isSelected[position] = !_isSelected[position];
                         } else {
                           _navigateToEditEntry(
                               this._entryList[position], 'Edit Entry');
@@ -162,26 +154,23 @@ class JournalRouteState extends State<JournalRoute> {
   // navigation for editing entry
   void _navigateToEditEntry(Entry entry, String title) async {
     bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditEntry(entry, title);
     }));
 
     if (result == true) {
-      updateEntryListView();
+      updateEntryListView(); // todo needed?
     }
   }
-
-  static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
-    Future<List<Entry>> _entryListFuture = databaseHelperEntry.getEntryList();
-    _entryList = await _entryListFuture;
+    _entryList = await databaseHelperEntry.getEntryList();
     setState(() {
       this._entryList = _entryList;
-      this._countEntry = _entryList.length;
-      isSelected = List.filled(_entryList.length, false); // todo select
+      this._countEntry = _entryList.length; // todo needed?
+      _isSelected = List.filled(_entryList.length, false); // todo select
     });
 
     // take two most recent entries as defaults for visualization.
@@ -204,17 +193,18 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   // DELETE
-  void _delete(isSelected) async {
-    for (int position = 0; position < isSelected.length; position++) {
-      if (isSelected[position] == true) {
-        int result = await helperEntry.deleteEntry(_entryList[position].id);
+  void _delete(_isSelected) async {
+    for (int position = 0; position < _isSelected.length; position++) {
+      if (_isSelected[position] == true) {
+        int result =
+            await databaseHelperEntry.deleteEntry(_entryList[position].id);
       }
     }
     updateEntryListView();
 //_showAlertDialog('Deleted', 'Pull to Refresh');
   }
 
-  void _showAlertDialog(String title, String message) {
+  void _showAlertDialogWithDelete(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       actions: [
         FlatButton(
@@ -222,7 +212,7 @@ class JournalRouteState extends State<JournalRoute> {
             children: [Icon(Icons.delete), Text('Yes')],
           ),
           onPressed: () {
-            _delete(isSelected);
+            _delete(_isSelected);
             Navigator.of(context).pop();
           },
         ),
@@ -234,13 +224,13 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   int _countSelected() {
-    if (isSelected == null || isSelected.isEmpty) {
+    if (_isSelected == null || _isSelected.isEmpty) {
       return 0;
     }
 
     int count = 0;
-    for (int i = 0; i < isSelected.length; i++) {
-      if (isSelected[i] == true) {
+    for (int i = 0; i < _isSelected.length; i++) {
+      if (_isSelected[i] == true) {
         count++;
       }
     }

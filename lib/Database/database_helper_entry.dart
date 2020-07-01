@@ -83,7 +83,6 @@ class DatabaseHelperEntry {
       DatabaseHelperEntry.colId,
       DatabaseHelperEntry.colTitle,
       DatabaseHelperEntry.colComment,
-
     ];
     String whereString = '${DatabaseHelperEntry.colTitle} = ?';
     List<dynamic> whereArguments = [attributeToFilter];
@@ -123,24 +122,15 @@ class DatabaseHelperEntry {
   Future<List<int>> renameEntry(newAttributeTitle, oldAttributeTitle) async {
     List<int> resultList = [];
     var db = await this.database;
-    List<Entry> filteredEntryList = await getFilteredEntryList(oldAttributeTitle);
-    debugPrint('filteredEntryList.length ${filteredEntryList.length}');
+    List<Entry> filteredEntryList =
+        await getFilteredEntryList(oldAttributeTitle);
     for (int i = 0; i < filteredEntryList.length; i++) {
-      debugPrint('filteredEntryList[i].title ${filteredEntryList[i].title}');
-      debugPrint('filteredEntryList[i].id ${filteredEntryList[i].id}');
-      debugPrint('filteredEntryList[i].value ${filteredEntryList[i].value}');
-      debugPrint('filteredEntryList[i].comment ${filteredEntryList[i].comment}');
-      debugPrint('filteredEntryList[i].date ${filteredEntryList[i].date}');
       filteredEntryList[i].title = newAttributeTitle;
-      debugPrint('2');
-      debugPrint('filteredEntryList[i].title ${filteredEntryList[i].title}');
 
       var result = await db.update(entryTable, filteredEntryList[i].toMap(),
           where: '$colId = ?', whereArgs: [filteredEntryList[i].id]);
-      debugPrint('3');
       resultList.add(result);
     }
-    debugPrint('resultList $resultList');
     return resultList;
   }
 

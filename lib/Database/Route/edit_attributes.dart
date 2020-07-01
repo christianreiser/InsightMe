@@ -4,7 +4,7 @@ import '../attribute.dart';
 import '../database_helper_attribute.dart';
 import '../database_helper_entry.dart';
 import './../../globals.dart' as globals;
-
+import './../entry.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
@@ -24,16 +24,17 @@ class EditAttribute extends StatefulWidget {
 }
 
 class EditAttributeState extends State<EditAttribute> {
-  static DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
+  static DatabaseHelperAttribute databaseHelperAttribute =
+      DatabaseHelperAttribute();
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
   Attribute attribute;
   final String oldAttributeTitle;
 
-
   TextEditingController titleController = TextEditingController();
 
-  EditAttributeState(this.attribute, this.oldAttributeTitle); //todo oldAttributeTitle not a state
+  EditAttributeState(this.attribute,
+      this.oldAttributeTitle); //todo oldAttributeTitle not a state
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +91,8 @@ class EditAttributeState extends State<EditAttribute> {
                         textScaleFactor: 1.5,
                       ),
                       onPressed: () {
-                          debugPrint("Save button clicked");
-                          _save();
+                        debugPrint("Save button clicked");
+                        _save();
                       },
                     ),
                   ),
@@ -111,10 +112,8 @@ class EditAttributeState extends State<EditAttribute> {
                         textScaleFactor: 1.5,
                       ),
                       onPressed: () {
-                        setState(() {
-                          debugPrint("Delete button clicked");
-                          _delete();
-                        });
+                        debugPrint("Delete button clicked");
+                        _showAlertDialogWithDelete('Delete?', 'This Label and all it\'s entries will be deleted, forever.');
                       },
                     ),
                   ),
@@ -135,61 +134,102 @@ class EditAttributeState extends State<EditAttribute> {
   // Save data to database
 
   void _save() async {
-    // NAVIGATE
-
     // Update Operation: Update a attribute object and save it to database
-    int result;
-    List<int> resultList;
+    int _result;
+    List<int> _resultList;
     if (attribute.id != null) {
       // Case 1: Update operation
-      resultList = await databaseHelperEntry.renameEntry(attribute.title, oldAttributeTitle);
-      result = await databaseHelperAttribute.updateAttribute(attribute);
+      _resultList = await databaseHelperEntry.renameEntry(
+          attribute.title, oldAttributeTitle);
+      _result = await databaseHelperAttribute.updateAttribute(attribute);
 
       // if result == 0 then s.th. went wrong
-      resultList.add(result);
-      if (resultList.contains(0)) {
-        result = 0;
+      _resultList.add(_result);
+      if (_resultList.contains(0)) {
+        _result = 0;
       }
     } else {
       // Case 2: Insert Operation
-      result = await databaseHelperAttribute.insertAttribute(attribute);
+      _result = await databaseHelperAttribute.insertAttribute(attribute);
     }
-
-
 
     // navigate and rebuild
     _navigateToSearchOrCreateAttributeRoute();
 
     // SUCCESS FAILURE STATUS DIALOG
-    if (result != 0) {
+    if (_result != 0) {
       // Success
       _showAlertDialog('Status', 'Attribute Saved Successfully');
     } else {
       // Failure
       _showAlertDialog('Status', 'Problem Saving Attribute');
     }
-
-
-
-
   }
 
   // DELETE
 
   void _delete() async {
-    _navigateToSearchOrCreateAttributeRoute();
+    List<int> _resultList = [];
+
+    // found no attribute to delete
 
     if (attribute.id == null) {
       _showAlertDialog('Status', 'No Attribute was deleted');
       return;
-    }
 
-    int result = await databaseHelperAttribute.deleteAttribute(attribute.id);
-    if (result != 0) {
-      _showAlertDialog('Status', 'Attribute Deleted Successfully');
+      // found attribute to delete
     } else {
-      _showAlertDialog('Status', 'Error Occured while Deleting Attribute');
+      // Deletion of entries
+      List<Entry> filteredEntryList =
+          await databaseHelperEntry.getFilteredEntryList(oldAttributeTitle);
+      for (int i = 0; i < filteredEntryList.length; i++) {
+        _resultList.add(
+          await databaseHelperEntry.deleteEntry(filteredEntryList[i].id),
+        );
+      }
+
+      // Deletion in Attribute DB
+      _resultList.add(
+        await databaseHelperAttribute.deleteAttribute(attribute.id),
+      );
+
+      // Navigate back and update
+      _navigateToSearchOrCreateAttributeRoute();
+
+      // Success Failure evaluation
+      if (_resultList.contains(0)) {
+        _showAlertDialog('Status', 'Error occurred while Deleting Attribute');
+      } else {
+        _showAlertDialog('Status', 'Attribute Deleted Successfully');
+      }
     }
+  }
+
+  void _showAlertDialogWithDelete(String title, String message) {
+    AlertDialog alertDialog = AlertDialog(
+      actions: [
+        FlatButton(
+          child: Row(
+            children: [Icon(Icons.arrow_back_ios), Text('Back')],
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        FlatButton(
+          child: Row(
+            children: [Icon(Icons.delete), Text('Yes')],
+          ),
+          onPressed: () {
+            _delete();
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+      title: Text(title),
+      content: Text(message),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
   }
 
   void _showAlertDialog(String title, String message) {
@@ -210,5 +250,4 @@ class EditAttributeState extends State<EditAttribute> {
       return SearchOrCreateAttribute();
     }), (Route<dynamic> route) => false);
   }
-
 }

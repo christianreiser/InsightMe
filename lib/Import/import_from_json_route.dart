@@ -13,7 +13,6 @@ import 'package:insightme/Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../Journal/searchOrCreateAttribute.dart' as soca;
 
-
 class Import extends StatefulWidget {
   @override
   _ImportState createState() => _ImportState();
@@ -71,6 +70,8 @@ class _ImportState extends State<Import> {
         .listen((String line) {
       List column = line.split(','); // split by comma
 
+      debugPrint('lineCounter: $lineCounter');
+
       // iterate through columns
       for (int columnCount = 0; columnCount < column.length; columnCount++) {
         // get attribute names
@@ -78,9 +79,6 @@ class _ImportState extends State<Import> {
         if (lineCounter == 0) {
           attributeNames.add(_attributeName);
           _saveAttributeToDBIfNew(_attributeName);
-
-
-
         } else {
           // skip empty cells in csv-file
           if ((_attributeName).length > 0) {
@@ -91,8 +89,8 @@ class _ImportState extends State<Import> {
               // add entry to db
             } else {
               // title, value, time, comment
-              Entry entry = Entry(attributeNames[columnCount],
-                  _attributeName, '$dateTimeStamp', 'csv import');
+              Entry entry = Entry(attributeNames[columnCount], _attributeName,
+                  '$dateTimeStamp', 'csv import');
 
               _save(entry);
             }
@@ -100,7 +98,7 @@ class _ImportState extends State<Import> {
         }
       }
 
-      lineCounter += 1;
+      lineCounter++;
 
       // TODO feedback if import was successful
     }, onDone: () {
@@ -145,23 +143,42 @@ class _ImportState extends State<Import> {
   }
 
   static DatabaseHelperAttribute databaseHelperAttribute =
-  DatabaseHelperAttribute();
+      DatabaseHelperAttribute();
+
 // add attributes to DB if new
   void _saveAttributeToDBIfNew(_attribute) async {
-    List<Attribute> _dBAttributeList = await databaseHelperAttribute.getAttributeList();
+    debugPrint('_attribute $_attribute');
+    List<Attribute> _dBAttributeList =
+        await databaseHelperAttribute.getAttributeList();
 
-    // go through all attributes one by one
-    for (int i = 0; i < _dBAttributeList.length; i++) {
-      // if there is no exact match -> create attribute in DB
-        if (_dBAttributeList[i]
-            .title
-            .toLowerCase()
-            .compareTo(_attribute.toLowerCase()) !=
-            0) {
-          soca.SearchOrCreateAttributeState().saveAttribute(Attribute(_attribute));
-        }
+    debugPrint('_dBAttributeList $_dBAttributeList');
+
+    //if attribute list is empty then add no matter what
+    if (_dBAttributeList.isEmpty) {
+      soca.SearchOrCreateAttributeState()
+          .saveAttribute(Attribute(_attribute));
     }
 
+    // go through all db attributes one by one and compare
+    for (int i = 0; i < _dBAttributeList.length; i++) {
+      // if there is no exact match -> create attribute in DB
+      if (_dBAttributeList[i]
+              .title
+              .toLowerCase()
+              .compareTo(_attribute.toLowerCase()) !=
+          0) {
+        debugPrint('create new attribute!');
+
+      } else {
+        debugPrint(
+            'not creating new attribute. attributes: '
+                '${_dBAttributeList[i].title.toLowerCase()} '
+                'vs '
+                '${_attribute.toLowerCase()}');
+      }
+    }
+
+    // todo whats that below?
 //    // show search results if user input and results available
 //    if (_searchResult.length != 0 ||
 //        _attributeInputController.text.isNotEmpty) {
