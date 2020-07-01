@@ -56,8 +56,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
               Expanded(
                 //height: ,
                 child: // Input text field for search or create attribute
-                // TEXT FIELD
-                TextField(
+                    // TEXT FIELD
+                    TextField(
                   decoration: InputDecoration(
                     isDense: true, // for smaller height
                     border: OutlineInputBorder(),
@@ -71,9 +71,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   onChanged: (value) {
                     debugPrint(
                         "Something changed search or create new attribute:"
-                            " ${_attributeInputController.text}");
+                        " ${_attributeInputController.text}");
                     _searchOperation();
-                    updateAttributeListView(); // update after search
+                    setState(() {});
                   },
                 ),
               ),
@@ -90,12 +90,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   minWidth: 0,
                   height: 48, // should be same height as TextField
                   child: RaisedButton(
-                    color: Theme
-                        .of(context)
-                        .primaryColorDark,
-                    textColor: Theme
-                        .of(context)
-                        .primaryColorLight,
+                    color: Theme.of(context).primaryColorDark,
+                    textColor: Theme.of(context).primaryColorLight,
                     child: Text(
                       'Create',
                       textScaleFactor: 1.5,
@@ -117,8 +113,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           // spacing between boxes
           SizedBox(height: 4),
 
-
-
           // MULTIPLE SELECTION DELETION BAR
           _multipleSelectionActionBar(),
 
@@ -132,31 +126,31 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // MULTIPLE SELECTION DELETION BAR
   Widget _multipleSelectionActionBar() {
     return _isSelected.contains(true)
-          ? AppBar(
-        leading: FlatButton(
-          onPressed: () {
-            _deselectAll();
-          },
-          child: Icon(Icons.close),
-        ),
-        title: Row(
-          children: [
-            Text('${_countSelected()}',
-                style: TextStyle(color: Colors.black)),
-            FlatButton(
-              child: Icon(Icons.delete),
+        ? AppBar(
+            leading: FlatButton(
               onPressed: () {
-                _showAlertDialogWithDelete('Delete?', '');
-                setState(() {
-                  debugPrint("Delete button clicked");
-                });
+                _deselectAll();
               },
-            )
-          ],
-        ),
-        backgroundColor: Colors.grey,
-      )
-          : Container();
+              child: Icon(Icons.close),
+            ),
+            title: Row(
+              children: [
+                Text('${_countSelected()}',
+                    style: TextStyle(color: Colors.black)),
+                FlatButton(
+                  child: Icon(Icons.delete),
+                  onPressed: () {
+                    _showAlertDialogWithDelete('Delete?', '');
+                    setState(() {
+                      debugPrint("Delete button clicked");
+                    });
+                  },
+                )
+              ],
+            ),
+            backgroundColor: Colors.grey,
+          )
+        : Container();
   }
 
   // Attribute LIST
@@ -180,8 +174,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
               child: ListTile(
                 onLongPress: () {
                   setState(
-                        () {
+                    () {
+                      debugPrint('_isSelected: $_isSelected');
+                      debugPrint('position: $position');
                       _isSelected[position] = true;
+                      debugPrint('_isSelected: $_isSelected');
                     },
                   );
                 },
@@ -210,7 +207,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   onTap: () {
                     debugPrint("ListTile Tapped");
                     _navigateToEditAttribute(
-                      // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
+                        // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
                         _attributesToDisplay[position],
                         _attributesToDisplay[position].title);
                   },
@@ -225,7 +222,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       _isSelected[position] = !_isSelected[position];
                     } else {
                       _navigateToEditEntry(
-                        // title, value, time, comment
+                          // title, value, time, comment
                           Entry(this._attributesToDisplay[position].title, '',
                               '${DateTime.now()}', ''));
                     }
@@ -248,8 +245,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     // don't use pop because it doesn't refresh the page
     // RemoveUntil is needed to remove the old outdated journal route
     bool result =
-    await Navigator.pushAndRemoveUntil(
-        context, MaterialPageRoute(builder: (context,) {
+        await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
+      context,
+    ) {
       return ScaffoldRoute();
     }), (Route<dynamic> route) => false);
 
@@ -261,7 +259,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // navigation for editing entry
   void _navigateToEditAttribute(Attribute attribute, String title) async {
     bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditAttribute(attribute, title);
     }));
 
@@ -284,7 +282,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // updateAttributeListView depends on state
   static DatabaseHelperAttribute databaseHelperAttribute =
-  DatabaseHelperAttribute();
+      DatabaseHelperAttribute();
 
   void updateAttributeListView() async {
     _attributeList = await databaseHelperAttribute.getAttributeList();
@@ -328,9 +326,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
           // hide create button if EXACT search match
           if (_attributeList[i]
-              .title
-              .toLowerCase()
-              .compareTo(_attributeInputController.text.toLowerCase()) ==
+                  .title
+                  .toLowerCase()
+                  .compareTo(_attributeInputController.text.toLowerCase()) ==
               0) {
             exactMatch = true;
           }
