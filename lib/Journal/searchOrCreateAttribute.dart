@@ -37,7 +37,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
     return Scaffold(
       // APP BAR with MULTIPLE SELECTION DELETION capeability
-      appBar: _ActionBarWithActionBarCapeablility(),
+      appBar: _actionBarWithActionBarCapability(),
 
       // FRAGMENT
       // Input field search create attribute
@@ -114,7 +114,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   } // widget
 
   // MULTIPLE SELECTION DELETION BAR
-  AppBar _ActionBarWithActionBarCapeablility() {
+  AppBar _actionBarWithActionBarCapability() {
     return _isSelected.contains(true)
         ? AppBar(
             leading: FlatButton(
@@ -130,7 +130,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 FlatButton(
                   child: Icon(Icons.delete),
                   onPressed: () {
-                    _showAlertDialogWithDelete('Delete?', '');
+                    _showAlertDialogWithDelete();
                     setState(() {
                       debugPrint("Delete button clicked");
                     });
@@ -439,9 +439,17 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 //_showAlertDialog('Deleted', 'Pull to Refresh');
   }
 
-  void _showAlertDialogWithDelete(String title, String message) {
+  void _showAlertDialogWithDelete() {
     AlertDialog alertDialog = AlertDialog(
       actions: [
+        FlatButton(
+          child: Row(
+            children: [Icon(Icons.arrow_back_ios), Text('Back')],
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         FlatButton(
           child: Row(
             children: [Icon(Icons.delete), Text('Yes')],
@@ -452,8 +460,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           },
         ),
       ],
-      title: Text(title),
-      content: Text(message),
+      title: Text('Delete?'),
+      content: Text('All selected Labels AND all it\'s entries will be deleted, '
+      'forever.'),
     );
     showDialog(context: context, builder: (_) => alertDialog);
   }

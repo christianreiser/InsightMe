@@ -113,7 +113,9 @@ class EditAttributeState extends State<EditAttribute> {
                       ),
                       onPressed: () {
                         debugPrint("Delete button clicked");
-                        _showAlertDialogWithDelete('Delete?', 'This Label and all it\'s entries will be deleted, forever.');
+                        _showAlertDialogWithDelete('Delete?',
+                            'This Label AND all it\'s entries will be deleted, '
+                                'forever.');
                       },
                     ),
                   ),
