@@ -304,7 +304,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     */
     List _searchResult = List<Attribute>();
 
-    _searchResult.clear(); // TODO needed?
     bool userInput = _attributeInputController.text.isNotEmpty;
     bool match = false;
     bool exactMatch = false;
@@ -431,12 +430,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   void _delete(_isSelected) async {
     for (int position = 0; position < _isSelected.length; position++) {
       if (_isSelected[position] == true) {
-        int result = await databaseHelperAttribute
+        await databaseHelperAttribute // todo feedback with: int result =
             .deleteAttribute(_attributesToDisplay[position].id);
       }
     }
     updateAttributeListView();
-//_showAlertDialog('Deleted', 'Pull to Refresh');
   }
 
   void _showAlertDialogWithDelete() {

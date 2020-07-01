@@ -133,8 +133,7 @@ class JournalRouteState extends State<JournalRoute> {
                         if (_isSelected.contains(true)) {
                           _isSelected[position] = !_isSelected[position];
                         } else {
-                          _navigateToEditEntry(
-                              this._entryList[position]);
+                          _navigateToEditEntry(this._entryList[position]);
                         }
                         debugPrint("ListTile Tapped");
                       });
@@ -169,7 +168,6 @@ class JournalRouteState extends State<JournalRoute> {
     });
     _isSelected = List.filled(_entryList.length, false); // needs also an update
 
-
     // take two most recent entries as defaults for visualization.
     _getDefaultVisAttributes();
   }
@@ -193,8 +191,9 @@ class JournalRouteState extends State<JournalRoute> {
   void _delete(_isSelected) async {
     for (int position = 0; position < _isSelected.length; position++) {
       if (_isSelected[position] == true) {
-        int result = // todo
-            await databaseHelperEntry.deleteEntry(_entryList[position].id);
+        await databaseHelperEntry // todo int result = feedback
+            .deleteEntry(_entryList[position].id);
+
       }
     }
     updateEntryListView();
@@ -238,6 +237,5 @@ class JournalRouteState extends State<JournalRoute> {
     setState(() {
       _isSelected = List.filled(_entryList.length, false);
     });
-
   }
 }

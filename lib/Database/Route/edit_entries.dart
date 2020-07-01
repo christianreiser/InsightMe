@@ -36,7 +36,7 @@ class EditEntryState extends State<EditEntry> {
     valueController.text = entry.value;
     commentController.text = entry.comment;
     dateController.text = entry.date;
-    DateTime _dateTime = DateTime.parse(entry.date); // ini datepicker value
+    DateTime _dateTime = DateTime.parse(entry.date); // ini datePicker value
 
     return Scaffold(
       appBar: AppBar(
@@ -301,15 +301,5 @@ class EditEntryState extends State<EditEntry> {
         content: Text(message),
       ),
     );
-  }
-
-
-  // function called from edit attribute. If changed there, then rename all entry-titles
-  Future<bool> renameAllEntriesWithGivenTitle() async {
-    List<Entry> filteredEntryList = await databaseHelperEntry.getFilteredEntryList(entry.title);
-
-    for (int ele = 0; ele < filteredEntryList.length; ele++) {
-      filteredEntryList[ele].title = filteredEntryList[ele].title;
-    }
   }
 }

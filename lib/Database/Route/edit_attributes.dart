@@ -3,7 +3,6 @@ import 'package:insightme/Journal/searchOrCreateAttribute.dart';
 import '../attribute.dart';
 import '../database_helper_attribute.dart';
 import '../database_helper_entry.dart';
-import './../../globals.dart' as globals;
 import './../entry.dart';
 
 /*
