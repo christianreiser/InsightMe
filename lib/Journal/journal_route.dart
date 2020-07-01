@@ -93,9 +93,10 @@ class JournalRouteState extends State<JournalRoute> {
                         },
                       );
                     },
-                    // YELLOW CIRCLE AVATAR
+                    // CIRCLE AVATAR
                     leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColor, // todo needed?
+                      backgroundColor: Theme.of(context)
+                          .primaryColor, //looks better than default
                       child: Text(
                         getFirstLetter(this._entryList[position].title),
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -133,7 +134,7 @@ class JournalRouteState extends State<JournalRoute> {
                           _isSelected[position] = !_isSelected[position];
                         } else {
                           _navigateToEditEntry(
-                              this._entryList[position], 'Edit Entry');
+                              this._entryList[position]);
                         }
                         debugPrint("ListTile Tapped");
                       });
@@ -152,15 +153,10 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   // navigation for editing entry
-  void _navigateToEditEntry(Entry entry, String title) async {
-    bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EditEntry(entry, title);
+  void _navigateToEditEntry(Entry entry) async {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return EditEntry(entry);
     }));
-
-    if (result == true) {
-      updateEntryListView(); // todo needed?
-    }
   }
 
   // updateEntryListView depends on state
@@ -169,7 +165,7 @@ class JournalRouteState extends State<JournalRoute> {
     _entryList = await databaseHelperEntry.getEntryList();
     setState(() {
       this._entryList = _entryList;
-      this._countEntry = _entryList.length; // todo needed?
+      this._countEntry = _entryList.length; // needed
       _isSelected = List.filled(_entryList.length, false); // todo select
     });
 
@@ -196,7 +192,7 @@ class JournalRouteState extends State<JournalRoute> {
   void _delete(_isSelected) async {
     for (int position = 0; position < _isSelected.length; position++) {
       if (_isSelected[position] == true) {
-        int result =
+        int result = // todo
             await databaseHelperEntry.deleteEntry(_entryList[position].id);
       }
     }
@@ -238,6 +234,9 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   _deselectAll() {
-    updateEntryListView();
+    setState(() {
+      _isSelected = List.filled(_entryList.length, false);
+    });
+
   }
 }

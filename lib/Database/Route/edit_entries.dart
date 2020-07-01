@@ -5,14 +5,13 @@ import '../entry.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
 class EditEntry extends StatefulWidget {
-  final String appBarTitle;
   final Entry entry;
 
-  EditEntry(this.entry, this.appBarTitle);
+  EditEntry(this.entry);
 
   @override
   State<StatefulWidget> createState() {
-    return EditEntryState(this.entry, this.appBarTitle);
+    return EditEntryState(this.entry);
   }
 }
 
@@ -21,14 +20,13 @@ class EditEntryState extends State<EditEntry> {
       DatabaseHelperEntry();
 
 
-  String appBarTitle;
   Entry entry;
 
   TextEditingController valueController = TextEditingController();
   TextEditingController commentController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
-  EditEntryState(this.entry, this.appBarTitle);
+  EditEntryState(this.entry);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,7 @@ class EditEntryState extends State<EditEntry> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(appBarTitle),
+        title: Text('Edit ${entry.title} entry'),
 //          leading: IconButton(
 //              icon: Icon(Icons.arrow_back),
 //              onPressed: () {
