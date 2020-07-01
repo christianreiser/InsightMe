@@ -166,8 +166,9 @@ class JournalRouteState extends State<JournalRoute> {
     setState(() {
       this._entryList = _entryList;
       this._countEntry = _entryList.length; // needed
-      _isSelected = List.filled(_entryList.length, false); // todo select
     });
+    _isSelected = List.filled(_entryList.length, false); // needs also an update
+
 
     // take two most recent entries as defaults for visualization.
     _getDefaultVisAttributes();

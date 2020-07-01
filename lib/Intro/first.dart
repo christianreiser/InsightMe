@@ -50,9 +50,9 @@ class _IntroRouteState extends State<IntroRoute> {
                   debugPrint("What can you do? button clicked");
                 });
                 navigateToEditEntry(
-                    // Entry(label, rating, ?, comment), routeTitle)
-                    Entry('Productivity', '', '2', ''),
-                    'Add Productivity Entry');
+                  // Entry(label, rating, ?, comment), routeTitle)
+                  Entry('Productivity', '', '2', ''),
+                );
               },
             ),
 //            Text('On a scale from one to 10, how did you feel yesterday?'
@@ -66,11 +66,11 @@ class _IntroRouteState extends State<IntroRoute> {
   }
 
   // navigation for editing entry
-  void navigateToEditEntry(Entry entry, String title) async {
+  void navigateToEditEntry(Entry entry) async {
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
-        return EditEntry(entry, title);
+        return EditEntry(entry);
       }),
     );
   }

@@ -20,12 +20,13 @@ class SearchOrCreateAttribute extends StatefulWidget {
 
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
-  List _searchResult = List<Attribute>();
   List _attributesToDisplay = List<Attribute>();
   bool _createButtonVisible = true;
   var _attributeInputController = TextEditingController();
   List<Attribute> _attributeList;
   List<bool> _isSelected = []; // true if long pressed
+  List<Entry> _entryList;
+  static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +36,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
 
     return Scaffold(
-      // APP BAR
-      appBar: AppBar(
-        title: Text("Add Entry"),
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () async {
-            _navigateToScaffoldRoute(); // refreshes
-          },
-        ),
-      ),
+      // APP BAR with MULTIPLE SELECTION DELETION capeability
+      appBar: _ActionBarWithActionBarCapeablility(),
 
       // FRAGMENT
       // Input field search create attribute
@@ -72,7 +65,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     debugPrint(
                         "Something changed search or create new attribute:"
                         " ${_attributeInputController.text}");
-                    _searchOperation();
+                    getAttributesToDisplay();
                     setState(() {});
                   },
                 ),
@@ -113,9 +106,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           // spacing between boxes
           SizedBox(height: 4),
 
-          // MULTIPLE SELECTION DELETION BAR
-          _multipleSelectionActionBar(),
-
           // ATTRIBUTE LIST
           _getAttributeListView(),
         ]),
@@ -124,7 +114,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   } // widget
 
   // MULTIPLE SELECTION DELETION BAR
-  Widget _multipleSelectionActionBar() {
+  AppBar _ActionBarWithActionBarCapeablility() {
     return _isSelected.contains(true)
         ? AppBar(
             leading: FlatButton(
@@ -150,12 +140,19 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             ),
             backgroundColor: Colors.grey,
           )
-        : Container();
+        : AppBar(
+            title: Text("Select a label"),
+            leading: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () async {
+                _navigateToScaffoldRoute(); // refreshes
+              },
+            ),
+          );
   }
 
   // Attribute LIST
   Flexible _getAttributeListView() {
-    _searchOperation(); // one search operation to get attributes to display
     return Flexible(
       // pull to refresh
       child: RefreshIndicator(
@@ -175,10 +172,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 onLongPress: () {
                   setState(
                     () {
-                      debugPrint('_isSelected: $_isSelected');
-                      debugPrint('position: $position');
                       _isSelected[position] = true;
-                      debugPrint('_isSelected: $_isSelected');
                     },
                   );
                 },
@@ -288,12 +282,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     _attributeList = await databaseHelperAttribute.getAttributeList();
     setState(() {
       this._attributeList = _attributeList;
-      _isSelected = List.filled(_attributesToDisplay.length, false);
+      getAttributesToDisplay();
     });
   }
-
-  List<Entry> _entryList;
-  static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
   // updateEntryListView depends on state
   // functions also in journal_route but using it from there breaks it
@@ -304,9 +295,16 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     });
   }
 
-  // SEARCH OPERATION
-  void _searchOperation() {
-    _searchResult.clear();
+  List _searchOperation() {
+    /*
+    * SEARCH OPERATION
+    * Search attributes that match string.
+    * returns:
+    * searchResults, and bool indicators if userInput, match, or exactMatch
+    */
+    List _searchResult = List<Attribute>();
+
+    _searchResult.clear(); // TODO needed?
     bool userInput = _attributeInputController.text.isNotEmpty;
     bool match = false;
     bool exactMatch = false;
@@ -335,12 +333,22 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         }
       }
     }
+    return [_searchResult, userInput, match, exactMatch];
+  }
 
+  List getAttributesToDisplay() {
     // LOGIC OF WHEN TO SHOW BUTTON AND SEARCH RESULTS
     // exact match: no button but results
     // no input: no button no results
     // no match: button but no results
     // partial match: button and results
+
+    List output = _searchOperation();
+    List _searchResult = output[0];
+    bool userInput = output[1];
+    bool match = output[2];
+    bool exactMatch = output[3];
+
     if (userInput) {
       if (match) {
         if (exactMatch) {
@@ -364,7 +372,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       _attributesToDisplay = _attributeList;
       _createButtonVisible = false;
     }
+    debugPrint('_createButtonVisible $_createButtonVisible');
     _isSelected = List.filled(_attributesToDisplay.length, false);
+    return [_attributesToDisplay, _createButtonVisible, _createButtonVisible];
   }
 
   void saveAttribute(attribute) async {
@@ -417,7 +427,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return count;
   }
 
-  // DELETE
+// DELETE
   void _delete(_isSelected) async {
     for (int position = 0; position < _isSelected.length; position++) {
       if (_isSelected[position] == true) {
