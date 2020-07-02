@@ -1,7 +1,6 @@
 // import './../globals.dart' as globals;
 //import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:flutter/cupertino.dart';
 
 import 'Database/attribute.dart';
 import 'Database/database_helper_attribute.dart';

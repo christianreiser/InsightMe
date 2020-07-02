@@ -1,6 +1,4 @@
 import 'dart:ui';
-import './../Database/attribute.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Database/Route/edit_attributes.dart';
