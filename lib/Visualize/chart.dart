@@ -8,8 +8,12 @@ import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 class Chart extends StatelessWidget {
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
-  // get data from db delayed and set as state
-  Future<Map<DateTime, double>> _getDateTimeMap(selectedAttribute) async {
+  /*
+  * Get dateTime and values of entries from database and set as state
+  * input: selectedAttribute
+  * returns: dateTimeValueMap
+  */
+  Future<Map<DateTime, double>> _getdateTimeValueMap(selectedAttribute) async {
     List<Entry> filteredEntryList =
         await databaseHelperEntry.getFilteredEntryList(selectedAttribute);
     List<DateTime> dateList = [];
@@ -20,27 +24,33 @@ class Chart extends StatelessWidget {
         ),
       );
     }
-    // create dateTimeMap
-    Map<DateTime, double> dateTimeMap = {};
-    dateTimeMap[dateList[0]] = 1.0; // =1 is needed
+    // create dateTimeValueMap
+    Map<DateTime, double> dateTimeValueMap = {};
+    dateTimeValueMap[dateList[0]] = 1.0; // =1 is needed
     for (int ele = 0; ele < filteredEntryList.length; ele++) {
-      dateTimeMap[dateList[ele]] = double.parse(filteredEntryList[ele].value);
+      dateTimeValueMap[dateList[ele]] =
+          double.parse(filteredEntryList[ele].value);
     }
-    return dateTimeMap;
+    return dateTimeValueMap;
   }
 
   // create chart
   LineChart chart;
+
   Future<LineChart> _getChart(selectedAttribute1, selectedAttribute2) async {
-    Map<DateTime, double> dateTimeMap1 =
-        await _getDateTimeMap(selectedAttribute1);
-    Map<DateTime, double> dateTimeMap2 =
-        await _getDateTimeMap(selectedAttribute2);
+    Map<DateTime, double> dateTimeValueMap1 =
+        await _getdateTimeValueMap(selectedAttribute1);
+    Map<DateTime, double> dateTimeValueMap2 =
+        await _getdateTimeValueMap(selectedAttribute2);
     chart = LineChart.fromDateTimeMaps(
-        [dateTimeMap1, dateTimeMap2],
+        [dateTimeValueMap1, dateTimeValueMap2],
         [Colors.green, Colors.blue],
         [selectedAttribute1, selectedAttribute2], // chart label name
         tapTextFontWeight: FontWeight.w400);
+
+    // todo beginning new for correlation and pValue
+
+    // todo end new for correlation and pValue
     return chart;
   }
 
@@ -71,5 +81,29 @@ class Chart extends StatelessWidget {
         ),
       ),
     ); // This trailing comma makes auto-formatting nicer for build methods.
+  }
+}
+
+class Statistics extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        correlation(),
+        pValue(),
+      ],
+    );
+  }
+
+  Widget correlation() {
+    return Container(
+      child: Text('Correlation coefficient: 0.88'),
+    );
+  }
+
+  Widget pValue() {
+    return Container(
+      child: Text('pValue: 0.04'),
+    );
   }
 }
