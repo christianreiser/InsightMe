@@ -24,7 +24,6 @@ class DropDown extends StatelessWidget {
 
     _dropdownMenuItems =
         buildDropdownMenuItems(itemList);
-    debugPrint('itemList $itemList');
     return itemList;
   }
 
@@ -51,7 +50,6 @@ class DropDown extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (boolFirst == true) { // for first dropdown
-            debugPrint('_dropdownMenuItems $_dropdownMenuItems');
             return Expanded( // needed
 
             child: DropdownButton<String>(

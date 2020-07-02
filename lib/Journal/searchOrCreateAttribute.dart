@@ -1,4 +1,5 @@
 import 'dart:ui';
+import './../Database/attribute.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -371,7 +372,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       _attributesToDisplay = _attributeList;
       _createButtonVisible = false;
     }
-    debugPrint('_createButtonVisible $_createButtonVisible');
     _isSelected = List.filled(_attributesToDisplay.length, false);
     return [_attributesToDisplay, _createButtonVisible, _createButtonVisible];
   }
@@ -390,7 +390,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
 
     // update after creation
-    updateAttributeListView(); // update from db
+    if (context != null) { // todo check if it works
+      updateAttributeListView(); // update from db
+    }
     _searchOperation(); // search after update from db
     globals.Global().updateAttributeList();
 
@@ -409,7 +411,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       title: Text(title),
       content: Text(message),
     );
-    showDialog(context: context, builder: (_) => alertDialog);
+    if (context != null) {
+      // catch error when user closes context
+      showDialog(context: context, builder: (_) => alertDialog);
+    }
   }
 
   int _countSelected() {
@@ -428,13 +433,36 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
 // DELETE
   void _delete(_isSelected) async {
+    List<int> _resultList = [];
+
     for (int position = 0; position < _isSelected.length; position++) {
       if (_isSelected[position] == true) {
-        await databaseHelperAttribute // todo feedback with: int result =
-            .deleteAttribute(_attributesToDisplay[position].id);
+        // Deletion of entries
+        List<Entry> filteredEntryList = await databaseHelperEntry
+            .getFilteredEntryList(_attributesToDisplay[position].title);
+        for (int i = 0; i < filteredEntryList.length; i++) {
+          _resultList.add(
+            await databaseHelperEntry.deleteEntry(filteredEntryList[i].id),
+          );
+        }
+
+        // Deletion in Attribute DB
+        _resultList.add(
+          await databaseHelperAttribute // todo feedback with: int result =
+              .deleteAttribute(_attributesToDisplay[position].id),
+        );
       }
     }
-    updateAttributeListView();
+    // Success Failure evaluation
+    if (_resultList.contains(0)) {
+      _showAlertDialog('Status', 'Error occurred while Deleting Attribute');
+    } else {
+      _showAlertDialog('Status', 'Successful deletion');
+    }
+    if (context != null) {
+      // catch error when user closes context
+      updateAttributeListView();
+    }
   }
 
   void _showAlertDialogWithDelete() {
@@ -453,14 +481,15 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             children: [Icon(Icons.delete), Text('Yes')],
           ),
           onPressed: () {
-            _delete(_isSelected);
             Navigator.of(context).pop();
+            _delete(_isSelected);
           },
         ),
       ],
       title: Text('Delete?'),
-      content: Text('All selected Labels AND all it\'s entries will be deleted, '
-      'forever.'),
+      content:
+          Text('All selected Labels AND all it\'s entries will be deleted, '
+              'forever.'),
     );
     showDialog(context: context, builder: (_) => alertDialog);
   }

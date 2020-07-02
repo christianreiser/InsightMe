@@ -70,8 +70,6 @@ class _ImportState extends State<Import> {
         .listen((String line) {
       List column = line.split(','); // split by comma
 
-      debugPrint('lineCounter: $lineCounter');
-
       // iterate through columns
       for (int columnCount = 0; columnCount < column.length; columnCount++) {
         // get attribute names
@@ -147,11 +145,8 @@ class _ImportState extends State<Import> {
 
 // add attributes to DB if new
   void _saveAttributeToDBIfNew(_attribute) async {
-    debugPrint('_attribute $_attribute');
     List<Attribute> _dBAttributeList =
         await databaseHelperAttribute.getAttributeList();
-
-    debugPrint('_dBAttributeList $_dBAttributeList');
 
     //if attribute list is empty then add no matter what
     if (_dBAttributeList.isEmpty) {
@@ -167,7 +162,6 @@ class _ImportState extends State<Import> {
               .toLowerCase()
               .compareTo(_attribute.toLowerCase()) !=
           0) {
-        debugPrint('create new attribute!');
 
       } else {
         debugPrint(
@@ -177,17 +171,5 @@ class _ImportState extends State<Import> {
                 '${_attribute.toLowerCase()}');
       }
     }
-
-    // todo whats that below?
-//    // show search results if user input and results available
-//    if (_searchResult.length != 0 ||
-//        _attributeInputController.text.isNotEmpty) {
-//      _attributesToDisplay =
-//          _searchResult; // show results and not all attributes
-//
-//      // show all attributes if no user input
-//    } else {
-//      _attributesToDisplay = attributeList;
-//    }
   }
 }

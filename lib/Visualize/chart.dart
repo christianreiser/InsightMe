@@ -13,7 +13,6 @@ class Chart extends StatelessWidget {
     List<Entry> filteredEntryList =
         await databaseHelperEntry.getFilteredEntryList(selectedAttribute);
     List<DateTime> dateList = [];
-    debugPrint('filteredEntryList.length ${filteredEntryList.length}');
     for (int i = 0; i < filteredEntryList.length; i++) {
       dateList.add(
         DateTime.parse(

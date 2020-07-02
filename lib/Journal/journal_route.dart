@@ -31,7 +31,6 @@ class JournalRouteState extends State<JournalRoute> {
 
     // update local attribute list if null
     if (globals.attributeList == null) {
-      debugPrint('globals.attributeListEmpty? ${globals.attributeList}');
       globals.Global().updateAttributeList();
     }
 
