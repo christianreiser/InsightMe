@@ -28,6 +28,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   List<bool> _isSelected = []; // true if long pressed
   List<Entry> _entryList;
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+  final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
+
 
   @override
   Widget build(BuildContext context) {
@@ -377,7 +379,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   void saveAttribute(attribute) async {
-    final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
 
     // Update Operation: Update a attribute object and save it to database
     int result;

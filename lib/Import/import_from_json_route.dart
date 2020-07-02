@@ -22,6 +22,9 @@ class _ImportState extends State<Import> {
   final DatabaseHelperEntry helperEntry = // error when static
       DatabaseHelperEntry();
 
+  static DatabaseHelperAttribute databaseHelperAttribute =
+      DatabaseHelperAttribute();
+
 //  int importSuccessCounter = 0;
 //  int importFailureCounter = 0;
 
@@ -44,6 +47,7 @@ class _ImportState extends State<Import> {
               textScaleFactor: 1.5,
             ),
             onPressed: () {
+              _showAlertDialog('Status', 'Import started in the background. This might take a while.');
               importCSVFile();
             },
           ),
@@ -100,7 +104,6 @@ class _ImportState extends State<Import> {
 
       // TODO feedback if import was successful
     }, onDone: () {
-      _showAlertDialog('Status', 'Import started in the background');
       print('File is now closed!');
     }, onError: (e) {
       print(e.toString());
@@ -140,9 +143,6 @@ class _ImportState extends State<Import> {
     return result;
   }
 
-  static DatabaseHelperAttribute databaseHelperAttribute =
-      DatabaseHelperAttribute();
-
 // add attributes to DB if new
   void _saveAttributeToDBIfNew(_attribute) async {
     List<Attribute> _dBAttributeList =
@@ -150,8 +150,7 @@ class _ImportState extends State<Import> {
 
     //if attribute list is empty then add no matter what
     if (_dBAttributeList.isEmpty) {
-      soca.SearchOrCreateAttributeState()
-          .saveAttribute(Attribute(_attribute));
+      soca.SearchOrCreateAttributeState().saveAttribute(Attribute(_attribute));
     }
 
     // go through all db attributes one by one and compare
@@ -162,13 +161,11 @@ class _ImportState extends State<Import> {
               .toLowerCase()
               .compareTo(_attribute.toLowerCase()) !=
           0) {
-
       } else {
-        debugPrint(
-            'not creating new attribute. attributes: '
-                '${_dBAttributeList[i].title.toLowerCase()} '
-                'vs '
-                '${_attribute.toLowerCase()}');
+        debugPrint('not creating new attribute. attributes: '
+            '${_dBAttributeList[i].title.toLowerCase()} '
+            'vs '
+            '${_attribute.toLowerCase()}');
       }
     }
   }

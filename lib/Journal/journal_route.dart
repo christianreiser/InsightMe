@@ -26,7 +26,9 @@ class JournalRouteState extends State<JournalRoute> {
     // build entry list if null
     if (_entryList == null) {
       _entryList = List<Entry>();
-      updateEntryListView();
+      if (context != null) { // todo check if it works
+        updateEntryListView();
+      }
     }
 
     // update local attribute list if null
