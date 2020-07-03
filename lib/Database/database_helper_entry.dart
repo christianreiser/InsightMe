@@ -15,7 +15,7 @@ class DatabaseHelperEntry {
       'title'; // TODO rename to attribute also for attribute_helper
   static final String colValue = 'value';
   static final String colComment = 'comment';
-  static final String colDate = 'date'; // TODO rename to time
+  static final String colDate = 'date'; // TODO rename to dateTime
 
   DatabaseHelperEntry._createInstance(); // Named constructor to create instance of DatabaseHelperEntry
 
@@ -176,7 +176,6 @@ class DatabaseHelperEntry {
     for (int i = 0; i < countEntryFiltered; i++) {
       filteredEntryList.add(Entry.fromMapObject(filteredEntryMapList[i]));
     }
-    //filteredEntryList.forEach((row) => print(row)); // todo needed?
     return filteredEntryList;
   }
 }

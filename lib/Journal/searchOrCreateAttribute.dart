@@ -1,13 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../Database/Route/edit_attributes.dart';
-import '../Database/Route/edit_entries.dart';
 import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
-import '../scaffold_route.dart';
+import '../navigation_helper.dart';
 import 'journal_route.dart';
 import './../globals.dart' as globals;
 
@@ -24,10 +22,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   var _attributeInputController = TextEditingController();
   List<Attribute> _attributeList;
   List<bool> _isSelected = []; // true if long pressed
-  List<Entry> _entryList;
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
-
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +142,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () async {
-                _navigateToScaffoldRoute(); // refreshes
+                NavigationHelper()
+                    .navigateToScaffoldRoute(context); // refreshes
               },
             ),
           );
@@ -201,10 +198,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   ),
                   onTap: () {
                     debugPrint("ListTile Tapped");
-                    _navigateToEditAttribute(
+                    NavigationHelper().navigateToEditAttribute(
                         // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
                         _attributesToDisplay[position],
-                        _attributesToDisplay[position].title);
+                        _attributesToDisplay[position].title,
+                        context);
                   },
                 ),
 
@@ -216,10 +214,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     if (_isSelected.contains(true)) {
                       _isSelected[position] = !_isSelected[position];
                     } else {
-                      _navigateToEditEntry(
+                      NavigationHelper().navigateToEditEntry(
                           // title, value, time, comment
                           Entry(this._attributesToDisplay[position].title, '',
-                              '${DateTime.now()}', ''));
+                              '${DateTime.now()}', ''),
+                          context);
                     }
                   });
                 },
@@ -228,50 +227,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           },
         ),
       ),
-    );
-  }
-
-  void moveToLastRoute() {
-    Navigator.pop(context, true);
-  }
-
-  // navigation back to journal and refresh to show new entry
-  void _navigateToScaffoldRoute() async {
-    // don't use pop because it doesn't refresh the page
-    // RemoveUntil is needed to remove the old outdated journal route
-    bool result =
-        await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
-      context,
-    ) {
-      return ScaffoldRoute();
-    }), (Route<dynamic> route) => false);
-
-    if (result == true) {
-      _updateEntryListView();
-    }
-  }
-
-  // navigation for editing entry
-  void _navigateToEditAttribute(Attribute attribute, String title) async {
-    bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EditAttribute(attribute, title);
-    }));
-
-    if (result == true) {
-      updateAttributeListView();
-    }
-  }
-
-  // navigation for editing entry
-  // function exists also in journal_route.dart but when using it from there:
-  // state error
-  void _navigateToEditEntry(Entry entry) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return EditEntry(entry);
-      }),
     );
   }
 
@@ -284,15 +239,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     setState(() {
       this._attributeList = _attributeList;
       getAttributesToDisplay();
-    });
-  }
-
-  // updateEntryListView depends on state
-  // functions also in journal_route but using it from there breaks it
-  void _updateEntryListView() async {
-    _entryList = await databaseHelperEntry.getEntryList();
-    setState(() {
-      this._entryList = _entryList;
     });
   }
 
@@ -377,7 +323,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   void saveAttribute(attribute) async {
-
     // Update Operation: Update a attribute object and save it to database
     int result;
     if (attribute.id != null) {
@@ -389,7 +334,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
 
     // update after creation
-    if (context != null) { // todo check if it works
+    if (context != null) {
+      // todo check if it works
       updateAttributeListView(); // update from db
     }
     _searchOperation(); // search after update from db

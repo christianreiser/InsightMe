@@ -1,6 +1,3 @@
-
-// TODO is this file redundant as entry is capable of handling it too?
-
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -15,7 +12,6 @@ class DatabaseHelperAttribute {
   String attributeTable = 'attribute_table';
   String colId = 'id';
   static final String colTitle = 'title';
-  String colDate = 'date';
 
   DatabaseHelperAttribute._createInstance(); // Named constructor to create instance of DatabaseHelperAttribute
 
@@ -58,7 +54,7 @@ class DatabaseHelperAttribute {
   /*creating the table*/
   void _createDb(Database db, int newVersion) async {
 
-    await db.execute('CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDate TEXT)');
+    await db.execute('CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT');
   }
 
   // Fetch Operation: Get all attribute objects from database

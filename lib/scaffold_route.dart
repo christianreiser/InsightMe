@@ -2,13 +2,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:insightme/Covid19/covid19_route.dart';
+import 'package:insightme/Intro/first.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './Visualize/visualize_route.dart';
 import 'Import/import_from_json_route.dart';
 import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 import 'Recommend/recommendation_route.dart';
-import './globals.dart' as globals;
 
 
 class ScaffoldRoute extends StatefulWidget {
@@ -21,9 +22,33 @@ class ScaffoldRoute extends StatefulWidget {
 
 class _ScaffoldRouteState extends State<ScaffoldRoute> {
 
-  @override
 
+  @override
   Widget build(BuildContext context) {
+    return FutureBuilder<SharedPreferences>(
+      future: SharedPreferences.getInstance(),
+      builder:
+          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return standardScaffold();
+          case ConnectionState.waiting:
+            return standardScaffold();
+          default:
+            if (!snapshot.hasError) {
+        //@ToDo("Return a welcome screen")
+        return snapshot.data.getBool("hideWelcome") != null
+        ? standardScaffold()
+            : IntroRoute();
+        } else {
+        return Text('error: ${snapshot.error}');
+        }
+      }
+      },
+    );
+  }
+
+  Scaffold standardScaffold() {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -34,27 +59,6 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-
-      // use this block for only one floatingActionButton
-//      floatingActionButton: FloatingActionButton(
-//        onPressed: () {
-//          print("nav to add manually");
-//          Navigator.of(context).push(
-//            PageRouteBuilder(
-//              opaque: false, // set to false
-//              pageBuilder: (_, __, ___) => Container(
-//                color: Colors.black.withOpacity(.6),
-//              child: Padding(
-//                  padding: EdgeInsets.fromLTRB(20,25,20,20),
-//
-//                  child: SearchOrCreateAttribute(),
-//                ),
-//              ),
-//            ),
-//          );
-//        },
-//        child: Icon(Icons.border_color),
-//      ),
 
       // use below when more then one floatingActionButton and remove top block
       floatingActionButton: SpeedDial(
@@ -136,6 +140,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             icon: Icon(Icons.local_hospital),
             title: Text('COVID-19'),
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.arrow_downward),
+            title: Text('Intro'),
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColorDark,
@@ -153,6 +161,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
     Visualize(),
     Recommend(),
     Covid19(), //IntroRoute(),
+    IntroRoute(),
   ];
 
   void _onItemTapped(int index) {

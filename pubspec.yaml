@@ -25,7 +25,7 @@ dependencies:
   fl_animated_linechart:  # chart
   provider: # state management
   google_fonts:
-  shared_preferences: # for persistence data
+  shared_preferences: # for persistence data. 1.Intro-seen-flag
   url_launcher:
   flutter_svg: # svg drawing for WHO
 

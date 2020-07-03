@@ -1,8 +1,8 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
-import '../Database/Route/edit_entries.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
+import '../navigation_helper.dart';
 import './../globals.dart' as globals;
 import 'package:intl/intl.dart'; // for date time formatting
 
@@ -134,7 +134,7 @@ class JournalRouteState extends State<JournalRoute> {
                         if (_isSelected.contains(true)) {
                           _isSelected[position] = !_isSelected[position];
                         } else {
-                          _navigateToEditEntry(this._entryList[position]);
+                          NavigationHelper().navigateToEditEntry(this._entryList[position],context);
                         }
                         debugPrint("ListTile Tapped");
                       });
@@ -152,25 +152,23 @@ class JournalRouteState extends State<JournalRoute> {
     return title.substring(0, 1);
   }
 
-  // navigation for editing entry
-  void _navigateToEditEntry(Entry entry) async {
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EditEntry(entry);
-    }));
-  }
+
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
     _entryList = await databaseHelperEntry.getEntryList();
-    setState(() {
-      this._entryList = _entryList;
-      this._countEntry = _entryList.length; // needed
-    });
-    _isSelected = List.filled(_entryList.length, false); // needs also an update
+    if (context != null) { // todo check if good
+      setState(() {
+        this._entryList = _entryList;
+        this._countEntry = _entryList.length; // needed
+      });
+      _isSelected =
+          List.filled(_entryList.length, false); // needs also an update
 
-    // take two most recent entries as defaults for visualization.
-    _getDefaultVisAttributes();
+      // take two most recent entries as defaults for visualization.
+      _getDefaultVisAttributes();
+    }
   }
 
   void _getDefaultVisAttributes() {

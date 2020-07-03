@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Covid19/stayHealthy.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 
 class Recommend extends StatelessWidget {
   static Map<DateTime, double> dateTimeMap1 = {
@@ -71,11 +70,6 @@ class Recommend extends StatelessWidget {
     ); // type lineChart
   }
 
-  // navigation for editing entry
-  void _navigateToCovidStayHealthy(context) async {
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return StayHealthy();
-    }));
-  }
+
 }
 //}

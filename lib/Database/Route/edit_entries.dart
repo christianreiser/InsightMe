@@ -44,7 +44,7 @@ class EditEntryState extends State<EditEntry> {
 //          leading: IconButton(
 //              icon: Icon(Icons.arrow_back),
 //              onPressed: () {
-//                moveToLastScreen();
+//                Navigator.pop(context, true);
 //              }),
       ),
       body: Builder(
@@ -210,7 +210,7 @@ class EditEntryState extends State<EditEntry> {
 
     if (iterableRegExp.every((n) => n == false)) {
       debugPrint('iterableRegExp true $iterableRegExp');
-      // So, the value is valid
+      // Sosoca, the value is valid
       return null;
     }
 
@@ -218,9 +218,7 @@ class EditEntryState extends State<EditEntry> {
     return 'Invalid: Only digits (0-9) and point (.) as decimal are allowed.';
   }
 
-  void moveToLastScreen() {
-    Navigator.pop(context, true);
-  }
+
 
 /*  // Update the title of entry object
   void updateTitle(){
@@ -246,7 +244,7 @@ class EditEntryState extends State<EditEntry> {
 
   void _save(scaffoldContext) async {
     // NAVIGATE
-    moveToLastScreen();
+    Navigator.pop(context, true);
 
     // Update Operation: Update a to-do object and save it to database
     int result;
@@ -271,7 +269,7 @@ class EditEntryState extends State<EditEntry> {
 
   // DELETE
   void _delete() async {
-    moveToLastScreen();
+    Navigator.pop(context, true);
 
     if (entry.id == null) {
       _showAlertDialog('Status', 'No Entry was deleted');

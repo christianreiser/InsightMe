@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/Covid19/stayHealthy.dart';
+import 'package:insightme/navigation_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -69,7 +69,7 @@ class Covid19 extends StatelessWidget {
               // onTAP TO EDIT
               onTap: () {
                 debugPrint("ListTile Tapped");
-                _navigateToCovidStayHealthy(context);
+                NavigationHelper().navigateToCovidStayHealthy(context);
               },
             ),
 
@@ -123,11 +123,6 @@ class Covid19 extends StatelessWidget {
     ); // type lineChart
   }
 
-  // navigation for editing entry
-  void _navigateToCovidStayHealthy(context) async {
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return StayHealthy();
-    }));
-  }
+
 }
 //}

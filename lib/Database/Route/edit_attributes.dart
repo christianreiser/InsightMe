@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insightme/Journal/searchOrCreateAttribute.dart';
+import 'package:insightme/navigation_helper.dart';
 import '../attribute.dart';
 import '../database_helper_attribute.dart';
 import '../database_helper_entry.dart';
@@ -47,7 +47,7 @@ class EditAttributeState extends State<EditAttribute> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              _navigateToSearchOrCreateAttributeRoute();
+              NavigationHelper().navigateToSearchOrCreateAttributeRoute(context);
             }),
       ),
       body: Padding(
@@ -155,7 +155,7 @@ class EditAttributeState extends State<EditAttribute> {
     }
 
     // navigate and rebuild
-    _navigateToSearchOrCreateAttributeRoute();
+    NavigationHelper().navigateToSearchOrCreateAttributeRoute(context);
 
     // SUCCESS FAILURE STATUS DIALOG
     if (_result != 0) {
@@ -195,7 +195,7 @@ class EditAttributeState extends State<EditAttribute> {
       );
 
       // Navigate back and update
-      _navigateToSearchOrCreateAttributeRoute();
+      NavigationHelper().navigateToSearchOrCreateAttributeRoute(context);
 
       // Success Failure evaluation
       if (_resultList.contains(0)) {
@@ -241,14 +241,5 @@ class EditAttributeState extends State<EditAttribute> {
     showDialog(context: context, builder: (_) => alertDialog);
   }
 
-  // navigation back to journal and refresh to show new entry
-  void _navigateToSearchOrCreateAttributeRoute() async {
-    // don't use pop because it doesn't refresh the page
-    // RemoveUntil is needed to remove the old outdated journal route
-    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
-      context,
-    ) {
-      return SearchOrCreateAttribute();
-    }), (Route<dynamic> route) => false);
-  }
+
 }
