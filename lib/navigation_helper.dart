@@ -34,8 +34,6 @@ class NavigationHelper {
     );
   }
 
-
-
   // navigation for editing entry
   void navigateToEditAttribute(
       Attribute attribute, String title, context) async {
@@ -62,5 +60,4 @@ class NavigationHelper {
       return StayHealthy();
     }));
   }
-
 }

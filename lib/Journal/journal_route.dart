@@ -1,10 +1,11 @@
-import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart'; // for date time formatting
+
+import './../globals.dart' as globals;
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../navigation_helper.dart';
-import './../globals.dart' as globals;
-import 'package:intl/intl.dart'; // for date time formatting
 
 class JournalRoute extends StatefulWidget {
   JournalRoute();
@@ -23,10 +24,12 @@ class JournalRouteState extends State<JournalRoute> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('_entryList $_entryList');
     // build entry list if null
     if (_entryList == null) {
       _entryList = List<Entry>();
-      if (context != null) { // todo check if it works
+      if (context != null) {
+        // todo check if it works
         updateEntryListView();
       }
     }
@@ -42,6 +45,40 @@ class JournalRouteState extends State<JournalRoute> {
         updateEntryListView();
       },
       child: _getEntryListView(),
+    );
+  }
+
+  Widget _makeEntryHint() {
+    return Expanded(
+      //color: Colors.red,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          SizedBox(
+            height: 100,
+          ),
+          FlatButton(
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                padding: EdgeInsets.all(5),
+                color: Colors.tealAccent,
+                child: Row(
+                  children: [
+                    Text(
+                      'Create journal entries here',
+                      textScaleFactor: 1.2,
+                    ),
+                    Icon(Icons.arrow_forward),
+                  ],
+                ),
+              ),
+            ]),
+          ),
+          SizedBox(
+            height: 20,
+          )
+        ],
+      ),
     );
   }
 
@@ -74,76 +111,85 @@ class JournalRouteState extends State<JournalRoute> {
               backgroundColor: Colors.grey,
             )
           : Container(),
-      Expanded(
-        child: ListView.builder(
-          itemCount: _countEntry,
-          itemBuilder: (BuildContext context, int position) {
-            return Container(
-              padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-              color: Theme.of(context).backgroundColor,
-              child: Card(
-                // gives monoton tiles a card shape
-                color: _isSelected[position] == false
-                    ? Colors.white
-                    : Colors.grey, // when selected
-                child: ListTile(
-                    onLongPress: () {
-                      setState(
-                        () {
-                          _isSelected[position] = true;
-                        },
+      _entryList == null
+          ? Container()
+          : _entryList.length == 0
+              ? _makeEntryHint()
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: _countEntry,
+                    itemBuilder: (BuildContext context, int position) {
+                      return Container(
+                        padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+                        color: Theme.of(context).backgroundColor,
+                        child: Card(
+                          // gives monoton tiles a card shape
+                          color: _isSelected[position] == false
+                              ? Colors.white
+                              : Colors.grey, // when selected
+                          child: ListTile(
+                              onLongPress: () {
+                                setState(
+                                  () {
+                                    _isSelected[position] = true;
+                                  },
+                                );
+                              },
+                              // CIRCLE AVATAR
+                              leading: CircleAvatar(
+                                backgroundColor: Theme.of(context)
+                                    .primaryColor, //looks better than default
+                                child: Text(
+                                  getFirstLetter(
+                                      this._entryList[position].title),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+
+                              // Label
+                              title: Text(
+                                this._entryList[position].title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+
+                              // Value
+                              subtitle: Text(this._entryList[position].value),
+
+                              // Time and comment
+                              trailing: Column(
+                                //mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  // DateFormat formats DateFormat to better readable format but
+                                  // needs type DateTime as input. DB doesn't support this type,
+                                  // that's why the workaround with DateTime.parse from string
+                                  Text(DateFormat.yMMMMd('en_US')
+                                      .add_Hm()
+                                      .format(DateTime.parse(
+                                          this._entryList[position].date))),
+                                  Text(this._entryList[position].comment),
+                                ],
+                              ),
+
+                              // onTAP TO EDIT
+                              onTap: () {
+                                setState(() {
+                                  if (_isSelected.contains(true)) {
+                                    _isSelected[position] =
+                                        !_isSelected[position];
+                                  } else {
+                                    NavigationHelper().navigateToEditEntry(
+                                        this._entryList[position], context);
+                                  }
+                                  debugPrint("ListTile Tapped");
+                                });
+                              }),
+                        ),
                       );
                     },
-                    // CIRCLE AVATAR
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context)
-                          .primaryColor, //looks better than default
-                      child: Text(
-                        getFirstLetter(this._entryList[position].title),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-
-                    // Label
-                    title: Text(
-                      this._entryList[position].title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    // Value
-                    subtitle: Text(this._entryList[position].value),
-
-                    // Time and comment
-                    trailing: Column(
-                      //mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        // DateFormat formats DateFormat to better readable format but
-                        // needs type DateTime as input. DB doesn't support this type,
-                        // that's why the workaround with DateTime.parse from string
-                        Text(DateFormat.yMMMMd('en_US').add_Hm().format(
-                            DateTime.parse(this._entryList[position].date))),
-                        Text(this._entryList[position].comment),
-                      ],
-                    ),
-
-                    // onTAP TO EDIT
-                    onTap: () {
-                      setState(() {
-                        if (_isSelected.contains(true)) {
-                          _isSelected[position] = !_isSelected[position];
-                        } else {
-                          NavigationHelper().navigateToEditEntry(this._entryList[position],context);
-                        }
-                        debugPrint("ListTile Tapped");
-                      });
-                    }),
-              ),
-            );
-          },
-        ),
-      ),
+                  ),
+                ),
     ]);
   }
 
@@ -152,13 +198,12 @@ class JournalRouteState extends State<JournalRoute> {
     return title.substring(0, 1);
   }
 
-
-
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
     _entryList = await databaseHelperEntry.getEntryList();
-    if (context != null) { // todo check if good
+    if (context != null) {
+      // todo check if good
       setState(() {
         this._entryList = _entryList;
         this._countEntry = _entryList.length; // needed
@@ -192,7 +237,6 @@ class JournalRouteState extends State<JournalRoute> {
       if (_isSelected[position] == true) {
         await databaseHelperEntry // todo int result = feedback
             .deleteEntry(_entryList[position].id);
-
       }
     }
     updateEntryListView();
