@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:insightme/Database/attribute.dart';
-import 'package:insightme/Database/database_helper_attribute.dart';
-import 'package:insightme/Database/database_helper_entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Database/entry.dart';
 import '../navigation_helper.dart';
 
 class IntroRoute extends StatefulWidget {
@@ -19,7 +15,7 @@ class IntroRoute extends StatefulWidget {
 class _IntroRouteState extends State<IntroRoute> {
   @override
   Widget build(BuildContext context) {
-    createExampleAttributes();
+    //createExampleAttributes();
     return Container(
       color: Colors.teal,
       padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
@@ -116,27 +112,27 @@ class _IntroRouteState extends State<IntroRoute> {
     prefs.setBool('firstAppRun', false);
   }
 
-  void createExampleAttributes() async {
-    // Update Operation: Update a attribute object and save it to database
-    final prefs = await SharedPreferences.getInstance();
-    // Try reading data from the counter key. If it doesn't exist, return true.
-
-    final firstAppRun = prefs.getBool('firstAppRun') ?? true;
-
-    if (firstAppRun) {
-      int _result;
-      List<Attribute> attributeList = [
-        Attribute('Mood'),
-        Attribute('Headache'),
-        Attribute('Milk')
-      ];
-      List<int> _resultList;
-      for (int i = 0; i < attributeList.length; i++) {
-        Attribute attribute = attributeList[i];
-
-        // Insert Operation
-        _result = await DatabaseHelperAttribute().insertAttribute(attribute);
-      }
-    }
-  }
+//  void createExampleAttributes() async {
+//    // Update Operation: Update a attribute object and save it to database
+//    final prefs = await SharedPreferences.getInstance();
+//    // Try reading data from the counter key. If it doesn't exist, return true.
+//
+//    final firstAppRun = prefs.getBool('firstAppRun') ?? true;
+//
+//    if (firstAppRun) {
+//      int _result;
+//      List<Attribute> attributeList = [
+//        Attribute('Mood'),
+//        Attribute('Headache'),
+//        Attribute('Milk')
+//      ];
+//      List<int> _resultList;
+//      for (int i = 0; i < attributeList.length; i++) {
+//        Attribute attribute = attributeList[i];
+//
+//        // Insert Operation
+//        _result = await DatabaseHelperAttribute().insertAttribute(attribute);
+//      }
+//    }
+//  }
 }

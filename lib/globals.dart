@@ -10,6 +10,7 @@ DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
 String mostRecentAddedEntryName;
 String secondMostRecentAddedEntryName;
 List<Attribute> attributeList; // list to avoid async db operations
+int entryListLength;
 
 class Global {
   //

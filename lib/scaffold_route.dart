@@ -62,7 +62,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
 
       // use below when more then one floatingActionButton and remove top block
       floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
+        animatedIcon: AnimatedIcons.add_event,
         children: [
           // NEW ENTRY
           SpeedDialChild(

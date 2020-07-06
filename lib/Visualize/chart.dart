@@ -14,6 +14,7 @@ class Chart extends StatelessWidget {
   * returns: dateTimeValueMap
   */
   Future<Map<DateTime, double>> _getdateTimeValueMap(selectedAttribute) async {
+    debugPrint('selectedAttribute $selectedAttribute');
     List<Entry> filteredEntryList =
         await databaseHelperEntry.getFilteredEntryList(selectedAttribute);
     List<DateTime> dateList = [];
@@ -38,6 +39,7 @@ class Chart extends StatelessWidget {
   LineChart chart;
 
   Future<LineChart> _getChart(selectedAttribute1, selectedAttribute2) async {
+
     Map<DateTime, double> dateTimeValueMap1 =
         await _getdateTimeValueMap(selectedAttribute1);
     Map<DateTime, double> dateTimeValueMap2 =
@@ -63,6 +65,7 @@ class Chart extends StatelessWidget {
               schedule.selectedAttribute1, schedule.selectedAttribute2),
           builder: (context, snapshot) {
             // chart data arrived && data found
+            debugPrint('chart ${chart}');
             if (snapshot.connectionState == ConnectionState.done &&
                 chart != null) {
               return AnimatedLineChart(chart);
@@ -71,7 +74,7 @@ class Chart extends StatelessWidget {
             // chart data arrived but no data found
             else if (snapshot.connectionState == ConnectionState.done &&
                 chart == null) {
-              return Text('no data found for this label');
+              return Text('No data found for this label');
 
               // else: i.e. data didn't arrive
             } else {

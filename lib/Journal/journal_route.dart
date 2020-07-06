@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart'; // for date time formatting
@@ -21,10 +23,10 @@ class JournalRouteState extends State<JournalRoute> {
       DatabaseHelperEntry();
 
   int _countEntry = 0;
+  bool _showHint = false;
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('_entryList $_entryList');
     // build entry list if null
     if (_entryList == null) {
       _entryList = List<Entry>();
@@ -40,157 +42,191 @@ class JournalRouteState extends State<JournalRoute> {
     }
 
     return RefreshIndicator(
-      //key: refreshKey,
       onRefresh: () async {
         updateEntryListView();
       },
-      child: _getEntryListView(),
+      child: journalHintVisibleLogic() == true
+          // HINT
+          ? _delayedHint()
+
+          // ENTRY LIST
+          : _getEntryListView(),
+    );
+  }
+
+  bool journalHintVisibleLogic() {
+    bool entryListNullOrEmpty;
+    if (_entryList == null) {
+      entryListNullOrEmpty = true;
+    } else {
+      if (_entryList.isEmpty) {
+        entryListNullOrEmpty = true;
+      } else {
+        entryListNullOrEmpty = false;
+      }
+    }
+    debugPrint('journalHintVisible $entryListNullOrEmpty');
+    return entryListNullOrEmpty;
+  }
+
+  Widget _delayedHint() {
+    delayedChangState();
+    return AnimatedCrossFade(
+      duration: const Duration(milliseconds: 600), // todo change time
+      firstChild: Container(),
+      secondChild: _makeEntryHint(),
+      crossFadeState:
+          _showHint ? CrossFadeState.showSecond : CrossFadeState.showFirst,
     );
   }
 
   Widget _makeEntryHint() {
-    return Expanded(
-      //color: Colors.red,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SizedBox(
-            height: 100,
-          ),
-          FlatButton(
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                padding: EdgeInsets.all(5),
-                color: Colors.tealAccent,
-                child: Row(
-                  children: [
-                    Text(
-                      'Create journal entries here',
-                      textScaleFactor: 1.2,
-                    ),
-                    Icon(Icons.arrow_forward),
-                  ],
-                ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(5),
+              color: Colors.tealAccent,
+              child: Row(
+                children: [
+                  Text(
+                    'To create new entries tab here ',
+                    textScaleFactor: 1.2,
+                  ),
+                  Icon(Icons.arrow_forward),
+                ],
               ),
-            ]),
-          ),
-          SizedBox(
-            height: 20,
-          )
-        ],
-      ),
+            ),
+            SizedBox(
+              width: 30,
+            )
+          ],
+        ),
+
+        SizedBox(
+          height: 27, // height of button
+        )
+      ],
     );
+  }
+
+  // MULTIPLE SELECTION DELETION BAR
+  Widget _actionBarWithActionBarCapability() {
+    return _isSelected.contains(true)
+        ? AppBar(
+            leading: FlatButton(
+              onPressed: () {
+                _deselectAll();
+              },
+              child: Icon(Icons.close),
+            ),
+            title: Row(
+              children: [
+                Text('${_countSelected()}',
+                    style: TextStyle(color: Colors.black)),
+                FlatButton(
+                  child: Icon(Icons.delete),
+                  onPressed: () {
+                    _showAlertDialogWithDelete('Delete?', '');
+                    setState(() {
+                      debugPrint("Delete button clicked");
+                    });
+                  },
+                )
+              ],
+            ),
+            backgroundColor: Colors.grey,
+          )
+        : Container();
   }
 
 // ENTRY LIST
   Widget _getEntryListView() {
-    return Column(children: [
-      _isSelected.contains(true)
-          ? AppBar(
-              leading: FlatButton(
-                onPressed: () {
-                  _deselectAll();
-                },
-                child: Icon(Icons.close),
-              ),
-              title: Row(
-                children: [
-                  Text('${_countSelected()}',
-                      style: TextStyle(color: Colors.black)),
-                  FlatButton(
-                    child: Icon(Icons.delete),
-                    onPressed: () {
-                      _showAlertDialogWithDelete('Delete?', '');
-                      setState(() {
-                        debugPrint("Delete button clicked");
-                      });
+    return Column(
+      children: [
+        // APP BAR with MULTIPLE SELECTION DELETION capability
+        _actionBarWithActionBarCapability(),
+
+        Flexible(
+          // flexible needed to avoid unbounded height error
+          child: ListView.builder(
+            itemCount: _countEntry,
+            itemBuilder: (BuildContext context, int position) {
+              return Container(
+                padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+                color: Theme.of(context).backgroundColor,
+                child: Card(
+                  // gives monotone tiles a card shape
+                  color: _isSelected[position] == false
+                      ? Colors.white
+                      : Colors.grey, // when selected
+                  child: ListTile(
+                    onLongPress: () {
+                      setState(
+                        () {
+                          _isSelected[position] = true;
+                        },
+                      );
                     },
-                  )
-                ],
-              ),
-              backgroundColor: Colors.grey,
-            )
-          : Container(),
-      _entryList == null
-          ? Container()
-          : _entryList.length == 0
-              ? _makeEntryHint()
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: _countEntry,
-                    itemBuilder: (BuildContext context, int position) {
-                      return Container(
-                        padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-                        color: Theme.of(context).backgroundColor,
-                        child: Card(
-                          // gives monoton tiles a card shape
-                          color: _isSelected[position] == false
-                              ? Colors.white
-                              : Colors.grey, // when selected
-                          child: ListTile(
-                              onLongPress: () {
-                                setState(
-                                  () {
-                                    _isSelected[position] = true;
-                                  },
-                                );
-                              },
-                              // CIRCLE AVATAR
-                              leading: CircleAvatar(
-                                backgroundColor: Theme.of(context)
-                                    .primaryColor, //looks better than default
-                                child: Text(
-                                  getFirstLetter(
-                                      this._entryList[position].title),
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
+                    // CIRCLE AVATAR
+                    leading: CircleAvatar(
+                      backgroundColor: Theme.of(context)
+                          .primaryColor, //looks better than default
+                      child: Text(
+                        getFirstLetter(this._entryList[position].title),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
 
-                              // Label
-                              title: Text(
-                                this._entryList[position].title,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                    // Label
+                    title: Text(
+                      this._entryList[position].title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
 
-                              // Value
-                              subtitle: Text(this._entryList[position].value),
+                    // Value
+                    subtitle: Text(this._entryList[position].value),
 
-                              // Time and comment
-                              trailing: Column(
-                                //mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  // DateFormat formats DateFormat to better readable format but
-                                  // needs type DateTime as input. DB doesn't support this type,
-                                  // that's why the workaround with DateTime.parse from string
-                                  Text(DateFormat.yMMMMd('en_US')
-                                      .add_Hm()
-                                      .format(DateTime.parse(
-                                          this._entryList[position].date))),
-                                  Text(this._entryList[position].comment),
-                                ],
-                              ),
+                    // Time and comment
+                    trailing: Column(
+                      //mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        // DateFormat formats DateFormat to better readable format but
+                        // needs type DateTime as input. DB doesn't support this type,
+                        // that's why the workaround with DateTime.parse from string
+                        Text(DateFormat.yMMMMd('en_US').add_Hm().format(
+                            DateTime.parse(this._entryList[position].date))),
+                        Text(this._entryList[position].comment),
+                      ],
+                    ),
 
-                              // onTAP TO EDIT
-                              onTap: () {
-                                setState(() {
-                                  if (_isSelected.contains(true)) {
-                                    _isSelected[position] =
-                                        !_isSelected[position];
-                                  } else {
-                                    NavigationHelper().navigateToEditEntry(
-                                        this._entryList[position], context);
-                                  }
-                                  debugPrint("ListTile Tapped");
-                                });
-                              }),
-                        ),
+                    // onTAP TO EDIT
+                    onTap: () {
+                      setState(
+                        () {
+                          if (_isSelected.contains(true)) {
+                            _isSelected[position] = !_isSelected[position];
+                          } else {
+                            NavigationHelper().navigateToEditEntry(
+                                this._entryList[position], context);
+                          }
+                          debugPrint("ListTile Tapped");
+                        },
                       );
                     },
                   ),
                 ),
-    ]);
+              );
+            },
+          ),
+        ),
+      ],
+    );
   }
 
   // for yellow circle avatar
@@ -198,18 +234,33 @@ class JournalRouteState extends State<JournalRoute> {
     return title.substring(0, 1);
   }
 
+  void delayedChangState() {
+    Timer(const Duration(milliseconds: 300), handleTimeout); // todo change time
+  }
+
+  void handleTimeout() {
+    debugPrint('_showHint $_showHint');
+    setState(() {
+      // todo
+      _showHint = true;
+    });
+    debugPrint('_showHint $_showHint');
+  }
+
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
     _entryList = await databaseHelperEntry.getEntryList();
+    globals.entryListLength = _entryList.length;
+
     if (context != null) {
       // todo check if good
       setState(() {
         this._entryList = _entryList;
-        this._countEntry = _entryList.length; // needed
+        this._countEntry = globals.entryListLength; // needed
       });
       _isSelected =
-          List.filled(_entryList.length, false); // needs also an update
+          List.filled(globals.entryListLength, false); // needs also an update
 
       // take two most recent entries as defaults for visualization.
       _getDefaultVisAttributes();
@@ -219,9 +270,9 @@ class JournalRouteState extends State<JournalRoute> {
   void _getDefaultVisAttributes() {
     // take two most recent entries as defaults for visualization.
     // if statements are needed to catch error if list is empty.
-    if (_entryList.length > 0) {
+    if (globals.entryListLength > 0) {
       globals.mostRecentAddedEntryName = _entryList[0].title;
-      if (_entryList.length > 1) {
+      if (globals.entryListLength > 1) {
         globals.secondMostRecentAddedEntryName = _entryList[1].title;
       } else {
         globals.secondMostRecentAddedEntryName = null;
@@ -278,7 +329,7 @@ class JournalRouteState extends State<JournalRoute> {
 
   _deselectAll() {
     setState(() {
-      _isSelected = List.filled(_entryList.length, false);
+      _isSelected = List.filled(globals.entryListLength, false);
     });
   }
 }

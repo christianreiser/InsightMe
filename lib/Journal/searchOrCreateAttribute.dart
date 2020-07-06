@@ -33,7 +33,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
 
     return Scaffold(
-      // APP BAR with MULTIPLE SELECTION DELETION capeability
+      // APP BAR with MULTIPLE SELECTION DELETION capability
       appBar: _actionBarWithActionBarCapability(),
 
       // FRAGMENT
@@ -103,12 +103,95 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           // spacing between boxes
           SizedBox(height: 4),
 
-          // ATTRIBUTE LIST
-          _getAttributeListView(),
+          // if _attributesToDisplay == null show hint
+          _attributesToDisplay == null
+              ? _createAttributeHint()
+              // if _attributesToDisplay is empty show hint
+              : _attributesToDisplay.isEmpty
+                  ? _createAttributeHint()
+                  // if ATTRIBUTE LIST is not empty
+                  : _attributesToDisplay.length < 3
+                      ? Expanded(
+                        child: Column(
+                            children: [
+                              _getAttributeListView(),
+                              _newEntryHint()
+                            ],
+                          ),
+                      )
+                      : _getAttributeListView(),
         ]),
       ),
     );
   } // widget
+
+  Widget _newEntryHint() {
+    return Expanded(
+      child: ListView(
+        shrinkWrap: true,
+        padding: EdgeInsets.all(15.0),
+        children: <Widget>[
+          Center(
+            child: Container(
+              padding: EdgeInsets.all(10),
+              color: Colors.tealAccent,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.arrow_upward,
+                    color: Colors.black45,
+                  ),
+
+                  Text(
+                    'Tab a label to write an entry to your journal.\n'
+                        'Or create more labels like \'Mood\', \'Productivity\','
+                        ' habits, medications, symptoms and emotions.',
+                    style: TextStyle(color: Colors.black45, fontSize: 20),
+                  ),
+                  //Expanded(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _createAttributeHint() {
+    return Expanded(
+      child: ListView(
+        shrinkWrap: true,
+        padding: EdgeInsets.all(15.0),
+        children: <Widget>[
+          Center(
+            child: Container(
+              padding: EdgeInsets.all(10),
+              color: Colors.tealAccent,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.arrow_upward,
+                    color: Colors.black45,
+                  ),
+
+                  Text(
+                    'Type to create labels you want to track. '
+                        'For example \'Mood\' for how you are feeling today, '
+                        '\'Productivity\' to track the progress on your goals.'
+                        ' Other ideas are habits, medications, symptoms, '
+                        'emotions.',
+                    style: TextStyle(color: Colors.black45, fontSize: 20),
+                  ),
+                  //Expanded(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   // MULTIPLE SELECTION DELETION BAR
   AppBar _actionBarWithActionBarCapability() {
