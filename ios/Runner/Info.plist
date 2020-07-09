@@ -41,5 +41,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Needed due to the flutter file_picker library to read and import a .csv file. Import is useful for the user as it's more convenient than adding everything manually</string>
 </dict>
 </plist>
