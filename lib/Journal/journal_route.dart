@@ -65,7 +65,6 @@ class JournalRouteState extends State<JournalRoute> {
         entryListNullOrEmpty = false;
       }
     }
-    debugPrint('journalHintVisible $entryListNullOrEmpty');
     return entryListNullOrEmpty;
   }
 
@@ -80,7 +79,7 @@ class JournalRouteState extends State<JournalRoute> {
     );
   }
 
-  Widget _makeEntryHint() {
+  Column _makeEntryHint() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -239,12 +238,10 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   void handleTimeout() {
-    debugPrint('_showHint $_showHint');
     setState(() {
       // todo
       _showHint = true;
     });
-    debugPrint('_showHint $_showHint');
   }
 
   // updateEntryListView depends on state

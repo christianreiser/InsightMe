@@ -20,9 +20,13 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   List _attributesToDisplay = List<Attribute>();
   bool _createButtonVisible = true;
   var _attributeInputController = TextEditingController();
-  List<Attribute> _attributeList; // todo gloabls
+  List<Attribute> _attributeList; // todo globals
   List<bool> _isSelected = []; // true if long pressed
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+
+  // updateAttributeListView depends on state
+  static DatabaseHelperAttribute databaseHelperAttribute =
+      DatabaseHelperAttribute();
   final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
 
   @override
@@ -33,8 +37,12 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
 
     return Scaffold(
+      /*
+      * This scaffold contains everything which is shown on this route
+      */
+      
       // APP BAR with MULTIPLE SELECTION DELETION capability
-      appBar: _actionBarWithActionBarCapability(),
+      appBar: _appBarWithLongPressActionCapability(),
 
       // FRAGMENT
       // Input field search create attribute
@@ -43,167 +51,24 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         child: Column(children: <Widget>[
           Row(
             children: <Widget>[
-              Expanded(
-                //height: ,
-                child: // Input text field for search or create attribute
-                    // TEXT FIELD
-                    TextField(
-                  decoration: InputDecoration(
-                    isDense: true, // for smaller height
-                    border: OutlineInputBorder(),
-                    labelText: 'search or create new label',
-                    suffixIcon: IconButton(
-                      onPressed: () => _attributeInputController.clear(),
-                      icon: Icon(Icons.clear),
-                    ),
-                  ),
-                  controller: _attributeInputController,
-                  onChanged: (value) {
-                    debugPrint(
-                        "Something changed search or create new attribute:"
-                        " ${_attributeInputController.text}");
-                    getAttributesToDisplay();
-                    setState(() {});
-                  },
-                ),
-              ),
-
-              Padding(
-                padding: EdgeInsets.all(3.0),
-              ),
-
-              // "CREATE" button
-              Visibility(
-                visible: _createButtonVisible,
-                replacement: Container(), // don't occupy space if hidden
-                child: ButtonTheme(
-                  minWidth: 0,
-                  height: 48, // should be same height as TextField
-                  child: RaisedButton(
-                    color: Theme.of(context).primaryColorDark,
-                    textColor: Theme.of(context).primaryColorLight,
-                    child: Text(
-                      'Create',
-                      textScaleFactor: 1.5,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        saveAttribute(
-                          Attribute(_attributeInputController.text),
-                        );
-                        debugPrint("Create button clicked");
-                      });
-                    },
-                  ),
-                ),
-              ),
+              _searchOrCreateInputTextField(),
+              SizedBox(width: 6),
+              _createButton(),
             ],
           ),
 
           // spacing between boxes
           SizedBox(height: 4),
-
-          // if _attributesToDisplay == null show hint
-          Flexible( // w/o flexible items noy shown, not sure why
-            child: RefreshIndicator(
-              onRefresh: () async {
-                updateAttributeListView();
-              },
-              child:
-                  // if typed into search field only show matches
-                  _attributesToDisplay == null
-                      ? _createAttributeHint()
-                      // if _attributesToDisplay is empty show hint
-                      : _attributesToDisplay.isEmpty
-                          ? _createAttributeHint()
-                          // if ATTRIBUTE LIST is not empty
-                          : globals.attributeListLength < 3
-                              ? Expanded(
-                                  child: Column(
-                                    children: [
-                                      _getAttributeListView(),
-                                      _newEntryHint()
-                                    ],
-                                  ),
-                                )
-                              : _getAttributeListView(),
-            ),
-          ),
+          _refreshableAttributeListViewWithConditionalHint(),
         ]),
       ),
     );
   } // widget
 
-  Widget _newEntryHint() {
-    return Expanded(
-      child: ListView(
-        shrinkWrap: true,
-        padding: EdgeInsets.all(15.0),
-        children: <Widget>[
-          Center(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              color: Colors.tealAccent,
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.arrow_upward,
-                    color: Colors.black45,
-                  ),
-
-                  Text(
-                    'Tab a label to write an entry to your journal.\n'
-                    'Or create more labels like \'Mood\', \'Productivity\','
-                    ' habits, medications, symptoms and emotions.',
-                    style: TextStyle(color: Colors.black45, fontSize: 20),
-                  ),
-                  //Expanded(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _createAttributeHint() {
-    return Expanded(
-      child: ListView(
-        shrinkWrap: true,
-        padding: EdgeInsets.all(15.0),
-        children: <Widget>[
-          Center(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              color: Colors.tealAccent,
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.arrow_upward,
-                    color: Colors.black45,
-                  ),
-
-                  Text(
-                    'Type to create labels you want to track. '
-                    'For example \'Mood\' for how you are feeling today, '
-                    '\'Productivity\' to track the progress on your goals.'
-                    ' Other ideas are habits, medications, symptoms, '
-                    'emotions.',
-                    style: TextStyle(color: Colors.black45, fontSize: 20),
-                  ),
-                  //Expanded(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // MULTIPLE SELECTION DELETION BAR
-  AppBar _actionBarWithActionBarCapability() {
+  AppBar _appBarWithLongPressActionCapability() {
+    /*
+    * App Bar which morphs into a action bar to delete item after long press
+    */
     return _isSelected.contains(true)
         ? AppBar(
             leading: FlatButton(
@@ -241,91 +106,231 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           );
   }
 
-  // Attribute LIST
-  Flexible _getAttributeListView() {
-    return Flexible( // w/o flexible items noy shown, not sure why
-      // pull to refresh
-      child: ListView.builder(
-        itemCount: _attributesToDisplay.length,
-        itemBuilder: (BuildContext context, int position) {
-          return Card(
-            color: _isSelected[position] == false
-                ? Colors.white
-                : Colors.grey, //  select
-            child: ListTile(
-              onLongPress: () {
-                setState(
-                  () {
-                    _isSelected[position] = true;
-                  },
-                );
-              },
-              // YELLOW CIRCLE AVATAR
-              leading: CircleAvatar(
-                //backgroundColor: Colors.amber,
-                child: Text(
-                  JournalRouteState().getFirstLetter(
-                      this._attributesToDisplay[position].title),
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-
-              // TITLE
-              title: Text(
-                _attributesToDisplay[position].title,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-
-              // EDIT ICON
-              trailing: GestureDetector(
-                child: Icon(
-                  Icons.edit,
-                  color: Colors.grey,
-                ),
-                onTap: () {
-                  debugPrint("ListTile Tapped");
-                  NavigationHelper().navigateToEditAttribute(
-                      // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
-                      _attributesToDisplay[position],
-                      _attributesToDisplay[position].title,
-                      context);
-                },
-              ),
-
-              // onTAP for entry
-              onTap: () {
-                setState(() {
-                  debugPrint("One Attribute selected");
-
-                  if (_isSelected.contains(true)) {
-                    _isSelected[position] = !_isSelected[position];
-                  } else {
-                    NavigationHelper().navigateToEditEntry(
-                        // title, value, time, comment
-                        Entry(this._attributesToDisplay[position].title, '',
-                            '${DateTime.now()}', ''),
-                        context);
-                  }
-                });
-              },
-            ),
-          );
+  Widget _searchOrCreateInputTextField() {
+    /*
+    * Input text field which allows to create new labels or search for labels
+    */
+    return Expanded(
+      // eliminates E: TextField cannot have an unbounded width
+      child: TextField(
+        decoration: InputDecoration(
+          isDense: true, // for smaller height
+          border: OutlineInputBorder(),
+          labelText: 'search or create new label',
+          suffixIcon: IconButton(
+            onPressed: () => _attributeInputController.clear(),
+            icon: Icon(Icons.clear),
+          ),
+        ),
+        controller: _attributeInputController,
+        onChanged: (value) {
+          debugPrint("Something changed search or create new attribute:"
+              " ${_attributeInputController.text}");
+          getAttributesToDisplay();
+          setState(() {});
         },
       ),
     );
   }
 
-  // updateAttributeListView depends on state
-  static DatabaseHelperAttribute databaseHelperAttribute =
-      DatabaseHelperAttribute();
 
-  void updateAttributeListView() async {
-    _attributeList = await databaseHelperAttribute.getAttributeList();
-    setState(() {
-      this._attributeList = _attributeList;
-      getAttributesToDisplay();
-    });
-    globals.attributeListLength = _attributeList.length;
+  Visibility _createButton() {
+    /*
+    * "CREATE" button to save new labels
+    */
+    return Visibility(
+      visible: _createButtonVisible,
+      replacement: Container(), // don't occupy space if hidden
+      child: ButtonTheme(
+        minWidth: 0,
+        height: 48, // should be same height as TextField
+        child: RaisedButton(
+          color: Theme.of(context).primaryColorDark,
+          textColor: Theme.of(context).primaryColorLight,
+          child: Text(
+            'Create',
+            textScaleFactor: 1.5,
+          ),
+          onPressed: () {
+            setState(() {
+              saveAttribute(
+                Attribute(_attributeInputController.text),
+              );
+              debugPrint("Create button clicked");
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Flexible _refreshableAttributeListViewWithConditionalHint() {
+    /*
+    * make attribute list view REFRESHABLE and SHOW and HIDE hint
+    */
+    return Flexible(
+      // w/o flexible items noy shown, not sure why
+      child: RefreshIndicator(
+        onRefresh: () async {
+          updateAttributeListView();
+        },
+        child:
+            // if _attributesToDisplay == null show hint
+            _attributesToDisplay == null
+                ? _createAttributeHint()
+                // if _attributesToDisplay is empty show hint
+                : _attributesToDisplay.isEmpty
+                    ? _createAttributeHint()
+                    // if ATTRIBUTE LIST is not empty
+                    : globals.attributeListLength < 3
+                        ? ListView(
+                            children: [_getAttributeListView(), _entryHint()],
+                          )
+                        : _getAttributeListView(),
+      ),
+    );
+  }
+
+  Widget _getAttributeListView() {
+    /*
+    * ATTRIBUTE LIST
+    */
+    return ListView.builder(
+      shrinkWrap: true, // use this
+      itemCount: _attributesToDisplay.length,
+      itemBuilder: (BuildContext context, int position) {
+        return Card(
+          color: _isSelected[position] == false
+              ? Colors.white
+              : Colors.grey, //  select
+          child: ListTile(
+            onLongPress: () {
+              setState(
+                () {
+                  _isSelected[position] = true;
+                },
+              );
+            },
+            // YELLOW CIRCLE AVATAR
+            leading: CircleAvatar(
+              //backgroundColor: Colors.amber,
+              child: Text(
+                JournalRouteState()
+                    .getFirstLetter(this._attributesToDisplay[position].title),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+
+            // TITLE
+            title: Text(
+              _attributesToDisplay[position].title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+
+            // EDIT ICON
+            trailing: GestureDetector(
+              child: Icon(
+                Icons.edit,
+                color: Colors.grey,
+              ),
+              onTap: () {
+                debugPrint("ListTile Tapped");
+                NavigationHelper().navigateToEditAttribute(
+                    // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
+                    _attributesToDisplay[position],
+                    _attributesToDisplay[position].title,
+                    context);
+              },
+            ),
+
+            // onTAP for entry
+            onTap: () {
+              setState(() {
+                debugPrint("One Attribute selected");
+
+                if (_isSelected.contains(true)) {
+                  _isSelected[position] = !_isSelected[position];
+                } else {
+                  NavigationHelper().navigateToEditEntry(
+                      // title, value, time, comment
+                      Entry(this._attributesToDisplay[position].title, '',
+                          '${DateTime.now()}', ''),
+                      context);
+                }
+              });
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _entryHint() {
+    /*
+    * SECOND HINT: explains how to write entries or create new labels
+    * */
+    return ListView(
+      shrinkWrap: true,
+      padding: EdgeInsets.all(15.0),
+      children: <Widget>[
+        Center(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            color: Colors.tealAccent,
+            child: Column(
+              children: [
+                Icon(
+                  Icons.arrow_upward,
+                  color: Colors.black45,
+                ),
+                Text(
+                  'Tab a label to write an entry to your journal.\n'
+                  'Or create more labels like \'Mood\', \'Productivity\','
+                  ' habits, medications, symptoms and emotions.',
+                  style: TextStyle(color: Colors.black45, fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _createAttributeHint() {
+    /*
+    * FIRST HINT: explains how to create a Attribute
+    * */
+    return ListView(
+      shrinkWrap: true,
+      padding: EdgeInsets.all(15.0),
+      children: <Widget>[
+        Center(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            color: Colors.tealAccent,
+            child: Column(
+              children: [
+                Icon(
+                  Icons.arrow_upward,
+                  color: Colors.black45,
+                ),
+
+                Text(
+                  'Type to create labels you want to track. '
+                  'For example \'Mood\' for how you are feeling today, '
+                  '\'Productivity\' to track the progress on your goals.'
+                  ' Other ideas are habits, medications, symptoms, '
+                  'emotions.',
+                  style: TextStyle(color: Colors.black45, fontSize: 20),
+                ),
+                //Expanded(),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   List _searchOperation() {
@@ -369,12 +374,13 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   List getAttributesToDisplay() {
-    // LOGIC OF WHEN TO SHOW BUTTON AND SEARCH RESULTS
-    // exact match: no button but results
-    // no input: no button no results
-    // no match: button but no results
-    // partial match: button and results
-
+    /*
+    * LOGIC OF WHEN TO SHOW BUTTON AND SEARCH RESULTS
+    * exact match: no button but results
+    * no input: no button no results
+    * no match: button but no results
+    * partial match: button and results
+    */
     List output = _searchOperation();
     List _searchResult = output[0];
     bool userInput = output[1];
@@ -408,8 +414,22 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return [_attributesToDisplay, _createButtonVisible, _createButtonVisible];
   }
 
+  void updateAttributeListView() async {
+    /*
+    * DB query to update _attributeList
+    */
+    _attributeList = await databaseHelperAttribute.getAttributeList(); // todo global
+    setState(() {
+      this._attributeList = _attributeList;
+      getAttributesToDisplay();
+    });
+    globals.attributeListLength = _attributeList.length;
+  }
+
   void saveAttribute(attribute) async {
-    // Update Operation: Update a attribute object and save it to database
+    /*
+    * Update Operation: Update a attribute object and save it to database
+    */
     int result;
     if (attribute.id != null) {
       // Case 1: Update operation
