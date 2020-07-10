@@ -90,31 +90,31 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
 //                );
               }),
 
-          // import from CSV
-          SpeedDialChild(
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.input),
-              label: "Import",
-              onTap: () {
-                print("DropDown");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Import()),
-                ); // Navigate to newManualEntry route when tapped.
-              }),
-
-          // connect service
-          SpeedDialChild(
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.input),
-              label: "Connect with Service (e.g. Apple Health, FitBit)",
-              onTap: () {
-                print("DropDown");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Import()),
-                ); // Navigate to newManualEntry route when tapped.
-              }),
+//          // import from CSV
+//          SpeedDialChild(
+//              backgroundColor: Colors.grey,
+//              child: Icon(Icons.input),
+//              label: "Import -Beta-",
+//              onTap: () {
+//                print("DropDown");
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(builder: (context) => Import()),
+//                ); // Navigate to newManualEntry route when tapped.
+//              }),
+//
+//          // connect service
+//          SpeedDialChild(
+//              backgroundColor: Colors.grey,
+//              child: Icon(Icons.input),
+//              label: "Connect with Service (e.g. Apple Health, FitBit)",
+//              onTap: () {
+//                print("DropDown");
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(builder: (context) => Import()),
+//                ); // Navigate to newManualEntry route when tapped.
+//              }),
         ],
       ),
 
@@ -132,18 +132,18 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             icon: Icon(Icons.timeline),
             title: Text('Visualize'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.widgets),
-            title: Text('Recommend'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_hospital),
-            title: Text('COVID-19'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.arrow_downward),
-            title: Text('Intro'),
-          ),
+//          BottomNavigationBarItem( // todo
+//            icon: Icon(Icons.widgets),
+//            title: Text('Recommend'),
+//          ),
+//          BottomNavigationBarItem(
+//            icon: Icon(Icons.local_hospital),
+//            title: Text('COVID-19'),
+//          ),
+//          BottomNavigationBarItem(
+//            icon: Icon(Icons.arrow_downward),
+//            title: Text('Intro'),
+//          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColorDark,

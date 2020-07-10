@@ -11,6 +11,7 @@ String mostRecentAddedEntryName;
 String secondMostRecentAddedEntryName;
 List<Attribute> attributeList; // list to avoid async db operations
 int entryListLength;
+int attributeListLength;
 
 class Global {
   //

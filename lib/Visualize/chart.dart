@@ -48,7 +48,7 @@ class Chart extends StatelessWidget {
         [dateTimeValueMap1, dateTimeValueMap2],
         [Colors.green, Colors.blue],
         [selectedAttribute1, selectedAttribute2], // chart label name
-        tapTextFontWeight: FontWeight.w400);
+        tapTextFontWeight: FontWeight.w400,);
 
     // todo beginning new for correlation and pValue
 

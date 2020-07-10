@@ -51,6 +51,7 @@ class _ImportState extends State<Import> {
               importCSVFile();
             },
           ),
+          Text('The import function is still in development and might crash. To import from a \".csv\" file tab the button above and pick the file. \nInfo: csv stands for Comma Separated Values. You can export Spreadsheets to '),
         ],
       ),
     ); // type lineChart

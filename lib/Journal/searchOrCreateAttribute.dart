@@ -20,7 +20,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   List _attributesToDisplay = List<Attribute>();
   bool _createButtonVisible = true;
   var _attributeInputController = TextEditingController();
-  List<Attribute> _attributeList;
+  List<Attribute> _attributeList; // todo gloabls
   List<bool> _isSelected = []; // true if long pressed
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
   final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
@@ -104,22 +104,31 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           SizedBox(height: 4),
 
           // if _attributesToDisplay == null show hint
-          _attributesToDisplay == null
-              ? _createAttributeHint()
-              // if _attributesToDisplay is empty show hint
-              : _attributesToDisplay.isEmpty
-                  ? _createAttributeHint()
-                  // if ATTRIBUTE LIST is not empty
-                  : _attributesToDisplay.length < 3
-                      ? Expanded(
-                        child: Column(
-                            children: [
-                              _getAttributeListView(),
-                              _newEntryHint()
-                            ],
-                          ),
-                      )
-                      : _getAttributeListView(),
+          Flexible( // w/o flexible items noy shown, not sure why
+            child: RefreshIndicator(
+              onRefresh: () async {
+                updateAttributeListView();
+              },
+              child:
+                  // if typed into search field only show matches
+                  _attributesToDisplay == null
+                      ? _createAttributeHint()
+                      // if _attributesToDisplay is empty show hint
+                      : _attributesToDisplay.isEmpty
+                          ? _createAttributeHint()
+                          // if ATTRIBUTE LIST is not empty
+                          : globals.attributeListLength < 3
+                              ? Expanded(
+                                  child: Column(
+                                    children: [
+                                      _getAttributeListView(),
+                                      _newEntryHint()
+                                    ],
+                                  ),
+                                )
+                              : _getAttributeListView(),
+            ),
+          ),
         ]),
       ),
     );
@@ -144,8 +153,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                   Text(
                     'Tab a label to write an entry to your journal.\n'
-                        'Or create more labels like \'Mood\', \'Productivity\','
-                        ' habits, medications, symptoms and emotions.',
+                    'Or create more labels like \'Mood\', \'Productivity\','
+                    ' habits, medications, symptoms and emotions.',
                     style: TextStyle(color: Colors.black45, fontSize: 20),
                   ),
                   //Expanded(),
@@ -177,10 +186,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
                   Text(
                     'Type to create labels you want to track. '
-                        'For example \'Mood\' for how you are feeling today, '
-                        '\'Productivity\' to track the progress on your goals.'
-                        ' Other ideas are habits, medications, symptoms, '
-                        'emotions.',
+                    'For example \'Mood\' for how you are feeling today, '
+                    '\'Productivity\' to track the progress on your goals.'
+                    ' Other ideas are habits, medications, symptoms, '
+                    'emotions.',
                     style: TextStyle(color: Colors.black45, fontSize: 20),
                   ),
                   //Expanded(),
@@ -234,81 +243,74 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // Attribute LIST
   Flexible _getAttributeListView() {
-    return Flexible(
+    return Flexible( // w/o flexible items noy shown, not sure why
       // pull to refresh
-      child: RefreshIndicator(
-        onRefresh: () async {
-          updateAttributeListView();
-        },
-
-        // if typed into search field only show matches
-        child: ListView.builder(
-          itemCount: _attributesToDisplay.length,
-          itemBuilder: (BuildContext context, int position) {
-            return Card(
-              color: _isSelected[position] == false
-                  ? Colors.white
-                  : Colors.grey, //  select
-              child: ListTile(
-                onLongPress: () {
-                  setState(
-                    () {
-                      _isSelected[position] = true;
-                    },
-                  );
-                },
-                // YELLOW CIRCLE AVATAR
-                leading: CircleAvatar(
-                  //backgroundColor: Colors.amber,
-                  child: Text(
-                    JournalRouteState().getFirstLetter(
-                        this._attributesToDisplay[position].title),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-
-                // TITLE
-                title: Text(
-                  _attributesToDisplay[position].title,
+      child: ListView.builder(
+        itemCount: _attributesToDisplay.length,
+        itemBuilder: (BuildContext context, int position) {
+          return Card(
+            color: _isSelected[position] == false
+                ? Colors.white
+                : Colors.grey, //  select
+            child: ListTile(
+              onLongPress: () {
+                setState(
+                  () {
+                    _isSelected[position] = true;
+                  },
+                );
+              },
+              // YELLOW CIRCLE AVATAR
+              leading: CircleAvatar(
+                //backgroundColor: Colors.amber,
+                child: Text(
+                  JournalRouteState().getFirstLetter(
+                      this._attributesToDisplay[position].title),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
+              ),
 
-                // EDIT ICON
-                trailing: GestureDetector(
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.grey,
-                  ),
-                  onTap: () {
-                    debugPrint("ListTile Tapped");
-                    NavigationHelper().navigateToEditAttribute(
-                        // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
-                        _attributesToDisplay[position],
-                        _attributesToDisplay[position].title,
-                        context);
-                  },
+              // TITLE
+              title: Text(
+                _attributesToDisplay[position].title,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+
+              // EDIT ICON
+              trailing: GestureDetector(
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.grey,
                 ),
-
-                // onTAP for entry
                 onTap: () {
-                  setState(() {
-                    debugPrint("One Attribute selected");
-
-                    if (_isSelected.contains(true)) {
-                      _isSelected[position] = !_isSelected[position];
-                    } else {
-                      NavigationHelper().navigateToEditEntry(
-                          // title, value, time, comment
-                          Entry(this._attributesToDisplay[position].title, '',
-                              '${DateTime.now()}', ''),
-                          context);
-                    }
-                  });
+                  debugPrint("ListTile Tapped");
+                  NavigationHelper().navigateToEditAttribute(
+                      // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
+                      _attributesToDisplay[position],
+                      _attributesToDisplay[position].title,
+                      context);
                 },
               ),
-            );
-          },
-        ),
+
+              // onTAP for entry
+              onTap: () {
+                setState(() {
+                  debugPrint("One Attribute selected");
+
+                  if (_isSelected.contains(true)) {
+                    _isSelected[position] = !_isSelected[position];
+                  } else {
+                    NavigationHelper().navigateToEditEntry(
+                        // title, value, time, comment
+                        Entry(this._attributesToDisplay[position].title, '',
+                            '${DateTime.now()}', ''),
+                        context);
+                  }
+                });
+              },
+            ),
+          );
+        },
       ),
     );
   }
@@ -323,6 +325,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       this._attributeList = _attributeList;
       getAttributesToDisplay();
     });
+    globals.attributeListLength = _attributeList.length;
   }
 
   List _searchOperation() {
@@ -340,7 +343,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
     // go through all attributes one by one
     if (userInput) {
-      for (int i = 0; i < _attributeList.length; i++) {
+      for (int i = 0; i < globals.attributeListLength; i++) {
         // PARTIAL OR EXACT SEARCH MATCH
         // search for attributes that contain input
         if (_attributeList[i]
