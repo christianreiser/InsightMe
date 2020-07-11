@@ -47,7 +47,7 @@ class JournalRouteState extends State<JournalRoute> {
       },
       child: journalHintVisibleLogic() == true
           // HINT
-          ? _delayedHint()
+          ? _makeEntryHint() // _delayedHint() todo
 
           // ENTRY LIST
           : _getEntryListView(),
@@ -55,23 +55,28 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   bool journalHintVisibleLogic() {
-    bool entryListNullOrEmpty;
+    /*
+    * hint visible if entry list is not empty
+    * not visible if list == null
+    * */
+    bool entryListEmpty;
     if (_entryList == null) {
-      entryListNullOrEmpty = true;
+      entryListEmpty = false;
     } else {
       if (_entryList.isEmpty) {
-        entryListNullOrEmpty = true;
+        entryListEmpty = true;
       } else {
-        entryListNullOrEmpty = false;
+        entryListEmpty = false;
       }
     }
-    return entryListNullOrEmpty;
+    return entryListEmpty;
   }
 
   Widget _delayedHint() {
     delayedChangState();
+    debugPrint('_showHint $_showHint');
     return AnimatedCrossFade(
-      duration: const Duration(milliseconds: 600), // todo change time
+      duration: const Duration(milliseconds: 600),
       firstChild: Container(),
       secondChild: _makeEntryHint(),
       crossFadeState:
@@ -234,14 +239,14 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   void delayedChangState() {
-    Timer(const Duration(milliseconds: 300), handleTimeout); // todo change time
+    Timer(const Duration(milliseconds: 300), handleTimeout);
   }
 
   void handleTimeout() {
-//    setState(() {
+    setState(() {
       // todo
       _showHint = true;
-//    });
+    });
   }
 
   // updateEntryListView depends on state
