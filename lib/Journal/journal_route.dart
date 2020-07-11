@@ -36,10 +36,10 @@ class JournalRouteState extends State<JournalRoute> {
       }
     }
 
-    // update local attribute list if null
-    if (globals.attributeList == null) {
-      globals.Global().updateAttributeList();
-    }
+//    // update local attribute list if null // todo why is that needed?
+//    if (globals.attributeList == null) {
+//      globals.Global().updateAttributeList();
+//    }
 
     return RefreshIndicator(
       onRefresh: () async {

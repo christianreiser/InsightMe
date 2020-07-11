@@ -11,7 +11,7 @@ String mostRecentAddedEntryName;
 String secondMostRecentAddedEntryName;
 List<Attribute> attributeList; // list to avoid async db operations
 int entryListLength;
-int attributeListLength;
+int attributeListLength; // todo useful for visualization, and searchOrCreate
 
 class Global {
   //

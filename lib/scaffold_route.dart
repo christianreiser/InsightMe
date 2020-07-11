@@ -21,7 +21,7 @@ class ScaffoldRoute extends StatefulWidget {
 class _ScaffoldRouteState extends State<ScaffoldRoute> {
   @override
   Widget build(BuildContext context) {
-    return welcomeOrStandardScaffold();
+    return standardScaffold(); //welcomeOrStandardScaffold(); // todo intro back in
   }
 
   FutureBuilder welcomeOrStandardScaffold() {
