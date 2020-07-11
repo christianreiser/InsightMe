@@ -54,7 +54,7 @@ class DatabaseHelperAttribute {
   /*creating the table*/
   void _createDb(Database db, int newVersion) async {
 
-    await db.execute('CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT');
+    await db.execute('CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT)');
   }
 
   // Fetch Operation: Get all attribute objects from database
