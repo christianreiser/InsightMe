@@ -11,20 +11,30 @@ import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 import 'Recommend/recommendation_route.dart';
 
-
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute();
-
 
   @override
   _ScaffoldRouteState createState() => _ScaffoldRouteState();
 }
 
 class _ScaffoldRouteState extends State<ScaffoldRoute> {
-
-
   @override
   Widget build(BuildContext context) {
+    return welcomeOrStandardScaffold();
+  }
+
+  FutureBuilder welcomeOrStandardScaffold() {
+    /*
+    * decides if standard scaffold or welcome screen should be shown
+    * Logic:
+    * Welcome if:
+    *   1. hideWelcome == null (as not shown before)
+    *   2. hideWelcome == false
+    * StandardScaffold if:
+    *   1. problems with connection state (i.e. none, waiting)
+    *   2. hide == true
+    * */
     return FutureBuilder<SharedPreferences>(
       future: SharedPreferences.getInstance(),
       builder:
@@ -36,19 +46,24 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             return standardScaffold();
           default:
             if (!snapshot.hasError) {
-        //@ToDo("Return a welcome screen")
-        return snapshot.data.getBool("hideWelcome") != null
-        ? standardScaffold()
-            : IntroRoute();
-        } else {
-        return Text('error: ${snapshot.error}');
+              //@ToDo("Return a welcome screen")
+              return snapshot.data.getBool("hideWelcome") == null
+                  ? IntroRoute()
+                  : snapshot.data.getBool("hideWelcome") == false
+                      ? IntroRoute()
+                      : standardScaffold();
+            } else {
+              return Text('error: ${snapshot.error}');
+            }
         }
-      }
       },
     );
   }
 
   Scaffold standardScaffold() {
+    /*
+    * standard scaffold with bottom navigation bar and floating action button
+    * */
     return Scaffold(
       appBar: AppBar(
         title: Text(

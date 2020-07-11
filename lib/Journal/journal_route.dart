@@ -238,10 +238,10 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   void handleTimeout() {
-    setState(() {
+//    setState(() {
       // todo
       _showHint = true;
-    });
+//    });
   }
 
   // updateEntryListView depends on state
