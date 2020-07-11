@@ -40,7 +40,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       /*
       * This scaffold contains everything which is shown on this route
       */
-      
+
       // APP BAR with MULTIPLE SELECTION DELETION capability
       appBar: _appBarWithLongPressActionCapability(),
 
@@ -118,7 +118,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           border: OutlineInputBorder(),
           labelText: 'search or create new label',
           suffixIcon: IconButton(
-            onPressed: () => _attributeInputController.clear(),
+            onPressed: () {
+              _attributeInputController.clear();
+              getAttributesToDisplay(); // needed to refresh
+              setState(() {}); // needed to refresh
+            },
             icon: Icon(Icons.clear),
           ),
         ),
@@ -132,7 +136,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       ),
     );
   }
-
 
   Visibility _createButton() {
     /*
@@ -418,7 +421,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     /*
     * DB query to update _attributeList
     */
-    _attributeList = await databaseHelperAttribute.getAttributeList(); // todo global
+    _attributeList =
+        await databaseHelperAttribute.getAttributeList(); // todo global
     setState(() {
       this._attributeList = _attributeList;
       getAttributesToDisplay();
