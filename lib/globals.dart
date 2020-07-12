@@ -11,12 +11,14 @@ String mostRecentAddedEntryName;
 String secondMostRecentAddedEntryName;
 List<Attribute> attributeList; // list to avoid async db operations
 int entryListLength;
-int attributeListLength; // todo useful for visualization, and searchOrCreate
+int attributeListLength;
 
 class Global {
   //
-  updateAttributeList() async {
+  Future<List<Attribute>> updateAttributeList() async {
     attributeList = await databaseHelperAttribute.getAttributeList();
+    attributeListLength = attributeList.length;
+    return attributeList;
   }
 
 

@@ -59,7 +59,7 @@ class Visualize extends StatelessWidget {
                 children: [
                   Text(
                     'You have no entries to visualize.\n '
-                        'To create new entries tab here ',
+                    'To create new entries tab here ',
                     textScaleFactor: 1.2,
                   ),
                   Icon(Icons.arrow_forward),
@@ -71,7 +71,6 @@ class Visualize extends StatelessWidget {
             )
           ],
         ),
-
         SizedBox(
           height: 27, // height of button
         )

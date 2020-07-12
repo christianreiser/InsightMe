@@ -36,10 +36,15 @@ class JournalRouteState extends State<JournalRoute> {
       }
     }
 
-//    // update local attribute list if null // todo why is that needed?
-//    if (globals.attributeList == null) {
-//      globals.Global().updateAttributeList();
-//    }
+    debugPrint(
+        'globals.attributeListLength == 0 ${globals.attributeListLength}');
+    // async update local attribute list if null to load for other routes later on
+    if (globals.attributeListLength == 0 ||
+        globals.attributeListLength == null) {
+      // todo check if needed
+      globals.Global().updateAttributeList();
+      debugPrint('attributeListLength ${globals.attributeListLength}');
+    }
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -109,7 +114,6 @@ class JournalRouteState extends State<JournalRoute> {
             )
           ],
         ),
-
         SizedBox(
           height: 27, // height of button
         )
