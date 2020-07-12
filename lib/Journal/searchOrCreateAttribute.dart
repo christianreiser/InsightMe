@@ -17,13 +17,14 @@ class SearchOrCreateAttribute extends StatefulWidget {
 
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
-
   // ini _attributesToDisplay
   List<Attribute> _attributesToDisplay = globals.attributeList;
-  // ini _isSelected
-  List<bool> _isSelected = List.filled(globals.attributeList.length, false); // true if long pressed
 
-  bool _createButtonVisible = true;
+  // ini _isSelected
+  List<bool> _isSelected =
+      List.filled(globals.attributeList.length, false); // true if long pressed
+
+  bool _createButtonVisible = false; // initially don't show create button
   var _attributeInputController = TextEditingController();
 
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
@@ -34,12 +35,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   final DatabaseHelperAttribute helper = DatabaseHelperAttribute();
 
   @override
-
   Widget build(BuildContext context) {
-
     return Scaffold(
       /*
-      * This scaffold contains everything which is shown on this route
+      * This scaffold contains everything which is shown in this route
       */
 
       // APP BAR with MULTIPLE SELECTION DELETION capability
@@ -174,7 +173,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       // w/o flexible items noy shown, not sure why
       child: RefreshIndicator(
         onRefresh: () async {
-          //todo globals.Global().updateAttributeList();
           globals.attributeList =
               await databaseHelperAttribute.getAttributeList();
           globals.attributeListLength = globals.attributeList.length;
@@ -182,6 +180,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           setState(() {});
         },
         child:
+            // LOGIC FOR CONDITIONAL HINT
             // if _attributesToDisplay == null show hint
             _attributesToDisplay == null
                 ? _createAttributeHint()
@@ -423,19 +422,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return [_attributesToDisplay, _createButtonVisible, _createButtonVisible];
   }
 
-//  void updateAttributeListView() async {
-//    /*
-//    * DB query to update globals.attributeList
-//    */
-//    globals.attributeList =
-//        await databaseHelperAttribute.getAttributeList(); // todo global
-//    setState(() {
-//      this.globals.attributeList = globals.attributeList;
-//      getAttributesToDisplay();
-//    });
-//    globals.attributeListLength = globals.attributeList.length;
-//  }
-
   void saveAttribute(attribute) async {
     /*
     * Update Operation: Update a attribute object and save it to database
@@ -491,6 +477,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
 // DELETE
   void _delete(_isSelected) async {
+    /*
+    * Delete Operation: Delete a attribute from database
+    */
     List<int> _resultList = [];
 
     for (int position = 0; position < _isSelected.length; position++) {
@@ -511,19 +500,20 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         );
       }
     }
+
+    if (context != null) {
+      // catch error when user closes context
+      globals.attributeList = await databaseHelperAttribute.getAttributeList();
+      globals.attributeListLength = globals.attributeList.length;
+      getAttributesToDisplay();
+      setState(() {});
+    }
+
     // Success Failure evaluation
     if (_resultList.contains(0)) {
       _showAlertDialog('Status', 'Error occurred while Deleting Attribute');
     } else {
       _showAlertDialog('Status', 'Successful deletion');
-    }
-    if (context != null) {
-      // catch error when user closes context
-      // globals.Global().updateAttributeList(); todo
-      globals.attributeList = await databaseHelperAttribute.getAttributeList();
-      globals.attributeListLength = globals.attributeList.length;
-      getAttributesToDisplay();
-      setState(() {});
     }
   }
 
