@@ -196,7 +196,7 @@ class EditAttributeState extends State<EditAttribute> {
         await databaseHelperAttribute.deleteAttribute(attribute.id),
       );
 
-      // update gloabls
+      // update gloabls // needed otherwise not working
       globals.attributeList = await databaseHelperAttribute.getAttributeList();
       globals.attributeListLength = globals.attributeList.length;
 

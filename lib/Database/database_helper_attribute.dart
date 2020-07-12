@@ -97,7 +97,7 @@ class DatabaseHelperAttribute {
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'attribute List' [ List<Attribute> ]
   Future<List<Attribute>> getAttributeList() async {
-    Database db = await this.database;
+    await this.database;
     var attributeMapList = await getAttributeMapList(); // Get 'Map List' from database
     int countAttribute = attributeMapList.length;         // Count the number of map entries in db table
 

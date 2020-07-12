@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insightme/Journal/journal_route.dart';
 import 'package:insightme/scaffold_route.dart';
 
 import 'Covid19/stayHealthy.dart';
