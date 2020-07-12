@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import '../../globals.dart' as globals;
+import '../../navigation_helper.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
 import 'package:intl/intl.dart'; // for date time formatting
@@ -204,7 +206,8 @@ class EditEntryState extends State<EditEntry> {
     //final String p = "[0-9\.]{1,256}";
     // TODO RegExp input is all that's forbidden, better to input allowed characters: "[0-9\.]{1,256}"
     final RegExp regExp = RegExp(
-        r'[¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
+      // todo allow negative values: "-" WITH number
+        r'[-¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s]');
     Iterable iterableRegExp = regExp.allMatches(valueController);
     //debugPrint('iterableRegExp $iterableRegExp');
 
@@ -269,14 +272,21 @@ class EditEntryState extends State<EditEntry> {
 
   // DELETE
   void _delete() async {
-    Navigator.pop(context, true);
 
     if (entry.id == null) {
       _showAlertDialog('Status', 'No Entry was deleted');
       return;
     }
-
     int result = await databaseHelperEntry.deleteEntry(entry.id);
+
+
+    // update globals
+    globals.attributeList = await globals.databaseHelperAttribute.getAttributeList();
+    globals.attributeListLength = globals.attributeList.length;
+
+    // Navigate back and update
+    NavigationHelper().navigateToScaffoldRoute(context);
+
     if (result != 0) {
       _showAlertDialog('Status', 'Entry Deleted Successfully');
     } else {

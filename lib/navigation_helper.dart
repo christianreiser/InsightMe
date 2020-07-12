@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insightme/Journal/journal_route.dart';
 import 'package:insightme/scaffold_route.dart';
 
 import 'Covid19/stayHealthy.dart';
@@ -43,10 +44,10 @@ class NavigationHelper {
     }));
   }
 
-  // navigation back to journal and refresh to show new entry
+  // navigation back  and refresh to show new entry
   void navigateToSearchOrCreateAttributeRoute(context) async {
     // don't use pop because it doesn't refresh the page
-    // RemoveUntil is needed to remove the old outdated journal route
+    // RemoveUntil is needed to remove the old outdated  route
     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
       context,
     ) {
