@@ -77,17 +77,17 @@ class JournalRouteState extends State<JournalRoute> {
     return entryListEmpty;
   }
 
-  Widget _delayedHint() {
-    delayedChangState();
-    debugPrint('_showHint $_showHint');
-    return AnimatedCrossFade(
-      duration: const Duration(milliseconds: 600),
-      firstChild: Container(),
-      secondChild: _makeEntryHint(),
-      crossFadeState:
-          _showHint ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-    );
-  }
+//  Widget _delayedHint() {
+//    delayedChangState();
+//    debugPrint('_showHint $_showHint');
+//    return AnimatedCrossFade(
+//      duration: const Duration(milliseconds: 600),
+//      firstChild: Container(),
+//      secondChild: _makeEntryHint(),
+//      crossFadeState:
+//          _showHint ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+//    );
+//  }
 
   Column _makeEntryHint() {
     return Column(

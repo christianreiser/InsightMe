@@ -52,8 +52,7 @@ class EditEntryState extends State<EditEntry> {
       body: Builder(
         builder: (scaffoldContext) => Padding(
           padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
-          child: ListView(
-            children: <Widget>[
+          child: ListView(children: <Widget>[
 /*                // Attribute: text box with attribute name -> not needed due to app bar
                   Padding(
                     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -62,140 +61,152 @@ class EditEntryState extends State<EditEntry> {
                     )
                   ),*/
 
-              // Value
-              Padding(
-                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: valueController,
-                  style: textStyle,
-                  validator: _validateValue,
-                  autovalidate: true,
-                  onChanged: (value) {
-                    debugPrint('Something changed in Value Text Field');
-                    _updateValue(); // with valueController.text = entry.value
+            SizedBox(height: 5),
+
+            // Value
+            TextFormField(
+              keyboardType: TextInputType.number,
+              controller: valueController,
+              style: textStyle,
+              validator: _validateValue,
+              autovalidate: true,
+              onChanged: (value) {
+                debugPrint('Something changed in Value Text Field');
+                _updateValue(); // with valueController.text = entry.value
+              },
+              decoration: InputDecoration(
+                labelText: 'Value',
+                labelStyle: textStyle,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+            ),
+
+            SizedBox(height: 15),
+
+            // COMMENT
+            TextField(
+              controller: commentController,
+              style: textStyle,
+              onChanged: (value) {
+                debugPrint('Something changed in Comment Text Field');
+                _updateComment();
+              },
+              decoration: InputDecoration(
+                labelText: 'Comment',
+                labelStyle: textStyle,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+            ),
+
+            SizedBox(height: 15),
+
+            // DATE TIME
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: FlatButton(
+                onPressed: () {
+                  DatePicker.showDateTimePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime(2000, 1, 1),
+                      maxTime: DateTime.now(), onChanged: (_dateTime) {
+                    debugPrint('Text Field change: entry.date: ${entry.date}, '
+                        'dateController.text: ${dateController.text}');
+                    debugPrint('change $_dateTime');
+                  }, onConfirm: (dateTime) {
+                    _updateDate(dateTime);
+                    debugPrint('confirm $dateTime');
+                    setState(() {
+                      _dateTime = dateTime;
+                    });
+                  }, currentTime: _dateTime, locale: LocaleType.en);
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    DateFormat.yMMMMd('en_US').add_Hm().format(_dateTime),
+                    style: textStyle,
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(height: 15),
+
+            // SAVE BUTTON
+            // todo grey nonfunctional save button if forbidden character
+            Row(children: <Widget>[
+              Expanded(
+                child: RaisedButton(
+                  color: Theme.of(context).primaryColorDark,
+                  textColor: Theme.of(context).primaryColorLight,
+                  child: Text(
+                    'Save',
+                    textScaleFactor: 1.5,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      debugPrint("Save button clicked");
+                      _save(scaffoldContext);
+                    });
                   },
-                  decoration: InputDecoration(
-                    labelText: 'Value',
-                    labelStyle: textStyle,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
                 ),
               ),
 
-              // COMMENT
-              Padding(
-                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                child: TextField(
-                  controller: commentController,
-                  style: textStyle,
-                  onChanged: (value) {
-                    debugPrint('Something changed in Comment Text Field');
-                    _updateComment();
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Comment',
-                    labelStyle: textStyle,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                ),
-              ),
+              SizedBox(width: 15),
 
-              // DATE TIME
-              Padding(
-                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: FlatButton(
-                    onPressed: () {
-                      DatePicker.showDateTimePicker(context,
-                          showTitleActions: true,
-                          minTime: DateTime(2000, 1, 1),
-                          maxTime: DateTime.now(), onChanged: (_dateTime) {
-                        debugPrint(
-                            'Text Field change: entry.date: ${entry.date}, '
-                            'dateController.text: ${dateController.text}');
-                        debugPrint('change $_dateTime');
-                      }, onConfirm: (dateTime) {
-                        _updateDate(dateTime);
-                        debugPrint('confirm $dateTime');
-                        setState(() {
-                          _dateTime = dateTime;
-                        });
-                      }, currentTime: _dateTime, locale: LocaleType.en);
-                    },
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        DateFormat.yMMMMd('en_US').add_Hm().format(_dateTime),
-                        style: textStyle,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              Padding(
-                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-
-                // SAVE BUTTON
-                // todo grey nonfunctional save button if forbidden character
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
+              // DELETE BUTTON
+              // hide delete if entry doesn't exist
+              thisIsANewEntry == false
+                  ? Expanded(
                       child: RaisedButton(
                         color: Theme.of(context).primaryColorDark,
                         textColor: Theme.of(context).primaryColorLight,
                         child: Text(
-                          'Save',
+                          'Delete',
                           textScaleFactor: 1.5,
                         ),
                         onPressed: () {
                           setState(() {
-                            debugPrint("Save button clicked");
-                            _save(scaffoldContext);
+                            debugPrint("Delete button clicked");
+                            _delete();
                           });
                         },
                       ),
-                    ),
+                    )
+                  : Container(),
+            ]),
 
-                    Container(
-                      width: 5.0,
-                    ),
+            SizedBox(height: 15),
 
-                    // DELETE BUTTON
-                    // hide delete if entry doesn't exist
-                    thisIsANewEntry == false
-                        ? Expanded(
-                            child: RaisedButton(
-                              color: Theme.of(context).primaryColorDark,
-                              textColor: Theme.of(context).primaryColorLight,
-                              child: Text(
-                                'Delete',
-                                textScaleFactor: 1.5,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  debugPrint("Delete button clicked");
-                                  _delete();
-                                });
-                              },
-                            ),
-                          )
-                        : Container(),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            _hintInEditEntry(),
+          ]),
         ),
+      ),
+    );
+  }
+
+  Container _hintInEditEntry() {
+    return Container(
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.all(10),
+      color: Colors.tealAccent,
+      child: Text(
+        'Hint: Set a value for your rating. '
+            'You can choose your own scale/unit and don\'t have to tell the app,'
+            ' but the it must be consistent with all future entries for this label. '
+            'For example, you can: \n'
+            '  - rate your feeling or symptoms and decide a scale from 1 to 10,\n'
+            '  - enter medication-dosage in milligrams,\n'
+            '  - track Yes/No with 1 and 0.\n'
+            'The comment is an optional note for you.',
+        textScaleFactor: 1.2,
       ),
     );
   }
@@ -253,7 +264,6 @@ class EditEntryState extends State<EditEntry> {
     if (thisIsANewEntry == true) {
       Navigator.pop(context, true);
       result = await databaseHelperEntry.insertEntry(entry);
-
     } else {
       result = await databaseHelperEntry.updateEntry(entry);
       NavigationHelper().navigateToScaffoldRoute(context);
