@@ -4,6 +4,8 @@ import '../attribute.dart';
 import '../database_helper_attribute.dart';
 import '../database_helper_entry.dart';
 import './../entry.dart';
+import './../../globals.dart' as globals;
+
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
@@ -193,6 +195,10 @@ class EditAttributeState extends State<EditAttribute> {
       _resultList.add(
         await databaseHelperAttribute.deleteAttribute(attribute.id),
       );
+
+      // update gloabls
+      globals.attributeList = await databaseHelperAttribute.getAttributeList();
+      globals.attributeListLength = globals.attributeList.length;
 
       // Navigate back and update
       NavigationHelper().navigateToSearchOrCreateAttributeRoute(context);
