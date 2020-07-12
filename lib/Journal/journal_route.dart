@@ -221,7 +221,7 @@ class JournalRouteState extends State<JournalRoute> {
                             _isSelected[position] = !_isSelected[position];
                           } else {
                             NavigationHelper().navigateToEditEntry(
-                                this._entryList[position], context);
+                                this._entryList[position], context, false);
                           }
                           debugPrint("ListTile Tapped");
                         },

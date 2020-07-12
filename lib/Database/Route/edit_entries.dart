@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import '../../globals.dart' as globals;
 import '../../navigation_helper.dart';
+import '../database_helper_attribute.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
 import 'package:intl/intl.dart'; // for date time formatting
+import './../../globals.dart' as globals;
 
 class EditEntry extends StatefulWidget {
   final Entry entry;
+  final bool thisIsANewEntry; // in contrast to edit existing entry
 
-  EditEntry(this.entry);
+  EditEntry(this.entry, this.thisIsANewEntry);
 
   @override
   State<StatefulWidget> createState() {
-    return EditEntryState(this.entry);
+    return EditEntryState(this.entry, this.thisIsANewEntry);
   }
 }
 
@@ -21,14 +23,14 @@ class EditEntryState extends State<EditEntry> {
   final DatabaseHelperEntry databaseHelperEntry = // error when static
       DatabaseHelperEntry();
 
-
   Entry entry;
+  bool thisIsANewEntry;
 
   TextEditingController valueController = TextEditingController();
   TextEditingController commentController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
-  EditEntryState(this.entry);
+  EditEntryState(this.entry, this.thisIsANewEntry);
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +148,7 @@ class EditEntryState extends State<EditEntry> {
                 padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
 
                 // SAVE BUTTON
+                // todo grey nonfunctional save button if forbidden character
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -170,22 +173,25 @@ class EditEntryState extends State<EditEntry> {
                     ),
 
                     // DELETE BUTTON
-                    Expanded(
-                      child: RaisedButton(
-                        color: Theme.of(context).primaryColorDark,
-                        textColor: Theme.of(context).primaryColorLight,
-                        child: Text(
-                          'Delete',
-                          textScaleFactor: 1.5,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            debugPrint("Delete button clicked");
-                            _delete();
-                          });
-                        },
-                      ),
-                    ),
+                    // hide delete if entry doesn't exist
+                    thisIsANewEntry == false
+                        ? Expanded(
+                            child: RaisedButton(
+                              color: Theme.of(context).primaryColorDark,
+                              textColor: Theme.of(context).primaryColorLight,
+                              child: Text(
+                                'Delete',
+                                textScaleFactor: 1.5,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  debugPrint("Delete button clicked");
+                                  _delete();
+                                });
+                              },
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               ),
@@ -206,8 +212,7 @@ class EditEntryState extends State<EditEntry> {
     //final String p = "[0-9\.]{1,256}";
     // TODO RegExp input is all that's forbidden, better to input allowed characters: "[0-9\.]{1,256}"
     final RegExp regExp = RegExp(
-      // todo allow negative values: "-" WITH number
-        r'[-¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s]');
+        r'[¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
     Iterable iterableRegExp = regExp.allMatches(valueController);
     //debugPrint('iterableRegExp $iterableRegExp');
 
@@ -220,8 +225,6 @@ class EditEntryState extends State<EditEntry> {
     // The pattern of the email didn't match the regex above.
     return 'Invalid: Only digits (0-9) and point (.) as decimal are allowed.';
   }
-
-
 
 /*  // Update the title of entry object
   void updateTitle(){
@@ -246,17 +249,16 @@ class EditEntryState extends State<EditEntry> {
   // Save data to database
 
   void _save(scaffoldContext) async {
-    // NAVIGATE
-    Navigator.pop(context, true);
-
-    // Update Operation: Update a to-do object and save it to database
     int result;
-    if (entry.id != null) {
-      // Case 1: Update operation
-      result = await databaseHelperEntry.updateEntry(entry);
-    } else {
-      // Case 2: Insert Operation
+
+    // NAVIGATE
+    if (thisIsANewEntry == true) {
+      Navigator.pop(context, true);
       result = await databaseHelperEntry.insertEntry(entry);
+
+    } else {
+      result = await databaseHelperEntry.updateEntry(entry);
+      NavigationHelper().navigateToScaffoldRoute(context);
     }
 
     // SUCCESS FAILURE STATUS DIALOG
@@ -272,25 +274,19 @@ class EditEntryState extends State<EditEntry> {
 
   // DELETE
   void _delete() async {
-
     if (entry.id == null) {
       _showAlertDialog('Status', 'No Entry was deleted');
       return;
     }
-    int result = await databaseHelperEntry.deleteEntry(entry.id);
 
-
-    // update globals
-    globals.attributeList = await globals.databaseHelperAttribute.getAttributeList();
-    globals.attributeListLength = globals.attributeList.length;
-
-    // Navigate back and update
+    // navigate and rebuild
     NavigationHelper().navigateToScaffoldRoute(context);
 
+    int result = await databaseHelperEntry.deleteEntry(entry.id);
     if (result != 0) {
       _showAlertDialog('Status', 'Entry Deleted Successfully');
     } else {
-      _showAlertDialog('Status', 'Error Occured while Deleting Entry');
+      _showAlertDialog('Status', 'Error Occurred while Deleting Entry');
     }
   }
 

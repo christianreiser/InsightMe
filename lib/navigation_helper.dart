@@ -23,14 +23,14 @@ class NavigationHelper {
     return result;
   }
 
-  // navigation for editing entry
-  // function exists also in journal_route.dart but when using it from there:
-  // state error
-  void navigateToEditEntry(Entry entry, context) async {
+  void navigateToEditEntry(Entry entry, context, thisIsANewEntry) async {
+    /*
+    * navigation to editing entry
+    */
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
-        return EditEntry(entry);
+        return EditEntry(entry, thisIsANewEntry);
       }),
     );
   }

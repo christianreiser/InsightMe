@@ -259,7 +259,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       // title, value, time, comment
                       Entry(this._attributesToDisplay[position].title, '',
                           '${DateTime.now()}', ''),
-                      context);
+                      context, true);
                 }
               });
             },
