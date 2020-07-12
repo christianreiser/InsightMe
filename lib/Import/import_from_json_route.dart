@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // for import csv
 import 'dart:io';
@@ -35,25 +36,25 @@ class _ImportState extends State<Import> {
         title: Text('Import'),
       ),
       body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
-        children: <Widget>[
-          RaisedButton(
-            color: Theme.of(context).primaryColorDark,
-            textColor: Theme.of(context).primaryColorLight,
-            child: Text(
-              'Pick \"import file\"',
-              textScaleFactor: 1.5,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
+          children: <Widget>[
+            _hintInImport(),
+            RaisedButton(
+              color: Theme.of(context).primaryColorDark,
+              textColor: Theme.of(context).primaryColorLight,
+              child: Text(
+                'Pick \".csv\" file to import',
+                textScaleFactor: 1.5,
+              ),
+              onPressed: () {
+                _showAlertDialog('Status',
+                    'Import started in the background. This might take a while.');
+                importCSVFile();
+              },
             ),
-            onPressed: () {
-              _showAlertDialog('Status', 'Import started in the background. This might take a while.');
-              importCSVFile();
-            },
-          ),
-          Text('The import function is still in development and might crash. To import from a \".csv\" file tab the button above and pick the file. \nInfo: csv stands for Comma Separated Values. You can export Spreadsheets to '),
-        ],
-      ),
+          ]),
     ); // type lineChart
   }
 
@@ -169,5 +170,58 @@ class _ImportState extends State<Import> {
             '${_attribute.toLowerCase()}');
       }
     }
+  }
+
+  Container _hintInImport() {
+    return Container(
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.all(10),
+      color: Colors.tealAccent,
+      child: Column(children: [
+        Text(
+          'Hint: You can import data from spreadsheets.'
+          'This might be useful if you already have Excel files of own data, '
+          'or want to integrate data from other services like '
+          'Google Fit, Apple Health, FitBit, My Fitness Pal, Garmin, etc.\n'
+          'Important: The file has to be formatted in a special way:\n'
+          '  1. the values must be separated by commas\n'
+          '  2. the first cell of each column must be the name of the label\n'
+          '  3. the first column represents the date and time in the format: yyyy-MM-dd hh-mm-ss,\n'
+          '  4. all other cells can be filled with values. Here, only numbers are allowed and if decimals are needed, the decimal-separator must be a point (.).\n'
+          'It sounds complicated, but is actually intuitive when you see it.',
+          textScaleFactor: 1.2,
+        ),
+        SizedBox(height: 10),
+        Text(
+          'Example',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Table(
+          border: TableBorder.all(),
+          children: [
+            TableRow(children: [
+              Column(children: [Text('Date (Time)')]),
+              Column(children: [Text('Calories (kcal)')]),
+              Column(children: [Text('Distance (m)')]),
+            ]),
+            TableRow(children: [
+              Text('2019-06-16'),
+              Text('2900.8'),
+              Text('20578.4')
+            ]),
+            TableRow(children: [
+              Text('2019-06-17 14:00'),
+              Text('2054.2'),
+              Text('9182.7')
+            ]),
+            TableRow(children: [
+              Text('2019-06-18 14:00:00'),
+              Text('2203.9'),
+              Text('14346.8')
+            ]),
+          ],
+        ),
+      ]),
+    );
   }
 }
