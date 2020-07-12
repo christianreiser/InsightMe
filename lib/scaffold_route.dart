@@ -103,13 +103,13 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           SpeedDialChild(
               backgroundColor: Colors.grey,
               child: Icon(Icons.input),
-              label: "Import Data -beta-",
+              label: "Import Data -coming soon-",
               onTap: () {
-                print("DropDown");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Import()),
-                ); // Navigate to newManualEntry route when tapped.
+                debugPrint("DropDown");
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(builder: (context) => Import()),
+//                ); // Navigate to newManualEntry route when tapped.
               }),
 //
 //          // connect service

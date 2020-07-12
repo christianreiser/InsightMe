@@ -152,6 +152,7 @@ class _ImportState extends State<Import> {
 
     //if attribute list is empty then add no matter what
     if (_dBAttributeList.isEmpty) {
+      debugPrint('_dBAttributeList.isEmpty -> create new attribute');
       soca.SearchOrCreateAttributeState().saveAttribute(Attribute(_attribute));
     }
 
@@ -163,6 +164,8 @@ class _ImportState extends State<Import> {
               .toLowerCase()
               .compareTo(_attribute.toLowerCase()) !=
           0) {
+        soca.SearchOrCreateAttributeState()
+            .saveAttribute(Attribute(_attribute));
       } else {
         debugPrint('not creating new attribute. attributes: '
             '${_dBAttributeList[i].title.toLowerCase()} '
