@@ -89,6 +89,15 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       debugPrint("Delete button clicked");
                     });
                   },
+                ),
+                FlatButton(
+                  child: Icon(Icons.select_all),
+                  onPressed: () {
+                    _isSelected = List.filled(_attributesToDisplay.length, true);
+                    setState(() {
+                      debugPrint("Select all button clicked");
+                    });
+                  },
                 )
               ],
             ),

@@ -132,6 +132,7 @@ class JournalRouteState extends State<JournalRoute> {
               child: Icon(Icons.close),
             ),
             title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text('${_countSelected()}',
                     style: TextStyle(color: Colors.black)),
@@ -141,6 +142,15 @@ class JournalRouteState extends State<JournalRoute> {
                     _showAlertDialogWithDelete('Delete?', '');
                     setState(() {
                       debugPrint("Delete button clicked");
+                    });
+                  },
+                ),
+                FlatButton(
+                  child: Icon(Icons.select_all),
+                  onPressed: () {
+                    _isSelected = List.filled(_isSelected.length, true);
+                    setState(() {
+                      debugPrint("Select all button clicked");
                     });
                   },
                 )
