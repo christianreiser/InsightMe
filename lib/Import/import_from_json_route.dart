@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // for import csv
 import 'dart:io';
@@ -60,12 +59,16 @@ class _ImportState extends State<Import> {
 
   // IMPORT
   void importCSVFile() async {
-    int lineCounter = 0;
+    int lineCounter = -1;
     List<String> attributeNames = [];
     DateTime dateTimeStamp;
 
     // file picker
     final File file = new File(await FilePicker.getFilePath());
+
+    // get attribute list as a sting such that searching if new requires only one db query
+    List<Attribute> _dBAttributeList =
+        await databaseHelperAttribute.getAttributeList();
 
     Stream<List> inputStream = file.openRead();
 
@@ -75,36 +78,69 @@ class _ImportState extends State<Import> {
         .transform(new LineSplitter()) // Convert stream to individual lines.
         .listen((String line) {
       List column = line.split(','); // split by comma
+      lineCounter++;
+      //debugPrint('lineCounter $lineCounter');
 
       // iterate through columns
       for (int columnCount = 0; columnCount < column.length; columnCount++) {
-        // get attribute names
-        String _attributeName = column[columnCount];
-        if (lineCounter == 0) {
-          attributeNames.add(_attributeName);
-          _saveAttributeToDBIfNew(_attributeName);
-        } else {
+        //debugPrint('\ncolumnCount $columnCount');
+        String _cellContent = column[columnCount];
+
+        // get entries
+        if (lineCounter > 0 && columnCount > 0) {
           // skip empty cells in csv-file
-          if ((_attributeName).length > 0) {
-            // get DateTime which is in first column
-            if (columnCount == 0) {
-              dateTimeStamp = DateTime.parse(column[0]);
+          if ((_cellContent).length > 0) {
+            // title, value, time, comment
+            //debugPrint('this is entry: $_cellContent. ');
+            debugPrint(
+                'Creating tmp entry of type Entry with dateTimeStamp $dateTimeStamp');
+            //debugPrint('attributeNames: $attributeNames');
+            //debugPrint('columnCount: $columnCount');
 
-              // add entry to db
-            } else {
-              // title, value, time, comment
-              Entry entry = Entry(attributeNames[columnCount], _attributeName,
-                  '$dateTimeStamp', 'csv import');
+            //debugPrint('and attributeName ${attributeNames[columnCount]}');
+            Entry entry = Entry(attributeNames[columnCount], _cellContent,
+                '$dateTimeStamp', 'csv import');
+            debugPrint(
+                'created tmp entry of type Entry: $_cellContent. Calling _save');
 
-              _save(entry);
-            }
+            _save(entry);
+            debugPrint(
+                'called _save for entry with dateTimeStamp $dateTimeStamp and attributeName ${attributeNames[columnCount]}');
+          } else {
+            //debugPrint('skip empty entry cell');
           }
         }
+
+        // get dateTime stamps
+        else if (lineCounter > 0 && columnCount == 0) {
+          // temporarily store dateTime
+          dateTimeStamp = DateTime.parse(_cellContent);
+          //debugPrint('got dateTime $_cellContent and stored temporarily');
+        }
+
+        // get attribute names
+        else if (lineCounter == 0 && columnCount > 0) {
+          //debugPrint('_attributeName $_cellContent');
+          attributeNames.add(_cellContent); // store attribute names
+          debugPrint(
+              'added $_cellContent to attributeNames and calling _saveAttributeToDBIfNew');
+
+          _saveAttributeToDBIfNew(_cellContent, _dBAttributeList);
+          //debugPrint('call _saveAttributeToDBIfNew with $_cellContent');
+        }
+
+        // skip dateTime label
+        else if (lineCounter == 0 && columnCount == 0) {
+          //debugPrint('skipping dateTime label $_cellContent');
+          attributeNames.add(
+              _cellContent); // store such that columnCount and attributeNames match
+        } else {
+          debugPrint(
+              'Error unknown cell type in input csv with content: $_cellContent');
+        }
+
+        // TODO feedback if import was successful
       }
-
-      lineCounter++;
-
-      // TODO feedback if import was successful
     }, onDone: () {
       print('File is now closed!');
     }, onError: (e) {
@@ -112,7 +148,7 @@ class _ImportState extends State<Import> {
     });
   }
 
-  // DIALOG
+// DIALOG
   void _showAlertDialog(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
@@ -121,7 +157,7 @@ class _ImportState extends State<Import> {
     showDialog(context: context, builder: (_) => alertDialog);
   }
 
-  // SAVE
+// SAVE
   Future<int> _save(entry) async {
     // Update Operation: Update a to-do object and save it to database
     int result;
@@ -146,33 +182,56 @@ class _ImportState extends State<Import> {
   }
 
 // add attributes to DB if new
-  void _saveAttributeToDBIfNew(_attribute) async {
-    List<Attribute> _dBAttributeList =
-        await databaseHelperAttribute.getAttributeList();
+  Future<bool> _saveAttributeToDBIfNew(_attribute, _dBAttributeList) async {
+    bool addedNewAttributeToDB;
+    bool _exactMatch = false;
 
-    //if attribute list is empty then add no matter what
-    if (_dBAttributeList.isEmpty) {
-      debugPrint('_dBAttributeList.isEmpty -> create new attribute');
-      soca.SearchOrCreateAttributeState().saveAttribute(Attribute(_attribute));
-    }
+//    //if attribute list is empty then add no matter what
+//    if (_dBAttributeList.isEmpty) {
+//      debugPrint(
+//          'create new attribute "$_attribute" because _dBAttributeList.isEmpty');
+//
+//      // also add to faster searchable list
+//      _dBAttributeList.add(Attribute(_attribute));
+//
+//      // add to db
+//      await soca.SearchOrCreateAttributeState()
+//          .saveAttribute(Attribute(_attribute));
+//
+//      addedNewAttributeToDB = true;
+//    }
 
     // go through all db attributes one by one and compare
+    //debugPrint('_exactMatch before search: $_exactMatch');
     for (int i = 0; i < _dBAttributeList.length; i++) {
-      // if there is no exact match -> create attribute in DB
+      // check if there is a exact attribute match
       if (_dBAttributeList[i]
               .title
               .toLowerCase()
-              .compareTo(_attribute.toLowerCase()) !=
+              .compareTo(_attribute.toLowerCase()) ==
           0) {
-        soca.SearchOrCreateAttributeState()
-            .saveAttribute(Attribute(_attribute));
-      } else {
-        debugPrint('not creating new attribute. attributes: '
-            '${_dBAttributeList[i].title.toLowerCase()} '
-            'vs '
-            '${_attribute.toLowerCase()}');
+        _exactMatch = true;
+        //debugPrint('exact match: ${_dBAttributeList[i].title} vs $_attribute');
       }
     }
+
+    // save attribute if new
+    if (_exactMatch == false) {
+      //debugPrint('create new attribute: $_attribute');
+
+      // add to faster searchable list
+      _dBAttributeList.add(Attribute(_attribute));
+
+      // save to db
+      await soca.SearchOrCreateAttributeState()
+          .saveAttribute(Attribute(_attribute));
+
+      addedNewAttributeToDB = true;
+    } else {
+      //debugPrint('not creating new attribute as there is a exact match: $_attribute exists in $_dBAttributeList');
+      addedNewAttributeToDB = false;
+    }
+    return addedNewAttributeToDB;
   }
 
   Container _hintInImport() {
