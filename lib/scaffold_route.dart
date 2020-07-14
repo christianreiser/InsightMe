@@ -76,41 +76,52 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       ),
 
       // use below when more then one floatingActionButton and remove top block
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.add_event,
-        children: [
-          // NEW ENTRY
-          SpeedDialChild(
-              child: Icon(Icons.border_color),
-              label: "New Entry",
-              onTap: () {
-                print("nav to add manually");
-                Navigator.of(context).push(
-                  PageRouteBuilder(
-                    opaque: false, // set to false
-                    pageBuilder: (_, __, ___) => Container(
-                      color: Colors.black.withOpacity(.6),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(20, 25, 20, 20),
-                        child: SearchOrCreateAttribute(),
-                      ),
+      floatingActionButton: _speedDial(),
+
+      // bottom navigation bar
+      bottomNavigationBar: _bottomNavigationBar(),
+    ); // This trailing comma makes auto-formatting nicer for build methods.
+  }
+
+  Widget _speedDial() {
+    /*
+    * floating action button with speed dial to add entries or import data
+    */
+    return SpeedDial(
+      animatedIcon: AnimatedIcons.add_event,
+      children: [
+        // NEW ENTRY
+        SpeedDialChild(
+            child: Icon(Icons.border_color),
+            label: "New Entry",
+            onTap: () {
+              print("nav to add manually");
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  opaque: false, // set to false
+                  pageBuilder: (_, __, ___) => Container(
+                    color: Colors.black.withOpacity(.6),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 25, 20, 20),
+                      child: SearchOrCreateAttribute(),
                     ),
                   ),
-                );
-              }),
+                ),
+              );
+            }),
 
-          // import from CSV
-          SpeedDialChild(
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.input),
-              label: "Import Data -coming soon-",
-              onTap: () {
-                debugPrint("DropDown");
+        // import from CSV
+        SpeedDialChild(
+            backgroundColor: Colors.grey,
+            child: Icon(Icons.input),
+            label: "Import Data -coming soon-",
+            onTap: () {
+              debugPrint("DropDown");
 //                Navigator.push(
 //                  context,
 //                  MaterialPageRoute(builder: (context) => Import()),
 //                ); // Navigate to newManualEntry route when tapped.
-              }),
+            }),
 //
 //          // connect service
 //          SpeedDialChild(
@@ -124,23 +135,28 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
 //                  MaterialPageRoute(builder: (context) => Import()),
 //                ); // Navigate to newManualEntry route when tapped.
 //              }),
-        ],
-      ),
+      ],
+    );
+  }
 
-      // bottom navigation bar
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedIconTheme: IconThemeData(color: Colors.grey),
-        //showUnselectedLabels: true, // TODO fix theme/color
-        //unselectedLabelStyle: TextStyle(color: Colors.black),
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.view_list),
-            title: Text('Journal'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timeline),
-            title: Text('Visualize'),
-          ),
+  Widget _bottomNavigationBar() {
+    /*
+    * bottom navigation bar to changes tabs
+    */
+    return BottomNavigationBar(
+      unselectedIconTheme: IconThemeData(color: Colors.grey),
+
+      //showUnselectedLabels: true, // TODO fix theme/color
+      //unselectedLabelStyle: TextStyle(color: Colors.black),
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.view_list),
+          title: Text('Journal'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.timeline),
+          title: Text('Visualize'),
+        ),
 //          BottomNavigationBarItem( // todo
 //            icon: Icon(Icons.widgets),
 //            title: Text('Recommend'),
@@ -153,18 +169,16 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
 //            icon: Icon(Icons.arrow_downward),
 //            title: Text('Intro'),
 //          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).primaryColorDark,
-        onTap: _onItemTapped,
-      ),
-    ); // This trailing comma makes auto-formatting nicer for build methods.
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Theme.of(context).primaryColorDark,
+
+      onTap: _onItemTapped,
+    );
   }
 
   // bottom navigation bar:
-
   int _selectedIndex = 0;
-
   static List<Widget> _widgetOptions = <Widget>[
     JournalRoute(),
     Visualize(),
