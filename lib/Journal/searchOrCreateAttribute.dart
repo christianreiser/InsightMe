@@ -159,6 +159,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
               Attribute(_attributeInputController.text),
             );
             debugPrint("Create button clicked");
+                getAttributesToDisplay(); // todo not here
+                setState(() {}); // todo not here
           },
         ),
       ),
@@ -437,8 +439,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
     globals.attributeList = await databaseHelperAttribute.getAttributeList();
     globals.attributeListLength = globals.attributeList.length;
-    getAttributesToDisplay();
-    setState(() {});
+
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {

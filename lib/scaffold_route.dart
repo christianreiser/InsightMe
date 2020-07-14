@@ -80,7 +80,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
 
       // bottom navigation bar
       bottomNavigationBar: _bottomNavigationBar(),
-    ); // This trailing comma makes auto-formatting nicer for build methods.
+    );
   }
 
   Widget _speedDial() {
@@ -117,10 +117,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             label: "Import Data -coming soon-",
             onTap: () {
               debugPrint("DropDown");
-//                Navigator.push(
-//                  context,
-//                  MaterialPageRoute(builder: (context) => Import()),
-//                ); // Navigate to newManualEntry route when tapped.
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Import()),
+                ); // Navigate to newManualEntry route when tapped.
             }),
 //
 //          // connect service
