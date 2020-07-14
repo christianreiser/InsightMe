@@ -1,8 +1,12 @@
+// todo when import and already exists, then update (see below)
+//  if (entry with same timestamp AND label exists) {
+//    if (oldValue != new value) {update value}
+//    else {skip}
+//  }
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
-// for import csv
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
@@ -91,21 +95,14 @@ class _ImportState extends State<Import> {
           // skip empty cells in csv-file
           if ((_cellContent).length > 0) {
             // title, value, time, comment
-            //debugPrint('this is entry: $_cellContent. ');
-            debugPrint(
-                'Creating tmp entry of type Entry with dateTimeStamp $dateTimeStamp');
-            //debugPrint('attributeNames: $attributeNames');
-            //debugPrint('columnCount: $columnCount');
 
             //debugPrint('and attributeName ${attributeNames[columnCount]}');
             Entry entry = Entry(attributeNames[columnCount], _cellContent,
                 '$dateTimeStamp', 'csv import');
-            debugPrint(
-                'created tmp entry of type Entry: $_cellContent. Calling _save');
 
             _save(entry);
-            debugPrint(
-                'called _save for entry with dateTimeStamp $dateTimeStamp and attributeName ${attributeNames[columnCount]}');
+//            debugPrint(
+//                'called _save for entry with dateTimeStamp $dateTimeStamp and attributeName ${attributeNames[columnCount]}');
           } else {
             //debugPrint('skip empty entry cell');
           }
@@ -115,15 +112,13 @@ class _ImportState extends State<Import> {
         else if (lineCounter > 0 && columnCount == 0) {
           // temporarily store dateTime
           dateTimeStamp = DateTime.parse(_cellContent);
-          //debugPrint('got dateTime $_cellContent and stored temporarily');
+          debugPrint('got dateTime $_cellContent and stored temporarily');
         }
 
         // get attribute names
         else if (lineCounter == 0 && columnCount > 0) {
           //debugPrint('_attributeName $_cellContent');
           attributeNames.add(_cellContent); // store attribute names
-          debugPrint(
-              'added $_cellContent to attributeNames and calling _saveAttributeToDBIfNew');
 
           _saveAttributeToDBIfNew(_cellContent, _dBAttributeList);
           //debugPrint('call _saveAttributeToDBIfNew with $_cellContent');
@@ -136,7 +131,7 @@ class _ImportState extends State<Import> {
               _cellContent); // store such that columnCount and attributeNames match
         } else {
           debugPrint(
-              'Error unknown cell type in input csv with content: $_cellContent');
+              'Error unknown: $_cellContent');
         }
 
         // TODO feedback if import was successful
@@ -167,6 +162,7 @@ class _ImportState extends State<Import> {
     } else {
       // Case 2: Insert Operation
       result = await helperEntry.insertEntry(entry);
+      debugPrint('saved entry from: ${entry.date}');
     }
 
     // SUCCESS FAILURE STATUS DIALOG
@@ -185,21 +181,6 @@ class _ImportState extends State<Import> {
   Future<bool> _saveAttributeToDBIfNew(_attribute, _dBAttributeList) async {
     bool addedNewAttributeToDB;
     bool _exactMatch = false;
-
-//    //if attribute list is empty then add no matter what
-//    if (_dBAttributeList.isEmpty) {
-//      debugPrint(
-//          'create new attribute "$_attribute" because _dBAttributeList.isEmpty');
-//
-//      // also add to faster searchable list
-//      _dBAttributeList.add(Attribute(_attribute));
-//
-//      // add to db
-//      await soca.SearchOrCreateAttributeState()
-//          .saveAttribute(Attribute(_attribute));
-//
-//      addedNewAttributeToDB = true;
-//    }
 
     // go through all db attributes one by one and compare
     //debugPrint('_exactMatch before search: $_exactMatch');
@@ -223,7 +204,7 @@ class _ImportState extends State<Import> {
       _dBAttributeList.add(Attribute(_attribute));
 
       // save to db
-      await soca.SearchOrCreateAttributeState()
+      soca.SearchOrCreateAttributeState() // todo await and result feedback
           .saveAttribute(Attribute(_attribute));
 
       addedNewAttributeToDB = true;
