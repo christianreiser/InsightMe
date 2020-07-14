@@ -93,7 +93,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 FlatButton(
                   child: Icon(Icons.select_all),
                   onPressed: () {
-                    _isSelected = List.filled(_attributesToDisplay.length, true);
+                    _isSelected =
+                        List.filled(_attributesToDisplay.length, true);
                     setState(() {
                       debugPrint("Select all button clicked");
                     });
@@ -164,12 +165,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             textScaleFactor: 1.5,
           ),
           onPressed: () {
-            saveAttribute(
+            debugPrint("Create button clicked");
+            _saveAttributeAndRefreshView(
               Attribute(_attributeInputController.text),
             );
-            debugPrint("Create button clicked");
-                getAttributesToDisplay(); // todo not here
-                setState(() {}); // todo not here
+            setState(() {}); // todo not here
           },
         ),
       ),
@@ -270,7 +270,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                       // title, value, time, comment
                       Entry(this._attributesToDisplay[position].title, '',
                           '${DateTime.now()}', ''),
-                      context, true);
+                      context,
+                      true);
                 }
               });
             },
@@ -433,7 +434,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return [_attributesToDisplay, _createButtonVisible, _createButtonVisible];
   }
 
-  void saveAttribute(attribute) async {
+  Future<int> saveAttribute(attribute) async {
     /*
     * Update Operation: Update a attribute object and save it to database
     */
@@ -449,7 +450,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     globals.attributeList = await databaseHelperAttribute.getAttributeList();
     globals.attributeListLength = globals.attributeList.length;
 
-
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {
       // Success
@@ -458,6 +458,13 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       // Failure
       _showAlertDialog('Status', 'Problem Saving Attribute');
     }
+    return result;
+  }
+
+  void _saveAttributeAndRefreshView(attribute) async {
+    await saveAttribute(attribute);
+    getAttributesToDisplay();
+    setState(() {});
   }
 
   void _showAlertDialog(String title, String message) {
