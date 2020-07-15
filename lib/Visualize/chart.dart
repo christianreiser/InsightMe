@@ -39,16 +39,17 @@ class Chart extends StatelessWidget {
   LineChart chart;
 
   Future<LineChart> _getChart(selectedAttribute1, selectedAttribute2) async {
-
     Map<DateTime, double> dateTimeValueMap1 =
         await _getdateTimeValueMap(selectedAttribute1);
     Map<DateTime, double> dateTimeValueMap2 =
         await _getdateTimeValueMap(selectedAttribute2);
     chart = LineChart.fromDateTimeMaps(
-        [dateTimeValueMap1, dateTimeValueMap2],
-        [Colors.green, Colors.blue],
-        [selectedAttribute1, selectedAttribute2], // chart label name
-        tapTextFontWeight: FontWeight.w400,);
+      [dateTimeValueMap1, dateTimeValueMap2],
+      [Colors.green, Colors.blue],
+      ['', ''],
+      // earlier chart label name: selectedAttribute1 selectedAttribute2
+      tapTextFontWeight: FontWeight.w600,
+    );
 
     // todo beginning new for correlation and pValue
 
@@ -65,7 +66,7 @@ class Chart extends StatelessWidget {
               schedule.selectedAttribute1, schedule.selectedAttribute2),
           builder: (context, snapshot) {
             // chart data arrived && data found
-            debugPrint('chart ${chart}');
+            debugPrint('chart: $chart');
             if (snapshot.connectionState == ConnectionState.done &&
                 chart != null) {
               return AnimatedLineChart(chart);
