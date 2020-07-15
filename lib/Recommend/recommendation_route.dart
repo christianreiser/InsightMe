@@ -3,8 +3,6 @@ import 'package:fl_animated_linechart/chart/line_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/Covid19/stayHealthy.dart';
-
 
 class Recommend extends StatelessWidget {
   static Map<DateTime, double> dateTimeMap1 = {
@@ -38,38 +36,76 @@ class Recommend extends StatelessWidget {
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
           children: <Widget>[
-            // TITLE
-//            Text(
-//              ' Recommendation',
-//              style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.w500),
-//            ),
+            //TITLE
+            Text(
+              ' Insights',
+              style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.w500),
+            ),
             SizedBox(height: 15),
-            //Text('You have a better day when you spend more time with friends'), todo back in
+            Text('You have a better day when you spend more time with friends'),
+            //todo back in
             SizedBox(height: 15),
+            _statistics(),
+            SizedBox(height: 25),
             Expanded(
               child: AnimatedLineChart(chart),
             ),
 
-            SizedBox(height: 15),
-            //Text('Correlation coefficient: 0.8.\nP-value: 0.04'), todo back in
 
-
-//            // SPACING AND GREY LINE
-//            Expanded(
-//              child: Padding(
-//                padding: EdgeInsets.all(10),
-//                child: GridView.count(
-//                  crossAxisCount: 3,
-//                  children: [],
-//                ),
-//              ),
-//            ), // spacing between dropdown and chart
-
-            //Correlation(),
           ]),
     ); // type lineChart
   }
 
+  Widget _statistics() {
+    return Column(
+        mainAxisSize: MainAxisSize.max,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
+        children: <Widget>[
 
+          Row(children: [
+            Container(
+              //padding: const EdgeInsets.all(5.0),
+                decoration: _statisticsBoxDecoration(),
+                child: SizedBox(
+                  width: 117,
+                  height: 12,
+                  child: SizedBox(
+                      width: 5,
+                      height: 5,
+                      child: Row(
+                        children: [
+                          Expanded(
+                              flex: 9, child: Container(color: Colors.teal)),
+                          Expanded(
+                            flex: 1, child: Container(),),
+                        ],
+                      )),
+                )),
+            Text(' relationship', textScaleFactor: 1.3),
+          ]),
+          SizedBox(height: 10),
+          Row(children: [
+            Icon(Icons.star),
+            Icon(Icons.star),
+            Icon(Icons.star),
+            Icon(Icons.star),
+            Icon(Icons.star_half),
+            Text(' confidence', textScaleFactor: 1.3),
+          ]),
+
+
+
+        ]);
+  }
+
+  BoxDecoration _statisticsBoxDecoration() {
+    return BoxDecoration(
+      border: Border.all(width: 1.5),
+      borderRadius: BorderRadius.all(
+          Radius.circular(5.0) //         <--- border radius here
+          ),
+    );
+  }
 }
 //}

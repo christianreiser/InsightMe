@@ -30,9 +30,9 @@ class Visualize extends StatelessWidget {
                 // start: child as close to the start of the main axis as possible
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  DropDown(true),
                   // true/false do discriminate first and second
-                  //Padding(padding: EdgeInsets.all(4.0)),
+                  DropDown(true),
+                  SizedBox(width: 15),
                   DropDown(false),
                   // true/false do discriminate first and second
                 ],

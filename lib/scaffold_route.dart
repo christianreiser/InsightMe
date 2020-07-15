@@ -157,10 +157,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           icon: Icon(Icons.timeline),
           title: Text('Visualize'),
         ),
-//          BottomNavigationBarItem( // todo
-//            icon: Icon(Icons.widgets),
-//            title: Text('Recommend'),
-//          ),
+          BottomNavigationBarItem( // todo
+            icon: Icon(Icons.widgets),
+            title: Text('Insights'),
+          ),
 //          BottomNavigationBarItem(
 //            icon: Icon(Icons.local_hospital),
 //            title: Text('COVID-19'),
