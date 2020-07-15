@@ -114,7 +114,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
         SpeedDialChild(
             backgroundColor: Colors.grey,
             child: Icon(Icons.input),
-            label: "Import Data -coming soon-",
+            label: "Import Data -beta-",
             onTap: () {
               debugPrint("DropDown");
                 Navigator.push(
