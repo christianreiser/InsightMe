@@ -10,7 +10,7 @@ import './../globals.dart' as globals;
 class Visualize extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return globals.entryListLength > 0
+    return globals.Global().entryListLength > 0
         ? _attributeSelectionAndChart()
         : _makeEntryHint(); // type lineChart
   }

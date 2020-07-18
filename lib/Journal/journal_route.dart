@@ -37,13 +37,13 @@ class JournalRouteState extends State<JournalRoute> {
     }
 
     debugPrint(
-        'globals.attributeListLength == 0 ${globals.attributeListLength}');
+        'globals.Global().attributeListLength == 0 ${globals.Global().attributeListLength}');
     // async update local attribute list if null to load for other routes later on
-    if (globals.attributeListLength == 0 ||
-        globals.attributeListLength == null) {
+    if (globals.Global().attributeListLength == 0 ||
+        globals.Global().attributeListLength == null) {
       // todo check if needed
       globals.Global().updateAttributeList();
-      debugPrint('attributeListLength ${globals.attributeListLength}');
+      debugPrint('attributeListLength ${globals.Global().attributeListLength}');
     }
 
     return RefreshIndicator(
@@ -267,16 +267,16 @@ class JournalRouteState extends State<JournalRoute> {
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
     _entryList = await databaseHelperEntry.getEntryList();
-    globals.entryListLength = _entryList.length;
+    globals.Global().entryListLength = _entryList.length;
 
     if (context != null) {
       // todo check if good
       setState(() {
         this._entryList = _entryList;
-        this._countEntry = globals.entryListLength; // needed
+        this._countEntry = globals.Global().entryListLength; // needed
       });
       _isSelected =
-          List.filled(globals.entryListLength, false); // needs also an update
+          List.filled(globals.Global().entryListLength, false); // needs also an update
 
       // take two most recent entries as defaults for visualization.
       _getDefaultVisAttributes();
@@ -286,15 +286,15 @@ class JournalRouteState extends State<JournalRoute> {
   void _getDefaultVisAttributes() {
     // take two most recent entries as defaults for visualization.
     // if statements are needed to catch error if list is empty.
-    if (globals.entryListLength > 0) {
-      globals.mostRecentAddedEntryName = _entryList[0].title;
-      if (globals.entryListLength > 1) {
-        globals.secondMostRecentAddedEntryName = _entryList[1].title;
+    if (globals.Global().entryListLength > 0) {
+      globals.Global().mostRecentAddedEntryName = _entryList[0].title;
+      if (globals.Global().entryListLength > 1) {
+        globals.Global().secondMostRecentAddedEntryName = _entryList[1].title;
       } else {
-        globals.secondMostRecentAddedEntryName = null;
+        globals.Global().secondMostRecentAddedEntryName = null;
       }
     } else {
-      globals.mostRecentAddedEntryName = null;
+      globals.Global().mostRecentAddedEntryName = null;
     }
   }
 
@@ -345,7 +345,7 @@ class JournalRouteState extends State<JournalRoute> {
 
   _deselectAll() {
     setState(() {
-      _isSelected = List.filled(globals.entryListLength, false);
+      _isSelected = List.filled(globals.Global().entryListLength, false);
     });
   }
 }

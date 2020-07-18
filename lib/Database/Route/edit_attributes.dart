@@ -197,8 +197,8 @@ class EditAttributeState extends State<EditAttribute> {
       );
 
       // update gloabls // needed otherwise not working
-      globals.attributeList = await databaseHelperAttribute.getAttributeList();
-      globals.attributeListLength = globals.attributeList.length;
+      globals.Global().attributeList = await databaseHelperAttribute.getAttributeList();
+      globals.Global().attributeListLength = globals.Global().attributeList.length;
 
       // Navigate back and update
       NavigationHelper().navigateToSearchOrCreateAttributeRoute(context);

@@ -11,13 +11,13 @@ class VisualizationChangeNotifier with ChangeNotifier {
     String defaultVisualizationAttribute;
     List<Attribute> attributeList = await databaseHelperAttribute.getAttributeList();
     for (int i = 0; i < attributeList.length; i++) {
-      if (attributeList[i].title == globals.mostRecentAddedEntryName) {
-        defaultVisualizationAttribute = globals.mostRecentAddedEntryName;
+      if (attributeList[i].title == globals.Global().mostRecentAddedEntryName) {
+        defaultVisualizationAttribute = globals.Global().mostRecentAddedEntryName;
       }
     }
     return defaultVisualizationAttribute;
   }
-  String _selectedAttribute1 = globals.mostRecentAddedEntryName; // default value
+  String _selectedAttribute1 = globals.Global().mostRecentAddedEntryName; // default value
   String get selectedAttribute1 => _selectedAttribute1;
 
   set selectedAttribute1(String newValue) {
@@ -25,7 +25,7 @@ class VisualizationChangeNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedAttribute2 = globals.secondMostRecentAddedEntryName; // default value
+  String _selectedAttribute2 = globals.Global().secondMostRecentAddedEntryName; // default value
 
   String get selectedAttribute2 => _selectedAttribute2;
 

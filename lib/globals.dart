@@ -4,17 +4,17 @@
 
 import 'Database/attribute.dart';
 import 'Database/database_helper_attribute.dart';
-DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
 
-
-String mostRecentAddedEntryName;
-String secondMostRecentAddedEntryName;
-List<Attribute> attributeList; // list to avoid async db operations
-int entryListLength;
-int attributeListLength;
 
 class Global {
   //
+  DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
+  String mostRecentAddedEntryName;
+  String secondMostRecentAddedEntryName;
+  List<Attribute> attributeList; // list to avoid async db operations
+  int entryListLength;
+  int attributeListLength;
+
   Future<List<Attribute>> updateAttributeList() async {
     attributeList = await databaseHelperAttribute.getAttributeList();
     attributeListLength = attributeList.length;
