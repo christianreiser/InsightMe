@@ -17,20 +17,16 @@ class Chart extends StatelessWidget {
     debugPrint('selectedAttribute $selectedAttribute');
     List<Entry> filteredEntryList =
         await databaseHelperEntry.getFilteredEntryList(selectedAttribute);
-    List<DateTime> dateList = [];
-    for (int i = 0; i < filteredEntryList.length; i++) {
-      dateList.add(
-        DateTime.parse(
-          (filteredEntryList[i].date),
-        ),
-      );
-    }
-    // create dateTimeValueMap
+
+    // create dateTimeValueMap:
     Map<DateTime, double> dateTimeValueMap = {};
-    dateTimeValueMap[dateList[0]] = 1.0; // =1 is needed
+    dateTimeValueMap[DateTime.parse(
+      (filteredEntryList[0].date),
+    )] = 1.0; // =1 is needed
     for (int ele = 0; ele < filteredEntryList.length; ele++) {
-      dateTimeValueMap[dateList[ele]] =
-          double.parse(filteredEntryList[ele].value);
+      dateTimeValueMap[DateTime.parse(
+        (filteredEntryList[ele].date),
+      )] = double.parse(filteredEntryList[ele].value);
     }
     return dateTimeValueMap;
   }

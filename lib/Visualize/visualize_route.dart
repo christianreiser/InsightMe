@@ -47,7 +47,7 @@ class Visualize extends StatelessWidget {
               ),
               SizedBox(height: 20.0), // spacing between dropdown and chart
               Chart(),
-              //Statistics(), // todo
+              Statistics(),
             ]),
       ), // type lineChart
     );
