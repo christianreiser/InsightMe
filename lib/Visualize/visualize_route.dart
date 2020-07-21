@@ -10,9 +10,17 @@ import './../globals.dart' as globals;
 class Visualize extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return globals.Global().entryListLength > 0
-        ? _attributeSelectionAndChart()
-        : _makeEntryHint(); // type lineChart
+    debugPrint('entryListLength ${globals.entryListLength}');
+    if (globals.entryListLength == null ||
+        globals.entryListLength == 0) { // todo entryListLength == 0 needed?
+      globals.Global().updateEntryList();
+    }
+
+    return globals.entryListLength == null
+        ? _makeEntryHint()
+        : globals.entryListLength > 0
+            ? _attributeSelectionAndChart()
+            : _makeEntryHint(); // type lineChart
   }
 
   Widget _attributeSelectionAndChart() {

@@ -18,11 +18,11 @@ class SearchOrCreateAttribute extends StatefulWidget {
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // ini _attributesToDisplay
-  List<Attribute> _attributesToDisplay = globals.Global().attributeList;
+  List<Attribute> _attributesToDisplay = globals.attributeList;
 
   // ini _isSelected
   List<bool> _isSelected =
-      List.filled(globals.Global().attributeList.length, false); // true if long pressed
+      List.filled(globals.attributeList.length, false); // true if long pressed
 
   bool _createButtonVisible = false; // initially don't show create button
   var _attributeInputController = TextEditingController();
@@ -184,9 +184,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       // w/o flexible items noy shown, not sure why
       child: RefreshIndicator(
         onRefresh: () async {
-          globals.Global().attributeList =
+          globals.attributeList =
               await databaseHelperAttribute.getAttributeList();
-          globals.Global().attributeListLength = globals.Global().attributeList.length;
+          globals.attributeListLength = globals.attributeList.length;
           getAttributesToDisplay();
           setState(() {});
         },
@@ -199,7 +199,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 : _attributesToDisplay.isEmpty
                     ? _createAttributeHint()
                     // if ATTRIBUTE LIST is not empty
-                    : globals.Global().attributeListLength < 3
+                    : globals.attributeListLength < 3
                         ? ListView(
                             children: [_getAttributeListView(), _entryHint()],
                           )
@@ -364,18 +364,18 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
     // go through all attributes one by one
     if (userInput) {
-      for (int i = 0; i < globals.Global().attributeListLength; i++) {
+      for (int i = 0; i < globals.attributeListLength; i++) {
         // PARTIAL OR EXACT SEARCH MATCH
         // search for attributes that contain input
-        if (globals.Global().attributeList[i].title
+        if (globals.attributeList[i].title
             .toLowerCase()
             .contains(_attributeInputController.text.toLowerCase())) {
-          _searchResult.add(globals.Global().attributeList[i]); // list of results
+          _searchResult.add(globals.attributeList[i]); // list of results
           match = true;
           userInput = true;
 
           // hide create button if EXACT search match
-          if (globals.Global().attributeList[i].title
+          if (globals.attributeList[i].title
                   .toLowerCase()
                   .compareTo(_attributeInputController.text.toLowerCase()) ==
               0) {
@@ -426,7 +426,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       }
     } else {
       // no input
-      _attributesToDisplay = globals.Global().attributeList;
+      _attributesToDisplay = globals.attributeList;
       _createButtonVisible = false;
     }
     _isSelected = List.filled(_attributesToDisplay.length, false);
@@ -447,8 +447,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       result = await helper.insertAttribute(attribute);
     }
 
-    globals.Global().attributeList = await databaseHelperAttribute.getAttributeList();
-    globals.Global().attributeListLength = globals.Global().attributeList.length;
+    globals.attributeList = await databaseHelperAttribute.getAttributeList();
+    globals.attributeListLength = globals.attributeList.length;
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {
@@ -520,8 +520,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
     if (context != null) {
       // catch error when user closes context
-      globals.Global().attributeList = await databaseHelperAttribute.getAttributeList();
-      globals.Global().attributeListLength = globals.Global().attributeList.length;
+      globals.attributeList = await databaseHelperAttribute.getAttributeList();
+      globals.attributeListLength = globals.attributeList.length;
       getAttributesToDisplay();
       setState(() {});
     }

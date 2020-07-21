@@ -26,7 +26,8 @@ class JournalRouteState extends State<JournalRoute> {
       DatabaseHelperEntry();
 
   int _countEntry = 0;
-  bool _showHint = false;
+
+  //bool _showHint = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +40,9 @@ class JournalRouteState extends State<JournalRoute> {
       }
     }
 
-    debugPrint(
-        'globals.Global().attributeListLength == 0 ${globals.Global().attributeListLength}');
     // async update local attribute list if null to load for other routes later on
-    if (globals.Global().attributeListLength == 0 ||
-        globals.Global().attributeListLength == null) {
-      // todo check if needed
+    if (globals.attributeListLength == null) {
       globals.Global().updateAttributeList();
-      debugPrint('attributeListLength ${globals.Global().attributeListLength}');
     }
 
     return RefreshIndicator(
@@ -58,7 +54,7 @@ class JournalRouteState extends State<JournalRoute> {
           ? _makeEntryHint() // _delayedHint() todo
 
           // ENTRY LIST
-          : _getEntryListView_NEW(),
+          : _getEntryListView(),//_entryListFutureBuilder(),
     );
   }
 
@@ -165,7 +161,7 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   // ENTRY LIST
-  FutureBuilder _getEntryListView_NEW() {
+  FutureBuilder _entryListFutureBuilder() {
     /*
     * decides if standard scaffold or welcome screen should be shown
     * Logic:
@@ -294,34 +290,29 @@ class JournalRouteState extends State<JournalRoute> {
     return title.substring(0, 1);
   }
 
-  void delayedChangState() {
-    Timer(const Duration(milliseconds: 300), handleTimeout);
-  }
+//  void delayedChangState() {
+//    Timer(const Duration(milliseconds: 300), handleTimeout);
+//  }
 
-  void handleTimeout() {
-    setState(() {
-      // todo
-      _showHint = true;
-    });
-  }
+//  void handleTimeout() {
+//    setState(() {
+//      // todo
+//      _showHint = true;
+//    });
+//  }
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
     // todo needed?
-    debugPrint('_entryList 0: ${_entryList}');
     _entryList = await databaseHelperEntry.getEntryList();
-    debugPrint(
-        'await databaseHelperEntry.getEntryList(): ${await databaseHelperEntry.getEntryList()}');
-    debugPrint('entryListLength 0: ${globals.Global().entryListLength}');
-    globals.Global().entryListLength = _entryList.length;
-    debugPrint('entryListLength 1: ${globals.Global().entryListLength}');
+    globals.entryListLength = _entryList.length;
 
     if (context != null) {
       // todo check if good
       setState(() {
         this._entryList = _entryList;
-        this._countEntry = globals.Global().entryListLength; // needed
+        this._countEntry = globals.entryListLength; // needed
       });
 
       // if multi selection was active then deactivate
@@ -338,23 +329,18 @@ class JournalRouteState extends State<JournalRoute> {
   void _getDefaultVisAttributes() {
     // take two most recent entries as defaults for visualization.
     // if statements are needed to catch error if list is empty.
-    if (globals.Global().entryListLength == null) {
-      globals
-          .Global()
-          .mostRecentAddedEntryName = null;
-      globals
-          .Global()
-          .secondMostRecentAddedEntryName = null;
-    }
-      else if (globals.Global().entryListLength > 0) {
-      globals.Global().mostRecentAddedEntryName = _entryList[0].title;
-      if (globals.Global().entryListLength > 1) {
-        globals.Global().secondMostRecentAddedEntryName = _entryList[1].title;
+    if (globals.entryListLength == null) {
+      globals.mostRecentAddedEntryName = null;
+      globals.secondMostRecentAddedEntryName = null;
+    } else if (globals.entryListLength > 0) {
+      globals.mostRecentAddedEntryName = _entryList[0].title;
+      if (globals.entryListLength > 1) {
+        globals.secondMostRecentAddedEntryName = _entryList[1].title;
       } else {
-        globals.Global().secondMostRecentAddedEntryName = null;
+        globals.secondMostRecentAddedEntryName = null;
       }
     } else {
-      globals.Global().mostRecentAddedEntryName = null;
+      globals.mostRecentAddedEntryName = null;
     }
   }
 
@@ -405,7 +391,7 @@ class JournalRouteState extends State<JournalRoute> {
 
   _deselectAll() {
     setState(() {
-      _isSelectedList = List.filled(globals.Global().entryListLength, false);
+      _isSelectedList = List.filled(globals.entryListLength, false);
       _multiEntrySelectionActive = false;
     });
   }
