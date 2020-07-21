@@ -13,7 +13,7 @@ class Chart extends StatelessWidget {
   * input: selectedAttribute
   * returns: dateTimeValueMap
   */
-  Future<Map<DateTime, double>> _getdateTimeValueMap(selectedAttribute) async {
+  Future<Map<DateTime, double>> _getDateTimeValueMap(selectedAttribute) async {
     debugPrint('selectedAttribute $selectedAttribute');
     List<Entry> filteredEntryList =
         await databaseHelperEntry.getFilteredEntryList(selectedAttribute);
@@ -23,6 +23,7 @@ class Chart extends StatelessWidget {
     dateTimeValueMap[DateTime.parse(
       (filteredEntryList[0].date),
     )] = 1.0; // =1 is needed
+    debugPrint('filteredEntryList.length ${filteredEntryList.length}');
     for (int ele = 0; ele < filteredEntryList.length; ele++) {
       dateTimeValueMap[DateTime.parse(
         (filteredEntryList[ele].date),
@@ -36,14 +37,13 @@ class Chart extends StatelessWidget {
 
   Future<LineChart> _getChart(selectedAttribute1, selectedAttribute2) async {
     Map<DateTime, double> dateTimeValueMap1 =
-        await _getdateTimeValueMap(selectedAttribute1);
+        await _getDateTimeValueMap(selectedAttribute1);
     Map<DateTime, double> dateTimeValueMap2 =
-        await _getdateTimeValueMap(selectedAttribute2);
+        await _getDateTimeValueMap(selectedAttribute2);
     chart = LineChart.fromDateTimeMaps(
       [dateTimeValueMap1, dateTimeValueMap2],
       [Colors.green, Colors.blue],
-      ['', ''],
-      // earlier chart label name: selectedAttribute1 selectedAttribute2
+      [selectedAttribute1, selectedAttribute2], // axis numbers
       tapTextFontWeight: FontWeight.w600,
     );
 
