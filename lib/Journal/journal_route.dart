@@ -18,7 +18,10 @@ class JournalRoute extends StatefulWidget {
 
 class JournalRouteState extends State<JournalRoute> {
   List<Entry> _entryList;
-  List<bool> _isSelected = []; // true if long pressed
+  List<bool> _isSelectedList = []; // which entries are selected
+  bool _multiEntrySelectionActive =
+      false; // true if long pressed and any selected
+
   final DatabaseHelperEntry databaseHelperEntry = // error when static
       DatabaseHelperEntry();
 
@@ -55,7 +58,7 @@ class JournalRouteState extends State<JournalRoute> {
           ? _makeEntryHint() // _delayedHint() todo
 
           // ENTRY LIST
-          : _getEntryListView(),
+          : _getEntryListView_NEW(),
     );
   }
 
@@ -123,7 +126,7 @@ class JournalRouteState extends State<JournalRoute> {
 
   // MULTIPLE SELECTION DELETION BAR
   Widget _actionBarWithActionBarCapability() {
-    return _isSelected.contains(true)
+    return _multiEntrySelectionActive
         ? AppBar(
             leading: FlatButton(
               onPressed: () {
@@ -148,7 +151,7 @@ class JournalRouteState extends State<JournalRoute> {
                 FlatButton(
                   child: Icon(Icons.select_all),
                   onPressed: () {
-                    _isSelected = List.filled(_isSelected.length, true);
+                    _isSelectedList = List.filled(_isSelectedList.length, true);
                     setState(() {
                       debugPrint("Select all button clicked");
                     });
@@ -161,7 +164,38 @@ class JournalRouteState extends State<JournalRoute> {
         : Container();
   }
 
-// ENTRY LIST
+  // ENTRY LIST
+  FutureBuilder _getEntryListView_NEW() {
+    /*
+    * decides if standard scaffold or welcome screen should be shown
+    * Logic:
+    * Welcome if:
+    *   1. hideWelcome == null (as not shown before)
+    *   2. hideWelcome == false
+    * StandardScaffold if:
+    *   1. problems with connection state (i.e. none, waiting)
+    *   2. hide == true
+    * */
+    return FutureBuilder<List<Entry>>(
+      future: databaseHelperEntry.getEntryList(),
+      builder: (BuildContext context, AsyncSnapshot<List<Entry>> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return _makeEntryHint();
+          case ConnectionState.waiting:
+            return CircularProgressIndicator();
+          default:
+            if (!snapshot.hasError) {
+              //@ToDo("Return a welcome screen")
+              return _getEntryListView();
+            } else {
+              return Text('error: ${snapshot.error}');
+            }
+        }
+      },
+    );
+  }
+
   Widget _getEntryListView() {
     return Column(
       children: [
@@ -178,14 +212,18 @@ class JournalRouteState extends State<JournalRoute> {
                 color: Theme.of(context).backgroundColor,
                 child: Card(
                   // gives monotone tiles a card shape
-                  color: _isSelected[position] == false
-                      ? Colors.white
-                      : Colors.grey, // when selected
+                  color:
+                      _multiEntrySelectionActive // when multi selected, check each
+                          ? _isSelectedList[position] == false
+                              ? Colors.white
+                              : Colors.grey
+                          : Colors.white, // when none selected always white
                   child: ListTile(
                     onLongPress: () {
                       setState(
                         () {
-                          _isSelected[position] = true;
+                          _isSelectedList[position] = true;
+                          _multiEntrySelectionActive = true;
                         },
                       );
                     },
@@ -227,8 +265,12 @@ class JournalRouteState extends State<JournalRoute> {
                     onTap: () {
                       setState(
                         () {
-                          if (_isSelected.contains(true)) {
-                            _isSelected[position] = !_isSelected[position];
+                          if (_multiEntrySelectionActive) {
+                            _isSelectedList[position] =
+                                !_isSelectedList[position];
+                            if (!_isSelectedList.contains(true)) {
+                              _multiEntrySelectionActive = false;
+                            }
                           } else {
                             NavigationHelper().navigateToEditEntry(
                                 this._entryList[position], context, false);
@@ -266,8 +308,14 @@ class JournalRouteState extends State<JournalRoute> {
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
+    // todo needed?
+    debugPrint('_entryList 0: ${_entryList}');
     _entryList = await databaseHelperEntry.getEntryList();
+    debugPrint(
+        'await databaseHelperEntry.getEntryList(): ${await databaseHelperEntry.getEntryList()}');
+    debugPrint('entryListLength 0: ${globals.Global().entryListLength}');
     globals.Global().entryListLength = _entryList.length;
+    debugPrint('entryListLength 1: ${globals.Global().entryListLength}');
 
     if (context != null) {
       // todo check if good
@@ -275,8 +323,12 @@ class JournalRouteState extends State<JournalRoute> {
         this._entryList = _entryList;
         this._countEntry = globals.Global().entryListLength; // needed
       });
-      _isSelected =
-          List.filled(globals.Global().entryListLength, false); // needs also an update
+
+      // if multi selection was active then deactivate
+      if (_multiEntrySelectionActive) {
+        _multiEntrySelectionActive = false;
+        _isSelectedList = null; // todo? needs also an update
+      }
 
       // take two most recent entries as defaults for visualization.
       _getDefaultVisAttributes();
@@ -286,7 +338,15 @@ class JournalRouteState extends State<JournalRoute> {
   void _getDefaultVisAttributes() {
     // take two most recent entries as defaults for visualization.
     // if statements are needed to catch error if list is empty.
-    if (globals.Global().entryListLength > 0) {
+    if (globals.Global().entryListLength == null) {
+      globals
+          .Global()
+          .mostRecentAddedEntryName = null;
+      globals
+          .Global()
+          .secondMostRecentAddedEntryName = null;
+    }
+      else if (globals.Global().entryListLength > 0) {
       globals.Global().mostRecentAddedEntryName = _entryList[0].title;
       if (globals.Global().entryListLength > 1) {
         globals.Global().secondMostRecentAddedEntryName = _entryList[1].title;
@@ -299,9 +359,9 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   // DELETE
-  void _delete(_isSelected) async {
-    for (int position = 0; position < _isSelected.length; position++) {
-      if (_isSelected[position] == true) {
+  void _delete(_isSelectedList) async {
+    for (int position = 0; position < _isSelectedList.length; position++) {
+      if (_isSelectedList[position] == true) {
         await databaseHelperEntry // todo int result = feedback
             .deleteEntry(_entryList[position].id);
       }
@@ -318,7 +378,7 @@ class JournalRouteState extends State<JournalRoute> {
             children: [Icon(Icons.delete), Text('Yes')],
           ),
           onPressed: () {
-            _delete(_isSelected);
+            _delete(_isSelectedList);
             Navigator.of(context).pop();
           },
         ),
@@ -330,13 +390,13 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   int _countSelected() {
-    if (_isSelected == null || _isSelected.isEmpty) {
+    if (_isSelectedList == null || _isSelectedList.isEmpty) {
       return 0;
     }
 
     int count = 0;
-    for (int i = 0; i < _isSelected.length; i++) {
-      if (_isSelected[i] == true) {
+    for (int i = 0; i < _isSelectedList.length; i++) {
+      if (_isSelectedList[i] == true) {
         count++;
       }
     }
@@ -345,7 +405,8 @@ class JournalRouteState extends State<JournalRoute> {
 
   _deselectAll() {
     setState(() {
-      _isSelected = List.filled(globals.Global().entryListLength, false);
+      _isSelectedList = List.filled(globals.Global().entryListLength, false);
+      _multiEntrySelectionActive = false;
     });
   }
 }
