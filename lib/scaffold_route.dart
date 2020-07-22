@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:insightme/Covid19/covid19_route.dart';
 import 'package:insightme/Intro/first.dart';
+import 'package:insightme/tmp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './Visualize/visualize_route.dart';
+import 'Export/export.dart';
 import 'Import/import_from_json_route.dart';
 import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 import 'Recommend/recommendation_route.dart';
+
+enum Choice { exportDailySummaries, smarter, selfStarter, tradingCharter }
 
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute();
@@ -70,6 +74,26 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           strings.appTitle,
         ),
         leading: null,
+        actions: <Widget>[
+          // action button
+          PopupMenuButton<Choice>(
+            onSelected: (Choice result) {
+              if (result == Choice.exportDailySummaries) {
+                exportDailySummaries();
+              }
+              setState(() {
+                debugPrint('result $result');
+                Choice _selection = result;
+              });
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
+              PopupMenuItem<Choice>(
+                value: Choice.exportDailySummaries,
+                child: Text('Export daily summaries'),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -117,24 +141,24 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             label: "Import Data -beta-",
             onTap: () {
               debugPrint("DropDown");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Import()),
-                ); // Navigate to newManualEntry route when tapped.
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Import()),
+              ); // Navigate to newManualEntry route when tapped.
             }),
-//
-//          // connect service
-//          SpeedDialChild(
-//              backgroundColor: Colors.grey,
-//              child: Icon(Icons.input),
-//              label: "Connect with Service (e.g. Apple Health, FitBit)",
-//              onTap: () {
-//                print("DropDown");
+
+          // connect service
+          SpeedDialChild(
+              backgroundColor: Colors.grey,
+              child: Icon(Icons.input),
+              label: "Connect with Service (e.g. Apple Health, FitBit)",
+              onTap: () {
+                print("DropDown");
 //                Navigator.push(
 //                  context,
-//                  MaterialPageRoute(builder: (context) => Import()),
+//                  MaterialPageRoute(builder: (context) => Tmp()),
 //                ); // Navigate to newManualEntry route when tapped.
-//              }),
+              }),
       ],
     );
   }
@@ -157,10 +181,11 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           icon: Icon(Icons.timeline),
           title: Text('Visualize'),
         ),
-          BottomNavigationBarItem( // todo
-            icon: Icon(Icons.widgets),
-            title: Text('Insights'),
-          ),
+        BottomNavigationBarItem(
+          // todo
+          icon: Icon(Icons.widgets),
+          title: Text('Insights'),
+        ),
 //          BottomNavigationBarItem(
 //            icon: Icon(Icons.local_hospital),
 //            title: Text('COVID-19'),

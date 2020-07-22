@@ -23,11 +23,16 @@ dependencies:
   path_provider: # SQLite
   file_picker: # csv file
   fl_animated_linechart:  # chart
+  flutter_charts: ^0.1.10 # transpose list
   provider: # state management
   google_fonts:
   shared_preferences: # for persistence data. 1.Intro-seen-flag
   url_launcher:
   flutter_svg: # svg drawing for WHO
+  csv: # write csv for daily summaries
+  starfruit: ^0.3.1+2 # correlation
+  #simple_permissions: ^0.1.9 # for export write access
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

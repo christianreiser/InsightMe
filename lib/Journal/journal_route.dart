@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Database/create_daily_summary.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
 import './../globals.dart' as globals;
@@ -31,6 +32,8 @@ class JournalRouteState extends State<JournalRoute> {
 
   @override
   Widget build(BuildContext context) {
+//    writeDBToCSV();
+//    readDailySummariesCSV();
     // build entry list if null
     if (_entryList == null) {
       _entryList = List<Entry>();
