@@ -1,8 +1,8 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:insightme/globals.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:starfruit/starfruit.dart';
 import 'dart:io';
 import 'dart:convert' show utf8;
 
@@ -11,8 +11,6 @@ import 'entry.dart';
 import 'database_helper_attribute.dart';
 import 'database_helper_entry.dart';
 import 'package:flutter_charts/flutter_charts.dart';
-//import 'package:starfruit/starfruit.dart';
-
 
 Future<List<List<dynamic>>> writeDBToCSV() async {
   List<List<dynamic>> spreadsheet = []; // list of rows
@@ -38,20 +36,24 @@ Future<List<List<dynamic>>> writeDBToCSV() async {
   // ini first row to add
   List<dynamic> rowToAdd =
       List.filled(attributeList.length + 1, null); // start with row of nulls
+  debugPrint('rowToAddL ${rowToAdd.length}');
+  debugPrint('entryList[0] ${entryList.length}');
   rowToAdd[0] = entryList[0].date.substring(0, 10); // add newest date as date
   int entryListLength = entryList.length;
 
   // get number of days in db
   // todo use this number for fixes list size for faster computation
   int numDays = DateTime.parse(entryList[0].date.substring(0, 10))
-      .difference(
-          DateTime.parse(entryList[entryListLength - 1].date.substring(0, 10)))
-      .inDays + 1; // todo: if one day has no data at all, this breaks
+          .difference(DateTime.parse(
+              entryList[entryListLength - 1].date.substring(0, 10)))
+          .inDays +
+      1; // todo: if one day has no data at all, this breaks
 
   // save numDays
   final prefs = await SharedPreferences.getInstance();
   // set value
   prefs.setInt('numDays', numDays);
+  debugPrint('saved numDays=$numDays in SharedPreferences');
 
   // iterate through all entries
   for (int entryCount = 0; entryCount < entryListLength; entryCount++) {
@@ -115,34 +117,98 @@ readDailySummariesCSV() async {
   final prefs = await SharedPreferences.getInstance();
   int numDays = prefs.getInt('numDays') ?? null;
 
-
   final directory = await getApplicationDocumentsDirectory();
   final input = new File(directory.path + "/daily_summaries.csv").openRead();
-  final fields = await input
+  final rowForEachDay = await input
       .transform(utf8.decoder)
       .transform(new CsvToListConverter())
       .toList();
-  List<List<dynamic>> rowForEachAttribute = transpose(fields);
-  debugPrint('fields $rowForEachAttribute');
+
+  /* separate labels from values*/
+  final List<dynamic> labels =
+      rowForEachDay.removeAt(0); // separate labels from values
+  labels.removeAt(0); // remove date-label
+  debugPrint('labels $labels');
+  debugPrint('rowForEachDay $rowForEachDay');
+
+  /* remove dates from values*/
+  var rowForEachAttribute = List<List<dynamic>>.from(
+      transpose(rowForEachDay)); // make list variable length
+  rowForEachAttribute.removeAt(0); // remove dates
+//  List<List<num>> rowForEachAttributeNum = rowForEachAttribute.cast<List<num>>();
+  debugPrint('rowForEachAttribute $rowForEachAttribute');
 
   /*
   * correlation
   * */
-  List<dynamic> averageSpeed = rowForEachAttribute[1];
-  List<dynamic> distance = rowForEachAttribute[6];
-  debugPrint('distance $distance');
-  Map<num, num> xYValuesMap = {};
-//  dateTimeValueMap[DateTime.parse(
-//    (filteredEntryList[0].date),
-//  )] = 1.0; // =1 is needed
   debugPrint('numDays $numDays');
-  for (int ele = 1; ele < numDays; ele++) {
-    // 1 to skipp label
-    xYValuesMap[(averageSpeed[ele])] = distance[ele];
+  int numLabels = labels.length;
+  List<num> correlationCoefficients = List.filled(numLabels, null);
+  List<String> attribute1 = List.filled(numLabels, null);
+  List<String> attribute2 = List.filled(numLabels, null);
+  int labelCount = 0;
+  // 1 to skip date
+  for (int attributeCount1 = 0;
+      attributeCount1 < numLabels;
+      attributeCount1++) {
+    // 1 to skip date
+    for (int attributeCount2 = 0;
+        attributeCount2 < numLabels;
+        attributeCount2++) {
+      // skip self and double correlation with if:
+      if (attributeCount2 > attributeCount1) {
+        labelCount++;
+        Map<num, num> xYStats = {};
+        debugPrint(
+            '\nNow labels: ${labels[attributeCount1]} and ${labels[attributeCount2]}.');
+
+        // 1 to skip label
+        for (int valueCount = 0; valueCount < numDays; valueCount++) {
+          debugPrint('valueCount: $valueCount');
+          debugPrint(
+              'rowForEachAttribute[attributeCount1][valueCount])] ${rowForEachAttribute[attributeCount1][valueCount]}');
+          debugPrint(
+              'rowForEachAttribute[attributeCount2][valueCount])] ${rowForEachAttribute[attributeCount2][valueCount]}');
+          if (rowForEachAttribute[attributeCount1][valueCount] != null &&
+              rowForEachAttribute[attributeCount1][valueCount] != 'null' &&
+              rowForEachAttribute[attributeCount2][valueCount] != null &&
+              rowForEachAttribute[attributeCount2][valueCount] != 'null') {
+            debugPrint('there is no null');
+            // todo fragile: breaks if cardinality attributeCount1 =! # attributeCount1, because attributeCount1 is the key.
+            //  todo: maybe with cUtils.zip or check cardinality with .cardinality.
+
+            xYStats[(rowForEachAttribute[attributeCount1][valueCount])] =
+                rowForEachAttribute[attributeCount2][valueCount];
+            debugPrint('xYStats $xYStats');
+          } else {
+            debugPrint('skipping because value is null');
+          }
+        }
+
+        //Get correlation coefficient
+        debugPrint('xYStats.length ${xYStats.length}');
+        debugPrint('labelCount: $labelCount');
+        if (xYStats.length > 2) {
+          debugPrint('computing correlation');
+//          debugPrint(
+//              'Correlating ${labels[attributeCount1]} and ${labels[attributeCount2]}. Coefficient: ${StarStatsXY(xYStats).corCoefficient}\n');
+
+          correlationCoefficients[labelCount] =
+              StarStatsXY(xYStats).corCoefficient;
+          debugPrint('attribute1[labelCount] = labels[attributeCount1];');
+          attribute1[labelCount] = labels[attributeCount1];
+          debugPrint('attribute2[labelCount] = labels[attributeCount2];');
+          attribute2[labelCount] = labels[attributeCount2];
+          debugPrint('after attribute2[labelCount] = labels[attributeCount2];');
+        } else {
+          debugPrint(
+              'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
+        }
+        debugPrint('correlationCoefficients: $correlationCoefficients');
+        debugPrint('attribute1: $attribute1');
+        debugPrint('attribute2: $attribute2\n\n');
+        debugPrint('____________________________________\n\n');
+      }
+    }
   }
-  debugPrint('xYValuesMap $xYValuesMap');
-  //Get correlation coefficient
-  print("Calculate correlation coefficient:");
-  print(xYValuesMap.corCoefficient);
-  print("");
 }
