@@ -33,7 +33,7 @@ class JournalRouteState extends State<JournalRoute> {
   @override
   Widget build(BuildContext context) {
 //    writeDBToCSV(); // todo TESTING
-    readDailySummariesCSV(); // todo TESTING
+//    readDailySummariesCSV(); // todo TESTING
     // build entry list if null
     if (_entryList == null) {
       _entryList = List<Entry>();
