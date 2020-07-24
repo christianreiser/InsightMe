@@ -163,4 +163,58 @@ class Statistics extends StatelessWidget {
 
     return _correlationCoefficient;
   }
+
+
+  Widget _statistics() {
+    return Column(
+        mainAxisSize: MainAxisSize.max,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
+        children: <Widget>[
+
+          Row(children: [
+            Container(
+              //padding: const EdgeInsets.all(5.0),
+                decoration: _statisticsBoxDecoration(),
+                child: SizedBox(
+                  width: 117,
+                  height: 12,
+                  child: SizedBox(
+                      width: 5,
+                      height: 5,
+                      child: Row(
+                        children: [
+                          Expanded(
+                              flex: 9, child: Container(color: Colors.teal)),
+                          Expanded(
+                            flex: 1, child: Container(),),
+                        ],
+                      )),
+                )),
+            Text(' relationship', textScaleFactor: 1.3),
+          ]),
+          SizedBox(height: 10),
+          Row(children: [
+            Icon(Icons.star),
+            Icon(Icons.star),
+            Icon(Icons.star),
+            Icon(Icons.star),
+            Icon(Icons.star_half),
+            Text(' confidence', textScaleFactor: 1.3),
+          ]),
+
+
+
+        ]);
+  }
+
+  BoxDecoration _statisticsBoxDecoration() {
+    return BoxDecoration(
+      border: Border.all(width: 1.5),
+      borderRadius: BorderRadius.all(
+          Radius.circular(5.0) //         <--- border radius here
+      ),
+    );
+  }
+
 }

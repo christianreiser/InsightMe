@@ -6,6 +6,7 @@ import 'package:insightme/Intro/first.dart';
 import 'package:insightme/tmp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './Visualize/visualize_route.dart';
+import 'Database/create_daily_summary.dart';
 import 'Export/export.dart';
 import 'Import/import_from_json_route.dart';
 import 'Journal/journal_route.dart';
@@ -13,7 +14,12 @@ import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 import 'Recommend/recommendation_route.dart';
 
-enum Choice { exportDailySummaries, smarter, selfStarter, tradingCharter }
+enum Choice {
+  exportDailySummaries,
+  computeCorrelations,
+  selfStarter,
+  tradingCharter
+}
 
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute();
@@ -80,6 +86,9 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             onSelected: (Choice result) {
               if (result == Choice.exportDailySummaries) {
                 exportDailySummaries();
+              } else if (result == Choice.computeCorrelations) {
+                writeDailySummariesCSV(); // todo TESTING
+                computeCorrelations(); // todo TESTING
               }
               setState(() {
                 debugPrint('result $result');
@@ -90,6 +99,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               PopupMenuItem<Choice>(
                 value: Choice.exportDailySummaries,
                 child: Text('Export daily summaries'),
+              ),
+              PopupMenuItem<Choice>(
+                value: Choice.computeCorrelations,
+                child: Text('Compute correlations'),
               ),
             ],
           ),
@@ -147,18 +160,18 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               ); // Navigate to newManualEntry route when tapped.
             }),
 
-          // connect service
-          SpeedDialChild(
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.input),
-              label: "Connect with Service (e.g. Apple Health, FitBit)",
-              onTap: () {
-                print("DropDown");
+        // connect service
+        SpeedDialChild(
+            backgroundColor: Colors.grey,
+            child: Icon(Icons.input),
+            label: "Connect with Service (e.g. Apple Health, FitBit)",
+            onTap: () {
+              print("DropDown");
 //                Navigator.push(
 //                  context,
 //                  MaterialPageRoute(builder: (context) => Tmp()),
 //                ); // Navigate to newManualEntry route when tapped.
-              }),
+            }),
       ],
     );
   }

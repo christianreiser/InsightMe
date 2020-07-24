@@ -12,22 +12,26 @@ import 'database_helper_attribute.dart';
 import 'database_helper_entry.dart';
 import 'package:flutter_charts/flutter_charts.dart';
 
-Future<List<List<dynamic>>> writeDBToCSV() async {
+Future<List<List<dynamic>>> writeDailySummariesCSV() async {
+  /*
+  * reads from db,
+  * writes daily summaries csv
+  * */
   List<List<dynamic>> spreadsheet = []; // list of rows
   List<Attribute> attributeList =
-      await DatabaseHelperAttribute().getAttributeList();
+  await DatabaseHelperAttribute().getAttributeList();
   List<String> attributeTitleList =
-      List(attributeList.length + 1); // length = #attributes + 1 for date
+  List(attributeList.length + 1); // length = #attributes + 1 for date
   attributeTitleList[0] = 'date';
   List<Entry> entryList = await DatabaseHelperEntry().getEntryList();
-  debugPrint('attributeList $attributeList');
-  debugPrint('attributeListLen ${attributeList.length}');
+//  debugPrint('attributeList $attributeList');
+//  debugPrint('attributeListLen ${attributeList.length}');
 
   //attributeList.insert(0, 'date');
 
   for (int attributeCount = 0;
-      attributeCount < attributeList.length;
-      attributeCount++) {
+  attributeCount < attributeList.length;
+  attributeCount++) {
     attributeTitleList[attributeCount + 1] =
         attributeList[attributeCount].title;
   }
@@ -35,29 +39,31 @@ Future<List<List<dynamic>>> writeDBToCSV() async {
 
   // ini first row to add
   List<dynamic> rowToAdd =
-      List.filled(attributeList.length + 1, null); // start with row of nulls
-  debugPrint('rowToAddL ${rowToAdd.length}');
-  debugPrint('entryList[0] ${entryList.length}');
+  List.filled(attributeList.length + 1, null); // start with row of nulls
+//  debugPrint('rowToAddL ${rowToAdd.length}');
+//  debugPrint('entryList[0] ${entryList.length}');
   rowToAdd[0] = entryList[0].date.substring(0, 10); // add newest date as date
   int entryListLength = entryList.length;
 
   // get number of days in db
   // todo use this number for fixes list size for faster computation
-  int numDays = DateTime.parse(entryList[0].date.substring(0, 10))
-          .difference(DateTime.parse(
-              entryList[entryListLength - 1].date.substring(0, 10)))
-          .inDays +
+  int numDays = DateTime
+      .parse(entryList[0].date.substring(0, 10))
+      .difference(DateTime.parse(
+      entryList[entryListLength - 1].date.substring(0, 10)))
+      .inDays +
       1; // todo: if one day has no data at all, this breaks
 
   // save numDays
   final prefs = await SharedPreferences.getInstance();
   // set value
   prefs.setInt('numDays', numDays);
-  debugPrint('saved numDays=$numDays in SharedPreferences');
+//  debugPrint('saved numDays=$numDays in SharedPreferences');
+  debugPrint('starting creating daily summaries csv');
 
   // iterate through all entries
   for (int entryCount = 0; entryCount < entryListLength; entryCount++) {
-    debugPrint('${entryCount / entryListLength}');
+    //debugPrint('${entryCount / entryListLength} % done');
     // if date of entry matches row date:
     if (entryList[entryCount].date.substring(0, 10) == rowToAdd[0]) {
       // get column index:
@@ -69,7 +75,7 @@ Future<List<List<dynamic>>> writeDBToCSV() async {
       // if date of entry does not match row date means a new date started:
     } else {
       spreadsheet.add(rowToAdd); // add yesterday to spreadsheet
-      debugPrint('rowToAdd $rowToAdd');
+//      debugPrint('rowToAdd $rowToAdd');
       // clear rowToAdd from yesterdays values
       rowToAdd = List.filled(attributeList.length + 1, null);
       // set new date
@@ -82,7 +88,7 @@ Future<List<List<dynamic>>> writeDBToCSV() async {
   }
   spreadsheet.add(rowToAdd); // add to spreadsheet
 
-  debugPrint('attributeSpreadsheet $spreadsheet');
+//  debugPrint('attributeSpreadsheet $spreadsheet');
 
   /*
   * save to file
@@ -96,15 +102,20 @@ Future<List<List<dynamic>>> writeDBToCSV() async {
   File file = File(pathOfTheFileToWrite);
   debugPrint('file $file');
   String csv = const ListToCsvConverter().convert(spreadsheet);
-  debugPrint('csv $csv');
+  //debugPrint('csv $csv');
   file.writeAsString(csv);
   debugPrint('file written');
 //  }
   return spreadsheet;
 }
 
-readDailySummariesCSV() async {
-
+computeCorrelations() async {
+  // todo rename to create correlation matrix
+/*
+* reads daily summaries CSV,
+* computes correlations
+* writes correlations matrix as csv
+* */
   // get numDays
   final prefs = await SharedPreferences.getInstance();
   int numDays = prefs.getInt('numDays') ?? null;
@@ -121,17 +132,17 @@ readDailySummariesCSV() async {
 
   /* separate labels from values*/
   final List<dynamic> labels =
-      rowForEachDay.removeAt(0); // separate labels from values
+  rowForEachDay.removeAt(0); // separate labels from values
   labels.removeAt(0); // remove date-label
-  debugPrint('labels $labels');
-  debugPrint('rowForEachDay $rowForEachDay');
+//  debugPrint('labels $labels');
+//  debugPrint('rowForEachDay $rowForEachDay');
 
   /* remove dates from values*/
   var rowForEachAttribute = List<List<dynamic>>.from(
       transpose(rowForEachDay)); // make list variable length
   rowForEachAttribute.removeAt(0); // remove dates
 //  List<List<num>> rowForEachAttributeNum = rowForEachAttribute.cast<List<num>>();
-  debugPrint('rowForEachAttribute $rowForEachAttribute');
+  //debugPrint('rowForEachAttribute $rowForEachAttribute');
 
   /*
   * correlation
@@ -141,7 +152,7 @@ readDailySummariesCSV() async {
   int maxCorrelations = (numLabels * numLabels - numLabels) ~/ 2;
   debugPrint('maxCorrelations: $maxCorrelations');
   var correlationMatrix =
-      List.generate(numLabels + 1, (i) => List(numLabels + 1), growable: false);
+  List.generate(numLabels + 1, (i) => List(numLabels + 1), growable: false);
 
 //  List<num> correlationCoefficients = List.filled(maxCorrelations, null);
 //  List<String> attribute1 = List.filled(maxCorrelations, null);
@@ -152,7 +163,7 @@ readDailySummariesCSV() async {
     // set labels1 for list
     correlationMatrix[row][0] = labels[row - 1];
 
-    debugPrint('${row / (numLabels + 1)}% done');
+    //debugPrint('${row / (numLabels + 1)}% done');
     // 1 to skip date
     for (int column = 1; column < numLabels + 1; column++) {
       // set labels2 for list
@@ -185,7 +196,7 @@ readDailySummariesCSV() async {
             //  todo: maybe with cUtils.zip or check cardinality with .cardinality.
 
             xYStats[(rowForEachAttribute[row - 1][valueCount])] =
-                rowForEachAttribute[column - 1][valueCount];
+            rowForEachAttribute[column - 1][valueCount];
 //            debugPrint('xYStats $xYStats');
           } else {
 //            debugPrint('skipping because value is null');
@@ -197,8 +208,13 @@ readDailySummariesCSV() async {
 //        debugPrint('labelCount: $labelCount');
         if (xYStats.length > 2) {
 //          debugPrint('computing correlation');
+          num correlation = StarStatsXY(xYStats).corCoefficient;
 
-          correlationMatrix[row][column] = StarStatsXY(xYStats).corCoefficient;
+          // round if necessary // todo round if too many decimals and hard coded
+          if (correlation != 0 && correlation != 1 && correlation != -1) {
+            correlation = mUtils.roundToDouble(correlation, 2);
+          }
+          correlationMatrix[row][column] = correlation;
         } else {
 //          debugPrint(
 //              'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
@@ -210,9 +226,9 @@ readDailySummariesCSV() async {
     }
   } // last for loop
 
-  for (int row = 0; row < numLabels + 1; row++) {
-    debugPrint('${correlationMatrix[row]}');
-  }
+//  for (int row = 0; row < numLabels + 1; row++) {
+//    debugPrint('${correlationMatrix[row]}');
+//  }
 
   /*
   * save correlations
@@ -228,7 +244,8 @@ readDailySummariesCSV() async {
   File file = File(pathOfTheFileToWrite);
   debugPrint('file $file');
   String csv = const ListToCsvConverter().convert(correlationMatrix);
-  debugPrint('csv $csv');
+//  debugPrint('csv $csv');
   file.writeAsString(csv);
   debugPrint('correlation_matrix.csv written');
 }
+
