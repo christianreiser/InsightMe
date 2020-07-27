@@ -38,7 +38,8 @@ class Chart extends StatelessWidget {
   }
 
   // create chart
-  LineChart chart = null; // needed such that old data is not shown if no info for current as its not overwritten
+  LineChart chart =
+      null; // needed such that old data is not shown if no info for current as its not overwritten
 
   Future<LineChart> _getChart(selectedAttribute1, selectedAttribute2) async {
     Map<DateTime, double> dateTimeValueMap1 =
@@ -92,12 +93,11 @@ class Chart extends StatelessWidget {
 class Statistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        correlation(),
-        pValue(),
-      ],
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.start, mainAxisSize: MainAxisSize.min,children: [
+      correlation(),
+      pValue(),
+      //statisticWithIcons(),
+    ]);
   }
 
   Widget correlation() {
@@ -112,7 +112,8 @@ class Statistics extends StatelessWidget {
               debugPrint('_correlationCoefficient: $_correlationCoefficient');
               if (snapshot.connectionState == ConnectionState.done &&
                   _correlationCoefficient != null) {
-                return Text('Correlation Coeffiecient: $_correlationCoefficient');
+                return Text(
+                    'Correlation Coeffiecient: $_correlationCoefficient');
               }
 
               // chart data arrived but no data found
@@ -137,44 +138,45 @@ class Statistics extends StatelessWidget {
     );
   }
 
-
-  num _correlationCoefficient = null; // needed, otherwise old value is shown if same label shown twice
+  num _correlationCoefficient =
+      null; // needed, otherwise old value is shown if same label shown twice
   Future<num> _getCorrelationCoefficient(attribute1, attribute2) async {
     /*
   * read csv and transform
   * */
     // todo maybe in different file
     final directory = await getApplicationDocumentsDirectory();
-    final input = new File(directory.path + "/correlation_matrix.csv").openRead();
+    final input =
+        new File(directory.path + "/correlation_matrix.csv").openRead();
     final correlationMatrix = await input
         .transform(utf8.decoder)
         .transform(new CsvToListConverter())
         .toList();
 
     int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
-    int attributeIndex2 = fluCa.transpose(correlationMatrix)[0].indexOf(attribute2);
-    _correlationCoefficient = correlationMatrix[attributeIndex1][attributeIndex2];
+    int attributeIndex2 =
+        fluCa.transpose(correlationMatrix)[0].indexOf(attribute2);
+    _correlationCoefficient =
+        correlationMatrix[attributeIndex1][attributeIndex2];
 
     // only one order possible, because correlation matrix is half filled. if wrong order change order
     if (_correlationCoefficient == null) {
-      _correlationCoefficient = correlationMatrix[attributeIndex2][attributeIndex1];
+      _correlationCoefficient =
+          correlationMatrix[attributeIndex2][attributeIndex1];
     }
-
 
     return _correlationCoefficient;
   }
 
-
-  Widget _statistics() {
+  Widget statisticWithIcons() {
     return Column(
         mainAxisSize: MainAxisSize.max,
         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
         children: <Widget>[
-
           Row(children: [
             Container(
-              //padding: const EdgeInsets.all(5.0),
+                //padding: const EdgeInsets.all(5.0),
                 decoration: _statisticsBoxDecoration(),
                 child: SizedBox(
                   width: 117,
@@ -187,7 +189,9 @@ class Statistics extends StatelessWidget {
                           Expanded(
                               flex: 9, child: Container(color: Colors.teal)),
                           Expanded(
-                            flex: 1, child: Container(),),
+                            flex: 1,
+                            child: Container(),
+                          ),
                         ],
                       )),
                 )),
@@ -202,9 +206,6 @@ class Statistics extends StatelessWidget {
             Icon(Icons.star_half),
             Text(' confidence', textScaleFactor: 1.3),
           ]),
-
-
-
         ]);
   }
 
@@ -213,8 +214,7 @@ class Statistics extends StatelessWidget {
       border: Border.all(width: 1.5),
       borderRadius: BorderRadius.all(
           Radius.circular(5.0) //         <--- border radius here
-      ),
+          ),
     );
   }
-
 }

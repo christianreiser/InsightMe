@@ -31,6 +31,8 @@ dependencies:
   flutter_svg: # svg drawing for WHO
   csv: # write csv for daily summaries
   starfruit: ^0.3.1+2 # correlation
+  #permission_handler: ^5.0.1+1
+
   #simple_permissions: ^0.1.9 # for export write access
 
 

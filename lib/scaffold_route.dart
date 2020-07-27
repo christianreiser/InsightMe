@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:insightme/Covid19/covid19_route.dart';
 import 'package:insightme/Intro/first.dart';
-import 'package:insightme/tmp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './Visualize/visualize_route.dart';
 import 'Database/create_daily_summary.dart';
+import 'Database/correlations.dart';
 import 'Export/export.dart';
 import 'Import/import_from_json_route.dart';
 import 'Journal/journal_route.dart';
@@ -14,12 +14,7 @@ import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 import 'Recommend/recommendation_route.dart';
 
-enum Choice {
-  exportDailySummaries,
-  computeCorrelations,
-  selfStarter,
-  tradingCharter
-}
+enum Choice { exportDailySummaries, computeCorrelations, test }
 
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute();
@@ -87,9 +82,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               if (result == Choice.exportDailySummaries) {
                 exportDailySummaries();
               } else if (result == Choice.computeCorrelations) {
-                writeDailySummariesCSV(); // todo TESTING
-                computeCorrelations(); // todo TESTING
-              }
+                WriteDailySummariesCSV().writeDailySummariesCSV(); // todo TESTING
+                ComputeCorrelations().computeCorrelations(); // todo TESTING
+              } else if (result == Choice.test) {}
+
               setState(() {
                 debugPrint('result $result');
                 Choice _selection = result;
@@ -103,6 +99,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               PopupMenuItem<Choice>(
                 value: Choice.computeCorrelations,
                 child: Text('Compute correlations'),
+              ),
+              PopupMenuItem<Choice>(
+                value: Choice.test,
+                child: Text('test'),
               ),
             ],
           ),
