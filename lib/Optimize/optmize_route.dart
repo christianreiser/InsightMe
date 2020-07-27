@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class Recommend extends StatelessWidget {
+class Optimize extends StatelessWidget {
   static Map<DateTime, double> dateTimeMap1 = {
     DateTime(1): 1,
     DateTime(2): 3,

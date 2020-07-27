@@ -125,7 +125,7 @@ class Statistics extends StatelessWidget {
               // chart data arrived but no data found
               else if (snapshot.connectionState == ConnectionState.done &&
                   _correlationCoefficient == null) {
-                return Text('no correlation found');
+                return Text('-');
 
                 // else: i.e. data didn't arrive
               } else {

@@ -12,7 +12,7 @@ import 'Import/import_from_json_route.dart';
 import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
-import 'Recommend/recommendation_route.dart';
+import 'Optimize/optmize_route.dart';
 
 enum Choice { exportDailySummaries, computeCorrelations, test }
 
@@ -220,7 +220,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   static List<Widget> _widgetOptions = <Widget>[
     JournalRoute(),
     Visualize(),
-    Recommend(),
+    Optimize(),
     Covid19(), //IntroRoute(),
     IntroRoute(),
   ];
