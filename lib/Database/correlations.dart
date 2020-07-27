@@ -80,8 +80,8 @@ class ComputeCorrelations {
 //            '\nNow labels: ${labels[row - 1]} and ${labels[column - 1]}.');
 
           /*
-        * get xYStats
-        * */
+          * get xYStats
+          * */
           for (int valueCount = 0; valueCount < numDays; valueCount++) {
 //          debugPrint('valueCount: $valueCount');
 //          debugPrint(
@@ -105,8 +105,8 @@ class ComputeCorrelations {
           }
 
           /*
-        * Get correlation coefficient
-        * */
+          * Get correlation coefficient
+          * */
 //        debugPrint('xYStats.length ${xYStats.length}');
 //        debugPrint('labelCount: $labelCount');
           if (xYStats.length > 2) {
@@ -132,6 +132,7 @@ class ComputeCorrelations {
 //  for (int row = 0; row < numLabels + 1; row++) {
 //    debugPrint('${correlationMatrix[row]}');
 //  }
+    debugPrint('correlationMatrix(mood) ${transpose(correlationMatrix)[35]}');
 
     /*
   * save correlations

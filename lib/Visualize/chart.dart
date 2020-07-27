@@ -9,9 +9,13 @@ import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:csv/csv.dart';
 import 'dart:io';
 import 'dart:convert' show utf8;
+import 'dart:math';
 
 class Chart extends StatelessWidget {
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
+
+//  reset chart
+  LineChart chart = null;
 
   /*
   * Get dateTime and values of entries from database and set as state
@@ -36,10 +40,6 @@ class Chart extends StatelessWidget {
     }
     return dateTimeValueMap;
   }
-
-  // create chart
-  LineChart chart =
-      null; // needed such that old data is not shown if no info for current as its not overwritten
 
   Future<LineChart> _getChart(selectedAttribute1, selectedAttribute2) async {
     Map<DateTime, double> dateTimeValueMap1 =
@@ -91,13 +91,19 @@ class Chart extends StatelessWidget {
 }
 
 class Statistics extends StatelessWidget {
+  //  reset _correlationCoefficient
+  num _correlationCoefficient = null;
+
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.start, mainAxisSize: MainAxisSize.min,children: [
-      correlation(),
-      pValue(),
-      //statisticWithIcons(),
-    ]);
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          correlation(),
+          pValue(),
+          //statisticWithIcons(),
+        ]);
   }
 
   Widget correlation() {
@@ -138,9 +144,9 @@ class Statistics extends StatelessWidget {
     );
   }
 
-  num _correlationCoefficient =
-      null; // needed, otherwise old value is shown if same label shown twice
   Future<num> _getCorrelationCoefficient(attribute1, attribute2) async {
+    debugPrint('called _getCorrelationCoefficient');
+
     /*
   * read csv and transform
   * */
@@ -152,19 +158,18 @@ class Statistics extends StatelessWidget {
         .transform(utf8.decoder)
         .transform(new CsvToListConverter())
         .toList();
+    //debugPrint('correlationMatrix $correlationMatrix');
 
     int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
     int attributeIndex2 =
         fluCa.transpose(correlationMatrix)[0].indexOf(attribute2);
+    debugPrint('correlationMatrix[attributeIndex1][attributeIndex2] ${correlationMatrix[attributeIndex1][attributeIndex2]}');
+    debugPrint('correlationMatrix[attributeIndex2][attributeIndex1] ${correlationMatrix[attributeIndex2][attributeIndex1]}');
+    debugPrint('0');
+
+    // min max is needed as correlation matrix is only half filled and row<column
     _correlationCoefficient =
-        correlationMatrix[attributeIndex1][attributeIndex2];
-
-    // only one order possible, because correlation matrix is half filled. if wrong order change order
-    if (_correlationCoefficient == null) {
-      _correlationCoefficient =
-          correlationMatrix[attributeIndex2][attributeIndex1];
-    }
-
+        correlationMatrix[min(attributeIndex1,attributeIndex2)][max(attributeIndex1,attributeIndex2)];
     return _correlationCoefficient;
   }
 

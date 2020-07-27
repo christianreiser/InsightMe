@@ -21,7 +21,7 @@ class WriteDailySummariesCSV {
         List(attributeList.length + 1); // length = #attributes + 1 for date
     attributeTitleList[0] = 'date';
     List<Entry> entryList = await DatabaseHelperEntry().getEntryList();
-//  debugPrint('attributeList $attributeList');
+    debugPrint('attributeList $attributeList');
 //  debugPrint('attributeListLen ${attributeList.length}');
 
     //attributeList.insert(0, 'date');
@@ -31,6 +31,9 @@ class WriteDailySummariesCSV {
         attributeCount++) {
       attributeTitleList[attributeCount + 1] =
           attributeList[attributeCount].title;
+      debugPrint('attributeCount $attributeCount');
+      debugPrint(
+          'attributeTitleList[attributeCount + 1]: ${attributeTitleList[attributeCount + 1]}');
     }
     spreadsheet.add(attributeTitleList); // add attributes to spreadsheet
 
@@ -89,12 +92,12 @@ class WriteDailySummariesCSV {
 //  debugPrint('attributeSpreadsheet $spreadsheet');
 
     /*
-  * save to file
-  * */
+    * save to file
+    * */
     final directory = await getApplicationDocumentsDirectory();
     final pathOfTheFileToWrite = directory.path + "/daily_summaries.csv";
 //  final directoryTarget =
-//      await getExternalStorageDirectory(); // todo: currently works only on andoid
+//      await getExternalStorageDirectory(); // todo: currently works only on android
 //  debugPrint('directoryTarget $directoryTarget');
     debugPrint('targetPath $pathOfTheFileToWrite');
     File file = File(pathOfTheFileToWrite);
@@ -107,4 +110,3 @@ class WriteDailySummariesCSV {
     return spreadsheet;
   }
 }
-
