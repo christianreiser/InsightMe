@@ -9,23 +9,25 @@ import 'database_helper_attribute.dart';
 import 'database_helper_entry.dart';
 
 class WriteDailySummariesCSV {
-  Future<List<List<dynamic>>> writeDailySummariesCSV() async {
+  Future<String> writeDailySummariesCSV() async {
     /*
-  * reads from db,
-  * writes daily summaries csv
-  * */
-    List<List<dynamic>> spreadsheet = []; // list of rows
+    * reads from db,
+    * writes daily summaries csv
+    * */
+
+    /*initialize*/
+    List<List<dynamic>> dailySummariesList = []; // list of daily summaries
+
+    /* query data from db*/
     List<Attribute> attributeList =
         await DatabaseHelperAttribute().getAttributeList();
+    List<Entry> entryList = await DatabaseHelperEntry().getEntryList();
+
+    /* adding attribute titles to dailySummariesList
+    * for that: create a list of the attribute titles and add it */
     List<String> attributeTitleList =
         List(attributeList.length + 1); // length = #attributes + 1 for date
     attributeTitleList[0] = 'date';
-    List<Entry> entryList = await DatabaseHelperEntry().getEntryList();
-    debugPrint('attributeList $attributeList');
-//  debugPrint('attributeListLen ${attributeList.length}');
-
-    //attributeList.insert(0, 'date');
-
     for (int attributeCount = 0;
         attributeCount < attributeList.length;
         attributeCount++) {
@@ -35,11 +37,16 @@ class WriteDailySummariesCSV {
       debugPrint(
           'attributeTitleList[attributeCount + 1]: ${attributeTitleList[attributeCount + 1]}');
     }
-    spreadsheet.add(attributeTitleList); // add attributes to spreadsheet
+    dailySummariesList
+        .add(attributeTitleList); // add attributes to dailySummariesList
 
-    // ini first row to add
-    List<dynamic> rowToAdd =
-        List.filled(attributeList.length + 1, null); // start with row of nulls
+    /* create rowToAdd List.
+    * It will contain data of one day which will be added to dailySummariesList.
+    * 1. ini list with nulls and add newest date
+    * */
+
+    // ini first row to add: start with row of nulls
+    List<dynamic> rowToAdd = List.filled(attributeList.length + 1, null);
 //  debugPrint('rowToAddL ${rowToAdd.length}');
 //  debugPrint('entryList[0] ${entryList.length}');
     rowToAdd[0] = entryList[0].date.substring(0, 10); // add newest date as date
@@ -53,16 +60,17 @@ class WriteDailySummariesCSV {
             .inDays +
         1; // todo: if one day has no data at all, this breaks
 
-    // save numDays
+    /* save numDays */
+    // todo: numDays used in correlations but should be possible without for faster performance
     final prefs = await SharedPreferences.getInstance();
     // set value
     prefs.setInt('numDays', numDays);
-//  debugPrint('saved numDays=$numDays in SharedPreferences');
+
+    /* fill rowToAdd with data and add to dailySummariesList */
     debugPrint('starting creating daily summaries csv');
 
     // iterate through all entries
     for (int entryCount = 0; entryCount < entryListLength; entryCount++) {
-      //debugPrint('${entryCount / entryListLength} % done');
       // if date of entry matches row date:
       if (entryList[entryCount].date.substring(0, 10) == rowToAdd[0]) {
         // get column index:
@@ -74,8 +82,8 @@ class WriteDailySummariesCSV {
 //          'added: columnIndex $columnIndex, value ${entryList[entryCount].value}, date ${rowToAdd[0]}');
         // if date of entry does not match row date means a new date started:
       } else {
-        spreadsheet.add(rowToAdd); // add yesterday to spreadsheet
-//      debugPrint('rowToAdd $rowToAdd');
+        dailySummariesList.add(rowToAdd); // add yesterday to dailySummariesList
+        debugPrint('rowToAdd $rowToAdd');
         // clear rowToAdd from yesterdays values
         rowToAdd = List.filled(attributeList.length + 1, null);
         // set new date
@@ -87,9 +95,9 @@ class WriteDailySummariesCSV {
         rowToAdd[columnIndex] = entryList[entryCount].value;
       }
     }
-    spreadsheet.add(rowToAdd); // add to spreadsheet
+    dailySummariesList.add(rowToAdd); // add to dailySummariesList
 
-//  debugPrint('attributeSpreadsheet $spreadsheet');
+//  debugPrint('attributedailySummariesList $dailySummariesList');
 
     /*
     * save to file
@@ -102,11 +110,12 @@ class WriteDailySummariesCSV {
     debugPrint('targetPath $pathOfTheFileToWrite');
     File file = File(pathOfTheFileToWrite);
     debugPrint('file $file');
-    String csv = const ListToCsvConverter().convert(spreadsheet);
+    String csv = const ListToCsvConverter().convert(dailySummariesList);
     //debugPrint('csv $csv');
     file.writeAsString(csv);
     debugPrint('daily_summaries.csv written');
 //  }
-    return spreadsheet;
+
+    return csv;
   }
 }

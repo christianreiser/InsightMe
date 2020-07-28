@@ -71,6 +71,13 @@ class DatabaseHelperEntry {
     return result;
   }
 
+  void deleteDb() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = directory.path + 'entrys.db';
+    await deleteDatabase(path);
+    initializeDatabase();
+  }
+
   // CHREI Fetch Operation: Get entry objects from database FILTERED ATTRIBUTES
 
   Future<List<Map<String, dynamic>>> getFilteredEntryMapList(

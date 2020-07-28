@@ -7,6 +7,8 @@ import 'dart:io';
 import 'dart:convert' show utf8;
 import 'package:flutter_charts/flutter_charts.dart';
 
+import 'create_daily_summary.dart';
+
 class ComputeCorrelations {
   computeCorrelations() async {
 /*
@@ -14,6 +16,10 @@ class ComputeCorrelations {
 * computes correlations
 * writes correlations matrix as csv
 * */
+
+    // createDailySummariesCSVFromDB
+    await WriteDailySummariesCSV().writeDailySummariesCSV(); // todo TESTING
+
     // get numDays
     final prefs = await SharedPreferences.getInstance();
     int numDays = prefs.getInt('numDays') ?? null;
@@ -47,6 +53,7 @@ class ComputeCorrelations {
   * */
     debugPrint('numDays $numDays');
     int numLabels = labels.length;
+    debugPrint('numLabels $numLabels');
     int maxCorrelations = (numLabels * numLabels - numLabels) ~/ 2;
     debugPrint('maxCorrelations: $maxCorrelations');
     var correlationMatrix = List.generate(
@@ -139,7 +146,6 @@ class ComputeCorrelations {
 //  for (int row = 0; row < numLabels + 1; row++) {
 //    debugPrint('${correlationMatrix[row]}');
 //  }
-    debugPrint('correlationMatrix(mood) ${transpose(correlationMatrix)[35]}');
 
     /*
   * save correlations

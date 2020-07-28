@@ -5,8 +5,9 @@ import 'package:insightme/Covid19/covid19_route.dart';
 import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './Visualize/visualize_route.dart';
-import 'Database/create_daily_summary.dart';
 import 'Database/correlations.dart';
+import 'Database/database_helper_attribute.dart';
+import 'Database/database_helper_entry.dart';
 import 'Export/export.dart';
 import 'Import/import_from_json_route.dart';
 import 'Journal/journal_route.dart';
@@ -14,7 +15,7 @@ import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 import 'Optimize/optimize.dart';
 
-enum Choice { exportDailySummaries, computeCorrelations, test }
+enum Choice { exportDailySummaries, computeCorrelations, deleteAllData}
 
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute();
@@ -82,9 +83,11 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               if (result == Choice.exportDailySummaries) {
                 exportDailySummaries();
               } else if (result == Choice.computeCorrelations) {
-                WriteDailySummariesCSV().writeDailySummariesCSV(); // todo TESTING
                 ComputeCorrelations().computeCorrelations(); // todo TESTING
-              } else if (result == Choice.test) {}
+              } else if (result == Choice.deleteAllData) {
+                DatabaseHelperEntry().deleteDb();
+                DatabaseHelperAttribute().deleteDb();
+              }
 
               setState(() {
                 debugPrint('result $result');
@@ -100,10 +103,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
                 value: Choice.computeCorrelations,
                 child: Text('Compute correlations'),
               ),
-//              PopupMenuItem<Choice>(
-//                value: Choice.test,
-//                child: Text('test'),
-//              ),
+              PopupMenuItem<Choice>(
+                value: Choice.deleteAllData,
+                child: Text('Delete all data'),
+              ),
             ],
           ),
         ],
