@@ -92,10 +92,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               });
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
-//              PopupMenuItem<Choice>(
-//                value: Choice.exportDailySummaries,
-//                child: Text('Export daily summaries'),
-//              ),
+              PopupMenuItem<Choice>(
+                value: Choice.exportDailySummaries,
+                child: Text('Export daily summaries'),
+              ),
               PopupMenuItem<Choice>(
                 value: Choice.computeCorrelations,
                 child: Text('Compute correlations'),

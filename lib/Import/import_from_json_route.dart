@@ -68,11 +68,6 @@ class _ImportState extends State<Import> {
     List<String> attributeNames = [];
     DateTime dateTimeStamp;
 
-    // file picker
-//    var status = await Permission.storage.status;
-//    if (!status.isGranted) {
-//      await Permission.storage.request();
-//    }
     final File file = new File(await FilePicker.getFilePath());
 
     // get attribute list as a sting such that searching if new requires only one db query
