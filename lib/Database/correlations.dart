@@ -30,7 +30,7 @@ class ComputeCorrelations {
 
     /* separate labels from values*/
     final List<dynamic> labels =
-        rowForEachDay.removeAt(0); // separate labels from values
+    rowForEachDay.removeAt(0); // separate labels from values
     labels.removeAt(0); // remove date-label
 //  debugPrint('labels $labels');
 //  debugPrint('rowForEachDay $rowForEachDay');
@@ -96,8 +96,13 @@ class ComputeCorrelations {
               // todo fragile: breaks if cardinality row =! # row, because row is the key.
               //  todo: maybe with cUtils.zip or check cardinality with .cardinality.
 
-              xYStats[(rowForEachAttribute[row - 1][valueCount])] =
-                  rowForEachAttribute[column - 1][valueCount];
+              try {
+                xYStats[(rowForEachAttribute[row - 1][valueCount])] =
+                (rowForEachAttribute[column - 1][valueCount]);
+              } catch(e) {
+                debugPrint('_TypeError');
+              }
+
 //            debugPrint('xYStats $xYStats');
             } else {
 //            debugPrint('skipping because value is null');
@@ -114,9 +119,11 @@ class ComputeCorrelations {
             num correlation = StarStatsXY(xYStats).corCoefficient;
 
             // round if necessary // todo round if too many decimals and hard coded
-            if (correlation != 0 && correlation != 1 && correlation != -1) {
+            //if (correlation != 0 && correlation != 1 && correlation != -1) {
+            try {
               correlation = mUtils.roundToDouble(correlation, 2);
             }
+            catch (e) {debugPrint('not rounded');}
             correlationMatrix[row][column] = correlation;
           } else {
 //          debugPrint(
@@ -143,7 +150,7 @@ class ComputeCorrelations {
 //  await getExternalStorageDirectory(); // todo: currently works only on andoid
 //  debugPrint('directoryTarget $directoryTarget');
 
-        debugPrint('targetPath $pathOfTheFileToWrite');
+    debugPrint('targetPath $pathOfTheFileToWrite');
     File file = File(pathOfTheFileToWrite);
     debugPrint('file $file');
     String csv = const ListToCsvConverter().convert(correlationMatrix);

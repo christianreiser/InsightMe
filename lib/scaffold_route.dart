@@ -12,7 +12,7 @@ import 'Import/import_from_json_route.dart';
 import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
-import 'Optimize/optmize_route.dart';
+import 'Optimize/optimize.dart';
 
 enum Choice { exportDailySummaries, computeCorrelations, test }
 
@@ -92,18 +92,18 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               });
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
-              PopupMenuItem<Choice>(
-                value: Choice.exportDailySummaries,
-                child: Text('Export daily summaries'),
-              ),
+//              PopupMenuItem<Choice>(
+//                value: Choice.exportDailySummaries,
+//                child: Text('Export daily summaries'),
+//              ),
               PopupMenuItem<Choice>(
                 value: Choice.computeCorrelations,
                 child: Text('Compute correlations'),
               ),
-              PopupMenuItem<Choice>(
-                value: Choice.test,
-                child: Text('test'),
-              ),
+//              PopupMenuItem<Choice>(
+//                value: Choice.test,
+//                child: Text('test'),
+//              ),
             ],
           ),
         ],
@@ -161,17 +161,17 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             }),
 
         // connect service
-        SpeedDialChild(
-            backgroundColor: Colors.grey,
-            child: Icon(Icons.input),
-            label: "Connect with Service (e.g. Apple Health, FitBit)",
-            onTap: () {
-              print("DropDown");
-//                Navigator.push(
-//                  context,
-//                  MaterialPageRoute(builder: (context) => Tmp()),
-//                ); // Navigate to newManualEntry route when tapped.
-            }),
+//        SpeedDialChild(
+//            backgroundColor: Colors.grey,
+//            child: Icon(Icons.input),
+//            label: "Connect with Service (e.g. Apple Health, FitBit)",
+//            onTap: () {
+//              print("DropDown");
+////                Navigator.push(
+////                  context,
+////                  MaterialPageRoute(builder: (context) => Tmp()),
+////                ); // Navigate to newManualEntry route when tapped.
+//            }),
       ],
     );
   }
@@ -194,11 +194,11 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           icon: Icon(Icons.timeline),
           title: Text('Visualize'),
         ),
-        BottomNavigationBarItem(
-          // todo
-          icon: Icon(Icons.widgets),
-          title: Text('Insights'),
-        ),
+//        BottomNavigationBarItem(
+//           todo
+//          icon: Icon(Icons.widgets),
+//          title: Text('Optimize'),
+//        ),
 //          BottomNavigationBarItem(
 //            icon: Icon(Icons.local_hospital),
 //            title: Text('COVID-19'),
