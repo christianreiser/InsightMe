@@ -100,7 +100,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
                 PageRouteBuilder(
                   opaque: false, // set to false
                   pageBuilder: (_, __, ___) => Container(
-                    color: Colors.black.withOpacity(.6),
+                    color: Colors.black.withOpacity(.7),
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 25, 20, 20),
                       child: SearchOrCreateAttribute(),

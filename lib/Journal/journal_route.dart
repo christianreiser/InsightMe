@@ -44,6 +44,7 @@ class JournalRouteState extends State<JournalRoute> {
       // todo check if needed
       globals.Global().updateAttributeList();
       debugPrint('attributeListLength ${globals.attributeListLength}');
+      print('globals.attributeListLength ${globals.attributeListLength}');
     }
 
     return RefreshIndicator(
