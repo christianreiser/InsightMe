@@ -17,6 +17,7 @@ import 'package:insightme/Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../Journal/searchOrCreateAttribute.dart' as soca;
 
+
 class Import extends StatefulWidget {
   @override
   _ImportState createState() => _ImportState();
@@ -67,7 +68,6 @@ class _ImportState extends State<Import> {
     List<String> attributeNames = [];
     DateTime dateTimeStamp;
 
-    // file picker
     final File file = new File(await FilePicker.getFilePath());
 
     // get attribute list as a sting such that searching if new requires only one db query

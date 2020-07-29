@@ -66,6 +66,12 @@ class DatabaseHelperAttribute {
     return result;
   }
 
+  void deleteDb() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = directory.path + 'attributes.db';
+    await deleteDatabase(path);
+  }
+
   // Insert Operation: Insert a attribute object to database
   Future<int> insertAttribute(Attribute attribute) async {
     Database db = await this.database;

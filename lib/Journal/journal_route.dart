@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Database/create_daily_summary.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
 import './../globals.dart' as globals;
@@ -18,15 +19,20 @@ class JournalRoute extends StatefulWidget {
 
 class JournalRouteState extends State<JournalRoute> {
   List<Entry> _entryList;
-  List<bool> _isSelected = []; // true if long pressed
+  List<bool> _isSelectedList = []; // which entries are selected
+  bool _multiEntrySelectionActive =
+      false; // true if long pressed and any selected
+
   final DatabaseHelperEntry databaseHelperEntry = // error when static
       DatabaseHelperEntry();
 
   int _countEntry = 0;
-  bool _showHint = false;
+
+  //bool _showHint = false;
 
   @override
   Widget build(BuildContext context) {
+
     // build entry list if null
     if (_entryList == null) {
       _entryList = List<Entry>();
@@ -36,12 +42,8 @@ class JournalRouteState extends State<JournalRoute> {
       }
     }
 
-    debugPrint(
-        'globals.attributeListLength == 0 ${globals.attributeListLength}');
     // async update local attribute list if null to load for other routes later on
-    if (globals.attributeListLength == 0 ||
-        globals.attributeListLength == null) {
-      // todo check if needed
+    if (globals.attributeListLength == null) {
       globals.Global().updateAttributeList();
       debugPrint('attributeListLength ${globals.attributeListLength}');
       print('globals.attributeListLength ${globals.attributeListLength}');
@@ -56,7 +58,7 @@ class JournalRouteState extends State<JournalRoute> {
           ? _makeEntryHint() // _delayedHint() todo
 
           // ENTRY LIST
-          : _getEntryListView(),
+          : _getEntryListView(),//_entryListFutureBuilder(),
     );
   }
 
@@ -124,7 +126,7 @@ class JournalRouteState extends State<JournalRoute> {
 
   // MULTIPLE SELECTION DELETION BAR
   Widget _actionBarWithActionBarCapability() {
-    return _isSelected.contains(true)
+    return _multiEntrySelectionActive
         ? AppBar(
             leading: FlatButton(
               onPressed: () {
@@ -149,7 +151,7 @@ class JournalRouteState extends State<JournalRoute> {
                 FlatButton(
                   child: Icon(Icons.select_all),
                   onPressed: () {
-                    _isSelected = List.filled(_isSelected.length, true);
+                    _isSelectedList = List.filled(_isSelectedList.length, true);
                     setState(() {
                       debugPrint("Select all button clicked");
                     });
@@ -162,7 +164,38 @@ class JournalRouteState extends State<JournalRoute> {
         : Container();
   }
 
-// ENTRY LIST
+  // ENTRY LIST
+  FutureBuilder _entryListFutureBuilder() {
+    /*
+    * decides if standard scaffold or welcome screen should be shown
+    * Logic:
+    * Welcome if:
+    *   1. hideWelcome == null (as not shown before)
+    *   2. hideWelcome == false
+    * StandardScaffold if:
+    *   1. problems with connection state (i.e. none, waiting)
+    *   2. hide == true
+    * */
+    return FutureBuilder<List<Entry>>(
+      future: databaseHelperEntry.getEntryList(),
+      builder: (BuildContext context, AsyncSnapshot<List<Entry>> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return _makeEntryHint();
+          case ConnectionState.waiting:
+            return CircularProgressIndicator();
+          default:
+            if (!snapshot.hasError) {
+              //@ToDo("Return a welcome screen")
+              return _getEntryListView();
+            } else {
+              return Text('error: ${snapshot.error}');
+            }
+        }
+      },
+    );
+  }
+
   Widget _getEntryListView() {
     return Column(
       children: [
@@ -179,14 +212,18 @@ class JournalRouteState extends State<JournalRoute> {
                 color: Theme.of(context).backgroundColor,
                 child: Card(
                   // gives monotone tiles a card shape
-                  color: _isSelected[position] == false
-                      ? Colors.white
-                      : Colors.grey, // when selected
+                  color:
+                      _multiEntrySelectionActive // when multi selected, check each
+                          ? _isSelectedList[position] == false
+                              ? Colors.white
+                              : Colors.grey
+                          : Colors.white, // when none selected always white
                   child: ListTile(
                     onLongPress: () {
                       setState(
                         () {
-                          _isSelected[position] = true;
+                          _isSelectedList[position] = true;
+                          _multiEntrySelectionActive = true;
                         },
                       );
                     },
@@ -228,8 +265,12 @@ class JournalRouteState extends State<JournalRoute> {
                     onTap: () {
                       setState(
                         () {
-                          if (_isSelected.contains(true)) {
-                            _isSelected[position] = !_isSelected[position];
+                          if (_multiEntrySelectionActive) {
+                            _isSelectedList[position] =
+                                !_isSelectedList[position];
+                            if (!_isSelectedList.contains(true)) {
+                              _multiEntrySelectionActive = false;
+                            }
                           } else {
                             NavigationHelper().navigateToEditEntry(
                                 this._entryList[position], context, false);
@@ -253,20 +294,21 @@ class JournalRouteState extends State<JournalRoute> {
     return title.substring(0, 1);
   }
 
-  void delayedChangState() {
-    Timer(const Duration(milliseconds: 300), handleTimeout);
-  }
+//  void delayedChangState() {
+//    Timer(const Duration(milliseconds: 300), handleTimeout);
+//  }
 
-  void handleTimeout() {
-    setState(() {
-      // todo
-      _showHint = true;
-    });
-  }
+//  void handleTimeout() {
+//    setState(() {
+//      // todo
+//      _showHint = true;
+//    });
+//  }
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
+    // todo needed?
     _entryList = await databaseHelperEntry.getEntryList();
     globals.entryListLength = _entryList.length;
 
@@ -276,8 +318,12 @@ class JournalRouteState extends State<JournalRoute> {
         this._entryList = _entryList;
         this._countEntry = globals.entryListLength; // needed
       });
-      _isSelected =
-          List.filled(globals.entryListLength, false); // needs also an update
+
+      // if multi selection was active then deactivate
+      if (_multiEntrySelectionActive) {
+        _multiEntrySelectionActive = false;
+        _isSelectedList = null; // todo? needs also an update
+      }
 
       // take two most recent entries as defaults for visualization.
       _getDefaultVisAttributes();
@@ -287,7 +333,10 @@ class JournalRouteState extends State<JournalRoute> {
   void _getDefaultVisAttributes() {
     // take two most recent entries as defaults for visualization.
     // if statements are needed to catch error if list is empty.
-    if (globals.entryListLength > 0) {
+    if (globals.entryListLength == null) {
+      globals.mostRecentAddedEntryName = null;
+      globals.secondMostRecentAddedEntryName = null;
+    } else if (globals.entryListLength > 0) {
       globals.mostRecentAddedEntryName = _entryList[0].title;
       if (globals.entryListLength > 1) {
         globals.secondMostRecentAddedEntryName = _entryList[1].title;
@@ -300,9 +349,9 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   // DELETE
-  void _delete(_isSelected) async {
-    for (int position = 0; position < _isSelected.length; position++) {
-      if (_isSelected[position] == true) {
+  void _delete(_isSelectedList) async {
+    for (int position = 0; position < _isSelectedList.length; position++) {
+      if (_isSelectedList[position] == true) {
         await databaseHelperEntry // todo int result = feedback
             .deleteEntry(_entryList[position].id);
       }
@@ -319,7 +368,7 @@ class JournalRouteState extends State<JournalRoute> {
             children: [Icon(Icons.delete), Text('Yes')],
           ),
           onPressed: () {
-            _delete(_isSelected);
+            _delete(_isSelectedList);
             Navigator.of(context).pop();
           },
         ),
@@ -331,13 +380,13 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   int _countSelected() {
-    if (_isSelected == null || _isSelected.isEmpty) {
+    if (_isSelectedList == null || _isSelectedList.isEmpty) {
       return 0;
     }
 
     int count = 0;
-    for (int i = 0; i < _isSelected.length; i++) {
-      if (_isSelected[i] == true) {
+    for (int i = 0; i < _isSelectedList.length; i++) {
+      if (_isSelectedList[i] == true) {
         count++;
       }
     }
@@ -346,7 +395,8 @@ class JournalRouteState extends State<JournalRoute> {
 
   _deselectAll() {
     setState(() {
-      _isSelected = List.filled(globals.entryListLength, false);
+      _isSelectedList = List.filled(globals.entryListLength, false);
+      _multiEntrySelectionActive = false;
     });
   }
 }

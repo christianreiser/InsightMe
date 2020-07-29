@@ -5,11 +5,17 @@ import 'package:insightme/Covid19/covid19_route.dart';
 import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './Visualize/visualize_route.dart';
+import 'Database/correlations.dart';
+import 'Database/database_helper_attribute.dart';
+import 'Database/database_helper_entry.dart';
+import 'Export/export.dart';
 import 'Import/import_from_json_route.dart';
 import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
-import 'Recommend/recommendation_route.dart';
+import 'Optimize/optimize.dart';
+
+enum Choice { exportDailySummaries, computeCorrelations, deleteAllData}
 
 class ScaffoldRoute extends StatefulWidget {
   ScaffoldRoute();
@@ -70,6 +76,40 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           strings.appTitle,
         ),
         leading: null,
+        actions: <Widget>[
+          // action button
+          PopupMenuButton<Choice>(
+            onSelected: (Choice result) {
+              if (result == Choice.exportDailySummaries) {
+                exportDailySummaries();
+              } else if (result == Choice.computeCorrelations) {
+                ComputeCorrelations().computeCorrelations(); // todo TESTING
+              } else if (result == Choice.deleteAllData) {
+                DatabaseHelperEntry().deleteDb();
+                DatabaseHelperAttribute().deleteDb();
+              }
+
+              setState(() {
+                debugPrint('result $result');
+                Choice _selection = result;
+              });
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
+              PopupMenuItem<Choice>(
+                value: Choice.exportDailySummaries,
+                child: Text('Export daily summaries'),
+              ),
+              PopupMenuItem<Choice>(
+                value: Choice.computeCorrelations,
+                child: Text('Compute correlations'),
+              ),
+              PopupMenuItem<Choice>(
+                value: Choice.deleteAllData,
+                child: Text('Delete all data'),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -117,24 +157,24 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             label: "Import Data -beta-",
             onTap: () {
               debugPrint("DropDown");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Import()),
-                ); // Navigate to newManualEntry route when tapped.
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Import()),
+              ); // Navigate to newManualEntry route when tapped.
             }),
-//
-//          // connect service
-//          SpeedDialChild(
-//              backgroundColor: Colors.grey,
-//              child: Icon(Icons.input),
-//              label: "Connect with Service (e.g. Apple Health, FitBit)",
-//              onTap: () {
-//                print("DropDown");
-//                Navigator.push(
-//                  context,
-//                  MaterialPageRoute(builder: (context) => Import()),
-//                ); // Navigate to newManualEntry route when tapped.
-//              }),
+
+        // connect service
+//        SpeedDialChild(
+//            backgroundColor: Colors.grey,
+//            child: Icon(Icons.input),
+//            label: "Connect with Service (e.g. Apple Health, FitBit)",
+//            onTap: () {
+//              print("DropDown");
+////                Navigator.push(
+////                  context,
+////                  MaterialPageRoute(builder: (context) => Tmp()),
+////                ); // Navigate to newManualEntry route when tapped.
+//            }),
       ],
     );
   }
@@ -157,10 +197,11 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           icon: Icon(Icons.timeline),
           title: Text('Visualize'),
         ),
-          BottomNavigationBarItem( // todo
-            icon: Icon(Icons.widgets),
-            title: Text('Insights'),
-          ),
+//        BottomNavigationBarItem(
+//           todo
+//          icon: Icon(Icons.widgets),
+//          title: Text('Optimize'),
+//        ),
 //          BottomNavigationBarItem(
 //            icon: Icon(Icons.local_hospital),
 //            title: Text('COVID-19'),
@@ -182,7 +223,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   static List<Widget> _widgetOptions = <Widget>[
     JournalRoute(),
     Visualize(),
-    Recommend(),
+    Optimize(),
     Covid19(), //IntroRoute(),
     IntroRoute(),
   ];
