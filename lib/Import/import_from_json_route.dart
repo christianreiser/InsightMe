@@ -70,21 +70,28 @@ class _ImportState extends State<Import> {
     ); // type lineChart
   }
 
-  // IMPORT
   void importCSVFile() async {
+    /* imports data from the picked file.
+    * adds attributes if new
+    * todo importing same data twice only updates and does not add again
+    *  */
+
+    // let user select file to import
+    final File file = new File(await FilePicker.getFilePath());
+
+    /* ini */
     int lineCounter = -1;
     List<String> attributeNames = [];
     DateTime dateTimeStamp;
 
-    final File file = new File(await FilePicker.getFilePath());
-
     // get attribute list as a sting such that searching if new requires only one db query
     List<Attribute> _dBAttributeList =
-        await databaseHelperAttribute.getAttributeList();
+    await databaseHelperAttribute.getAttributeList();
 
+    // open file
     Stream<List> inputStream = file.openRead();
 
-    // iterate through lines
+    // iterate through rows (days). The first line are the the labels
     inputStream
         .transform(utf8.decoder) // Decode bytes to UTF-8.
         .transform(new LineSplitter()) // Convert stream to individual lines.
@@ -98,15 +105,13 @@ class _ImportState extends State<Import> {
         //debugPrint('\ncolumnCount $columnCount');
         String _cellContent = column[columnCount];
 
-        // get entries
-        if (lineCounter > 0 && columnCount > 0) {
-          // skip empty cells in csv-file
-          if ((_cellContent).length > 0) {
-            // title, value, time, comment
+        if (lineCounter > 0 && columnCount > 0) { // get entries
+          if ((_cellContent).length > 0) { // skip empty cells in csv-file
 
             //debugPrint('and attributeName ${attributeNames[columnCount]}');
+
             Entry entry = Entry(attributeNames[columnCount], _cellContent,
-                '$dateTimeStamp', 'csv import');
+                '$dateTimeStamp', 'csv import'); // title, value, time, comment
 
             _save(entry);
 //            debugPrint(

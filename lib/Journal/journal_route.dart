@@ -32,7 +32,6 @@ class JournalRouteState extends State<JournalRoute> {
 
   @override
   Widget build(BuildContext context) {
-
     // build entry list if null
     if (_entryList == null) {
       _entryList = List<Entry>();
@@ -58,7 +57,7 @@ class JournalRouteState extends State<JournalRoute> {
           ? _makeEntryHint() // _delayedHint() todo
 
           // ENTRY LIST
-          : _getEntryListView(),//_entryListFutureBuilder(),
+          : _getEntryListView(), //_entryListFutureBuilder(),
     );
   }
 
@@ -222,7 +221,8 @@ class JournalRouteState extends State<JournalRoute> {
                     onLongPress: () {
                       setState(
                         () {
-                          _isSelectedList = List.filled(globals.entryListLength, false); // might be first ini
+                          _isSelectedList = List.filled(globals.entryListLength,
+                              false); // might be first ini
                           _isSelectedList[position] = true;
                           _multiEntrySelectionActive = true;
                         },
@@ -290,9 +290,13 @@ class JournalRouteState extends State<JournalRoute> {
     );
   }
 
-  // for yellow circle avatar
   getFirstLetter(String title) {
-    return title.substring(0, 1);
+    /* get first letter for yellow circle avatar */
+    if (title.length > 0) { // to avoid error when title.length == 0
+      return title.substring(0, 1);
+    } else {
+      return ' ';
+    }
   }
 
 //  void delayedChangState() {
