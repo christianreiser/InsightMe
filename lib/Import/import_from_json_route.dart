@@ -16,6 +16,7 @@ import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../Journal/searchOrCreateAttribute.dart' as soca;
+import '../navigation_helper.dart';
 
 
 class Import extends StatefulWidget {
@@ -37,6 +38,13 @@ class _ImportState extends State<Import> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () async {
+            NavigationHelper()
+                .navigateToScaffoldRoute(context); // refreshes
+          },
+        ),
         title: Text('Import'),
       ),
       body: Column(
