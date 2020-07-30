@@ -224,7 +224,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
     JournalRoute(),
     Visualize(),
     Optimize(),
-    Covid19(), //IntroRoute(),
+    //Covid19(), //IntroRoute(),
     IntroRoute(),
   ];
 
