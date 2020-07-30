@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/Database/create_daily_summary.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
 import './../globals.dart' as globals;
@@ -19,7 +18,9 @@ class JournalRoute extends StatefulWidget {
 
 class JournalRouteState extends State<JournalRoute> {
   List<Entry> _entryList;
+
   List<bool> _isSelectedList = []; // which entries are selected
+  //List<bool> _isSelectedList = List.filled(_isSelectedList.length, true);
   bool _multiEntrySelectionActive =
       false; // true if long pressed and any selected
 
@@ -222,6 +223,7 @@ class JournalRouteState extends State<JournalRoute> {
                     onLongPress: () {
                       setState(
                         () {
+                          _isSelectedList = List.filled(globals.entryListLength, false); // might be first ini
                           _isSelectedList[position] = true;
                           _multiEntrySelectionActive = true;
                         },

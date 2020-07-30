@@ -23,7 +23,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // ini _isSelected
   //debugPrint('${globals.attributeList.length}');
     List<bool> _isSelected =
-      List.filled(1, false); // true if long pressed
+      List.filled(globals.attributeListLength, false); // true if long pressed
   bool _createButtonVisible = false; // initially don't show create button
   var _attributeInputController = TextEditingController();
 
