@@ -20,7 +20,6 @@ class JournalRouteState extends State<JournalRoute> {
   List<Entry> _entryList;
 
   List<bool> _isSelectedList = []; // which entries are selected
-  //List<bool> _isSelectedList = List.filled(_isSelectedList.length, true);
   bool _multiEntrySelectionActive =
       false; // true if long pressed and any selected
 
