@@ -82,6 +82,7 @@ class _ImportState extends State<Import> {
     /* ini */
     int lineCounter = -1;
     List<String> attributeNames = [];
+
     DateTime dateTimeStamp;
 
     // get attribute list as a sting such that searching if new requires only one db query
@@ -105,7 +106,7 @@ class _ImportState extends State<Import> {
         //debugPrint('\ncolumnCount $columnCount');
         String _cellContent = column[columnCount];
 
-        if (lineCounter > 0 && columnCount > 0) { // get entries
+        if (lineCounter > 0 && columnCount > 0) { // filter entries
           if ((_cellContent).length > 0) { // skip empty cells in csv-file
 
             //debugPrint('and attributeName ${attributeNames[columnCount]}');
@@ -136,7 +137,6 @@ class _ImportState extends State<Import> {
           _saveAttributeToDBIfNew(_cellContent, _dBAttributeList);
           //debugPrint('call _saveAttributeToDBIfNew with $_cellContent');
         }
-
         // skip dateTime label
         else if (lineCounter == 0 && columnCount == 0) {
           //debugPrint('skipping dateTime label $_cellContent');

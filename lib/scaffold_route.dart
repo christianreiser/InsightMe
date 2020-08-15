@@ -1,7 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:insightme/Covid19/covid19_route.dart';
 import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './Visualize/visualize_route.dart';
@@ -14,6 +13,8 @@ import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 import 'Optimize/optimize.dart';
+import 'package:starflut/starflut.dart';
+
 
 enum Choice { exportDailySummaries, computeCorrelations, deleteAllData}
 
