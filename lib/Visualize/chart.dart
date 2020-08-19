@@ -102,6 +102,7 @@ class Statistics extends StatelessWidget {
         children: [
           correlation(),
           pValue(),
+          SizedBox(width: 90,),
           //statisticWithIcons(),
         ]);
   }
@@ -125,7 +126,7 @@ class Statistics extends StatelessWidget {
               // chart data arrived but no data found
               else if (snapshot.connectionState == ConnectionState.done &&
                   _correlationCoefficient == null) {
-                return Text('-');
+                return Text('Correlation Coefficient: -');
 
                 // else: i.e. data didn't arrive
               } else {
@@ -145,7 +146,6 @@ class Statistics extends StatelessWidget {
   }
 
   Future<num> _getCorrelationCoefficient(attribute1, attribute2) async {
-    debugPrint('called _getCorrelationCoefficient');
 
     /*
   * read csv and transform
@@ -158,7 +158,7 @@ class Statistics extends StatelessWidget {
         .transform(utf8.decoder)
         .transform(new CsvToListConverter())
         .toList();
-    //debugPrint('correlationMatrix $correlationMatrix');
+    debugPrint('got correlationMatrix $correlationMatrix');
 
     int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
     int attributeIndex2 =
@@ -170,6 +170,7 @@ class Statistics extends StatelessWidget {
     // min max is needed as correlation matrix is only half filled and row<column
     _correlationCoefficient =
         correlationMatrix[min(attributeIndex1,attributeIndex2)][max(attributeIndex1,attributeIndex2)];
+    debugPrint('correlationMatrix: $correlationMatrix');
     return _correlationCoefficient;
   }
 

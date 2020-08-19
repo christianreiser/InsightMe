@@ -25,7 +25,7 @@ class ComputeCorrelations {
     int numDays = prefs.getInt('numDays') ?? null;
 
     /*
-  * read csv and transform
+  * read daily summaries csv and transform
   * */
     final directory = await getApplicationDocumentsDirectory();
     final input = new File(directory.path + "/daily_summaries.csv").openRead();
@@ -49,21 +49,16 @@ class ComputeCorrelations {
     //debugPrint('rowForEachAttribute $rowForEachAttribute');
 
     /*
-  * correlation
-  * */
+    * correlation
+    */
     debugPrint('numDays $numDays');
     int numLabels = labels.length;
     debugPrint('numLabels $numLabels');
-    int maxCorrelations = (numLabels * numLabels - numLabels) ~/ 2;
-    debugPrint('maxCorrelations: $maxCorrelations');
+
     var correlationMatrix = List.generate(
         numLabels + 1, (i) => List(numLabels + 1),
         growable: false);
 
-//  List<num> correlationCoefficients = List.filled(maxCorrelations, null);
-//  List<String> attribute1 = List.filled(maxCorrelations, null);
-//  List<String> attribute2 = List.filled(maxCorrelations, null);
-    int labelCount = 0;
     // 1 to skip date
     for (int row = 1; row < numLabels + 1; row++) {
       // set labels1 for list
@@ -120,7 +115,6 @@ class ComputeCorrelations {
           * Get correlation coefficient
           * */
 //        debugPrint('xYStats.length ${xYStats.length}');
-//        debugPrint('labelCount: $labelCount');
           if (xYStats.length > 2) {
 //          debugPrint('computing correlation');
             num correlation = StarStatsXY(xYStats).corCoefficient;
@@ -136,9 +130,8 @@ class ComputeCorrelations {
 //          debugPrint(
 //              'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
           }
-//        debugPrint('correlationMatrix: $correlationMatrix');
+        debugPrint('correlationMatrix: $correlationMatrix');
 //        debugPrint('____________________________________\n\n');
-          labelCount++;
         }
       }
     } // last for loop
@@ -152,8 +145,8 @@ class ComputeCorrelations {
   * */
     //final directory = await getApplicationDocumentsDirectory(); // already defined
     final pathOfTheFileToWrite = directory.path + "/correlation_matrix.csv";
-    final directoryTarget =
-//  await getExternalStorageDirectory(); // todo: currently works only on andoid
+//    final directoryTarget =
+//  await getExternalStorageDirectory(); // todo: currently works only on android
 //  debugPrint('directoryTarget $directoryTarget');
 
     debugPrint('targetPath $pathOfTheFileToWrite');
