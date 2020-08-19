@@ -18,7 +18,6 @@ import '../Database/entry.dart';
 import '../Journal/searchOrCreateAttribute.dart' as soca;
 import '../navigation_helper.dart';
 
-
 class Import extends StatefulWidget {
   @override
   _ImportState createState() => _ImportState();
@@ -41,8 +40,7 @@ class _ImportState extends State<Import> {
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () async {
-            NavigationHelper()
-                .navigateToScaffoldRoute(context); // refreshes
+            NavigationHelper().navigateToScaffoldRoute(context); // refreshes
           },
         ),
         title: Text('Import'),
@@ -75,9 +73,10 @@ class _ImportState extends State<Import> {
     * adds attributes if new
     * todo importing same data twice only updates and does not add again
     *  */
-
+    debugPrint('start imput method');
     // let user select file to import
     final File file = new File(await FilePicker.getFilePath());
+    debugPrint('file picked');
 
     /* ini */
     int lineCounter = -1;
@@ -87,10 +86,12 @@ class _ImportState extends State<Import> {
 
     // get attribute list as a sting such that searching if new requires only one db query
     List<Attribute> _dBAttributeList =
-    await databaseHelperAttribute.getAttributeList();
+        await databaseHelperAttribute.getAttributeList();
+    debugPrint('got attribute list from db');
 
     // open file
     Stream<List> inputStream = file.openRead();
+    debugPrint('file opened');
 
     // iterate through rows (days). The first line are the the labels
     inputStream
@@ -99,15 +100,17 @@ class _ImportState extends State<Import> {
         .listen((String line) {
       List column = line.split(','); // split by comma
       lineCounter++;
-      //debugPrint('lineCounter $lineCounter');
+      debugPrint('lineCounter $lineCounter');
 
       // iterate through columns
       for (int columnCount = 0; columnCount < column.length; columnCount++) {
         //debugPrint('\ncolumnCount $columnCount');
         String _cellContent = column[columnCount];
 
-        if (lineCounter > 0 && columnCount > 0) { // filter entries
-          if ((_cellContent).length > 0) { // skip empty cells in csv-file
+        if (lineCounter > 0 && columnCount > 0) {
+          // filter entries
+          if ((_cellContent).length > 0) {
+            // skip empty cells in csv-file
 
             //debugPrint('and attributeName ${attributeNames[columnCount]}');
 
@@ -143,8 +146,7 @@ class _ImportState extends State<Import> {
           attributeNames.add(
               _cellContent); // store such that columnCount and attributeNames match
         } else {
-          debugPrint(
-              'Error unknown: $_cellContent');
+          debugPrint('Error unknown: $_cellContent');
         }
 
         // TODO feedback if import was successful

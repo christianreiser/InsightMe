@@ -200,7 +200,7 @@ class EditEntryState extends State<EditEntry> {
       child: Text(
         'Hint: Set a value for your rating. '
             'You can choose your own scale/unit and don\'t have to tell the app,'
-            ' but the it must be consistent with all future entries for this label. '
+            ' but it must be consistent with all future entries for this label. '
             'For example, you can: \n'
             '  - rate your feeling or symptoms and decide a scale from 1 to 10,\n'
             '  - enter medication-dosage in milligrams,\n'
