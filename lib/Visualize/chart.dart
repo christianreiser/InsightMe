@@ -119,7 +119,7 @@ class Statistics extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.done &&
                   _correlationCoefficient != null) {
                 return Text(
-                    'Correlation Coeffiecient: $_correlationCoefficient');
+                    'Correlation Coefficient: $_correlationCoefficient');
               }
 
               // chart data arrived but no data found

@@ -130,7 +130,7 @@ class ComputeCorrelations {
             try {
               correlation = mUtils.roundToDouble(correlation, 2);
             }
-            catch (e) {debugPrint('not rounded');}
+            catch (e) {debugPrint('correlation= $correlation was not rounded');}
             correlationMatrix[row][column] = correlation;
           } else {
 //          debugPrint(
