@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insightme/scaffold_route.dart';
-
-import 'Covid19/stayHealthy.dart';
 import 'Database/Route/edit_attributes.dart';
 import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';

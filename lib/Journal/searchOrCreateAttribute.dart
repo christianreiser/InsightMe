@@ -105,7 +105,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             backgroundColor: Colors.grey,
           )
         : AppBar(
-            title: Text("What do you want to track?"),
+            title: Text("What to track?"),
             leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () async {

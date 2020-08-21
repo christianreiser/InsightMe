@@ -2,6 +2,8 @@
 //import 'package:shared_preferences/shared_preferences.dart';
 
 
+import 'package:flutter/cupertino.dart';
+
 import 'Database/attribute.dart';
 import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
@@ -18,8 +20,11 @@ class Global {
 
 
   Future<List<Attribute>> updateAttributeList() async {
+    debugPrint('called updateAttributeList');
     attributeList = await DatabaseHelperAttribute().getAttributeList();
+    debugPrint('done await DatabaseHelperAttribute().getAttributeList()');
     attributeListLength = attributeList.length;
+    debugPrint('attributeList.length: ${attributeList.length}');
     return attributeList;
   }
 

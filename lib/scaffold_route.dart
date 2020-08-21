@@ -13,7 +13,7 @@ import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import './strings.dart' as strings;
 import 'Optimize/optimize.dart';
-import 'package:starflut/starflut.dart';
+//import 'package:starflut/starflut.dart';
 
 
 enum Choice { exportDailySummaries, computeCorrelations, deleteAllData}
@@ -96,18 +96,18 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               });
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
-              PopupMenuItem<Choice>(
-                value: Choice.exportDailySummaries,
-                child: Text('Export daily summaries'),
-              ),
+//              PopupMenuItem<Choice>(
+//                value: Choice.exportDailySummaries,
+//                child: Text('Export daily summaries'),
+//              ),
               PopupMenuItem<Choice>(
                 value: Choice.computeCorrelations,
                 child: Text('Compute correlations'),
               ),
-              PopupMenuItem<Choice>(
-                value: Choice.deleteAllData,
-                child: Text('Delete all data'),
-              ),
+//              PopupMenuItem<Choice>(
+//                value: Choice.deleteAllData,
+//                child: Text('Delete all data'),
+//              ),
             ],
           ),
         ],
@@ -152,17 +152,17 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             }),
 
         // import from CSV
-        SpeedDialChild(
-            backgroundColor: Colors.grey,
-            child: Icon(Icons.input),
-            label: "Import Data -beta-",
-            onTap: () {
-              debugPrint("DropDown");
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Import()),
-              ); // Navigate to newManualEntry route when tapped.
-            }),
+//        SpeedDialChild(
+//            backgroundColor: Colors.grey,
+//            child: Icon(Icons.input),
+//            label: "Import Data -beta-",
+//            onTap: () {
+//              debugPrint("DropDown");
+//              Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => Import()),
+//              ); // Navigate to newManualEntry route when tapped.
+//            }),
 
         // connect service
 //        SpeedDialChild(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -27,32 +28,38 @@ class DatabaseHelperEntry {
     return _databaseHelperEntry;
   }
 
-/*
-* create the database object and provide it with a getter where we will
-* instantiate the database if it’s not. This is called lazy initialization.
-*/
+  /*
+  * create the database object and provide it with a getter where we will
+  * instantiate the database if it’s not. This is called lazy initialization.
+  */
   Future<Database> get database async {
+    debugPrint('_database1 $_database');
     if (_database == null) {
       _database = await initializeDatabase();
+      debugPrint('_database2 $_database');
     }
     return _database;
   }
 
-/*
-* If there is no object assigned to the database, we use the initializeDatabase
-* function to create the database. In this function, we will get the path for
-* storing the database and create the desired tables. I’m using entries as the
-* name of the database
-* */
+  /*
+  * If there is no object assigned to the database, we use the initializeDatabase
+  * function to create the database. In this function, we will get the path for
+  * storing the database and create the desired tables. I’m using entries as the
+  * name of the database
+  * */
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'entrys.db';
+    debugPrint('getApplicationDocumentsDirectory');
+//    Directory directory = await getApplicationDocumentsDirectory();
+//    debugPrint('directory');
+//    String path = directory.path + 'entries.db';
 
+    debugPrint('openDatabase');
     // Open/create the database at a given path
-    var entrysDatabase =
-        await openDatabase(path, version: 1, onCreate: _createDb);
-    return entrysDatabase;
+    var entriesDatabase =
+        await openDatabase('entries.db', version: 1, onCreate: _createDb);
+    debugPrint('done ini $_database');
+    return entriesDatabase;
   }
 
   /*creating the table*/
@@ -72,9 +79,9 @@ class DatabaseHelperEntry {
   }
 
   void deleteDb() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'entrys.db';
-    await deleteDatabase(path);
+//    Directory directory = await getApplicationDocumentsDirectory();
+//    String path = directory.path + 'entries.db';
+    await deleteDatabase('entries.db');
     initializeDatabase();
   }
 

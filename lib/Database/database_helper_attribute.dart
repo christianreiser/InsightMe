@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -5,9 +6,9 @@ import 'package:path_provider/path_provider.dart';
 import 'attribute.dart';
 
 class DatabaseHelperAttribute {
-
-  static DatabaseHelperAttribute _databaseHelperAttribute;    // Singleton DatabaseHelperAttribute
-  static Database _database;                // Singleton Database
+  static DatabaseHelperAttribute
+      _databaseHelperAttribute; // Singleton DatabaseHelperAttribute
+  static Database _database; // Singleton Database
 
   String attributeTable = 'attribute_table';
   String colId = 'id';
@@ -16,9 +17,9 @@ class DatabaseHelperAttribute {
   DatabaseHelperAttribute._createInstance(); // Named constructor to create instance of DatabaseHelperAttribute
 
   factory DatabaseHelperAttribute() {
-
     if (_databaseHelperAttribute == null) {
-      _databaseHelperAttribute = DatabaseHelperAttribute._createInstance(); // This is executed only once, singleton object
+      _databaseHelperAttribute = DatabaseHelperAttribute
+          ._createInstance(); // This is executed only once, singleton object
     }
     return _databaseHelperAttribute;
   }
@@ -28,7 +29,6 @@ class DatabaseHelperAttribute {
 * instantiate the database if it’s not. This is called lazy initialization.
 */
   Future<Database> get database async {
-
     if (_database == null) {
       _database = await initializeDatabase();
     }
@@ -43,18 +43,20 @@ class DatabaseHelperAttribute {
 * */
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'attributes.db';
+//    Directory directory = await getApplicationDocumentsDirectory();
+//    String path = directory.path + 'attributes.db';
 
     // Open/create the database at a given path
-    var attributesDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
+    var attributesDatabase =
+        await openDatabase('attributes.db', version: 1, onCreate: _createDb);
     return attributesDatabase;
   }
 
   /*creating the table*/
   void _createDb(Database db, int newVersion) async {
-
-    await db.execute('CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT)');
+    await db.execute(
+        'CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'
+            ' $colTitle TEXT)');
   }
 
   // Fetch Operation: Get all attribute objects from database
@@ -67,9 +69,9 @@ class DatabaseHelperAttribute {
   }
 
   void deleteDb() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'attributes.db';
-    await deleteDatabase(path);
+//    Directory directory = await getApplicationDocumentsDirectory();
+//    String path = directory.path + 'attributes.db';
+    await deleteDatabase('attributes.db');
   }
 
   // Insert Operation: Insert a attribute object to database
@@ -82,30 +84,40 @@ class DatabaseHelperAttribute {
   // Update Operation: Update a attribute object and save it to database
   Future<int> updateAttribute(Attribute attribute) async {
     var db = await this.database;
-    var result = await db.update(attributeTable, attribute.toMap(), where: '$colId = ?', whereArgs: [attribute.id]);
+    var result = await db.update(attributeTable, attribute.toMap(),
+        where: '$colId = ?', whereArgs: [attribute.id]);
     return result;
   }
 
   // Delete Operation: Delete a attribute object from database
   Future<int> deleteAttribute(int id) async {
     var db = await this.database;
-    int result = await db.rawDelete('DELETE FROM $attributeTable WHERE $colId = $id');
+    int result =
+        await db.rawDelete('DELETE FROM $attributeTable WHERE $colId = $id');
     return result;
   }
 
   // Get number of attribute objects in database
   Future<int> getCount() async {
     Database db = await this.database;
-    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $attributeTable');
+    List<Map<String, dynamic>> x =
+        await db.rawQuery('SELECT COUNT (*) from $attributeTable');
     int result = Sqflite.firstIntValue(x);
     return result;
   }
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'attribute List' [ List<Attribute> ]
   Future<List<Attribute>> getAttributeList() async {
+    debugPrint('await this.database');
+
     await this.database;
-    var attributeMapList = await getAttributeMapList(); // Get 'Map List' from database
-    int countAttribute = attributeMapList.length;         // Count the number of map entries in db table
+    debugPrint('await this.databaset');
+    var attributeMapList =
+        await getAttributeMapList(); // Get 'Map List' from database
+    debugPrint('2t');
+    int countAttribute =
+        attributeMapList.length; // Count the number of map entries in db table
+    debugPrint('3');
 
     List<Attribute> attributeList = List<Attribute>();
     // For loop to create a 'attribute List' from a 'Map List'
@@ -115,8 +127,4 @@ class DatabaseHelperAttribute {
 
     return attributeList;
   }
-
-
-
-
 }

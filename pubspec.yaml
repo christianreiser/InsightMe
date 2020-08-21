@@ -30,7 +30,7 @@ dependencies:
   csv: # write csv for daily summaries
   starfruit: ^0.3.1+2 # correlation
   permission_handler: ^5.0.1+1
-  starflut: ^0.6.0 # for python
+  #starflut: ^0.6.0 # for python
   #url_launcher:
   #flutter_svg: # svg drawing for WHO
   #simple_permissions: ^0.1.9 # for export write access => leads to compiling error
