@@ -11,7 +11,7 @@ description: Track anything about your life.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.5+6
+version: 1.0.6+7
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -29,7 +29,7 @@ dependencies:
   shared_preferences: # for persistence data. 1.Intro-seen-flag
   csv: # write csv for daily summaries
   starfruit: ^0.3.1+2 # correlation
-  permission_handler: ^5.0.1+1
+  #permission_handler: ^5.0.1+1 # todo back in for export
   #starflut: ^0.6.0 # for python
   #url_launcher:
   #flutter_svg: # svg drawing for WHO

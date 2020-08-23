@@ -82,9 +82,9 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           PopupMenuButton<Choice>(
             onSelected: (Choice result) {
               if (result == Choice.exportDailySummaries) {
-                exportDailySummaries();
+                //exportDailySummaries();// todo permission handler iOS privacy
               } else if (result == Choice.computeCorrelations) {
-                ComputeCorrelations().computeCorrelations(); // todo TESTING
+                ComputeCorrelations().computeCorrelations();
               } else if (result == Choice.deleteAllData) {
                 DatabaseHelperEntry().deleteDb();
                 DatabaseHelperAttribute().deleteDb();
