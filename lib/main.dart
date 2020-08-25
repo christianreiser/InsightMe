@@ -8,6 +8,7 @@ class LifeTrackerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: strings.appTitle,
       theme: ThemeData(
         // This is the theme of your application.
