@@ -152,17 +152,17 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
             }),
 
         // import from CSV
-//        SpeedDialChild(
-//            backgroundColor: Colors.grey,
-//            child: Icon(Icons.input),
-//            label: "Import Data -beta-",
-//            onTap: () {
-//              debugPrint("DropDown");
-//              Navigator.push(
-//                context,
-//                MaterialPageRoute(builder: (context) => Import()),
-//              ); // Navigate to newManualEntry route when tapped.
-//            }),
+        SpeedDialChild(
+            backgroundColor: Colors.grey,
+            child: Icon(Icons.input),
+            label: "Import Data -beta-",
+            onTap: () {
+              debugPrint("DropDown");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Import()),
+              ); // Navigate to newManualEntry route when tapped.
+            }),
 
         // connect service
 //        SpeedDialChild(
