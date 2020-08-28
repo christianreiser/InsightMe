@@ -82,7 +82,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
           PopupMenuButton<Choice>(
             onSelected: (Choice result) {
               if (result == Choice.exportDailySummaries) {
-                //exportDailySummaries();// todo permission handler iOS privacy
+                exportDailySummaries();// todo permission handler iOS privacy
               } else if (result == Choice.computeCorrelations) {
                 ComputeCorrelations().computeCorrelations();
               } else if (result == Choice.deleteAllData) {
@@ -96,10 +96,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               });
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
-//              PopupMenuItem<Choice>(
-//                value: Choice.exportDailySummaries,
-//                child: Text('Export daily summaries'),
-//              ),
+              PopupMenuItem<Choice>(
+                value: Choice.exportDailySummaries,
+                child: Text('Export daily summaries'),
+              ),
               PopupMenuItem<Choice>(
                 value: Choice.computeCorrelations,
                 child: Text('Compute correlations'),
