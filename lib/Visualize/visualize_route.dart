@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Visualize/statistics.dart';
 import './attribute_selection.dart';
 import './change_notifier.dart';
 import 'package:provider/provider.dart';
