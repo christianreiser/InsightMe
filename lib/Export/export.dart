@@ -6,18 +6,20 @@ import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
 exportDailySummaries() async {
-  /*get source file*/
+  /* get source file */
   final directoryCurrent = await getApplicationDocumentsDirectory();
   final currentPath = directoryCurrent.path + "/daily_summaries.csv";
 
-  /*get permission*/
+  /* get permission */
   Map<Permission, PermissionStatus> statuses = await [
     Permission.storage,
   ].request();
   debugPrint('${statuses[Permission.storage]}');
 
   /* copy file if existent*/
-  // todo make file export independent of correlation butte=on pressed
+  Directory documents = await getApplicationDocumentsDirectory();
+  debugPrint('documents $documents');
+  // todo make file export independent of correlation button pressed
   if (FileSystemEntity.typeSync(currentPath) != FileSystemEntityType.notFound) {
     File(currentPath).copy('/storage/emulated/0/Download/export.csv');
   } else {

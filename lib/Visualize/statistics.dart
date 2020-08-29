@@ -11,7 +11,7 @@ import 'dart:math';
 
 class Statistics extends StatelessWidget {
   //  reset _correlationCoefficient
-  final num _correlationCoefficient = null;
+  num _correlationCoefficient;// = null;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class Statistics extends StatelessWidget {
                 schedule.selectedAttribute1, schedule.selectedAttribute2),
             builder: (context, snapshot) {
               // chart data arrived && data found
-              debugPrint('_correlationCoefficient: $_correlationCoefficient');
+              debugPrint('FutureBuilder: _correlationCoefficient: $_correlationCoefficient');
               if (snapshot.connectionState == ConnectionState.done &&
                   _correlationCoefficient != null) {
                 return Text(
@@ -65,10 +65,9 @@ class Statistics extends StatelessWidget {
   }
 
   Future<num> _getCorrelationCoefficient(attribute1, attribute2) async {
-
     /*
-  * read csv and transform
-  * */
+    * read csv and transform
+    */
     // todo maybe in different file
     final directory = await getApplicationDocumentsDirectory();
     final input =
@@ -84,12 +83,11 @@ class Statistics extends StatelessWidget {
     fluCa.transpose(correlationMatrix)[0].indexOf(attribute2);
     debugPrint('correlationMatrix[attributeIndex1][attributeIndex2] ${correlationMatrix[attributeIndex1][attributeIndex2]}');
     debugPrint('correlationMatrix[attributeIndex2][attributeIndex1] ${correlationMatrix[attributeIndex2][attributeIndex1]}');
-    debugPrint('0');
 
     // min max is needed as correlation matrix is only half filled and row<column
-    final num _correlationCoefficient =
+    _correlationCoefficient =
     correlationMatrix[min(attributeIndex1,attributeIndex2)][max(attributeIndex1,attributeIndex2)];
-    debugPrint('correlationMatrix: $correlationMatrix');
+    debugPrint('_getCorrelationCoefficient: _correlationCoefficient: $_correlationCoefficient');
     return _correlationCoefficient;
   }
 

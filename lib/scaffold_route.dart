@@ -155,9 +155,9 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
         SpeedDialChild(
             backgroundColor: Colors.grey,
             child: Icon(Icons.input),
-            label: "Import Data -beta-",
+            label: "Import Data",
             onTap: () {
-              debugPrint("DropDown");
+              debugPrint("pressed Import Data");
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Import()),

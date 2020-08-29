@@ -130,15 +130,13 @@ class ComputeCorrelations {
 //          debugPrint(
 //              'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
           }
-        debugPrint('correlationMatrix: $correlationMatrix');
-//        debugPrint('____________________________________\n\n');
         }
       }
     } // last for loop
 
-//  for (int row = 0; row < numLabels + 1; row++) {
-//    debugPrint('${correlationMatrix[row]}');
-//  }
+    debugPrint('correlationMatrix: $correlationMatrix');
+//        debugPrint('____________________________________\n\n');
+
 
     /*
   * save correlations
