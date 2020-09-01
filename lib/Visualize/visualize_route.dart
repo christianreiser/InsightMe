@@ -12,8 +12,8 @@ class Visualize extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('entryListLength ${globals.entryListLength}');
-    if (globals.entryListLength == null ||
-        globals.entryListLength == 0) { // todo entryListLength == 0 needed?
+    if (globals.entryListLength == null || globals.entryListLength == 0) {
+      // todo entryListLength == 0 needed?
       globals.Global().updateEntryList();
     }
 
@@ -47,10 +47,7 @@ class Visualize extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10.0), // spacing between dropdown and chart
-              Statistics(),
-              SizedBox(height: 10.0), // spacing between dropdown and chart
-
-              SizedBox(height: 20.0), // spacing between dropdown and chart
+              Container(color: Colors.teal, child: Statistics()),
               Chart(),
             ]),
       ), // type lineChart

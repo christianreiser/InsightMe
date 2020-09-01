@@ -45,7 +45,7 @@ class Optimize extends StatelessWidget {
             Text('You have a better day when you spend more time with friends'),
             //todo back in
             SizedBox(height: 15),
-            _statistics(context),
+            statistics(context,-0.6,0.02),
             SizedBox(height: 25),
             Expanded(
               child: AnimatedLineChart(chart),
@@ -54,65 +54,78 @@ class Optimize extends StatelessWidget {
     ); // type lineChart
   }
 
-  Widget _statistics(context) {
-    final double _correlationCoefficient = -0.5;
-    final int _absIntCorrCoeff =
-        (_correlationCoefficient.abs() * 100).toInt();
+  Widget statistics(context,_correlationCoefficient,_pValue) {
+    //final double _correlationCoefficient = -0.5;
+    final int _absIntCorrCoeff = (_correlationCoefficient.abs() * 100).toInt();
     debugPrint('_absIntCorrCoeff: $_absIntCorrCoeff');
-    final num _pValue = 0.05;
-    return Column(
-        mainAxisSize: MainAxisSize.max,
-        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
-        children: <Widget>[
-          Row(children: [
+    //final num _pValue = 0.05;
+    return Container(
+      color: Colors.blue,
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch, // stretch for max chart width
+          children: <Widget>[
             Container(
-                //padding: const EdgeInsets.all(5.0),
-                decoration: _statisticsBoxDecoration(),
-                child: SizedBox(
-                  width: 117,
-                  height: 12,
-                  child: SizedBox(
-                      width: 5,
-                      height: 5,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              flex: (_absIntCorrCoeff),
-                              child: Container(color: Colors.teal)),
-                          Expanded(
-                            flex:
-                                (100 - _absIntCorrCoeff),
-                            child: Container(),
-                          ),
-                        ],
-                      )),
-                )),
-            Text(' relationship', textScaleFactor: 1.3),
-            FlatButton(
-              child: Icon(
-                Icons.info,
-                color: Colors.grey,
-              ),
-              onPressed: () {
-                Scaffold.of(context).showSnackBar(snackBar);
-                debugPrint('info pressed');
-              },
-            )
+              color: Colors.red,
+              child: Row(children: [
+                Container(
+                    //padding: const EdgeInsets.all(5.0),
+                    decoration: _statisticsBoxDecoration(),
+                    child: SizedBox(
+                      width: 117,
+                      height: 12,
+                      child: SizedBox(
+                          width: 5,
+                          height: 5,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: (_absIntCorrCoeff),
+                                  child: Container(color: Colors.teal)),
+                              Expanded(
+                                flex: (100 - _absIntCorrCoeff),
+                                child: Container(),
+                              ),
+                            ],
+                          )),
+                    )),
+                Text(' relationship', textScaleFactor: 1.3),
+                FlatButton(
+                  child: Icon(
+                    Icons.info,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).showSnackBar(snackBar);
+                    debugPrint('info pressed');
+                  },
+                )
+              ]),
+            ),
+            SizedBox(height: 10),
+            Container(
+              color: Colors.yellow,
+              child: Row(children: [
+                Icon(Icons.star),
+                Icon(Icons.star),
+                Icon(Icons.star),
+                Icon(Icons.star),
+                Icon(Icons.star_half),
+                Text(' confidence', textScaleFactor: 1.3),
+              ]),
+            ),
           ]),
-          SizedBox(height: 10),
-          Row(children: [
-            Icon(Icons.star),
-            Icon(Icons.star),
-            Icon(Icons.star),
-            Icon(Icons.star),
-            Icon(Icons.star_half),
-            Text(' confidence', textScaleFactor: 1.3),
-          ]),
-        ]);
+    );
   }
 
-  final snackBar = SnackBar(content: Text('Bar shows the absolute value of the Pearson correlation coefficient.'));
+  final snackBar = SnackBar(
+    /*
+    * info note for correlation coefficient
+    * */
+    content: Text(
+        'Bar shows the absolute value of the Pearson correlation coefficient.'),
+  );
 
   BoxDecoration _statisticsBoxDecoration() {
     return BoxDecoration(

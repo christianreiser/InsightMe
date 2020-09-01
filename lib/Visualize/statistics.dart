@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/flutter_charts.dart' as fluCa;
+import 'package:insightme/Optimize/optimize.dart' as insightMeOptimize;
 import 'package:path_provider/path_provider.dart';
 import './change_notifier.dart';
 import 'package:provider/provider.dart';
@@ -8,25 +9,12 @@ import 'dart:io';
 import 'dart:convert' show utf8;
 import 'dart:math';
 
-
 class Statistics extends StatelessWidget {
   //  reset _correlationCoefficient
-  num _correlationCoefficient;// = null;
+  num _correlationCoefficient; // = null;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          correlation(),
-          pValue(),
-          SizedBox(width: 90,),
-          //statisticWithIcons(),
-        ]);
-  }
-
-  Widget correlation() {
     return Container(
       child: Consumer<VisualizationChangeNotifier>(
         builder: (context, schedule, _) => Expanded(
@@ -35,11 +23,12 @@ class Statistics extends StatelessWidget {
                 schedule.selectedAttribute1, schedule.selectedAttribute2),
             builder: (context, snapshot) {
               // chart data arrived && data found
-              debugPrint('FutureBuilder: _correlationCoefficient: $_correlationCoefficient');
+              debugPrint(
+                  'FutureBuilder: _correlationCoefficient: $_correlationCoefficient');
               if (snapshot.connectionState == ConnectionState.done &&
                   _correlationCoefficient != null) {
-                return Text(
-                    'Correlation Coefficient: $_correlationCoefficient');
+                return insightMeOptimize.Optimize()
+                    .statistics(context, _correlationCoefficient, 0.02);
               }
 
               // chart data arrived but no data found
@@ -58,16 +47,6 @@ class Statistics extends StatelessWidget {
     );
   }
 
-
-
-
-
-  Widget pValue() {
-    return Container(
-      child: Text('pValue: -'),
-    );
-  }
-
   Future<num> _getCorrelationCoefficient(attribute1, attribute2) async {
     /*
     * read csv and transform
@@ -75,7 +54,7 @@ class Statistics extends StatelessWidget {
     // todo maybe in different file
     final directory = await getApplicationDocumentsDirectory();
     final input =
-    new File(directory.path + "/correlation_matrix.csv").openRead();
+        new File(directory.path + "/correlation_matrix.csv").openRead();
     final correlationMatrix = await input
         .transform(utf8.decoder)
         .transform(new CsvToListConverter())
@@ -84,14 +63,18 @@ class Statistics extends StatelessWidget {
 
     int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
     int attributeIndex2 =
-    fluCa.transpose(correlationMatrix)[0].indexOf(attribute2);
-    debugPrint('correlationMatrix[attributeIndex1][attributeIndex2] ${correlationMatrix[attributeIndex1][attributeIndex2]}');
-    debugPrint('correlationMatrix[attributeIndex2][attributeIndex1] ${correlationMatrix[attributeIndex2][attributeIndex1]}');
+        fluCa.transpose(correlationMatrix)[0].indexOf(attribute2);
+    debugPrint(
+        'correlationMatrix[attributeIndex1][attributeIndex2] ${correlationMatrix[attributeIndex1][attributeIndex2]}');
+    debugPrint(
+        'correlationMatrix[attributeIndex2][attributeIndex1] ${correlationMatrix[attributeIndex2][attributeIndex1]}');
 
     // min max is needed as correlation matrix is only half filled and row<column
     _correlationCoefficient =
-    correlationMatrix[min(attributeIndex1,attributeIndex2)][max(attributeIndex1,attributeIndex2)];
-    debugPrint('_getCorrelationCoefficient: _correlationCoefficient: $_correlationCoefficient');
+        correlationMatrix[min(attributeIndex1, attributeIndex2)]
+            [max(attributeIndex1, attributeIndex2)];
+    debugPrint(
+        '_getCorrelationCoefficient: _correlationCoefficient: $_correlationCoefficient');
     return _correlationCoefficient;
   }
 
@@ -103,7 +86,7 @@ class Statistics extends StatelessWidget {
         children: <Widget>[
           Row(children: [
             Container(
-              //padding: const EdgeInsets.all(5.0),
+                //padding: const EdgeInsets.all(5.0),
                 decoration: _statisticsBoxDecoration(),
                 child: SizedBox(
                   width: 117,
@@ -141,7 +124,7 @@ class Statistics extends StatelessWidget {
       border: Border.all(width: 1.5),
       borderRadius: BorderRadius.all(
           Radius.circular(5.0) //         <--- border radius here
-      ),
+          ),
     );
   }
 }
