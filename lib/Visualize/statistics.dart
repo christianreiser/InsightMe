@@ -58,6 +58,10 @@ class Statistics extends StatelessWidget {
     );
   }
 
+
+
+
+
   Widget pValue() {
     return Container(
       child: Text('pValue: -'),

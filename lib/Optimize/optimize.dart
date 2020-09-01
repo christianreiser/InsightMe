@@ -45,27 +45,29 @@ class Optimize extends StatelessWidget {
             Text('You have a better day when you spend more time with friends'),
             //todo back in
             SizedBox(height: 15),
-            _statistics(),
+            _statistics(context),
             SizedBox(height: 25),
             Expanded(
               child: AnimatedLineChart(chart),
             ),
-
-
           ]),
     ); // type lineChart
   }
 
-  Widget _statistics() {
+  Widget _statistics(context) {
+    final double _correlationCoefficient = -0.5;
+    final int _absIntCorrCoeff =
+        (_correlationCoefficient.abs() * 100).toInt();
+    debugPrint('_absIntCorrCoeff: $_absIntCorrCoeff');
+    final num _pValue = 0.05;
     return Column(
         mainAxisSize: MainAxisSize.max,
         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
         children: <Widget>[
-
           Row(children: [
             Container(
-              //padding: const EdgeInsets.all(5.0),
+                //padding: const EdgeInsets.all(5.0),
                 decoration: _statisticsBoxDecoration(),
                 child: SizedBox(
                   width: 117,
@@ -76,13 +78,27 @@ class Optimize extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                              flex: 9, child: Container(color: Colors.teal)),
+                              flex: (_absIntCorrCoeff),
+                              child: Container(color: Colors.teal)),
                           Expanded(
-                            flex: 1, child: Container(),),
+                            flex:
+                                (100 - _absIntCorrCoeff),
+                            child: Container(),
+                          ),
                         ],
                       )),
                 )),
             Text(' relationship', textScaleFactor: 1.3),
+            FlatButton(
+              child: Icon(
+                Icons.info,
+                color: Colors.grey,
+              ),
+              onPressed: () {
+                Scaffold.of(context).showSnackBar(snackBar);
+                debugPrint('info pressed');
+              },
+            )
           ]),
           SizedBox(height: 10),
           Row(children: [
@@ -93,11 +109,10 @@ class Optimize extends StatelessWidget {
             Icon(Icons.star_half),
             Text(' confidence', textScaleFactor: 1.3),
           ]),
-
-
-
         ]);
   }
+
+  final snackBar = SnackBar(content: Text('Bar shows the absolute value of the Pearson correlation coefficient.'));
 
   BoxDecoration _statisticsBoxDecoration() {
     return BoxDecoration(
