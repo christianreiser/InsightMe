@@ -75,8 +75,9 @@ class _ImportState extends State<Import> {
     * adds attributes if new
     * todo importing same data twice only updates and does not add again
     *  */
-    debugPrint('start imput method');
+    //debugPrint('start imput method');
     // let user select file to import
+    debugPrint('await FilePicker.getFilePath() ${await FilePicker.getFilePath()}');
     final File file = new File(await FilePicker.getFilePath());
     debugPrint('file picked');
 
