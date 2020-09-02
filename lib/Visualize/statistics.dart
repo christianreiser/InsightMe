@@ -15,35 +15,31 @@ class Statistics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Consumer<VisualizationChangeNotifier>(
-        builder: (context, schedule, _) => Expanded(
-          child: FutureBuilder(
-            future: _getCorrelationCoefficient(
-                schedule.selectedAttribute1, schedule.selectedAttribute2),
-            builder: (context, snapshot) {
-              // chart data arrived && data found
-              debugPrint(
-                  'FutureBuilder: _correlationCoefficient: $_correlationCoefficient');
-              if (snapshot.connectionState == ConnectionState.done &&
-                  _correlationCoefficient != null) {
-                return insightMeOptimize.Optimize()
-                    .statistics(context, _correlationCoefficient, 0.02);
-              }
+    return Consumer<VisualizationChangeNotifier>(
+      builder: (context, schedule, _) => FutureBuilder(
+        future: _getCorrelationCoefficient(
+            schedule.selectedAttribute1, schedule.selectedAttribute2),
+        builder: (context, snapshot) {
+          // chart data arrived && data found
+          debugPrint(
+              'FutureBuilder: _correlationCoefficient: $_correlationCoefficient');
+          if (snapshot.connectionState == ConnectionState.done &&
+              _correlationCoefficient != null) {
+            return insightMeOptimize.Optimize()
+                .statistics(context, _correlationCoefficient, 0.02);
+          }
 
-              // chart data arrived but no data found
-              else if (snapshot.connectionState == ConnectionState.done &&
-                  _correlationCoefficient == null) {
-                return Text('Correlation Coefficient: -');
+          // chart data arrived but no data found
+          else if (snapshot.connectionState == ConnectionState.done &&
+              _correlationCoefficient == null) {
+            return Text('Correlation Coefficient: -');
 
-                // else: i.e. data didn't arrive
-              } else {
-                return CircularProgressIndicator(); // when Future doesn't get data
-              } // snapshot is current state of future
-            },
-          ),
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.,
+            // else: i.e. data didn't arrive
+          } else {
+            return CircularProgressIndicator(); // when Future doesn't get data
+          } // snapshot is current state of future
+        },
+      ),
     );
   }
 
@@ -78,53 +74,6 @@ class Statistics extends StatelessWidget {
     return _correlationCoefficient;
   }
 
-  Widget statisticWithIcons() {
-    return Column(
-        mainAxisSize: MainAxisSize.max,
-        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
-        children: <Widget>[
-          Row(children: [
-            Container(
-                //padding: const EdgeInsets.all(5.0),
-                decoration: _statisticsBoxDecoration(),
-                child: SizedBox(
-                  width: 117,
-                  height: 12,
-                  child: SizedBox(
-                      width: 5,
-                      height: 5,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              flex: 9, child: Container(color: Colors.teal)),
-                          Expanded(
-                            flex: 1,
-                            child: Container(),
-                          ),
-                        ],
-                      )),
-                )),
-            Text(' relationship', textScaleFactor: 1.3),
-          ]),
-          SizedBox(height: 10),
-          Row(children: [
-            Icon(Icons.star),
-            Icon(Icons.star),
-            Icon(Icons.star),
-            Icon(Icons.star),
-            Icon(Icons.star_half),
-            Text(' confidence', textScaleFactor: 1.3),
-          ]),
-        ]);
-  }
 
-  BoxDecoration _statisticsBoxDecoration() {
-    return BoxDecoration(
-      border: Border.all(width: 1.5),
-      borderRadius: BorderRadius.all(
-          Radius.circular(5.0) //         <--- border radius here
-          ),
-    );
-  }
+
 }

@@ -32,22 +32,24 @@ class Visualize extends StatelessWidget {
         create: (context) => VisualizationChangeNotifier(), // builder -> create
         child: Column(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
             children: <Widget>[
               Row(
-                // start: child as close to the start of the main axis as possible
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  // true/false do discriminate first and second
-                  DropDown(true),
-                  SizedBox(width: 15),
-                  DropDown(false),
-                  // true/false do discriminate first and second
-                ],
-              ),
-              SizedBox(height: 10.0), // spacing between dropdown and chart
-              Container(color: Colors.teal, child: Statistics()),
+                  /*
+                * dropdown
+                * */
+                  // start: child as close to the start of the main axis as possible
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    // true/false do discriminate first and second
+                    DropDown(true),
+                    SizedBox(width: 15),
+                    DropDown(false),
+                    // true/false do discriminate first and second
+                  ]),
+              Statistics(),
+              SizedBox(height: 25), // needed above chart
               Chart(),
             ]),
       ), // type lineChart
