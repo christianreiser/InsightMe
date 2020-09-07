@@ -147,7 +147,6 @@ class DatabaseHelperAttribute {
     // For loop to create a 'attribute List' from a 'Map List'
     for (int i = 0; i < countAttribute; i++) {
       debugPrint('${attributeMapList[i]}');
-      debugPrint('${Attribute.fromMapObject(attributeMapList[i])}');
       attributeList.add(Attribute.fromMapObject(attributeMapList[i]));
     }
 

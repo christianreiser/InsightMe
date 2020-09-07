@@ -65,6 +65,7 @@ class EditAttributeState extends State<EditAttribute> {
 //    aggregationIsAdditive = attribute.aggregation;
 
     return Scaffold(
+      backgroundColor: currentColor,
       appBar: AppBar(
         title: Text('Edit Attribute'),
         leading: IconButton(
@@ -175,7 +176,7 @@ class EditAttributeState extends State<EditAttribute> {
   Widget aggregationSwitch() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
+        border: Border.all(color: Colors.black38),
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: Row(children: [
@@ -256,6 +257,34 @@ class EditAttributeState extends State<EditAttribute> {
                 child: BlockPicker(
                   pickerColor: currentColor,
                   onColorChanged: changeColor,
+                  availableColors: [
+                    Colors.white,
+                    Colors.greenAccent,
+                    Colors.green,
+                    Colors.lightGreenAccent,
+                    Colors.lime,
+                    Colors.limeAccent,
+                    Colors.yellowAccent,
+                    Colors.yellow,
+                    Colors.amberAccent,
+                    Colors.orange,
+                    Colors.deepOrangeAccent,
+                    Colors.deepOrange,
+                    Colors.redAccent,
+                    Colors.red,
+                    Colors.purpleAccent,
+                    Colors.purple,
+                    Colors.deepPurple,
+                    Colors.deepPurpleAccent,
+                    Colors.indigoAccent,
+                    Colors.blueAccent,
+                    Colors.blue,
+                    Colors.lightBlue,
+                    Colors.lightBlueAccent,
+                    Colors.cyanAccent,
+                    Colors.tealAccent,
+                    Colors.brown
+                  ],
                 ),
               ),
               actions: <Widget>[

@@ -169,7 +169,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             debugPrint("Create button clicked");
             _saveAttributeAndRefreshView(
               Attribute(_attributeInputController.text,
-                  'optional: write a note', defaultLabelColor, 1),
+                  'optional: write a note', defaultLabelColor, defaultAggregation),
             );
             setState(() {}); // todo not here
           },
@@ -220,8 +220,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       itemBuilder: (BuildContext context, int position) {
         return Card(
           color: _isSelected[position] == false
-              ? Colors.white
-              : Colors.grey, //  select
+              ? Color(this._attributesToDisplay[position].color)
+            : Colors.grey, //  select
           child: ListTile(
             onLongPress: () {
               setState(() {

@@ -223,12 +223,12 @@ class _ImportState extends State<Import> {
       // add to faster searchable list
       // todo ask user if additive or average
       _dBAttributeList
-          .add(Attribute(_attribute, 'imported', defaultLabelColor, 1));
+          .add(Attribute(_attribute, 'imported', defaultLabelColor, defaultAggregation));
 
       // save to db
       soca.SearchOrCreateAttributeState() // todo await and result feedback
           .saveAttribute(
-              Attribute(_attribute, 'imported', defaultLabelColor, 1));
+              Attribute(_attribute, 'imported', defaultLabelColor, defaultAggregation));
 
       addedNewAttributeToDB = true;
     } else {
