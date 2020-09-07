@@ -17,6 +17,7 @@ import 'package:insightme/Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../Journal/searchOrCreateAttribute.dart' as soca;
 import '../navigation_helper.dart';
+import '../strings.dart';
 
 class Import extends StatefulWidget {
   @override
@@ -77,7 +78,8 @@ class _ImportState extends State<Import> {
     *  */
     //debugPrint('start imput method');
     // let user select file to import
-    debugPrint('await FilePicker.getFilePath() ${await FilePicker.getFilePath()}');
+    debugPrint(
+        'await FilePicker.getFilePath() ${await FilePicker.getFilePath()}');
     final File file = new File(await FilePicker.getFilePath());
     debugPrint('file picked');
 
@@ -219,11 +221,14 @@ class _ImportState extends State<Import> {
       //debugPrint('create new attribute: $_attribute');
 
       // add to faster searchable list
-      _dBAttributeList.add(Attribute(_attribute));
+      // todo ask user if additive or average
+      _dBAttributeList
+          .add(Attribute(_attribute, 'imported', defaultLabelColor, 1));
 
       // save to db
       soca.SearchOrCreateAttributeState() // todo await and result feedback
-          .saveAttribute(Attribute(_attribute));
+          .saveAttribute(
+              Attribute(_attribute, 'imported', defaultLabelColor, 1));
 
       addedNewAttributeToDB = true;
     } else {

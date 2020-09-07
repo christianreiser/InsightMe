@@ -6,17 +6,12 @@ class Entry {
   String _date;
 
   Entry(this._title, this._value, this._date, this._comment);
-
   Entry.withId(this._id, this._title, this._value, this._date, this._comment);
 
   int get id => _id;
-
   String get title => _title;
-
   String get value => _value; // TODO change to double?
-
   String get comment => _comment;
-
   String get date => _date;
 
   set title(String newTitle) {

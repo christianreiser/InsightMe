@@ -6,6 +6,7 @@ import '../Database/database_helper_attribute.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../navigation_helper.dart';
+import '../strings.dart';
 import 'journal_route.dart';
 import './../globals.dart' as globals;
 
@@ -22,7 +23,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   // ini _isSelected
   //debugPrint('${globals.attributeList.length}');
-    List<bool> _isSelected =
+  List<bool> _isSelected =
       List.filled(globals.attributeListLength, false); // true if long pressed
   bool _createButtonVisible = false; // initially don't show create button
   var _attributeInputController = TextEditingController();
@@ -167,7 +168,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           onPressed: () {
             debugPrint("Create button clicked");
             _saveAttributeAndRefreshView(
-              Attribute(_attributeInputController.text),
+              Attribute(_attributeInputController.text,
+                  'optional: write a note', defaultLabelColor, 1),
             );
             setState(() {}); // todo not here
           },

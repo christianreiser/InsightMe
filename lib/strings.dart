@@ -1,5 +1,5 @@
 // import './../strings.dart' as strings;
 
 String appTitle = 'InsightMe';
-//String bottomNavJournalTitle = 'Journal';
-//String bottomNavVisTitle = 'Visualization';
+int defaultLabelColor = 4294967295; // white
+int defaultAggregation = 1; // 1 means additive is true

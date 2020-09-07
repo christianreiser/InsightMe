@@ -5,7 +5,7 @@ import '../database_helper_attribute.dart';
 import '../database_helper_entry.dart';
 import './../entry.dart';
 import './../../globals.dart' as globals;
-
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
@@ -33,6 +33,9 @@ class EditAttributeState extends State<EditAttribute> {
   final String oldAttributeTitle;
 
   TextEditingController titleController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
+  Color currentColor;
+  bool aggregationIsAdditive;
 
   EditAttributeState(this.attribute,
       this.oldAttributeTitle); //todo oldAttributeTitle not a state
@@ -42,6 +45,24 @@ class EditAttributeState extends State<EditAttribute> {
     TextStyle textStyle = Theme.of(context).textTheme.headline6;
 
     titleController.text = attribute.title;
+    noteController.text = attribute.note;
+    debugPrint('attribute.color ${attribute.color}');
+    currentColor = Color(attribute.color);
+    if (attribute.aggregation == 1) {
+      aggregationIsAdditive = true;
+    } else if (attribute.aggregation == 0) {
+      aggregationIsAdditive = false;
+    } else {
+      debugPrint('ERROR: attribute.aggregation = ${attribute.aggregation} '
+          'but must be 0 or 1');
+    }
+
+    // TODO find proper solution to workaround
+//    debugPrint('attribute.aggregation ${attribute.aggregation}');
+//    if (attribute.aggregation != null) {
+//      aggregationIsAdditive = attribute.aggregation;
+//    }
+//    aggregationIsAdditive = attribute.aggregation;
 
     return Scaffold(
       appBar: AppBar(
@@ -49,20 +70,19 @@ class EditAttributeState extends State<EditAttribute> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              NavigationHelper().navigateToSearchOrCreateAttributeRoute(context);
+              NavigationHelper()
+                  .navigateToSearchOrCreateAttributeRoute(context);
             }),
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
         child: ListView(
           children: <Widget>[
-            // TITLE
-
             Padding(
+              // TITLE
               padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
               child: TextField(
                 controller: titleController,
-                //controller: TextEditingController(text: attributeInputController.text),
                 style: textStyle,
                 onChanged: (value) {
                   debugPrint('Something changed in Title Text Field');
@@ -76,14 +96,39 @@ class EditAttributeState extends State<EditAttribute> {
               ),
             ),
 
+            // Aggregation switch
+            aggregationSwitch(),
+
             Padding(
+              // Note
               padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+              child: TextField(
+                controller: noteController,
+                style: textStyle,
+                onChanged: (value) {
+                  debugPrint('Something changed in note Text Field');
+                  updateNote();
+                },
+                decoration: InputDecoration(
+                    labelText: 'Note',
+                    labelStyle: textStyle,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0))),
+              ),
+            ),
 
-              // SAVE BUTTON
+            // color picker
+            colorPicker(context),
 
+            Padding(
+              /*
+              * Buttons
+              * */
+              padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
               child: Row(
                 children: <Widget>[
                   Expanded(
+                    // SAVE BUTTON
                     child: RaisedButton(
                       color: Theme.of(context).primaryColorDark,
                       textColor: Theme.of(context).primaryColorLight,
@@ -97,14 +142,11 @@ class EditAttributeState extends State<EditAttribute> {
                       },
                     ),
                   ),
-
                   Container(
                     width: 5.0,
                   ),
-
-                  // DELETE BUTTON
-
                   Expanded(
+                    // DELETE BUTTON
                     child: RaisedButton(
                       color: Theme.of(context).primaryColorDark,
                       textColor: Theme.of(context).primaryColorLight,
@@ -114,7 +156,8 @@ class EditAttributeState extends State<EditAttribute> {
                       ),
                       onPressed: () {
                         debugPrint("Delete button clicked");
-                        _showAlertDialogWithDelete('Delete?',
+                        _showAlertDialogWithDelete(
+                            'Delete?',
                             'This Label AND all it\'s entries will be deleted, '
                                 'forever.');
                       },
@@ -129,10 +172,145 @@ class EditAttributeState extends State<EditAttribute> {
     );
   }
 
+  Widget aggregationSwitch() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      child: Row(children: [
+        SizedBox(width: 10),
+        Text('Average'),
+        Switch(
+          value: aggregationIsAdditive,
+          onChanged: (value) {
+            setState(() {
+              aggregationIsAdditive = value;
+
+              if (aggregationIsAdditive) {
+                attribute.aggregation = 1;
+              } else {
+                attribute.aggregation = 0;
+              }
+              debugPrint(
+                  'aggregationIsAdditive switched to $aggregationIsAdditive');
+            });
+          },
+          activeTrackColor: Colors.lightGreenAccent,
+          activeColor: Colors.green,
+        ),
+        Text('Additive'),
+        FlatButton(
+          /* info note for additive/average */
+          // to reduce height of relationship info? button
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          child: Icon(Icons.info, color: Colors.grey),
+          onPressed: () {
+            debugPrint('info pressed');
+            _showAggregationInfo();
+          },
+        )
+      ]),
+    );
+  }
+
+  void _showAggregationInfo() {
+    String title = 'Aggregation';
+    String message =
+        'Should multiple entries during one day be aggregated for a '
+        'daily summary by addition or averaging?\n\n'
+        'Examples\n'
+        'Addition: Suppose you drank two times one liter of water during the day.'
+        ' Then the daily summary should show the sum which are two liters. '
+        'The average which would be one liter does not make sense.\n'
+        'Average: Suppose you rated your mood twice during the day. '
+        'Once with a 4 and once with a 6. '
+        'Then the daily summary should show the average which is 5. '
+        'The sum which would be 10 does not make sense.';
+    AlertDialog alertDialog = AlertDialog(
+      actions: [
+        FlatButton(
+          child: Text('Got it'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+      title: Text(title),
+      content: Text(message),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
+  }
+
+  Widget colorPicker(BuildContext context) {
+    debugPrint('currentColor $currentColor');
+    return RaisedButton(
+      elevation: 3.0,
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Select a color'),
+              content: SingleChildScrollView(
+                child: BlockPicker(
+                  pickerColor: currentColor,
+                  onColorChanged: changeColor,
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: const Text('Looks good'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: const Text('Color'),
+      color: currentColor,
+      textColor: useWhiteForeground(currentColor)
+          ? const Color(0xffffffff)
+          : const Color(0xff000000),
+    );
+  }
+
+  void changeColor(Color color) => setState(() {
+        debugPrint('currentColor.toString(): ${currentColor.toString()}');
+        currentColor = color;
+        debugPrint(
+            'int color: ${int.parse(currentColor.toString().split('(0x')[1].split(')')[0], radix: 16)}');
+        attribute.color = int.parse(
+            currentColor.toString().split('(0x')[1].split(')')[0],
+            radix: 16);
+      });
+
   // Update the title of attribute object
   void updateTitle() {
     attribute.title = titleController.text;
   }
+
+  // Update the note of attribute object
+  void updateNote() {
+    attribute.note = noteController.text;
+  }
+
+  // Update the color of attribute object
+//  void updateColor() {
+//    attribute.color = '$currentColor';
+//  }
+
+  // Update the aggregation of attribute object with bool to int conversion
+//  void updateAggregation() {
+//    if (aggregationIsAdditive) {
+//      attribute.aggregation = 1;
+//    } else {
+//      attribute.aggregation = 0;
+//    }
+//  }
 
   // Save data to database
 
@@ -246,6 +424,4 @@ class EditAttributeState extends State<EditAttribute> {
     );
     showDialog(context: context, builder: (_) => alertDialog);
   }
-
-
 }

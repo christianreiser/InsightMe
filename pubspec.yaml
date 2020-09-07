@@ -30,6 +30,11 @@ dependencies:
   csv: # write csv for daily summaries
   starfruit: ^0.3.1+2 # correlation
   permission_handler: ^5.0.1+1 # todo back in for export
+  sqflite_migration: #^0.1.2 # for db migration
+    git:
+      url: https://github.com/christianreiser/sqflite_migration # fixes bug
+  flutter_colorpicker: ^0.3.4
+
   #starflut: ^0.6.0 # for python
   #url_launcher:
   #flutter_svg: # svg drawing for WHO

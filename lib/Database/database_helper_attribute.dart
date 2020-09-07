@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'attribute.dart';
+import 'package:path/path.dart';
+import 'package:sqflite_migration/sqflite_migration.dart';
 
 class DatabaseHelperAttribute {
   static DatabaseHelperAttribute
@@ -13,6 +14,9 @@ class DatabaseHelperAttribute {
   String attributeTable = 'attribute_table';
   String colId = 'id';
   static final String colTitle = 'title';
+  static final String colNote = 'note';
+  static final String colColor = 'color';
+  static final bool colAdditive = true;
 
   DatabaseHelperAttribute._createInstance(); // Named constructor to create instance of DatabaseHelperAttribute
 
@@ -23,6 +27,9 @@ class DatabaseHelperAttribute {
     }
     return _databaseHelperAttribute;
   }
+
+
+
 
 /*
 * create the database object and provide it with a getter where we will
@@ -42,21 +49,42 @@ class DatabaseHelperAttribute {
 * name of the database
 * */
   Future<Database> initializeDatabase() async {
-    // Get the directory path for both Android and iOS to store database.
-//    Directory directory = await getApplicationDocumentsDirectory();
-//    String path = directory.path + 'attributes.db';
 
     // Open/create the database at a given path
-    var attributesDatabase =
-        await openDatabase('attributes.db', version: 1, onCreate: _createDb);
-    return attributesDatabase;
+//    var attributesDatabase =
+//        await openDatabase('attributes.db', version: 1, onCreate: _createDb);
+//    return attributesDatabase;
+
+    /*
+  * database migration
+  * */
+    final initialScript = [
+      'CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'
+          ' $colTitle TEXT)',
+    ];
+
+    final List<String> migrations = [
+      'alter table $attributeTable add column note TEXT;',
+      'alter table $attributeTable add column color TEXT;',
+      'alter table $attributeTable add column aggregation BOOL;',
+    ];
+
+    final config = MigrationConfig(
+        initializationScript: initialScript, migrationScripts: migrations);
+
+
+    final databasesPath = await getDatabasesPath();
+    final path = join(databasesPath, 'attributes.db');
+
+    return await openDatabaseWithMigration(path, config);
   }
 
   /*creating the table*/
   void _createDb(Database db, int newVersion) async {
     await db.execute(
         'CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'
-            ' $colTitle TEXT)');
+            ' $colTitle TEXT, $colNote TEXT, '
+            '$colColor TEXT, $colAdditive TEXT)');
   }
 
   // Fetch Operation: Get all attribute objects from database
@@ -108,20 +136,18 @@ class DatabaseHelperAttribute {
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'attribute List' [ List<Attribute> ]
   Future<List<Attribute>> getAttributeList() async {
-    debugPrint('await this.database');
 
     await this.database;
-    debugPrint('await this.databaset');
     var attributeMapList =
         await getAttributeMapList(); // Get 'Map List' from database
-    debugPrint('2t');
     int countAttribute =
         attributeMapList.length; // Count the number of map entries in db table
-    debugPrint('3');
 
     List<Attribute> attributeList = List<Attribute>();
     // For loop to create a 'attribute List' from a 'Map List'
     for (int i = 0; i < countAttribute; i++) {
+      debugPrint('${attributeMapList[i]}');
+      debugPrint('${Attribute.fromMapObject(attributeMapList[i])}');
       attributeList.add(Attribute.fromMapObject(attributeMapList[i]));
     }
 
