@@ -245,19 +245,23 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             ),
 
             // EDIT ICON
-            trailing: GestureDetector(
-              child: Icon(
-                Icons.edit,
-                color: Colors.grey,
+            trailing: SizedBox(
+              height: 45,
+              width: 45,
+              child: GestureDetector(
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.grey,
+                ),
+                onTap: () {
+                  debugPrint("ListTile Tapped");
+                  NavigationHelper().navigateToEditAttribute(
+                      // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
+                      _attributesToDisplay[position],
+                      _attributesToDisplay[position].title,
+                      context);
+                },
               ),
-              onTap: () {
-                debugPrint("ListTile Tapped");
-                NavigationHelper().navigateToEditAttribute(
-                    // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
-                    _attributesToDisplay[position],
-                    _attributesToDisplay[position].title,
-                    context);
-              },
             ),
 
             // onTAP for entry
