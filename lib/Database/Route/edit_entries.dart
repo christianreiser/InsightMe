@@ -23,6 +23,7 @@ class EditEntryState extends State<EditEntry> {
 
   Entry entry;
   bool thisIsANewEntry;
+  bool _validValue;
 
   TextEditingController valueController = TextEditingController();
   TextEditingController commentController = TextEditingController();
@@ -72,6 +73,7 @@ class EditEntryState extends State<EditEntry> {
               autovalidate: true,
               onChanged: (value) {
                 debugPrint('Something changed in Value Text Field');
+                debugPrint('_validateValue: $_validateValue');
                 _updateValue(); // with valueController.text = entry.value
               },
               decoration: InputDecoration(
@@ -152,7 +154,7 @@ class EditEntryState extends State<EditEntry> {
                   ),
                   onPressed: () {
                     setState(() {
-                      debugPrint("Save button clicked");
+                      debugPrint("Save button clicked. _validValue= $_validValue");
                       _save(scaffoldContext);
                     });
                   },
@@ -199,13 +201,13 @@ class EditEntryState extends State<EditEntry> {
       color: Colors.tealAccent,
       child: Text(
         'Hint: Set a value for your rating. '
-            'You can choose your own scale/unit and don\'t have to tell the app,'
-            ' but it must be consistent with all future entries for this label. '
-            'For example, you can: \n'
-            '  - rate your feeling or symptoms and decide a scale from 1 to 10,\n'
-            '  - enter medication-dosage in milligrams,\n'
-            '  - track Yes/No with 1 and 0.\n'
-            'The comment is an optional note for you.',
+        'You can choose your own scale/unit and don\'t have to tell the app,'
+        ' but it must be consistent with all future entries for this label. '
+        'For example, you can: \n'
+        '  - rate your feeling or symptoms and decide a scale from 1 to 10,\n'
+        '  - enter medication-dosage in milligrams,\n'
+        '  - track Yes/No with 1 and 0.\n'
+        'The comment is an optional note for you.',
         textScaleFactor: 1.2,
       ),
     );
@@ -213,6 +215,7 @@ class EditEntryState extends State<EditEntry> {
 
   // validate value user input for allowed characters
   String _validateValue(String valueController) {
+    _validValue = false;
     if (valueController.isEmpty) {
       // The form is empty
       return "Enter value";
@@ -221,24 +224,21 @@ class EditEntryState extends State<EditEntry> {
     //final String p = "[0-9\.]{1,256}";
     // TODO RegExp input is all that's forbidden, better to input allowed characters: "[0-9\.]{1,256}"
     final RegExp regExp = RegExp(
-        r'[¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—–¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
+        r'[üäöÜÄÖqwertyuiopasdfghjklzxcvbnm¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
     Iterable iterableRegExp = regExp.allMatches(valueController);
-    //debugPrint('iterableRegExp $iterableRegExp');
 
     if (iterableRegExp.every((n) => n == false)) {
       debugPrint('iterableRegExp true $iterableRegExp');
-      // Sosoca, the value is valid
+      // value is valid
+      _validValue = true;
       return null;
+    } else {
+      _validValue = false;
     }
-
-    // The pattern of the email didn't match the regex above.
+    debugPrint('_validValueCHRI: $_validValue');
+    // Message to user if the pattern didn't match the regex above.
     return 'Invalid: Only digits (0-9) and point (.) as decimal are allowed.';
   }
-
-/*  // Update the title of entry object
-  void updateTitle(){
-    entry.title = titleController.text;
-  }*/
 
   // Update the value of entry object
   void _updateValue() {
@@ -258,25 +258,29 @@ class EditEntryState extends State<EditEntry> {
   // Save data to database
 
   void _save(scaffoldContext) async {
-    int result;
+    if (_validValue) { // don't save if character not allowed
+      int result;
 
-    // NAVIGATE
-    if (thisIsANewEntry == true) {
-      Navigator.pop(context, true);
-      result = await databaseHelperEntry.insertEntry(entry);
-    } else {
-      result = await databaseHelperEntry.updateEntry(entry);
-      NavigationHelper().navigateToScaffoldRoute(context);
-    }
+      // NAVIGATE
+      if (thisIsANewEntry == true) {
+        Navigator.pop(context, true);
+        result = await databaseHelperEntry.insertEntry(entry);
+      } else {
+        result = await databaseHelperEntry.updateEntry(entry);
+        NavigationHelper().navigateToScaffoldRoute(context);
+      }
 
-    // SUCCESS FAILURE STATUS DIALOG
-    if (result != 0) {
-      // Success
-      // TODO idk why it is not working. S.th. with context
-      _showSnackBar('Entry Saved Successfully', scaffoldContext);
+      // SUCCESS FAILURE STATUS DIALOG
+      if (result != 0) {
+        // Success
+        // TODO idk why it is not working. S.th. with context
+        _showSnackBar('Entry Saved Successfully', scaffoldContext);
+      } else {
+        // Failure
+        _showAlertDialog('Status', 'Problem Saving Entry');
+      }
     } else {
-      // Failure
-      _showAlertDialog('Status', 'Problem Saving Entry');
+      debugPrint('Value not valid!');
     }
   }
 

@@ -57,13 +57,6 @@ class EditAttributeState extends State<EditAttribute> {
           'but must be 0 or 1');
     }
 
-    // TODO find proper solution to workaround
-//    debugPrint('attribute.aggregation ${attribute.aggregation}');
-//    if (attribute.aggregation != null) {
-//      aggregationIsAdditive = attribute.aggregation;
-//    }
-//    aggregationIsAdditive = attribute.aggregation;
-
     return Scaffold(
       backgroundColor: currentColor,
       appBar: AppBar(
