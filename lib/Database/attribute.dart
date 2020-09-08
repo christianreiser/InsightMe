@@ -69,8 +69,8 @@ class Attribute {
     this._id = map['id'];
     this._title = map['title'];
     this._note = map['note'];
-    this._color = int.parse(
-        map['color']); // todo why parsing needed. its already an int ?!
-    this._aggregation = map['aggregation'];
+    // todo why parsing needed. its already an int ?!
+    this._color = int.parse(map['color']);
+    this._aggregation = int.parse(map['aggregation']);
   }
 }

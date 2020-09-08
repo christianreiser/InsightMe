@@ -64,7 +64,7 @@ class DatabaseHelperAttribute {
     ];
 
     final List<String> migrations = [
-      'alter table $attributeTable add column note TEXT "optional text";',
+      'alter table $attributeTable add column note TEXT optional_text;',
       'alter table $attributeTable add column color INTEGER default 4294967295;',
       'alter table $attributeTable add column aggregation INTEGER default 1;',
     ];
