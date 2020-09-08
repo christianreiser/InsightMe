@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 
 class Attribute {
   /* initialize */
@@ -66,11 +66,11 @@ class Attribute {
 
   // Extract a Note object from a Map object
   Attribute.fromMapObject(Map<String, dynamic> map) {
+    debugPrint(map['title']);
     this._id = map['id'];
     this._title = map['title'];
     this._note = map['note'];
-    // todo why parsing needed. its already an int ?!
-    this._color = int.parse(map['color']);
-    this._aggregation = int.parse(map['aggregation']);
+    this._color = map['color'];
+    this._aggregation = map['aggregation'];
   }
 }
