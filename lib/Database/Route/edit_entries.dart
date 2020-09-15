@@ -142,7 +142,6 @@ class EditEntryState extends State<EditEntry> {
             SizedBox(height: 15),
 
             // SAVE BUTTON
-            // todo grey nonfunctional save button if forbidden character
             Row(children: <Widget>[
               Expanded(
                 child: RaisedButton(
