@@ -72,9 +72,10 @@ class WriteDailySummariesCSV {
 
     // ini first row to add: start with row of nulls
     List<dynamic> rowToAdd = List.filled(attributeListLength + 1, null);
-//  debugPrint('rowToAddL ${rowToAdd.length}');
-//  debugPrint('entryList[0] ${entryList.length}');
+
+
     rowToAdd[0] = entryList[0].date.substring(0, 10); // add newest date as date
+    debugPrint('date: ${entryList[0].date}');
     int entryListLength = entryList.length;
 
     // save NumDays In Shared Preferences. used in correlations
@@ -102,6 +103,7 @@ class WriteDailySummariesCSV {
         rowToAdd = List.filled(attributeListLength + 1, null);
         // set new date
         rowToAdd[0] = entryList[entryCount].date.substring(0, 10);
+        debugPrint('date: ${entryList[entryCount].date}');
         // get column index (same as above):
         int columnIndex =
             attributeTitleList.indexOf(entryList[entryCount].title);

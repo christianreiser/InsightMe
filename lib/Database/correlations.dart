@@ -31,10 +31,6 @@ class ComputeCorrelations {
 
     final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
 
-    /*
-    * correlation
-    */
-
     // ini correlation matrix
     var correlationMatrix = List.generate(
         numLabels + 1, (i) => List(numLabels + 1),
@@ -53,18 +49,17 @@ class ComputeCorrelations {
 
         // skip self and double correlation with if column > row:
         if (column > row) {
+
+          // get xYStats which are needed to compute correlations
           Map<num, num> xYStats = getXYStats(rowForEachAttribute, numDays, row,
               column);
 
-          //writeCorrelationCoefficients
+          // writeCorrelationCoefficients
           correlationMatrix = writeCorrelationCoefficients(
               xYStats, correlationMatrix, row, column);
         }
       }
     } // last for loop
-
-    debugPrint('correlationMatrix: $correlationMatrix');
-//        debugPrint('____________________________________\n\n');
 
     // save correlations to file
     saveCorrelationsToFile(correlationMatrix, directory);
@@ -114,10 +109,10 @@ class ComputeCorrelations {
     return rowForEachAttribute;
   }
 
-  getXYStats(
+  Map<num, num> getXYStats(
       rowForEachAttribute, numDays, row, column) {
     /*
-    * get xYStats
+    * get xYStats which are needed to compute correlations
     * */
 
     // ini xYStats
@@ -201,6 +196,8 @@ class ComputeCorrelations {
     /*
     * save correlations
     * */
+    debugPrint('correlationMatrix: $correlationMatrix');
+
     final pathOfTheFileToWrite = directory.path + "/correlation_matrix.csv";
 //  debugPrint('directoryTarget $directoryTarget');
 

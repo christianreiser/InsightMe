@@ -91,7 +91,7 @@ class EditAttributeState extends State<EditAttribute> {
             ),
 
             // Aggregation switch
-            aggregationSwitch(),
+            //aggregationSwitch(), // todo back in
 
             Padding(
               // Note
