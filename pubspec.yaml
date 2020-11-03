@@ -11,7 +11,7 @@ description: Track anything about your life.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.8+9
+version: 1.0.9+10
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -30,9 +30,7 @@ dependencies:
   csv: # write csv for daily summaries
   starfruit: ^0.3.1+2 # correlation
   permission_handler: ^5.0.1+1 # todo back in for export
-  sqflite_migration: #^0.1.2 # for db migration
-    git:
-      url: https://github.com/christianreiser/sqflite_migration # fixes bug
+  sqflite_migration: ^0.2.0
   flutter_colorpicker: ^0.3.4
 
   #starflut: ^0.6.0 # for python
