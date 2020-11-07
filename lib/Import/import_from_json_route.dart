@@ -4,20 +4,23 @@
 //    else {skip}
 //  }
 
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'dart:io';
-import 'dart:async';
-import 'dart:convert';
-import 'package:file_picker/file_picker.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
+
 import '../Database/entry.dart';
 import '../Journal/searchOrCreateAttribute.dart' as soca;
 import '../navigation_helper.dart';
 import '../strings.dart';
+
 
 class Import extends StatefulWidget {
   @override
@@ -76,7 +79,7 @@ class _ImportState extends State<Import> {
     * adds attributes if new
     * todo importing same data twice only updates and does not add again
     *  */
-    //debugPrint('start imput method');
+    //debugPrint('start input method');
     // let user select file to import
     debugPrint(
         'await FilePicker.getFilePath() ${await FilePicker.getFilePath()}');
