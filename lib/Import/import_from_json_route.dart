@@ -8,7 +8,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -81,9 +80,10 @@ class _ImportState extends State<Import> {
     *  */
     //debugPrint('start input method');
     // let user select file to import
-    debugPrint(
-        'await FilePicker.getFilePath() ${await FilePicker.getFilePath()}');
-    final File file = new File(await FilePicker.getFilePath());
+    // debugPrint(
+    //     'await FilePicker.getFilePath() ${await FilePicker.getFilePath()}');
+    //final File file = new File(await FilePicker.getFilePath()); // todo fix depricated function
+    final File file = new File('todo fix');
     debugPrint('file picked');
 
     /* ini */

@@ -4,28 +4,32 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './Visualize/visualize_route.dart';
-import './strings.dart' as strings;
-import 'Database/correlations.dart';
-import 'Database/database_helper_attribute.dart';
-import 'Database/database_helper_entry.dart';
-import 'Import/import_from_json_route.dart';
-import 'Journal/journal_route.dart';
-import 'Journal/searchOrCreateAttribute.dart';
-import 'Optimize/optimize.dart';
-import 'navigation_helper.dart';
+import './../Database/correlations.dart';
+import './../Database/database_helper_attribute.dart';
+import './../Database/database_helper_entry.dart';
+import './../Import/import_from_json_route.dart';
+import './../Journal/searchOrCreateAttribute.dart';
+import './../strings.dart' as strings;
+import './data_route.dart';
+import './home_route.dart';
+import './optimize_route.dart';
+//import 'package:starflut/starflut.dart';
 
-
-enum Choice { exportDailySummaries, computeCorrelations, futureDesign, deleteAllData}
-
-class ScaffoldRoute extends StatefulWidget {
-  ScaffoldRoute();
-
-  @override
-  _ScaffoldRouteState createState() => _ScaffoldRouteState();
+enum Choice {
+  exportDailySummaries,
+  computeCorrelations,
+  futureDesign,
+  deleteAllData
 }
 
-class _ScaffoldRouteState extends State<ScaffoldRoute> {
+class ScaffoldRouteDesign extends StatefulWidget {
+  ScaffoldRouteDesign();
+
+  @override
+  _ScaffoldRouteDesignState createState() => _ScaffoldRouteDesignState();
+}
+
+class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   @override
   Widget build(BuildContext context) {
     return standardScaffold(); //welcomeOrStandardScaffold(); // todo intro back in
@@ -85,8 +89,6 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
 //                exportDailySummaries();// todo permission handler iOS privacy
               } else if (result == Choice.computeCorrelations) {
                 ComputeCorrelations().computeCorrelations();
-              } else if (result == Choice.futureDesign) {
-                NavigationHelper().navigateToFutureDesign(context);
               } else if (result == Choice.deleteAllData) {
                 DatabaseHelperEntry().deleteDb();
                 DatabaseHelperAttribute().deleteDb();
@@ -105,10 +107,6 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
               PopupMenuItem<Choice>(
                 value: Choice.computeCorrelations,
                 child: Text('Compute correlations'),
-              ),
-              PopupMenuItem<Choice>(
-                value: Choice.futureDesign,
-                child: Text('switch to future design'),
               ),
 //              PopupMenuItem<Choice>(
 //                value: Choice.deleteAllData,
@@ -198,11 +196,11 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.view_list),
-          title: Text('Journal'),
+          title: Text('Home'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.timeline),
-          title: Text('Visualize'),
+          title: Text('Data'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.widgets),
@@ -227,9 +225,9 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   // bottom navigation bar:
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    JournalRoute(),
-    Visualize(),
-    Optimize(),
+    HomeRoute(),
+    DataRoute(),
+    OptimizeRoute(),
     //Covid19(), //IntroRoute(),
     IntroRoute(),
   ];

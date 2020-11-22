@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:insightme/scaffold_route.dart';
+
 import 'Database/Route/edit_attributes.dart';
 import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
 import 'Database/entry.dart';
+import 'FutureDesign/scaffold.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 
 class NavigationHelper {
@@ -58,4 +60,13 @@ class NavigationHelper {
 //      return StayHealthy();
 //    }));
 //  }
+
+  // navigation for editing entry
+  void navigateToFutureDesign(
+      context) async {
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ScaffoldRouteDesign();
+    }));
+  }
 }
