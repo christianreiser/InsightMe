@@ -38,7 +38,7 @@ class OptimizeRoute extends StatelessWidget {
           children: <Widget>[
             //TITLE
             Text(
-              ' Insights',
+              'Optimize',
               style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 15),

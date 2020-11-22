@@ -80,7 +80,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
         title: Text(
           strings.appTitle,
         ),
-        leading: null,
+        automaticallyImplyLeading: false, // hide back button
         actions: <Widget>[
           // action button
           PopupMenuButton<Choice>(
