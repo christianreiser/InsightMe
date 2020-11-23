@@ -32,37 +32,72 @@ class OptimizeRoute extends StatelessWidget {
       child: ChangeNotifierProvider(
         create: (context) => OptimizationChangeNotifier(), // builder -> create
 
-        // Attribute
-        child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
-            children: <Widget>[
-              Text(
-                'What to you want to optimize?',
-                style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
-              ),
-              Row(
-                  /*
-                * dropdown
-                * */
-                  // start: child as close to the start of the main axis as possible
+        child: SingleChildScrollView(
+          child: Column(children: [
+
+
+            // Attribute
+            SizedBox(
+              height: 400,
+              child: Column(
+                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  // max chart width
                   children: <Widget>[
-                    // true/false do discriminate first and second
-                    DropDown(true),
-                    //SizedBox(width: 15),
-                    //DropDown(false),
-                    // true/false do discriminate first and second
+                    Text(
+                      'What to you want to optimize?',
+                      style: TextStyle(
+                          fontSize: 15.5, fontWeight: FontWeight.w500),
+                    ),
+                    Row(
+                        /*
+                      * dropdown
+                      * */
+                        // start: child as close to the start of the main axis as possible
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          // true/false do discriminate first and second
+                          DropDown(true),
+                          //SizedBox(width: 15),
+                          //DropDown(false),
+                          // true/false do discriminate first and second
+                        ]),
+                    Text(
+                      'Highest correlations:',
+                      style: TextStyle(
+                          fontSize: 15.5, fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(height: 20), // needed above chart
+                    Chart(),
+                    Statistics(),
+                    SizedBox(height: 10),
                   ]),
-              Text(
-                'Highest correlations:',
-                style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(height: 25), // needed above chart
-              Chart(),
-              Statistics(),
-            ]),
+            ),
+
+            // SEPARATOR
+            Container(
+              color: Colors.grey,
+              height: 1,
+            ),
+
+            // Attribute
+            SizedBox(
+              height: 400,
+              child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  // max chart width
+                  children: <Widget>[
+                    SizedBox(height: 30),
+                    Chart(),
+                    Statistics(),
+                  ]),
+            ),
+
+          ]),
+        ),
       ), // type lineChart
     );
   }

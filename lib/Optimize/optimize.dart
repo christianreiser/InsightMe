@@ -55,7 +55,7 @@ class Optimize extends StatelessWidget {
   }
 
   Widget statistics(context, _correlationCoefficient, _pValue) {
-    //final double _correlationCoefficient = -0.5;
+    final double _correlationCoefficient = -0.9; // TODO comment out this line. it's only for pretotyping
     final int _absIntCorrCoeff = (_correlationCoefficient.abs() * 100).toInt();
     debugPrint('_absIntCorrCoeff: $_absIntCorrCoeff');
     //final num _pValue = 0.05;
