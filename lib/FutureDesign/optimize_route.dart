@@ -21,8 +21,8 @@ class OptimizeRoute extends StatelessWidget {
     return globals.entryListLength == null
         ? _makeEntryHint()
         : globals.entryListLength > 0
-        ? _attributeSelectionAndChart()
-        : _makeEntryHint(); // type lineChart
+            ? _attributeSelectionAndChart()
+            : _makeEntryHint(); // type lineChart
   }
 
   Widget _attributeSelectionAndChart() {
@@ -31,27 +31,37 @@ class OptimizeRoute extends StatelessWidget {
       // ChangeNotifierProvider for state management
       child: ChangeNotifierProvider(
         create: (context) => OptimizationChangeNotifier(), // builder -> create
+
+        // Attribute
         child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
             children: <Widget>[
+              Text(
+                'What to you want to optimize?',
+                style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
+              ),
               Row(
-                /*
+                  /*
                 * dropdown
                 * */
-                // start: child as close to the start of the main axis as possible
+                  // start: child as close to the start of the main axis as possible
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     // true/false do discriminate first and second
                     DropDown(true),
-                    SizedBox(width: 15),
-                    DropDown(false),
+                    //SizedBox(width: 15),
+                    //DropDown(false),
                     // true/false do discriminate first and second
                   ]),
-              Statistics(),
+              Text(
+                'Highest correlations:',
+                style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
+              ),
               SizedBox(height: 25), // needed above chart
               Chart(),
+              Statistics(),
             ]),
       ), // type lineChart
     );
@@ -71,7 +81,7 @@ class OptimizeRoute extends StatelessWidget {
                 children: [
                   Text(
                     'You have no entries to visualize.\n '
-                        'To create new entries tab here ',
+                    'To create new entries tab here ',
                     textScaleFactor: 1.2,
                   ),
                   Icon(Icons.arrow_forward),

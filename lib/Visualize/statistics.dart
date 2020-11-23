@@ -1,13 +1,15 @@
+import 'dart:convert' show utf8;
+import 'dart:io';
+import 'dart:math';
+
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/flutter_charts.dart' as fluCa;
 import 'package:insightme/Optimize/optimize.dart' as insightMeOptimize;
 import 'package:path_provider/path_provider.dart';
-import './change_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:csv/csv.dart';
-import 'dart:io';
-import 'dart:convert' show utf8;
-import 'dart:math';
+
+import './change_notifier.dart';
 
 class Statistics extends StatelessWidget {
   //  reset _correlationCoefficient
@@ -24,7 +26,7 @@ class Statistics extends StatelessWidget {
           debugPrint(
               'FutureBuilder: _correlationCoefficient: $_correlationCoefficient');
           if (snapshot.connectionState == ConnectionState.done &&
-              _correlationCoefficient != null) {
+              _correlationCoefficient != null && _correlationCoefficient != 'NaN') {
             return insightMeOptimize.Optimize()
                 .statistics(context, _correlationCoefficient, 0.02);
           }
