@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './../Database/correlations.dart';
-import './../Database/database_helper_attribute.dart';
-import './../Database/database_helper_entry.dart';
 import './../Import/import_from_json_route.dart';
 import './../Journal/searchOrCreateAttribute.dart';
 import './../strings.dart' as strings;
@@ -18,6 +15,8 @@ import './optimize_route.dart';
 enum Choice {
   exportDailySummaries,
   computeCorrelations,
+  importFromCSV,
+  appIntegrations,
   futureDesign,
   deleteAllData
 }
@@ -89,9 +88,21 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 //                exportDailySummaries();// todo permission handler iOS privacy
               } else if (result == Choice.computeCorrelations) {
                 ComputeCorrelations().computeCorrelations();
+              } else if (result == Choice.importFromCSV) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Import()),
+                );
+              } else if (result == Choice.appIntegrations) {
+                // todo AppIntegrations:
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => AppIntegrations()),
+                // );
               } else if (result == Choice.deleteAllData) {
-                DatabaseHelperEntry().deleteDb();
-                DatabaseHelperAttribute().deleteDb();
+                // todo deleteAllData
+                // DatabaseHelperEntry().deleteDb();
+                // DatabaseHelperAttribute().deleteDb();
               }
 
               setState(() {
@@ -108,10 +119,18 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
                 value: Choice.computeCorrelations,
                 child: Text('Compute correlations'),
               ),
-//              PopupMenuItem<Choice>(
-//                value: Choice.deleteAllData,
-//                child: Text('Delete all data'),
-//              ),
+              PopupMenuItem<Choice>(
+                value: Choice.importFromCSV,
+                child: Text('Import data from file'),
+              ),
+              PopupMenuItem<Choice>(
+                value: Choice.appIntegrations,
+                child: Text('Other app integrations'),
+              ),
+             PopupMenuItem<Choice>(
+               value: Choice.deleteAllData,
+               child: Text('Delete all data'),
+             ),
             ],
           ),
         ],
@@ -121,54 +140,56 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       ),
 
       // use below when more then one floatingActionButton and remove top block
-      floatingActionButton: _speedDial(),
+      floatingActionButton: _floatingActionButton(), //_speedDial(),
 
       // bottom navigation bar
       bottomNavigationBar: _bottomNavigationBar(),
     );
   }
 
-  Widget _speedDial() {
-    /*
-    * floating action button with speed dial to add entries or import data
-    */
-    return SpeedDial(
-      animatedIcon: AnimatedIcons.add_event,
-      children: [
-        // NEW ENTRY
-        SpeedDialChild(
-            child: Icon(Icons.border_color),
-            label: "New Entry",
-            onTap: () {
-              print("nav to add manually");
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  opaque: false, // set to false
-                  pageBuilder: (_, __, ___) => Container(
-                    color: Colors.black.withOpacity(.7),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 25, 20, 20),
-                      child: SearchOrCreateAttribute(),
-                    ),
-                  ),
-                ),
-              );
-            }),
+  // SPEED DIAL IF MORE THAN ONE FAB (TOO MANY CLICKS :( )
 
-        // import from CSV
-        SpeedDialChild(
-            backgroundColor: Colors.grey,
-            child: Icon(Icons.input),
-            label: "Import Data",
-            onTap: () {
-              debugPrint("pressed Import Data");
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Import()),
-              ); // Navigate to newManualEntry route when tapped.
-            }),
-
-        // connect service
+  // Widget _speedDial() {
+  //   /*
+  //   * floating action button with speed dial to add entries or import data
+  //   */
+  //   return SpeedDial(
+  //     animatedIcon: AnimatedIcons.add_event,
+  //     children: [
+  //       // NEW ENTRY
+  //       SpeedDialChild(
+  //           child: Icon(Icons.border_color),
+  //           label: "New Entry",
+  //           onTap: () {
+  //             print("nav to add manually");
+  //             Navigator.of(context).push(
+  //               PageRouteBuilder(
+  //                 opaque: false, // set to false
+  //                 pageBuilder: (_, __, ___) => Container(
+  //                   color: Colors.black.withOpacity(.7),
+  //                   child: Padding(
+  //                     padding: EdgeInsets.fromLTRB(20, 25, 20, 20),
+  //                     child: SearchOrCreateAttribute(),
+  //                   ),
+  //                 ),
+  //               ),
+  //             );
+  //           }),
+  //
+  //       // import from CSV
+  //       SpeedDialChild(
+  //           backgroundColor: Colors.grey,
+  //           child: Icon(Icons.input),
+  //           label: "Import Data",
+  //           onTap: () {
+  //             debugPrint("pressed Import Data");
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(builder: (context) => Import()),
+  //             ); // Navigate to newManualEntry route when tapped.
+  //           }),
+  //
+  //       // connect service
 //        SpeedDialChild(
 //            backgroundColor: Colors.grey,
 //            child: Icon(Icons.input),
@@ -180,7 +201,32 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 ////                  MaterialPageRoute(builder: (context) => Tmp()),
 ////                ); // Navigate to newManualEntry route when tapped.
 //            }),
-      ],
+//       ],
+//     );
+//   }
+
+  Widget _floatingActionButton() {
+    /*
+    * floating action button to add entries
+    */
+    return FloatingActionButton(
+      child: Icon(Icons.add),//Icons.border_color
+      //label: "New Entry",
+      onPressed: () {
+        print("nav to add manually");
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            opaque: false, // set to false
+            pageBuilder: (_, __, ___) => Container(
+              color: Colors.black.withOpacity(.7),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 25, 20, 20),
+                child: SearchOrCreateAttribute(),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
