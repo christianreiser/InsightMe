@@ -55,8 +55,6 @@ class Optimize extends StatelessWidget {
   }
 
   Widget statistics(context, _correlationCoefficient, _pValue) {
-    final int _absIntCorrCoeff = (_correlationCoefficient.abs() * 100).toInt();
-    debugPrint('_absIntCorrCoeff: $_absIntCorrCoeff');
     //final num _pValue = 0.05;
     return Column(
         mainAxisSize: MainAxisSize.min,
@@ -65,34 +63,11 @@ class Optimize extends StatelessWidget {
         // stretch for max chart width
         children: <Widget>[
           Row(children: [
-            Container(
-              /*
-              * correlation / relationship bar
-              * */
-              //padding: const EdgeInsets.all(5.0),
-              decoration: _statisticsBoxDecoration(),
-              child: SizedBox(
-                width: 117,
-                height: 12,
-                child: SizedBox(
-                  width: 5,
-                  height: 5,
-                  child: Row(children: [
-                    Expanded(
-                        flex: (_absIntCorrCoeff),
-                        child: Container(color: Colors.teal)),
-                    Expanded(
-                      flex: (100 - _absIntCorrCoeff),
-                      child: Container(),
-                    ),
-                  ]),
-                ),
-              ),
-            ),
-            Text(' relationship', textScaleFactor: 1.3),
+            _correlationBar(_correlationCoefficient),
+            Text(' correlation ', textScaleFactor: 1.3),
             FlatButton(
               /* info note for correlation coefficient */
-              // to reduce height of relationship info button
+              // to reduce height of correlation info button
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               child: Icon(Icons.info, color: Colors.grey),
               onPressed: () {
@@ -107,10 +82,10 @@ class Optimize extends StatelessWidget {
           ]),
           Row(children: [
             _confidenceStars(_pValue),
-            Text(' confidence ', textScaleFactor: 1.3),
+            Text(' confidence', textScaleFactor: 1.3),
             FlatButton(
               /* info note for p-Value */
-              // to reduce height of relationship info button
+              // to reduce height of correlation info button
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               child: Icon(Icons.info, color: Colors.grey),
               onPressed: () {
@@ -123,6 +98,44 @@ class Optimize extends StatelessWidget {
           ]),
         ]);
   }
+
+
+  Container _correlationBar(_correlationCoefficient) {
+    /*
+    * input: _correlationCoefficient
+    * output: Widget: _correlationBar
+    * */
+
+    final int _absIntCorrCoeff = (_correlationCoefficient.abs() * 100).toInt();
+    debugPrint('_absIntCorrCoeff: $_absIntCorrCoeff');
+
+    return Container(
+      /*
+              * correlation / correlation bar
+              * */
+      //padding: const EdgeInsets.all(5.0),
+      decoration: _statisticsBoxDecoration(),
+      child: SizedBox(
+        width: 117,
+        height: 12,
+        child: SizedBox(
+          width: 5,
+          height: 5,
+          child: Row(children: [
+            Expanded(
+                flex: (_absIntCorrCoeff),
+                child: Container(color: Colors.teal)),
+            Expanded(
+              flex: (100 - _absIntCorrCoeff),
+              child: Container(),
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+
+
 
   Row _confidenceStars(_pValue) {
     /*
