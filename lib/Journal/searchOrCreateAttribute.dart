@@ -1,6 +1,9 @@
 import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import './../globals.dart' as globals;
 import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
 import '../Database/database_helper_entry.dart';
@@ -8,7 +11,6 @@ import '../Database/entry.dart';
 import '../navigation_helper.dart';
 import '../strings.dart';
 import 'journal_route.dart';
-import './../globals.dart' as globals;
 
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
@@ -103,7 +105,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 )
               ],
             ),
-            backgroundColor: Colors.grey,
+            backgroundColor:
+                Theme.of(context).backgroundColor, //looks better than default
           )
         : AppBar(
             title: Text("What to track?"),
@@ -168,8 +171,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           onPressed: () {
             debugPrint("Create button clicked");
             _saveAttributeAndRefreshView(
-              Attribute(_attributeInputController.text,
-                  'optional: write a note', defaultLabelColor, defaultAggregation),
+              Attribute(
+                  _attributeInputController.text,
+                  'optional: write a note',
+                  defaultLabelColor,
+                  defaultAggregation),
             );
             setState(() {}); // todo not here
           },
@@ -221,7 +227,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         return Card(
           color: _isSelected[position] == false
               ? Color(this._attributesToDisplay[position].color)
-            : Colors.grey, //  select
+              : Colors.grey, //  select
           child: ListTile(
             onLongPress: () {
               setState(() {
@@ -298,7 +304,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         Center(
           child: Container(
             padding: EdgeInsets.all(10),
-            color: Colors.tealAccent,
+            color: Theme.of(context).accentColor,
             child: Column(
               children: [
                 Icon(
@@ -330,7 +336,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         Center(
           child: Container(
             padding: EdgeInsets.all(10),
-            color: Colors.tealAccent,
+            color: Theme.of(context).accentColor,
             child: Column(
               children: [
                 Icon(

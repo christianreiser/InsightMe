@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart'; // for date time formatting
@@ -101,7 +99,7 @@ class JournalRouteState extends State<JournalRoute> {
           children: [
             Container(
               padding: EdgeInsets.all(5),
-              color: Colors.tealAccent,
+              color: Theme.of(context).accentColor,
               child: Row(
                 children: [
                   Text(
@@ -137,8 +135,10 @@ class JournalRouteState extends State<JournalRoute> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text('${_countSelected()}',
-                    style: TextStyle(color: Colors.black)),
+                Text(
+                  '${_countSelected()}',
+                  style: TextStyle(color: Colors.black),
+                ),
                 FlatButton(
                   child: Icon(Icons.delete),
                   onPressed: () {
@@ -159,7 +159,7 @@ class JournalRouteState extends State<JournalRoute> {
                 )
               ],
             ),
-            backgroundColor: Colors.grey,
+            backgroundColor: Theme.of(context).accentColor,
           )
         : Container();
   }
@@ -212,12 +212,12 @@ class JournalRouteState extends State<JournalRoute> {
                 color: Theme.of(context).backgroundColor,
                 child: Card(
                   // gives monotone tiles a card shape
-                  color:
-                      _multiEntrySelectionActive // when multi selected, check each
-                          ? _isSelectedList[position] == false
-                              ? Colors.white
-                              : Colors.grey
-                          : Colors.white, // when none selected always white
+                  // color:
+                  //     _multiEntrySelectionActive // when multi selected, check each
+                  //         ? _isSelectedList[position] == false
+                  //             ? Theme.of(context).backgroundColor
+                  //             : Theme.of(context).accentColor
+                  //         : Theme.of(context).backgroundColor, // when none selected always white
                   child: ListTile(
                     onLongPress: () {
                       setState(
@@ -293,7 +293,8 @@ class JournalRouteState extends State<JournalRoute> {
 
   getFirstLetter(String title) {
     /* get first letter for yellow circle avatar */
-    if (title.length > 0) { // to avoid error when title.length == 0
+    if (title.length > 0) {
+      // to avoid error when title.length == 0
       return title.substring(0, 1);
     } else {
       return ' ';
