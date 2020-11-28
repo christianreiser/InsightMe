@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import './change_notifier.dart';
 import 'package:provider/provider.dart';
+
+import './change_notifier.dart';
 import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
 
 class DropDown extends StatelessWidget {
-  final bool boolFirst;
+  final bool boolFirst; // indicates if it's the first or second dropdown
 
   DropDown(this.boolFirst);
 

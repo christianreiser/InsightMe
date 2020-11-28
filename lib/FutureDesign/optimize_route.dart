@@ -46,7 +46,7 @@ class OptimizeRoute extends StatelessWidget {
                   // max chart width
                   children: <Widget>[
                     Text(
-                      'What to you want to optimize?',
+                      'What do you want to optimize?',
                       style: TextStyle(
                           fontSize: 15.5, fontWeight: FontWeight.w500),
                     ),
@@ -63,6 +63,14 @@ class OptimizeRoute extends StatelessWidget {
                           //DropDown(false),
                           // true/false do discriminate first and second
                         ]),
+
+                    // todo changes begin
+
+
+                    //todo changes end
+
+
+
                     Text(
                       'Highest correlations:',
                       style: TextStyle(

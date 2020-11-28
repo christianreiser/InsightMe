@@ -1,9 +1,10 @@
+import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
-import './change_notifier.dart';
 import 'package:provider/provider.dart';
+
+import './change_notifier.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
-import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 
 
 class Chart extends StatelessWidget {
@@ -48,9 +49,6 @@ class Chart extends StatelessWidget {
       tapTextFontWeight: FontWeight.w600,
     );
 
-    // todo beginning new for correlation and pValue
-
-    // todo end new for correlation and pValue
     return chart;
   }
 
