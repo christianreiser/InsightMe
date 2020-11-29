@@ -6,4 +6,4 @@ The app was built with [Flutter](https://flutter.io/) and is available on [Andro
 
 [Suggest](https://changemap.co/chris/insightme) ideas, changes, or new features.
 
-[Pricavy](https://app.insightme.org/privacy): All code is open source and all data is stored on your phone, only. 
+[Privacy](https://app.insightme.org/privacy): All code is open source and all data is stored on your phone, only. 
