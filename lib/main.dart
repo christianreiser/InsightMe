@@ -19,8 +19,8 @@ class LifeTrackerApp extends StatelessWidget {
         accentColor: Colors.tealAccent,
         //bottomNavigationBarTheme: Theme.of(context).primaryColor,
         //backgroundColor: Colors.grey[300]
-        primaryIconTheme:IconThemeData(color: Colors.teal),
-
+        //primaryIconTheme:IconThemeData(color: Colors.teal), // causes icons to be removed
+      //
 
       ),
       home: ScaffoldRoute(),
