@@ -34,6 +34,8 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     return standardScaffold(); //welcomeOrStandardScaffold(); // todo intro back in
   }
 
+  static const Color iconColor = Colors.black87;
+
   FutureBuilder welcomeOrStandardScaffold() {
     /*
     * decides if standard scaffold or welcome screen should be shown
@@ -112,25 +114,80 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
               PopupMenuItem<Choice>(
-                value: Choice.exportDailySummaries,
-                child: Text('Export daily summaries'),
-              ),
-              PopupMenuItem<Choice>(
                 value: Choice.computeCorrelations,
-                child: Text('Compute correlations'),
-              ),
-              PopupMenuItem<Choice>(
-                value: Choice.importFromCSV,
-                child: Text('Import data from file'),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.compare_arrows,
+                      color: iconColor,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Compute correlations'),
+                  ],
+                ),
               ),
               PopupMenuItem<Choice>(
                 value: Choice.appIntegrations,
-                child: Text('Other app integrations'),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.exit_to_app,
+                      color: iconColor,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Other app integrations'),
+                  ],
+                ),
               ),
-             PopupMenuItem<Choice>(
-               value: Choice.deleteAllData,
-               child: Text('Delete all data'),
-             ),
+              PopupMenuItem<Choice>(
+                value: Choice.exportDailySummaries,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.file_upload,
+                      color: iconColor,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Export daily summaries'),
+                  ],
+                ),
+              ),
+              PopupMenuItem<Choice>(
+                value: Choice.importFromCSV,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.file_download,
+                      color: iconColor,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Import data from file'),
+                  ],
+                ),
+              ),
+              PopupMenuItem<Choice>(
+                value: Choice.deleteAllData,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.delete_forever,
+                      color: Colors.red,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Delete all data'),
+                  ],
+                ),
+              ),
             ],
           ),
         ],
@@ -210,7 +267,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     * floating action button to add entries
     */
     return FloatingActionButton(
-      child: Icon(Icons.add),//Icons.border_color
+      child: Icon(Icons.add), //Icons.border_color
       //label: "New Entry",
       onPressed: () {
         print("nav to add manually");

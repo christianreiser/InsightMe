@@ -2,18 +2,19 @@ import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 import 'package:insightme/Database/entry.dart';
-import 'package:provider/provider.dart';
-
-import './change_notifier.dart';
-
 
 class Chart extends StatelessWidget {
+  final String selectedAttribute1;
+  final String selectedAttribute2;
+
+  Chart(this.selectedAttribute1, this.selectedAttribute2);
+
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
 //  reset chart
   LineChart chart = null;
 
-  /*
+/*
   * Get dateTime and values of entries from database and set as state
   * input: selectedAttribute
   * returns: dateTimeValueMap
@@ -21,7 +22,7 @@ class Chart extends StatelessWidget {
   Future<Map<DateTime, double>> _getDateTimeValueMap(selectedAttribute) async {
     debugPrint('selectedAttribute $selectedAttribute');
     List<Entry> filteredEntryList =
-    await databaseHelperEntry.getFilteredEntryList(selectedAttribute);
+        await databaseHelperEntry.getFilteredEntryList(selectedAttribute);
 
     // create dateTimeValueMap:
     Map<DateTime, double> dateTimeValueMap = {};
@@ -38,10 +39,13 @@ class Chart extends StatelessWidget {
   }
 
   Future<LineChart> _getChart(selectedAttribute1, selectedAttribute2) async {
+    debugPrint('selectedAttribute1, selectedAttribute2: $selectedAttribute1 $selectedAttribute2');
     Map<DateTime, double> dateTimeValueMap1 =
-    await _getDateTimeValueMap(selectedAttribute1);
+        await _getDateTimeValueMap(selectedAttribute1);
+    debugPrint('dateTimeValueMap1 attribute 1 $dateTimeValueMap1');
     Map<DateTime, double> dateTimeValueMap2 =
-    await _getDateTimeValueMap(selectedAttribute2);
+        await _getDateTimeValueMap(selectedAttribute2);
+    debugPrint('dateTimeValueMap2 attribute 2 $dateTimeValueMap2');
     chart = LineChart.fromDateTimeMaps(
       [dateTimeValueMap1, dateTimeValueMap2],
       [Colors.green, Colors.blue],
@@ -49,39 +53,37 @@ class Chart extends StatelessWidget {
       tapTextFontWeight: FontWeight.w600,
     );
 
-    // todo beginning new for correlation and pValue
-
-    // todo end new for correlation and pValue
     return chart;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OptimizationChangeNotifier>(
-      builder: (context, schedule, _) => Expanded(
-        child: FutureBuilder(
-          future: _getChart(
-              schedule.selectedAttribute1, schedule.selectedAttribute2),
-          builder: (context, snapshot) {
-            // chart data arrived && data found
-            debugPrint('chart: $chart');
-            if (snapshot.connectionState == ConnectionState.done &&
-                chart != null) {
-              return AnimatedLineChart(chart);
-            }
+    return
+        // Consumer<OptimizationChangeNotifier>( // todo move state up
+        // builder: (context, schedule, _) =>
+        Expanded(
+      child: FutureBuilder(
+        future: _getChart(selectedAttribute1, selectedAttribute2),
+        builder: (context, snapshot) {
+          // chart data arrived && data found
+          debugPrint('chart: $chart');
+          if (snapshot.connectionState == ConnectionState.done &&
+              chart != null) {
+            return AnimatedLineChart(chart);
+          }
 
-            // chart data arrived but no data found
-            else if (snapshot.connectionState == ConnectionState.done &&
-                chart == null) {
-              return Text('No data found for this label');
+          // chart data arrived but no data found
+          else if (snapshot.connectionState == ConnectionState.done &&
+              chart == null) {
+            return Text('No data found for this label');
 
-              // else: i.e. data didn't arrive
-            } else {
-              return CircularProgressIndicator(); // when Future doesn't get data
-            } // snapshot is current state of future
-          },
-        ),
+            // else: i.e. data didn't arrive
+          } else {
+            return CircularProgressIndicator(); // when Future doesn't get data
+          } // snapshot is current state of future
+        },
       ),
+      // ),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }
