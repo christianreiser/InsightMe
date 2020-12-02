@@ -83,113 +83,8 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
         ),
         automaticallyImplyLeading: false, // hide back button
         actions: <Widget>[
-          // action button
-          PopupMenuButton<Choice>(
-            onSelected: (Choice result) {
-              if (result == Choice.exportDailySummaries) {
-//                exportDailySummaries();// todo permission handler iOS privacy
-              } else if (result == Choice.computeCorrelations) {
-                ComputeCorrelations().computeCorrelations();
-              } else if (result == Choice.importFromCSV) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Import()),
-                );
-              } else if (result == Choice.appIntegrations) {
-                // todo AppIntegrations:
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => AppIntegrations()),
-                // );
-              } else if (result == Choice.deleteAllData) {
-                // todo deleteAllData
-                // DatabaseHelperEntry().deleteDb();
-                // DatabaseHelperAttribute().deleteDb();
-              }
-
-              setState(() {
-                debugPrint('result $result');
-                Choice _selection = result;
-              });
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
-              PopupMenuItem<Choice>(
-                value: Choice.computeCorrelations,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.compare_arrows,
-                      color: iconColor,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text('Compute correlations'),
-                  ],
-                ),
-              ),
-              PopupMenuItem<Choice>(
-                value: Choice.appIntegrations,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.exit_to_app,
-                      color: iconColor,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text('Other app integrations'),
-                  ],
-                ),
-              ),
-              PopupMenuItem<Choice>(
-                value: Choice.exportDailySummaries,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.file_upload,
-                      color: iconColor,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text('Export daily summaries'),
-                  ],
-                ),
-              ),
-              PopupMenuItem<Choice>(
-                value: Choice.importFromCSV,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.file_download,
-                      color: iconColor,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text('Import data from file'),
-                  ],
-                ),
-              ),
-              PopupMenuItem<Choice>(
-                value: Choice.deleteAllData,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.delete_forever,
-                      color: Colors.red,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text('Delete all data'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          /// three dots on the top right corner for settings
+          _popupMenu(),
         ],
       ),
       body: Center(
@@ -341,5 +236,115 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       debugPrint('_selectedIndex= $_selectedIndex');
       // navigation for editing entry
     });
+  }
+
+  Widget _popupMenu() {
+    return PopupMenuButton<Choice>(
+      onSelected: (Choice result) {
+        if (result == Choice.exportDailySummaries) {
+//                exportDailySummaries();// todo permission handler iOS privacy
+        } else if (result == Choice.computeCorrelations) {
+          ComputeCorrelations().computeCorrelations();
+        } else if (result == Choice.importFromCSV) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Import()),
+          );
+        } else if (result == Choice.appIntegrations) {
+          // todo AppIntegrations:
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => AppIntegrations()),
+          // );
+        } else if (result == Choice.deleteAllData) {
+          // todo deleteAllData
+          // DatabaseHelperEntry().deleteDb();
+          // DatabaseHelperAttribute().deleteDb();
+        }
+
+        setState(() {
+          debugPrint('result $result');
+          Choice _selection = result; // check if needed
+        });
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
+        PopupMenuItem<Choice>(
+          value: Choice.computeCorrelations,
+          child: Row(
+            children: [
+              Icon(
+                Icons.compare_arrows,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Compute correlations'),
+            ],
+          ),
+        ),
+        PopupMenuItem<Choice>(
+          value: Choice.appIntegrations,
+          child: Row(
+            children: [
+              Icon(
+                Icons.exit_to_app,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Other app integrations'),
+            ],
+          ),
+        ),
+        PopupMenuItem<Choice>(
+          value: Choice.exportDailySummaries,
+          child: Row(
+            children: [
+              Icon(
+                Icons.file_upload,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Export daily summaries'),
+            ],
+          ),
+        ),
+        PopupMenuItem<Choice>(
+          value: Choice.importFromCSV,
+          child: Row(
+            children: [
+              Icon(
+                Icons.file_download,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Import data from file'),
+            ],
+          ),
+        ),
+        PopupMenuItem<Choice>(
+          value: Choice.deleteAllData,
+          child: Row(
+            children: [
+              Icon(
+                Icons.delete_forever,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Delete all data'),
+            ],
+          ),
+        ),
+      ],
+    );
+
   }
 }
