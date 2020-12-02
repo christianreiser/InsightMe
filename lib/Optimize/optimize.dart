@@ -55,7 +55,9 @@ class Optimize extends StatelessWidget {
   }
 
   Widget statistics(context, _correlationCoefficient, _pValue) {
-    //final num _pValue = 0.05;
+    //final num _pValue = 0.07;
+    //final num _correlationCoefficient = 0.87;
+
     return Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,

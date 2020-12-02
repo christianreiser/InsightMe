@@ -14,11 +14,12 @@ class LifeTrackerApp extends StatelessWidget {
       theme: ThemeData(
 
         //brightness: Brightness.dark,
-         primarySwatch: Colors.teal,
-        //primaryColor: Colors.teal,
+        primarySwatch: Colors.teal,
+        primaryColor: Colors.teal,
         accentColor: Colors.tealAccent,
         //bottomNavigationBarTheme: Theme.of(context).primaryColor,
         //backgroundColor: Colors.grey[300]
+        primaryIconTheme:IconThemeData(color: Colors.teal),
 
 
       ),

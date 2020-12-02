@@ -5,6 +5,8 @@ import 'package:flutter/rendering.dart';
 class HomeRoute extends StatelessWidget {
   final List<String> entries = <String>['A', 'B', 'C'];
   final List<int> colorCodes = <int>[600, 500, 100];
+  static const double iconSize = 50;
+  static const Color iconColor = Colors.teal;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class HomeRoute extends StatelessWidget {
                 children: const <Widget>[
                   Card(
                     child: ListTile(
-                      leading: Icon(Icons.check_circle),//FlutterLogo(size: 72.0),
+                      leading: Icon(Icons.check_circle,size: iconSize, color: iconColor,),//FlutterLogo(size: 72.0),
                       title: Text('About today'),
                       subtitle: Text(
                           'You are set for an excellent day today! Skin temperature: 33 °C, Resting heart rate: 54 BPM, heart rate variability: 59 \n'
@@ -39,7 +41,7 @@ class HomeRoute extends StatelessWidget {
                   ),
                   Card(
                     child: ListTile(
-                      leading: Icon(Icons.local_hospital),//FlutterLogo(size: 72.0),
+                      leading: Icon(Icons.local_hospital,size: iconSize, color: iconColor,),//FlutterLogo(size: 72.0),
                       title: Text('Health'),
                       subtitle: Text(
                           'Skip the peanuts? You are twice as likely to get an headache when you ate peanuts the day before.\n'
@@ -50,7 +52,7 @@ class HomeRoute extends StatelessWidget {
                   ),
                   Card(
                     child: ListTile(
-                      leading: Icon(Icons.directions_run),//FlutterLogo(size: 72.0),
+                      leading: Icon(Icons.directions_run,size: iconSize, color: iconColor,),//FlutterLogo(size: 72.0),
                       title: Text('Fitness'),
                       subtitle: Text(
                           'Your running pace is faster when you eat more carbs the day before.\n'
@@ -61,7 +63,7 @@ class HomeRoute extends StatelessWidget {
                   ),
                   Card(
                     child: ListTile(
-                      leading: Icon(Icons.computer),//FlutterLogo(size: 72.0),
+                      leading: Icon(Icons.computer,size: iconSize, color: iconColor,),//FlutterLogo(size: 72.0),
                       title: Text('Productivity'),
                       subtitle: Text(
                           'When working more than 9.5 hours you start to get less productive the next day.\n'
@@ -72,7 +74,7 @@ class HomeRoute extends StatelessWidget {
                   ),
                   Card(
                     child: ListTile(
-                      leading: Icon(Icons.local_hospital),//FlutterLogo(size: 72.0),
+                      leading: Icon(Icons.local_hospital,size: iconSize, color: iconColor,),//FlutterLogo(size: 72.0),
                       title: Text('Recommendation'),
                       subtitle: Text(
                           'You seem stressed today. If you want to earn about how to reduce stress by practicing meditation we recommend THIS LINK. \n'
@@ -83,7 +85,7 @@ class HomeRoute extends StatelessWidget {
                   ),
                   Card(
                     child: ListTile(
-                      leading: Icon(Icons.get_app),//FlutterLogo(size: 72.0),
+                      leading: Icon(Icons.get_app,size: iconSize, color: iconColor,),//FlutterLogo(size: 72.0),
                       title: Text('App usage tip'),
                       subtitle: Text(
                           'To get insights on how the weather affects you, we recommend installing DARK SKY.\n'
