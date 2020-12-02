@@ -23,11 +23,11 @@ class _HomeRouteState extends State<HomeRoute> {
           crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
           children: <Widget>[
             //TITLE
-            Text(
-              'Key Insights',
-              style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.w500),
+/*            Text(
+              'Home',
+              style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.w500, color: Colors.teal),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 15),*/
 
             Expanded(
               child: ListView(
