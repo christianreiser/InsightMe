@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/AppIntegrations/overview_route.dart';
 import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -251,11 +252,11 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             MaterialPageRoute(builder: (context) => Import()),
           );
         } else if (result == Choice.appIntegrations) {
-          // todo AppIntegrations:
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => AppIntegrations()),
-          // );
+          /// todo AppIntegrations:
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
+          );
         } else if (result == Choice.deleteAllData) {
           // todo deleteAllData
           // DatabaseHelperEntry().deleteDb();

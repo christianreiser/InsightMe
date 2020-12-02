@@ -150,7 +150,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                     SizedBox(height: 20), // needed above chart
 
                     /// visualize chart
-                    Chart('Mood','RHR'),
+                    Chart('Mood','Resting heart rate'),
 
                     /// statistics: correlation and confidence
                     Optimize().statistics(context, 0.92, 0.20),
