@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
@@ -87,12 +88,17 @@ class DropDown extends StatelessWidget {
 
   // get Attributes from DB into a future list
   Future<List<String>> _getAttributeList() async {
+    debugPrint('_getAttributeList');
+
     List<Attribute> attributeList =
         await databaseHelperAttribute.getAttributeList();
-    List<String> itemList = List(attributeList.length);
+    List<String> itemList = List(attributeList.length+1); /// +1 for 'all'
+    itemList[0] = 'all'; /// to correlate with everything
     for (int ele = 0; ele < attributeList.length; ele++) {
-      itemList[ele] = attributeList[ele].title;
+      itemList[ele+1] = attributeList[ele].title; /// +1 for 'all'
+      debugPrint('itemList $itemList');
     }
+    debugPrint('itemList $itemList');
 
     _dropdownMenuItems = buildDropdownMenuItems(itemList);
     return itemList;
