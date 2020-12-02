@@ -18,7 +18,8 @@ class OptimizationChangeNotifier with ChangeNotifier {
     }
     return defaultVisualizationAttribute;
   }
-  String _selectedAttribute1 = globals.mostRecentAddedEntryName; // default value
+  // String _selectedAttribute1 = globals.mostRecentAddedEntryName; // default value
+  String _selectedAttribute1 = 'all'; // default value
   String get selectedAttribute1 => _selectedAttribute1;
 
   set selectedAttribute1(String newValue) {
@@ -26,7 +27,8 @@ class OptimizationChangeNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedAttribute2 = globals.secondMostRecentAddedEntryName; // default value
+  // String _selectedAttribute2 = globals.secondMostRecentAddedEntryName; // default value
+  String _selectedAttribute2 = 'all'; // default value
 
   String get selectedAttribute2 => _selectedAttribute2;
 

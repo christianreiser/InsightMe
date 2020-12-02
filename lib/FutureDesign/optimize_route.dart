@@ -31,7 +31,6 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             : _makeEntryHint(); // type lineChart
   }
 
-
   static Map<DateTime, double> dateTimeWeightMap = {
     DateTime(2019, 12, 01): 74.65,
     DateTime(2020, 01, 01): 74.6,
@@ -44,8 +43,6 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     DateTime(2020, 08, 08): 75.2,
     DateTime(2020, 09, 09): 75.3,
   };
-
-
 
   static Map<DateTime, double> dateTimeRHRMap = {
     DateTime(2020, 09, 01): 55,
@@ -126,7 +123,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                   children: <Widget>[
                     Text(
                       /// HEADING
-                      'What do you want to optimize?',
+                      'What do you want to correlate?',
                       style: TextStyle(
                           fontSize: 15.5, fontWeight: FontWeight.w500),
                     ),
@@ -147,20 +144,22 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                       style: TextStyle(
                           fontSize: 15.5, fontWeight: FontWeight.w500),
                     ),
+
+                    /// SEPARATOR
+                    _separator(),
                     SizedBox(height: 20), // needed above chart
+
                     /// visualize chart
                     Chart(),
+
                     /// statistics: correlation and confidence
                     Optimize().statistics(context, 0.92, 0.20),
                     SizedBox(height: 10),
                   ]),
             ),
 
-            // SEPARATOR
-            Container(
-              color: Colors.grey,
-              height: 1,
-            ),
+            /// SEPARATOR
+            _separator(),
 
             // Attribute
             SizedBox(
@@ -212,6 +211,14 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
           height: 27, // height of button
         )
       ],
+    );
+  }
+
+  Container _separator() {
+    // SEPARATOR
+    return Container(
+      color: Colors.grey,
+      height: 1,
     );
   }
 }
