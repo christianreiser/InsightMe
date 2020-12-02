@@ -142,7 +142,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                     Text(
                       'Highest correlations:',
                       style: TextStyle(
-                          fontSize: 15.5, fontWeight: FontWeight.w500),
+                          fontSize: 15.5, fontWeight: FontWeight.w500, color: Colors.black54),
                     ),
 
                     /// SEPARATOR
