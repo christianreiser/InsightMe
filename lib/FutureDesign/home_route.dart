@@ -35,16 +35,16 @@ class _HomeRouteState extends State<HomeRoute> {
                   Card(
                     child: ListTile(
                       leading: Icon(
-                        Icons.check_circle,
+                        Icons.fastfood,
                         size: HomeRoute.leadingIconSize,
                         color: HomeRoute.iconColor,
                       ),
                       //FlutterLogo(size: 72.0),
-                      title: Text('Everything looks good!'),
+                      title: Text('Energy & Food'),
                       subtitle: Text(
-                          'Temperature, resting heart rate, heart rate variability, blood sugar level are in your normal range'),
-                      isThreeLine: true,
+                          'To increase your energy level try eating less high temperature processed food.'),
                       trailing: _voteUpDownButton(),
+                      isThreeLine: true,
                     ),
                   ),
                   Card(
@@ -55,11 +55,42 @@ class _HomeRouteState extends State<HomeRoute> {
                         color: HomeRoute.iconColor,
                       ),
                       //FlutterLogo(size: 72.0),
-                      title: Text('Health'),
+                      title: Text('Energy'),
                       subtitle: Text(
-                          'Skip the peanuts? You are twice as likely to get an headache when you ate peanuts the day before'),
+                          'Iron Deficiency. \nYour energy level correlates with iron.'),
                       trailing: _voteUpDownButton(),
                       isThreeLine: true,
+                    ),
+                  ),
+
+                  Card(
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.computer,
+                        size: HomeRoute.leadingIconSize,
+                        color: HomeRoute.iconColor,
+                      ),
+                      //FlutterLogo(size: 72.0),
+                      title: Text('Productivity'),
+                      subtitle: Text(
+                          'Try working from home. \nYour productivity correlates with home-office.'),
+                      trailing: _voteUpDownButton(),
+                      isThreeLine: true,
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.check_circle,
+                        size: HomeRoute.leadingIconSize,
+                        color: HomeRoute.iconColor,
+                      ),
+                      //FlutterLogo(size: 72.0),
+                      title: Text('Everything looks good!'),
+                      subtitle: Text(
+                          'Checked: Temperature, resting heart rate, heart rate variability, blood sugar level '),
+                      isThreeLine: true,
+                      trailing: _voteUpDownButton(),
                     ),
                   ),
                   Card(
@@ -72,27 +103,11 @@ class _HomeRouteState extends State<HomeRoute> {
                       //FlutterLogo(size: 72.0),
                       title: Text('Fitness'),
                       subtitle: Text(
-                          'Your running pace is faster when you eat more carbs the day before.'),
+                          'Try Carbs before running. \nCarbs correlate with running performance.'),
                       trailing: _voteUpDownButton(),
                       isThreeLine: true,
                     ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.computer,
-                        size: HomeRoute.leadingIconSize,
-                        color: HomeRoute.iconColor,
-                      ),
-                      //FlutterLogo(size: 72.0),
-                      title: Text('Productivity'),
-                      subtitle: Text(
-                          'When working more than 9.5 hours you start to get less productive the next day.'),
-                      trailing: _voteUpDownButton(),
-                      isThreeLine: true,
-                    ),
-                  ),
-                  Card(
+                  ),                  Card(
                     child: ListTile(
                       leading: Icon(
                         Icons.local_hospital,
@@ -100,9 +115,9 @@ class _HomeRouteState extends State<HomeRoute> {
                         color: HomeRoute.iconColor,
                       ),
                       //FlutterLogo(size: 72.0),
-                      title: Text('Recommendation'),
+                      title: Text('Stress'),
                       subtitle: Text(
-                          'You seem stressed today. If you want to earn about how to reduce stress by practicing meditation we recommend THIS LINK.'),
+                          'Try meditation. \nUsually meditation lowers your stress level.'),
                       trailing: _voteUpDownButton(),
                       isThreeLine: true,
                     ),
@@ -117,7 +132,22 @@ class _HomeRouteState extends State<HomeRoute> {
                       //FlutterLogo(size: 72.0),
                       title: Text('App usage tip'),
                       subtitle: Text(
-                          'To get insights on how the weather affects you, we recommend installing DARK SKY.'),
+                          'Want to know how the weather affects you? \nThen try Dark Sky.'),
+                      trailing: _voteUpDownButton(),
+                      isThreeLine: true,
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.mood,
+                        size: HomeRoute.leadingIconSize,
+                        color: HomeRoute.iconColor,
+                      ),
+                      //FlutterLogo(size: 72.0),
+                      title: Text('Happiness'),
+                      subtitle: Text(
+                          'You are happier when you spend more time with friends.'),
                       trailing: _voteUpDownButton(),
                       isThreeLine: true,
                     ),

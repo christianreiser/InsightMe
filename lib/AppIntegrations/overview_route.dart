@@ -54,13 +54,13 @@ class AppIntegrationsOverview extends StatelessWidget {
           ),
           SizedBox(height: 10),
 
-          /// Google Fit
+          /// FitBit
           Row(
             children: [
               Expanded(
                   flex: 50,
                   child: Image(
-                      image: AssetImage('./assets/icon/logo_googlefit.png'))),
+                      image: AssetImage('./assets/icon/logo_fitbit.png'))),
               SizedBox(width: 10),
               Expanded(
                 flex: 50,
@@ -68,7 +68,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Steps, workouts, weight',
+                        'Steps, active minutes, floors walked, energy burned, sleep',
                         textScaleFactor: 1.2,
                       )
                     ]),
@@ -91,7 +91,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Productive time, neutral time, distracting time',
+                        'Screen time, productive time, neutral time, distracting time',
                         textScaleFactor: 1.2,
                       )
                     ]),
@@ -123,13 +123,13 @@ class AppIntegrationsOverview extends StatelessWidget {
           ),
           SizedBox(height: 10),
 
-          /// Calendar
+          /// Google Fit
           Row(
             children: [
               Expanded(
                   flex: 50,
                   child: Image(
-                      image: AssetImage('./assets/icon/logo_calendar.png'))),
+                      image: AssetImage('./assets/icon/logo_googlefit.png'))),
               SizedBox(width: 10),
               Expanded(
                 flex: 50,
@@ -137,53 +137,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Events, time spent in events',
-                        textScaleFactor: 1.2,
-                      )
-                    ]),
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-
-          /// facebook
-          Row(
-            children: [
-              Expanded(
-                  flex: 50,
-                  child: Image(
-                      image: AssetImage('./assets/icon/logo_facebook.png'))),
-              SizedBox(width: 10),
-              Expanded(
-                flex: 50,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Posts, comments, reactions',
-                        textScaleFactor: 1.2,
-                      )
-                    ]),
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-
-          /// fitbit
-          Row(
-            children: [
-              Expanded(
-                  flex: 50,
-                  child: Image(
-                      image: AssetImage('./assets/icon/logo_fitbit.png'))),
-              SizedBox(width: 10),
-              Expanded(
-                flex: 50,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Steps, active minutes, floors walked, energy burned, sleep',
+                        'Steps, workouts, weight',
                         textScaleFactor: 1.2,
                       )
                     ]),
@@ -207,6 +161,29 @@ class AppIntegrationsOverview extends StatelessWidget {
                     children: [
                       Text(
                         'Weather conditions',
+                        textScaleFactor: 1.2,
+                      )
+                    ]),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+
+          /// Calendar
+          Row(
+            children: [
+              Expanded(
+                  flex: 50,
+                  child: Image(
+                      image: AssetImage('./assets/icon/logo_calendar.png'))),
+              SizedBox(width: 10),
+              Expanded(
+                flex: 50,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Events, time spent in events',
                         textScaleFactor: 1.2,
                       )
                     ]),
@@ -330,13 +307,13 @@ class AppIntegrationsOverview extends StatelessWidget {
           ),
           SizedBox(height: 10),
 
-          /// RescueTime
+          /// facebook
           Row(
             children: [
               Expanded(
                   flex: 50,
                   child: Image(
-                      image: AssetImage('./assets/icon/logo_rescueTime.png'))),
+                      image: AssetImage('./assets/icon/logo_facebook.png'))),
               SizedBox(width: 10),
               Expanded(
                 flex: 50,
@@ -344,7 +321,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Productive time, neutral time, distracting time',
+                        'Posts, comments, reactions',
                         textScaleFactor: 1.2,
                       )
                     ]),

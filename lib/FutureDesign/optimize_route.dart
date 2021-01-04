@@ -31,6 +31,19 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             : _makeEntryHint(); // type lineChart
   }
 
+  static Map<DateTime, double> dateTimeTempMap = {
+    DateTime(2019, 12, 01): 74.65,
+    DateTime(2020, 01, 01): 74.6,
+    DateTime(2020, 02, 02): 74.9,
+    DateTime(2020, 03, 03): 74.8,
+    DateTime(2020, 04, 04): 75.0,
+    DateTime(2020, 05, 05): 75.2,
+    DateTime(2020, 06, 06): 75.1,
+    DateTime(2020, 07, 07): 75.2,
+    DateTime(2020, 08, 08): 75.2,
+    DateTime(2020, 09, 09): 75.3,
+  };
+
   static Map<DateTime, double> dateTimeWeightMap = {
     DateTime(2019, 12, 01): 74.65,
     DateTime(2020, 01, 01): 74.6,
@@ -80,22 +93,28 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     DateTime(2020, 09, 15): 8,
   };
 
+  static LineChart energyTempFoodChart = LineChart.fromDateTimeMaps(
+      [dateTimeWeightMap, dateTimeRHRMap],
+      [Colors.green, Colors.blue],
+      ['Energy level', 'High temperature processed food'], // chart label name
+      tapTextFontWeight: FontWeight.w400);
+
   static LineChart weightRHRChart = LineChart.fromDateTimeMaps(
       [dateTimeWeightMap, dateTimeRHRMap],
       [Colors.green, Colors.blue],
-      ['Body weight', 'Resting heart rate'], // chart label name
+      ['Productivity', 'Homeoffice'], // chart label name
       tapTextFontWeight: FontWeight.w400);
 
   static LineChart weightProductivityChart = LineChart.fromDateTimeMaps(
       [dateTimeWeightMap, dateTimeProductivityMap],
       [Colors.green, Colors.blue],
-      ['Body weight', 'Resting heart rate'], // chart label name
+      ['Productivity', 'Time asleep'], // chart label name
       tapTextFontWeight: FontWeight.w400);
 
   static LineChart productivity = LineChart.fromDateTimeMaps(
       [dateTimeWeightMap, dateTimeProductivityMap],
       [Colors.green, Colors.blue],
-      ['Body weight', 'Resting heart rate'], // chart label name
+      ['Productivity', 'Sunny weather [%]'], // chart label name
       tapTextFontWeight: FontWeight.w400);
 
   static LineChart chart = LineChart.fromDateTimeMaps(
@@ -150,10 +169,10 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                     SizedBox(height: 20), // needed above chart
 
                     /// visualize chart
-                    Chart('Mood','Resting heart rate'),
+                    Chart('Zeit im Zielbereich','Anzahl Schritte'),
 
                     /// statistics: correlation and confidence
-                    Optimize().statistics(context, 0.92, 0.20),
+                    Optimize().statistics(context, 0.92, 0.09),
                     SizedBox(height: 10),
                   ]),
             ),
@@ -171,8 +190,84 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                   // max chart width
                   children: <Widget>[
                     SizedBox(height: 30),
-                    Chart('Mood', 'Time asleep'),
-                    Optimize().statistics(context, 0.62, 0.22),
+                    Chart('Energy level','Iron in food'),
+                    Optimize().statistics(context, 0.88, 0.11),
+                  ]),
+            ),
+
+            /// SEPARATOR
+            _separator(),
+
+            // Attribute
+            SizedBox(
+              height: 400,
+              child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  // max chart width
+                  children: <Widget>[
+                    SizedBox(height: 30),
+                    Chart('Energy level', 'Time asleep'),
+                    Optimize().statistics(context, 0.88, 0.11),
+                  ]),
+            ),
+
+
+            /// SEPARATOR
+            _separator(),
+
+            // Attribute
+            SizedBox(
+              height: 400,
+              child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  // max chart width
+                  children: <Widget>[
+                    SizedBox(height: 30),
+                    Chart('Energy level', 'Sunny weather [%]'),
+                    Optimize().statistics(context, 0.72, 0.16),
+                  ]),
+            ),
+
+
+
+            /// SEPARATOR
+            _separator(),
+
+            // Attribute
+            SizedBox(
+              height: 400,
+              child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  // max chart width
+                  children: <Widget>[
+                    SizedBox(height: 30),
+                    Chart('Sunny weather [%]', 'Time asleep'),
+                    Optimize().statistics(context, 0.32, 0.38),
+                  ]),
+            ),
+
+
+            /// SEPARATOR
+            _separator(),
+
+            // Attribute
+            SizedBox(
+              height: 400,
+              child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  // max chart width
+                  children: <Widget>[
+                    SizedBox(height: 30),
+                    Chart('High temperature processed food', 'Time asleep'),
+                    Optimize().statistics(context, 0.42, 0.38),
                   ]),
             ),
           ]),
