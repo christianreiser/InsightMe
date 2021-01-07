@@ -2,6 +2,7 @@ import 'package:fl_animated_linechart/chart/line_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Core/widgets.dart';
 import 'package:insightme/FutureDesign/Visualize/attribute_selection.dart';
 import 'package:insightme/FutureDesign/Visualize/change_notifier.dart';
 import 'package:insightme/FutureDesign/Visualize/chart.dart';
@@ -165,7 +166,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                     ),
 
                     /// SEPARATOR
-                    _separator(),
+                    greyLineSeparator(),
                     SizedBox(height: 20), // needed above chart
 
                     /// visualize chart
@@ -178,7 +179,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             ),
 
             /// SEPARATOR
-            _separator(),
+            greyLineSeparator(),
 
             // Attribute
             SizedBox(
@@ -196,7 +197,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             ),
 
             /// SEPARATOR
-            _separator(),
+            greyLineSeparator(),
 
             // Attribute
             SizedBox(
@@ -215,7 +216,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
 
 
             /// SEPARATOR
-            _separator(),
+            greyLineSeparator(),
 
             // Attribute
             SizedBox(
@@ -235,7 +236,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
 
 
             /// SEPARATOR
-            _separator(),
+            greyLineSeparator(),
 
             // Attribute
             SizedBox(
@@ -254,7 +255,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
 
 
             /// SEPARATOR
-            _separator(),
+            greyLineSeparator(),
 
             // Attribute
             SizedBox(
@@ -308,12 +309,5 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
       ],
     );
   }
-
-  Container _separator() {
-    // SEPARATOR
-    return Container(
-      color: Colors.grey,
-      height: 1,
-    );
-  }
+  
 }

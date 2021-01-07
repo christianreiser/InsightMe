@@ -3,6 +3,7 @@ import 'package:fl_animated_linechart/chart/line_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Core/widgets.dart';
 
 class DataRoute extends StatelessWidget {
   static Map<DateTime, double> dateTimeWeightMap = {
@@ -74,88 +75,44 @@ class DataRoute extends StatelessWidget {
         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
         children: <Widget>[
-          // ATTRIBUTE
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-                mainAxisSize: MainAxisSize.max,
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                // max chart width
-                children: [
-                  Text(
-                    'Blutzuckerspiegel',
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: 25),
-                  SizedBox(
-                    height: 200,
-                    child: AnimatedLineChart(dateTimeWeightChart),
-                  ),
-                ]),
-          ),
 
-          // SEPARATOR
-          Container(
-            color: Colors.grey,
-            height: 1,
-          ),
+          // Data
+          oneAttributeNameAndChart('Blutzuckerspiegel', dateTimeWeightChart),
+          greyLineSeparator(),
+          oneAttributeNameAndChart('Zucker in Nahrung', dateTimeRHRChart),
+          greyLineSeparator(),
+          oneAttributeNameAndChart('Liponsäure', dateTimeProductivityChart),
 
-          //ATTRIBUTE
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-                mainAxisSize: MainAxisSize.max,
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                // max chart width
-                children: [
-                  Text(
-                    'Zucker in Nahrung',
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: 25),
-                  SizedBox(
-                    height: 200,
-                    child: AnimatedLineChart(dateTimeRHRChart),
-                  ),
-                ]),
-          ),
-
-          // SEPARATOR
-          Container(
-            color: Colors.grey,
-            height: 1,
-          ),
-
-          //ATTRIBUTE
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-                mainAxisSize: MainAxisSize.max,
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                // max chart width
-                children: [
-                  Text(
-                    'Liponsäure',
-                    style:
-                    TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: 25),
-                  SizedBox(
-                    height: 200,
-                    child: AnimatedLineChart(dateTimeProductivityChart),
-                  ),
-                ]),
-          ),
           // WHITE SPACE DUE TO FAB
-          SizedBox(height: 500),
+          SizedBox(height: 50),
         ],
       ),
     ); // type lineChart
   }
+
+  // TODO fix getting data
+  Widget oneAttributeNameAndChart(attributeName, lineChart) {
+    // creates chart widget of one Attribute with name as heading
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          // max chart width
+          children: [
+            Text(
+              attributeName,
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+            ),
+            SizedBox(height: 25),
+            SizedBox(
+              height: 200,
+              child: AnimatedLineChart(lineChart),
+            ),
+          ]),
+    );
+  }
+
+
 }
-//}
