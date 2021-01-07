@@ -90,7 +90,6 @@ class DataRoute extends StatelessWidget {
     ); // type lineChart
   }
 
-  // TODO fix getting data
   Widget oneAttributeNameAndChart(attributeName, lineChart) {
     // creates chart widget of one Attribute with name as heading
     return Padding(
