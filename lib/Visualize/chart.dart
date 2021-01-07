@@ -1,6 +1,6 @@
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
-import 'package:insightme/Core/funktions.dart';
+import 'package:insightme/Core/functions/chart.dart';
 import 'package:provider/provider.dart';
 
 import './change_notifier.dart';
@@ -9,14 +9,6 @@ import '../Database/database_helper_entry.dart';
 
 class Chart extends StatelessWidget {
   static DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
-
-
-
-
-
-
-
-
 
 
   @override

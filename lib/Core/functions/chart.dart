@@ -2,8 +2,8 @@ import 'package:fl_animated_linechart/chart/line_chart.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
 
-import '../Database/database_helper_entry.dart';
-import '../Database/entry.dart';
+import '../../Database/database_helper_entry.dart';
+import '../../Database/entry.dart';
 
 final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
@@ -33,15 +33,15 @@ Future<Map<DateTime, double>> getDateTimeValueMap(selectedAttribute) async {
   return dateTimeValueMap;
 }
 
-Future<LineChart> oneAttributeChart(selectedAttribute) async {
+Future<LineChart> oneAttributeChart(attributeName) async {
   // used in data tab
   Map<DateTime, double> dateTimeValueMap1 =
-  await getDateTimeValueMap(selectedAttribute);
+  await getDateTimeValueMap(attributeName);
 
   chart = LineChart.fromDateTimeMaps( // todo final chart?
     [dateTimeValueMap1],
     [Colors.blue],
-    [selectedAttribute], // axis numbers
+    [attributeName], // axis numbers
     tapTextFontWeight: FontWeight.w600,
   );
   return chart;
@@ -60,3 +60,4 @@ Future<LineChart> twoAttributeChart(selectedAttribute1, selectedAttribute2) asyn
   );
   return chart;
 }
+

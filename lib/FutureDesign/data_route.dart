@@ -1,9 +1,9 @@
-import 'package:fl_animated_linechart/chart/animated_line_chart.dart';
 import 'package:fl_animated_linechart/chart/line_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/Core/widgets.dart';
+import 'package:insightme/Core/widgets/chart.dart';
+import 'package:insightme/Core/widgets/widgets.dart';
 
 class DataRoute extends StatelessWidget {
   static Map<DateTime, double> dateTimeWeightMap = {
@@ -68,7 +68,6 @@ class DataRoute extends StatelessWidget {
       tapTextFontWeight: FontWeight.w400);
 
 
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -79,11 +78,11 @@ class DataRoute extends StatelessWidget {
         children: <Widget>[
 
           // Data
-          oneAttributeNameAndChart('Blutzuckerspiegel', dateTimeWeightChart),
+          oneAttributeNameAndChart('Happiness'),
           greyLineSeparator(),
-          oneAttributeNameAndChart('Zucker in Nahrung', dateTimeRHRChart),
+          oneAttributeNameAndChart('Time asleep'),
           greyLineSeparator(),
-          oneAttributeNameAndChart('Liponsäure', dateTimeProductivityChart),
+          oneAttributeNameAndChart('Body weight'),
 
           // WHITE SPACE DUE TO FAB
           SizedBox(height: 50),
@@ -92,7 +91,7 @@ class DataRoute extends StatelessWidget {
     ); // type lineChart
   }
 
-  Widget oneAttributeNameAndChart(attributeName, lineChart) {
+  Widget oneAttributeNameAndChart(attributeName) {
     // creates chart widget of one Attribute with name as heading
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -108,41 +107,10 @@ class DataRoute extends StatelessWidget {
             ),
             SizedBox(height: 25),
             SizedBox(
-              height: 200,
-              child: AnimatedLineChart(lineChart),
-            ),
+                height: 200,
+                child:futureAnimatedLineChart(attributeName),
+            )
           ]),
     );
   }
-
-/*  Widget futureAnimatedLineChart(attributeName, lineChart) {
-    return Consumer<VisualizationChangeNotifier>(
-      builder: (context, schedule, _) => Expanded(
-        child: FutureBuilder(
-          future: oneAttributeChart(
-              schedule.selectedAttribute1, schedule.selectedAttribute2),
-          builder: (context, snapshot) {
-            // chart data arrived && data found
-            debugPrint('chart: $chart');
-            if (snapshot.connectionState == ConnectionState.done &&
-                chart != null) {
-              return AnimatedLineChart(chart);
-            }
-
-            // chart data arrived but no data found
-            else if (snapshot.connectionState == ConnectionState.done &&
-                chart == null) {
-              return Text('No data found for this label');
-
-              // else: i.e. data didn't arrive
-            } else {
-              return CircularProgressIndicator(); // when Future doesn't get data
-            } // snapshot is current state of future
-          },
-        ),
-      ),
-    ); // This trailing comma makes auto-formatting nicer for build methods.
-  }*/
-
-
 }
