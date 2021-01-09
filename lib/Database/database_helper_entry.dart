@@ -1,8 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+
 import 'entry.dart';
 
 class DatabaseHelperEntry {
@@ -180,6 +180,7 @@ class DatabaseHelperEntry {
 
   // CHREI get the 'Map List' [ List<Map> ] FILTERED and convert it to 'entry List FILTERED' [ List<Entry> ]
   Future<List<Entry>> getFilteredEntryList(attributeNameToFilter) async {
+    debugPrint('attributeName test works: $attributeNameToFilter');
     var filteredEntryMapList = await getFilteredEntryMapList(
         attributeNameToFilter); // Get 'Map List' from database
     int countEntryFiltered = filteredEntryMapList
@@ -190,6 +191,8 @@ class DatabaseHelperEntry {
     for (int i = 0; i < countEntryFiltered; i++) {
       filteredEntryList.add(Entry.fromMapObject(filteredEntryMapList[i]));
     }
+    debugPrint('filteredEntryList test works: $filteredEntryList');
+
     return filteredEntryList;
   }
 }

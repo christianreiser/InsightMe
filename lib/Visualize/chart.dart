@@ -33,7 +33,7 @@ class Chart extends StatelessWidget {
 
               // else: i.e. data didn't arrive
             } else {
-              return CircularProgressIndicator(); // when Future doesn't get data
+              return CircularProgressIndicator(); // if Future doesn't get data
             } // snapshot is current state of future
           },
         ),

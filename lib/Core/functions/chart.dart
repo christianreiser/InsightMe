@@ -11,13 +11,14 @@ final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 LineChart chart = null;
 
 
-Future<Map<DateTime, double>> getDateTimeValueMap(selectedAttribute) async {
+Future<Map<DateTime, double>> getDateTimeValueMap(attributeName) async {
+  debugPrint('attributeName test works: $attributeName');
   // Get dateTime and values of entries from database and set as state
   // input: selectedAttribute
   // returns: dateTimeValueMap
-  debugPrint('selectedAttribute $selectedAttribute');
   List<Entry> filteredEntryList =
-  await databaseHelperEntry.getFilteredEntryList(selectedAttribute);
+  await databaseHelperEntry.getFilteredEntryList(attributeName);
+  debugPrint('attributeName test works: $attributeName');
 
   // create dateTimeValueMap:
   Map<DateTime, double> dateTimeValueMap = {};
@@ -35,8 +36,12 @@ Future<Map<DateTime, double>> getDateTimeValueMap(selectedAttribute) async {
 
 Future<LineChart> oneAttributeChart(attributeName) async {
   // used in data tab
+  debugPrint('attributeName test works: $attributeName');
+
   Map<DateTime, double> dateTimeValueMap1 =
   await getDateTimeValueMap(attributeName);
+  debugPrint('dateTimeValueMap1 test works: $dateTimeValueMap1');
+
 
   chart = LineChart.fromDateTimeMaps( // todo final chart?
     [dateTimeValueMap1],
@@ -44,6 +49,8 @@ Future<LineChart> oneAttributeChart(attributeName) async {
     [attributeName], // axis numbers
     tapTextFontWeight: FontWeight.w600,
   );
+  debugPrint('chart debugging?: $chart');
+
   return chart;
 }
 
