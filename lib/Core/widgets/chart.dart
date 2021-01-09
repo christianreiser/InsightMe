@@ -1,7 +1,7 @@
 import 'package:fl_animated_linechart/chart/animated_line_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:insightme/Core/functions/chart.dart';
+import 'package:insightme/Core/functions/chart.dart';
 
 Widget futureAnimatedLineChart(attributeName) {
   debugPrint('attributeName test works: $attributeName');
@@ -13,7 +13,10 @@ Widget futureAnimatedLineChart(attributeName) {
       if (snapshot.connectionState == ConnectionState.done &&
           chart != null) {
         debugPrint('chart debugging??: $chart');
-        return AnimatedLineChart(chart);
+
+        debugPrint('snapshot.data??: ${snapshot.data}');
+
+        return AnimatedLineChart(snapshot.data);
       }
 
       // chart data arrived but no data found
