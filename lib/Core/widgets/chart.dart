@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:insightme/Core/functions/chart.dart';
 
 Widget futureAnimatedLineChart(attributeName) {
-  debugPrint('attributeName test works: $attributeName');
   // calls AnimatedLineChart(chart) in a future builder
   return FutureBuilder(
     future: oneAttributeChart(attributeName), //schedule.selectedAttribute1
@@ -12,10 +11,6 @@ Widget futureAnimatedLineChart(attributeName) {
       // chart data arrived && data found
       if (snapshot.connectionState == ConnectionState.done &&
           chart != null) {
-        debugPrint('chart debugging??: $chart');
-
-        debugPrint('snapshot.data??: ${snapshot.data}');
-
         return AnimatedLineChart(snapshot.data);
       }
 
