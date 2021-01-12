@@ -4,6 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 import 'package:insightme/Core/widgets/design.dart';
 
+import '../navigation_helper.dart';
+
+
 class DataRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,9 +17,9 @@ class DataRoute extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
         children: <Widget>[
           // Data
-          oneAttributeNameAndChart('Happiness'),
+          oneAttributeNameAndChart('Happiness', context),
           greyLineSeparator(),
-          oneAttributeNameAndChart('Time asleep'),
+          oneAttributeNameAndChart('Time asleep', context),
           greyLineSeparator(),
           //oneAttributeNameAndChart('Body weight'),
 
@@ -27,7 +30,7 @@ class DataRoute extends StatelessWidget {
     ); // type lineChart
   }
 
-  Widget oneAttributeNameAndChart(attributeName) {
+  Widget oneAttributeNameAndChart(attributeName, context) {
     // creates chart widget of one Attribute with name as heading
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -37,11 +40,22 @@ class DataRoute extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           // max chart width
           children: [
-            Text(
-              attributeName,
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  attributeName,
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                ),
+                IconButton(
+                  icon: Icon(Icons.chevron_right),
+                  onPressed: () {
+                    NavigationHelper().navigateToScaffoldRoute(context); // refreshes
+                  },
+                ),
+              ],
             ),
-            SizedBox(height: 25),
+            SizedBox(height: 10),
             SizedBox(
               height: 200,
               child: futureAnimatedLineChart(attributeName),
