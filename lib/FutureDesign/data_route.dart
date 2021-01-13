@@ -2,32 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
-import 'package:insightme/Core/widgets/design.dart';
 
+import '../globals.dart' as globals;
 import '../navigation_helper.dart';
-
 
 class DataRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
-        children: <Widget>[
-          // Data
-          oneAttributeNameAndChart('Happiness', context),
-          greyLineSeparator(),
-          oneAttributeNameAndChart('Time asleep', context),
-          greyLineSeparator(),
-          //oneAttributeNameAndChart('Body weight'),
+    debugPrint('globals.attributeList: ${globals.attributeList}');
 
-          // WHITE SPACE DUE TO FAB
-          SizedBox(height: 50),
-        ],
-      ),
-    ); // type lineChart
+    return ListView.builder(
+      //shrinkWrap: true, /// todo true is way more expensive. why used it in journal and searchOrCreate?
+      itemCount: globals.attributeListLength,
+      itemBuilder: (BuildContext context, int position) {
+        return oneAttributeNameAndChart(
+            globals.attributeList[position].title, context);
+      },
+    );
   }
 
   Widget oneAttributeNameAndChart(attributeName, context) {
@@ -50,7 +41,8 @@ class DataRoute extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.chevron_right),
                   onPressed: () {
-                    NavigationHelper().navigateToScaffoldRoute(context); // refreshes
+                    NavigationHelper()
+                        .navigateToScaffoldRoute(context); // refreshes
                   },
                 ),
               ],

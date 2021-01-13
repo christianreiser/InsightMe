@@ -221,7 +221,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     * ATTRIBUTE LIST
     */
     return ListView.builder(
-      shrinkWrap: true, // use this
+      shrinkWrap: true, /// todo it's significantly more expensive. why?
       itemCount: _attributesToDisplay.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
