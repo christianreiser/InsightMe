@@ -1,11 +1,12 @@
+import 'dart:convert' show utf8;
+import 'dart:io';
+
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_charts/flutter_charts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starfruit/starfruit.dart';
-import 'dart:io';
-import 'dart:convert' show utf8;
-import 'package:flutter_charts/flutter_charts.dart';
 
 import 'create_daily_summary.dart';
 
@@ -117,6 +118,7 @@ class ComputeCorrelations {
 
     // ini xYStats
     Map<num, num> xYStats = {};
+    int duplicateCount = 0;
 
     // ini key value which are added to xYStats
     double key;
@@ -145,9 +147,10 @@ class ComputeCorrelations {
         // search for duplicate
         bool duplicate = keys.contains(key);
         if (duplicate) {
+          duplicateCount = duplicateCount +1;
           debugPrint('key $key not unique. ');
           // increment key by tiny amount to make it unique
-          key = key + 1E-15;
+          key = key + duplicateCount*1E-15;
           debugPrint('duplicate key incremented to $key');
         }
 

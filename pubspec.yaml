@@ -69,6 +69,23 @@ flutter:
   assets:
     - ./assets/icon/who-96.png
     - ./assets/icon/who.svg
+    - ./assets/icon/logo_googlefit.png
+    - ./assets/icon/logo_rescueTime.png
+    - ./assets/icon/logo_applehealth.png
+    - ./assets/icon/logo_calendar.png
+    - ./assets/icon/logo_facebook.png
+    - ./assets/icon/logo_fitbit.png
+    - ./assets/icon/logo_forecast.png
+    - ./assets/icon/logo_garmin.png
+    - ./assets/icon/logo_github.png
+    - ./assets/icon/logo_lastfm.png
+    - ./assets/icon/logo_oura.png
+    - ./assets/icon/logo_pocket.png
+    - ./assets/icon/logo_rescueTime.png
+    - ./assets/icon/logo_strava.png
+    - ./assets/icon/logo_todoist.png
+    - ./assets/icon/logo_twitter.png
+    - ./assets/icon/logo_withings.png
     #- images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

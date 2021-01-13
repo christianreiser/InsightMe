@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart'; // for date time formatting
+
 import '../../navigation_helper.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
-import 'package:intl/intl.dart'; // for date time formatting
 
 class EditEntry extends StatefulWidget {
   final Entry entry;
@@ -266,7 +267,7 @@ class EditEntryState extends State<EditEntry> {
         result = await databaseHelperEntry.insertEntry(entry);
       } else {
         result = await databaseHelperEntry.updateEntry(entry);
-        NavigationHelper().navigateToScaffoldRoute(context);
+        NavigationHelper().navigateToJournalRoute(context, entry.title);
       }
 
       // SUCCESS FAILURE STATUS DIALOG
@@ -291,7 +292,7 @@ class EditEntryState extends State<EditEntry> {
     }
 
     // navigate and rebuild
-    NavigationHelper().navigateToScaffoldRoute(context);
+    NavigationHelper().navigateToJournalRoute(context, entry.title);
 
     int result = await databaseHelperEntry.deleteEntry(entry.id);
     if (result != 0) {

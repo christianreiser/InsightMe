@@ -1,36 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/AppIntegrations/overview_route.dart';
 import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './Visualize/visualize_route.dart';
-import './strings.dart' as strings;
-import 'Database/correlations.dart';
-import 'Database/database_helper_attribute.dart';
-import 'Database/database_helper_entry.dart';
-import 'Journal/searchOrCreateAttribute.dart';
-import 'Optimize/optimize.dart';
-import 'navigation_helper.dart';
+import './../Database/correlations.dart';
+import './../Import/import_from_json_route.dart';
+import './../Journal/searchOrCreateAttribute.dart';
+import './../globals.dart' as globals;
+import './../strings.dart' as strings;
+import './data_route.dart';
+import './home_route.dart';
+import './optimize_route.dart';
+//import 'package:starflut/starflut.dart';
 
 enum Choice {
   exportDailySummaries,
   computeCorrelations,
+  importFromCSV,
+  appIntegrations,
   futureDesign,
   deleteAllData
 }
 
-class ScaffoldRoute extends StatefulWidget {
-  ScaffoldRoute();
+class ScaffoldRouteDesign extends StatefulWidget {
+  ScaffoldRouteDesign();
 
   @override
-  _ScaffoldRouteState createState() => _ScaffoldRouteState();
+  _ScaffoldRouteDesignState createState() => _ScaffoldRouteDesignState();
 }
 
-class _ScaffoldRouteState extends State<ScaffoldRoute> {
+class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   @override
   Widget build(BuildContext context) {
     return standardScaffold(); //welcomeOrStandardScaffold(); // todo intro back in
   }
+
+  static const Color iconColor = Colors.black87;
+
+
 
   FutureBuilder welcomeOrStandardScaffold() {
     /*
@@ -72,51 +80,16 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
     /*
     * standard scaffold with bottom navigation bar and floating action button
     * */
+    initializeGlobals();
     return Scaffold(
       appBar: AppBar(
         title: Text(
           strings.appTitle,
         ),
-        leading: null,
+        automaticallyImplyLeading: false, // hide back button
         actions: <Widget>[
-          // action button
-          PopupMenuButton<Choice>(
-            onSelected: (Choice result) {
-              if (result == Choice.exportDailySummaries) {
-//                exportDailySummaries();// todo permission handler iOS privacy
-              } else if (result == Choice.computeCorrelations) {
-                ComputeCorrelations().computeCorrelations();
-              } else if (result == Choice.futureDesign) {
-                NavigationHelper().navigateToFutureDesign(context);
-              } else if (result == Choice.deleteAllData) {
-                DatabaseHelperEntry().deleteDb();
-                DatabaseHelperAttribute().deleteDb();
-              }
-
-              setState(() {
-                debugPrint('result $result');
-                Choice _selection = result;
-              });
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
-              PopupMenuItem<Choice>(
-                value: Choice.exportDailySummaries,
-                child: Text('Export daily summaries'),
-              ),
-              PopupMenuItem<Choice>(
-                value: Choice.computeCorrelations,
-                child: Text('Compute correlations'),
-              ),
-              PopupMenuItem<Choice>(
-                value: Choice.futureDesign,
-                child: Text('switch to future design'),
-              ),
-//              PopupMenuItem<Choice>(
-//                value: Choice.deleteAllData,
-//                child: Text('Delete all data'),
-//              ),
-            ],
-          ),
+          /// three dots on the top right corner for settings
+          _popupMenu(),
         ],
       ),
       body: Center(
@@ -194,7 +167,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
     * floating action button to add entries
     */
     return FloatingActionButton(
-      child: Icon(Icons.add),//Icons.border_color
+      child: Icon(Icons.add), //Icons.border_color
       //label: "New Entry",
       onPressed: () {
         print("nav to add manually");
@@ -226,11 +199,11 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.view_list),
-          title: Text('Journal'),
+          title: Text('Home'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.timeline),
-          title: Text('Visualize'),
+          title: Text('Data'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.widgets),
@@ -255,9 +228,10 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   // bottom navigation bar:
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    //JournalRoute(),
-    Visualize(),
-    Optimize(),
+    HomeRoute(),
+    DataRoute(),
+    OptimizeRoute(),
+    //Covid19(), //IntroRoute(),
     IntroRoute(),
   ];
 
@@ -267,5 +241,125 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
       debugPrint('_selectedIndex= $_selectedIndex');
       // navigation for editing entry
     });
+  }
+
+  Widget _popupMenu() {
+    return PopupMenuButton<Choice>(
+      onSelected: (Choice result) {
+        if (result == Choice.exportDailySummaries) {
+//                exportDailySummaries();// todo permission handler iOS privacy
+        } else if (result == Choice.computeCorrelations) {
+          ComputeCorrelations().computeCorrelations();
+        } else if (result == Choice.importFromCSV) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Import()),
+          );
+        } else if (result == Choice.appIntegrations) {
+          /// todo AppIntegrations:
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
+          );
+        } else if (result == Choice.deleteAllData) {
+          // todo deleteAllData
+          // DatabaseHelperEntry().deleteDb();
+          // DatabaseHelperAttribute().deleteDb();
+        }
+
+        setState(() {
+          debugPrint('result $result');
+          Choice _selection = result; // check if needed
+        });
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
+        PopupMenuItem<Choice>(
+          value: Choice.computeCorrelations,
+          child: Row(
+            children: [
+              Icon(
+                Icons.compare_arrows,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Compute correlations'),
+            ],
+          ),
+        ),
+        PopupMenuItem<Choice>(
+          value: Choice.appIntegrations,
+          child: Row(
+            children: [
+              Icon(
+                Icons.exit_to_app,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Other app integrations'),
+            ],
+          ),
+        ),
+        PopupMenuItem<Choice>(
+          value: Choice.exportDailySummaries,
+          child: Row(
+            children: [
+              Icon(
+                Icons.file_upload,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Export daily summaries'),
+            ],
+          ),
+        ),
+        PopupMenuItem<Choice>(
+          value: Choice.importFromCSV,
+          child: Row(
+            children: [
+              Icon(
+                Icons.file_download,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Import data from file'),
+            ],
+          ),
+        ),
+        PopupMenuItem<Choice>(
+          value: Choice.deleteAllData,
+          child: Row(
+            children: [
+              Icon(
+                Icons.delete_forever,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Delete all data'),
+            ],
+          ),
+        ),
+      ],
+    );
+
+  }
+
+  initializeGlobals() {
+    // async update local attribute list if null to load for other routes later on
+    if (globals.attributeListLength == null) {
+      debugPrint('call updateAttributeList');
+      globals.Global().updateAttributeList();
+      debugPrint('attributeListLength ${globals.attributeListLength}');
+      print('globals.attributeListLength ${globals.attributeListLength}');
+    }
   }
 }

@@ -17,7 +17,7 @@ class Statistics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<VisualizationChangeNotifier>(
+    return Consumer<OptimizationChangeNotifier>(
       builder: (context, schedule, _) => FutureBuilder(
         future: _getCorrelationCoefficient(
             schedule.selectedAttribute1, schedule.selectedAttribute2),
@@ -26,7 +26,7 @@ class Statistics extends StatelessWidget {
           debugPrint(
               'FutureBuilder: _correlationCoefficient: $_correlationCoefficient');
           if (snapshot.connectionState == ConnectionState.done &&
-              _correlationCoefficient != null && _correlationCoefficient != 'NaN') {
+              _correlationCoefficient != null) {
             return insightMeOptimize.Optimize()
                 .statistics(context, _correlationCoefficient, 0.02);
           }

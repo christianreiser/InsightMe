@@ -1,24 +1,63 @@
-//import 'package:path/path.dart';
-//import 'package:sqflite/sqflite.dart';
-//import 'package:sqflite_migration/sqflite_migration.dart';
-//
-//final initialScript = [
-//  'CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'
-//      ' $colTitle TEXT)',
-//];
-//
-//final migrations = [
-//  '''
-//  alter table $attributeTable add column note TEXT default 0;
-//  '''
-//];
-//
-//final config = MigrationConfig(
-//    initializationScript: initialScript, migrationScripts: migrations);
-//
-//Future<Database> open() async {
-//  final databasesPath = await getDatabasesPath();
-//  final path = join(databasesPath, 'attributes.db');
-//
-//  return await openDatabaseWithMigration(path, config);
-//}
+/*
+static Map<DateTime, double> dateTimeWeightMap = {
+  DateTime(2019, 12, 01): 74.65,
+  DateTime(2020, 01, 01): 74.6,
+  DateTime(2020, 02, 02): 74.9,
+  DateTime(2020, 03, 03): 74.8,
+  DateTime(2020, 04, 04): 75.0,
+  DateTime(2020, 05, 05): 75.2,
+  DateTime(2020, 06, 06): 75.1,
+  DateTime(2020, 07, 07): 75.2,
+  DateTime(2020, 08, 08): 75.2,
+  DateTime(2020, 09, 09): 75.3,
+};
+
+static Map<DateTime, double> dateTimeRHRMap = {
+  DateTime(2020, 09, 01): 55,
+  DateTime(2020, 09, 02): 54,
+  DateTime(2020, 09, 03): 55,
+  DateTime(2020, 09, 04): 57,
+  DateTime(2020, 09, 05): 56,
+  DateTime(2020, 09, 06): 55,
+  DateTime(2020, 09, 07): 54,
+  DateTime(2020, 09, 08): 54,
+  DateTime(2020, 09, 09): 53,
+  DateTime(2020, 09, 10): 53,
+  DateTime(2020, 09, 11): 53,
+  DateTime(2020, 09, 12): 54,
+  DateTime(2020, 09, 13): 53,
+  DateTime(2020, 09, 14): 52,
+  DateTime(2020, 09, 15): 53,
+};
+
+static Map<DateTime, double> dateTimeProductivityMap = {
+  DateTime(2020, 09, 01): 9,
+  DateTime(2020, 09, 02): 8,
+  DateTime(2020, 09, 03): 9,
+  DateTime(2020, 09, 04): 0,
+  DateTime(2020, 09, 05): 0,
+  DateTime(2020, 09, 06): 8,
+  DateTime(2020, 09, 07): 9,
+  DateTime(2020, 09, 08): 7,
+  DateTime(2020, 09, 09): 8,
+  DateTime(2020, 09, 10): 7,
+  DateTime(2020, 09, 11): 3,
+  DateTime(2020, 09, 12): 1,
+  DateTime(2020, 09, 13): 9,
+  DateTime(2020, 09, 14): 9,
+  DateTime(2020, 09, 15): 8,
+};
+
+  static LineChart dateTimeWeightChart = LineChart.fromDateTimeMaps(
+      [dateTimeWeightMap], [Colors.blue], [''], // chart label name
+      tapTextFontWeight: FontWeight.w400);
+
+  static LineChart dateTimeRHRChart = LineChart.fromDateTimeMaps(
+      [dateTimeRHRMap], [Colors.blue], [''], // chart label name
+      tapTextFontWeight: FontWeight.w400);
+
+  static LineChart dateTimeProductivityChart = LineChart.fromDateTimeMaps(
+      [dateTimeProductivityMap], [Colors.blue], [''], // chart label name
+      tapTextFontWeight: FontWeight.w400);
+
+      */

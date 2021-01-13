@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Core/functions/misc.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
 import './../globals.dart' as globals;
@@ -10,13 +9,21 @@ import '../Database/entry.dart';
 import '../navigation_helper.dart';
 
 class JournalRoute extends StatefulWidget {
-  JournalRoute();
+  final String attributeName;
+
+  JournalRoute(this.attributeName);
 
   @override
-  JournalRouteState createState() => JournalRouteState();
+  JournalRouteState createState() {
+    return JournalRouteState(this.attributeName);
+  }
 }
 
 class JournalRouteState extends State<JournalRoute> {
+  String attributeName;
+
+  JournalRouteState(this.attributeName);
+
   List<Entry> _entryList;
 
   List<bool> _isSelectedList = []; // which entries are selected
@@ -36,7 +43,6 @@ class JournalRouteState extends State<JournalRoute> {
     if (_entryList == null) {
       _entryList = List<Entry>();
       if (context != null) {
-        // todo check if it works
         updateEntryListView();
       }
     }
@@ -49,16 +55,27 @@ class JournalRouteState extends State<JournalRoute> {
       print('globals.attributeListLength ${globals.attributeListLength}');
     }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        updateEntryListView();
-      },
-      child: journalHintVisibleLogic() == true
-          // HINT
-          ? _makeEntryHint() // _delayedHint() todo
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () async {
+            NavigationHelper().navigateToScaffoldRoute(context); // refreshes
+          },
+        ),
+        title: Text('Entries'),
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          updateEntryListView();
+        },
+        child: journalHintVisibleLogic() == true
+            // HINT
+            ? _makeEntryHint()
 
-          // ENTRY LIST
-          : _getEntryListView(), //_entryListFutureBuilder(),
+            // ENTRY LIST
+            : _getEntryListView(), //_entryListFutureBuilder(),
+      ),
     );
   }
 
@@ -80,18 +97,6 @@ class JournalRouteState extends State<JournalRoute> {
     return entryListEmpty;
   }
 
-//  Widget _delayedHint() {
-//    delayedChangState();
-//    debugPrint('_showHint $_showHint');
-//    return AnimatedCrossFade(
-//      duration: const Duration(milliseconds: 600),
-//      firstChild: Container(),
-//      secondChild: _makeEntryHint(),
-//      crossFadeState:
-//          _showHint ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-//    );
-//  }
-
   Column _makeEntryHint() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -101,7 +106,7 @@ class JournalRouteState extends State<JournalRoute> {
           children: [
             Container(
               padding: EdgeInsets.all(5),
-              color: Colors.tealAccent,
+              color: Theme.of(context).accentColor,
               child: Row(
                 children: [
                   Text(
@@ -137,8 +142,10 @@ class JournalRouteState extends State<JournalRoute> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text('${_countSelected()}',
-                    style: TextStyle(color: Colors.black)),
+                Text(
+                  '${_countSelected()}',
+                  style: TextStyle(color: Colors.black),
+                ),
                 FlatButton(
                   child: Icon(Icons.delete),
                   onPressed: () {
@@ -159,41 +166,9 @@ class JournalRouteState extends State<JournalRoute> {
                 )
               ],
             ),
-            backgroundColor: Colors.grey,
+            backgroundColor: Theme.of(context).accentColor,
           )
         : Container();
-  }
-
-  // ENTRY LIST
-  FutureBuilder _entryListFutureBuilder() {
-    /*
-    * decides if standard scaffold or welcome screen should be shown
-    * Logic:
-    * Welcome if:
-    *   1. hideWelcome == null (as not shown before)
-    *   2. hideWelcome == false
-    * StandardScaffold if:
-    *   1. problems with connection state (i.e. none, waiting)
-    *   2. hide == true
-    * */
-    return FutureBuilder<List<Entry>>(
-      future: databaseHelperEntry.getEntryList(),
-      builder: (BuildContext context, AsyncSnapshot<List<Entry>> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return _makeEntryHint();
-          case ConnectionState.waiting:
-            return CircularProgressIndicator();
-          default:
-            if (!snapshot.hasError) {
-              //@ToDo("Return a welcome screen")
-              return _getEntryListView();
-            } else {
-              return Text('error: ${snapshot.error}');
-            }
-        }
-      },
-    );
   }
 
   Widget _getEntryListView() {
@@ -212,12 +187,12 @@ class JournalRouteState extends State<JournalRoute> {
                 color: Theme.of(context).backgroundColor,
                 child: Card(
                   // gives monotone tiles a card shape
-                  color:
-                      _multiEntrySelectionActive // when multi selected, check each
-                          ? _isSelectedList[position] == false
-                              ? Colors.white
-                              : Colors.grey
-                          : Colors.white, // when none selected always white
+                  // color:
+                  //     _multiEntrySelectionActive // when multi selected, check each
+                  //         ? _isSelectedList[position] == false
+                  //             ? Theme.of(context).backgroundColor
+                  //             : Theme.of(context).accentColor
+                  //         : Theme.of(context).backgroundColor, // when none selected always white
                   child: ListTile(
                     onLongPress: () {
                       setState(
@@ -291,35 +266,16 @@ class JournalRouteState extends State<JournalRoute> {
     );
   }
 
-  getFirstLetter(String title) {
-    /* get first letter for yellow circle avatar */
-    if (title.length > 0) { // to avoid error when title.length == 0
-      return title.substring(0, 1);
-    } else {
-      return ' ';
-    }
-  }
 
-//  void delayedChangState() {
-//    Timer(const Duration(milliseconds: 300), handleTimeout);
-//  }
-
-//  void handleTimeout() {
-//    setState(() {
-//      // todo
-//      _showHint = true;
-//    });
-//  }
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
-    // todo needed?
-    _entryList = await databaseHelperEntry.getEntryList();
+    debugPrint('attributeName $attributeName');
+    _entryList = await databaseHelperEntry.getFilteredEntryList(attributeName);
     globals.entryListLength = _entryList.length;
 
     if (context != null) {
-      // todo check if good
       setState(() {
         this._entryList = _entryList;
         this._countEntry = globals.entryListLength; // needed
@@ -328,7 +284,7 @@ class JournalRouteState extends State<JournalRoute> {
       // if multi selection was active then deactivate
       if (_multiEntrySelectionActive) {
         _multiEntrySelectionActive = false;
-        _isSelectedList = null; // todo? needs also an update
+        _isSelectedList = null;
       }
 
       // take two most recent entries as defaults for visualization.
@@ -358,8 +314,7 @@ class JournalRouteState extends State<JournalRoute> {
   void _delete(_isSelectedList) async {
     for (int position = 0; position < _isSelectedList.length; position++) {
       if (_isSelectedList[position] == true) {
-        await databaseHelperEntry // todo int result = feedback
-            .deleteEntry(_entryList[position].id);
+        await databaseHelperEntry.deleteEntry(_entryList[position].id);
       }
     }
     updateEntryListView();

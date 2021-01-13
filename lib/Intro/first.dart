@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../navigation_helper.dart';
 
 class IntroRoute extends StatefulWidget {
@@ -74,7 +75,7 @@ class _IntroRouteState extends State<IntroRoute> {
                       ),
                       FlatButton(
                         onPressed: () {
-                          NavigationHelper().navigateToScaffoldRoute(context);
+                          NavigationHelper().navigateToFutureDesign(context);
                           setHideWelcomeToTrue(); // set flag to hide Welcome screen from now on
                         },
                         child: Row(

@@ -1,14 +1,16 @@
 import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:insightme/Core/functions/misc.dart';
+
+import './../globals.dart' as globals;
 import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../navigation_helper.dart';
 import '../strings.dart';
-import 'journal_route.dart';
-import './../globals.dart' as globals;
 
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
@@ -103,7 +105,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 )
               ],
             ),
-            backgroundColor: Colors.grey,
+            backgroundColor:
+                Theme.of(context).backgroundColor, //looks better than default
           )
         : AppBar(
             title: Text("What to track?"),
@@ -111,7 +114,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
               icon: Icon(Icons.close),
               onPressed: () async {
                 NavigationHelper()
-                    .navigateToScaffoldRoute(context); // refreshes
+                    .navigateToFutureDesign(context); // refreshes
               },
             ),
           );
@@ -168,8 +171,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           onPressed: () {
             debugPrint("Create button clicked");
             _saveAttributeAndRefreshView(
-              Attribute(_attributeInputController.text,
-                  'optional: write a note', defaultLabelColor, defaultAggregation),
+              Attribute(
+                  _attributeInputController.text,
+                  'optional: write a note',
+                  defaultLabelColor,
+                  defaultAggregation),
             );
             setState(() {}); // todo not here
           },
@@ -215,13 +221,13 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     * ATTRIBUTE LIST
     */
     return ListView.builder(
-      shrinkWrap: true, // use this
+      shrinkWrap: true, /// todo it's significantly more expensive. why?
       itemCount: _attributesToDisplay.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           color: _isSelected[position] == false
               ? Color(this._attributesToDisplay[position].color)
-            : Colors.grey, //  select
+              : Colors.grey, //  select
           child: ListTile(
             onLongPress: () {
               setState(() {
@@ -232,8 +238,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             leading: CircleAvatar(
               //backgroundColor: Colors.amber,
               child: Text(
-                JournalRouteState()
-                    .getFirstLetter(this._attributesToDisplay[position].title),
+                getFirstLetter(this._attributesToDisplay[position].title),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -298,7 +303,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         Center(
           child: Container(
             padding: EdgeInsets.all(10),
-            color: Colors.tealAccent,
+            color: Theme.of(context).accentColor,
             child: Column(
               children: [
                 Icon(
@@ -330,7 +335,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         Center(
           child: Container(
             padding: EdgeInsets.all(10),
-            color: Colors.tealAccent,
+            color: Theme.of(context).accentColor,
             child: Column(
               children: [
                 Icon(
