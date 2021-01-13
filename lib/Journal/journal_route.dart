@@ -18,6 +18,7 @@ class JournalRoute extends StatefulWidget {
 
 class JournalRouteState extends State<JournalRoute> {
   List<Entry> _entryList;
+  String attributeName;
 
   List<bool> _isSelectedList = []; // which entries are selected
   bool _multiEntrySelectionActive =
@@ -48,16 +49,27 @@ class JournalRouteState extends State<JournalRoute> {
       print('globals.attributeListLength ${globals.attributeListLength}');
     }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        updateEntryListView();
-      },
-      child: journalHintVisibleLogic() == true
-          // HINT
-          ? _makeEntryHint()
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () async {
+            NavigationHelper().navigateToScaffoldRoute(context); // refreshes
+          },
+        ),
+        title: Text('Entries'),
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          updateEntryListView();
+        },
+        child: journalHintVisibleLogic() == true
+            // HINT
+            ? _makeEntryHint()
 
-          // ENTRY LIST
-          : _getEntryListView(), //_entryListFutureBuilder(),
+            // ENTRY LIST
+            : _getEntryListView(), //_entryListFutureBuilder(),
+      ),
     );
   }
 
