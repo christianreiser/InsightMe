@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './../Database/correlations.dart';
 import './../Import/import_from_json_route.dart';
 import './../Journal/searchOrCreateAttribute.dart';
+import './../globals.dart' as globals;
 import './../strings.dart' as strings;
 import './data_route.dart';
 import './home_route.dart';
@@ -36,6 +37,8 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   }
 
   static const Color iconColor = Colors.black87;
+
+
 
   FutureBuilder welcomeOrStandardScaffold() {
     /*
@@ -77,6 +80,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     /*
     * standard scaffold with bottom navigation bar and floating action button
     * */
+    initializeGlobals();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -347,5 +351,15 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       ],
     );
 
+  }
+
+  initializeGlobals() {
+    // async update local attribute list if null to load for other routes later on
+    if (globals.attributeListLength == null) {
+      debugPrint('call updateAttributeList');
+      globals.Global().updateAttributeList();
+      debugPrint('attributeListLength ${globals.attributeListLength}');
+      print('globals.attributeListLength ${globals.attributeListLength}');
+    }
   }
 }

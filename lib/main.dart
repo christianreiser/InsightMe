@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './strings.dart' as strings;
-import 'scaffold_route.dart';
+import 'FutureDesign/scaffold.dart';
 
 void main() => runApp(LifeTrackerApp());
 
@@ -23,7 +23,7 @@ class LifeTrackerApp extends StatelessWidget {
       //
 
       ),
-      home: ScaffoldRoute(),
+      home: ScaffoldRouteDesign(),
     );
   }
 }
