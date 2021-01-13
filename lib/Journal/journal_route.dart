@@ -34,7 +34,6 @@ class JournalRouteState extends State<JournalRoute> {
     if (_entryList == null) {
       _entryList = List<Entry>();
       if (context != null) {
-        // todo check if it works
         updateEntryListView();
       }
     }
@@ -53,7 +52,7 @@ class JournalRouteState extends State<JournalRoute> {
       },
       child: journalHintVisibleLogic() == true
           // HINT
-          ? _makeEntryHint() // _delayedHint() todo
+          ? _makeEntryHint()
 
           // ENTRY LIST
           : _getEntryListView(), //_entryListFutureBuilder(),
@@ -78,17 +77,6 @@ class JournalRouteState extends State<JournalRoute> {
     return entryListEmpty;
   }
 
-//  Widget _delayedHint() {
-//    delayedChangState();
-//    debugPrint('_showHint $_showHint');
-//    return AnimatedCrossFade(
-//      duration: const Duration(milliseconds: 600),
-//      firstChild: Container(),
-//      secondChild: _makeEntryHint(),
-//      crossFadeState:
-//          _showHint ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-//    );
-//  }
 
   Column _makeEntryHint() {
     return Column(
@@ -164,37 +152,6 @@ class JournalRouteState extends State<JournalRoute> {
         : Container();
   }
 
-  // ENTRY LIST
-  FutureBuilder _entryListFutureBuilder() {
-    /*
-    * decides if standard scaffold or welcome screen should be shown
-    * Logic:
-    * Welcome if:
-    *   1. hideWelcome == null (as not shown before)
-    *   2. hideWelcome == false
-    * StandardScaffold if:
-    *   1. problems with connection state (i.e. none, waiting)
-    *   2. hide == true
-    * */
-    return FutureBuilder<List<Entry>>(
-      future: databaseHelperEntry.getEntryList(),
-      builder: (BuildContext context, AsyncSnapshot<List<Entry>> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return _makeEntryHint();
-          case ConnectionState.waiting:
-            return CircularProgressIndicator();
-          default:
-            if (!snapshot.hasError) {
-              //@ToDo("Return a welcome screen")
-              return _getEntryListView();
-            } else {
-              return Text('error: ${snapshot.error}');
-            }
-        }
-      },
-    );
-  }
 
   Widget _getEntryListView() {
     return Column(
@@ -301,26 +258,14 @@ class JournalRouteState extends State<JournalRoute> {
     }
   }
 
-//  void delayedChangState() {
-//    Timer(const Duration(milliseconds: 300), handleTimeout);
-//  }
-
-//  void handleTimeout() {
-//    setState(() {
-//      // todo
-//      _showHint = true;
-//    });
-//  }
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
-    // todo needed?
     _entryList = await databaseHelperEntry.getEntryList();
     globals.entryListLength = _entryList.length;
 
     if (context != null) {
-      // todo check if good
       setState(() {
         this._entryList = _entryList;
         this._countEntry = globals.entryListLength; // needed
@@ -329,7 +274,7 @@ class JournalRouteState extends State<JournalRoute> {
       // if multi selection was active then deactivate
       if (_multiEntrySelectionActive) {
         _multiEntrySelectionActive = false;
-        _isSelectedList = null; // todo? needs also an update
+        _isSelectedList = null;
       }
 
       // take two most recent entries as defaults for visualization.
@@ -359,7 +304,7 @@ class JournalRouteState extends State<JournalRoute> {
   void _delete(_isSelectedList) async {
     for (int position = 0; position < _isSelectedList.length; position++) {
       if (_isSelectedList[position] == true) {
-        await databaseHelperEntry // todo int result = feedback
+        await databaseHelperEntry
             .deleteEntry(_entryList[position].id);
       }
     }
