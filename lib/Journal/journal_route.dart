@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Core/functions/misc.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
 import './../globals.dart' as globals;
@@ -13,12 +14,17 @@ class JournalRoute extends StatefulWidget {
   JournalRoute(this.attributeName);
 
   @override
-  JournalRouteState createState() => JournalRouteState();
+  JournalRouteState createState() {
+    return JournalRouteState(this.attributeName);
+  }
 }
 
 class JournalRouteState extends State<JournalRoute> {
-  List<Entry> _entryList;
   String attributeName;
+
+  JournalRouteState(this.attributeName);
+
+  List<Entry> _entryList;
 
   List<bool> _isSelectedList = []; // which entries are selected
   bool _multiEntrySelectionActive =
@@ -90,7 +96,6 @@ class JournalRouteState extends State<JournalRoute> {
     }
     return entryListEmpty;
   }
-
 
   Column _makeEntryHint() {
     return Column(
@@ -165,7 +170,6 @@ class JournalRouteState extends State<JournalRoute> {
           )
         : Container();
   }
-
 
   Widget _getEntryListView() {
     return Column(
@@ -262,21 +266,13 @@ class JournalRouteState extends State<JournalRoute> {
     );
   }
 
-  getFirstLetter(String title) {
-    /* get first letter for yellow circle avatar */
-    if (title.length > 0) {
-      // to avoid error when title.length == 0
-      return title.substring(0, 1);
-    } else {
-      return ' ';
-    }
-  }
 
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void updateEntryListView() async {
-    _entryList = await databaseHelperEntry.getEntryList();
+    debugPrint('attributeName $attributeName');
+    _entryList = await databaseHelperEntry.getFilteredEntryList(attributeName);
     globals.entryListLength = _entryList.length;
 
     if (context != null) {
@@ -318,8 +314,7 @@ class JournalRouteState extends State<JournalRoute> {
   void _delete(_isSelectedList) async {
     for (int position = 0; position < _isSelectedList.length; position++) {
       if (_isSelectedList[position] == true) {
-        await databaseHelperEntry
-            .deleteEntry(_entryList[position].id);
+        await databaseHelperEntry.deleteEntry(_entryList[position].id);
       }
     }
     updateEntryListView();

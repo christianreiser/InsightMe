@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:insightme/Core/functions/misc.dart';
 
 import './../globals.dart' as globals;
 import '../Database/attribute.dart';
@@ -10,7 +11,6 @@ import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
 import '../navigation_helper.dart';
 import '../strings.dart';
-import 'journal_route.dart';
 
 // Define SearchOrCreateAttribute widget.
 class SearchOrCreateAttribute extends StatefulWidget {
@@ -238,8 +238,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             leading: CircleAvatar(
               //backgroundColor: Colors.amber,
               child: Text(
-                JournalRouteState()
-                    .getFirstLetter(this._attributesToDisplay[position].title),
+                getFirstLetter(this._attributesToDisplay[position].title),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
