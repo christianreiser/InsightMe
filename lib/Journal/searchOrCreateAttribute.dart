@@ -114,7 +114,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
               icon: Icon(Icons.close),
               onPressed: () async {
                 NavigationHelper()
-                    .navigateToScaffoldRoute(context); // refreshes
+                    .navigateToFutureDesign(context); // refreshes
               },
             ),
           );

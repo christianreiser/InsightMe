@@ -42,7 +42,7 @@ class DataRoute extends StatelessWidget {
                   icon: Icon(Icons.chevron_right),
                   onPressed: () {
                     NavigationHelper()
-                        .navigateToScaffoldRoute(context); // refreshes
+                        .navigateToJournalRoute(context, attributeName); // refreshes
                   },
                 ),
               ],

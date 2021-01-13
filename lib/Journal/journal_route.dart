@@ -8,7 +8,9 @@ import '../Database/entry.dart';
 import '../navigation_helper.dart';
 
 class JournalRoute extends StatefulWidget {
-  JournalRoute();
+  final String attributeName;
+
+  JournalRoute(this.attributeName);
 
   @override
   JournalRouteState createState() => JournalRouteState();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insightme/scaffold_route.dart';
+import 'package:insightme/Journal/journal_route.dart';
 
 import 'Database/Route/edit_attributes.dart';
 import 'Database/Route/edit_entries.dart';
@@ -17,9 +17,32 @@ class NavigationHelper {
         await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
       context,
     ) {
-      return ScaffoldRoute();
+      return ScaffoldRouteDesign();
     }), (Route<dynamic> route) => false);
     return result;
+  }
+
+  // navigation back  and refresh to show new entry
+  void navigateToJournalRoute(context, attributeName) async {
+    // don't use pop because it doesn't refresh the page
+    // RemoveUntil is needed to remove the old outdated  route
+    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
+        context,
+        ) {
+      return JournalRoute(attributeName);
+    }), (Route<dynamic> route) => false);
+  }
+
+
+  // navigation back  and refresh to show new entry
+  void navigateToSearchOrCreateAttributeRoute(context) async {
+    // don't use pop because it doesn't refresh the page
+    // RemoveUntil is needed to remove the old outdated  route
+    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
+        context,
+        ) {
+      return SearchOrCreateAttribute();
+    }), (Route<dynamic> route) => false);
   }
 
   void navigateToEditEntry(Entry entry, context, thisIsANewEntry) async {
@@ -41,17 +64,6 @@ class NavigationHelper {
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditAttribute(attribute, title);
     }));
-  }
-
-  // navigation back  and refresh to show new entry
-  void navigateToSearchOrCreateAttributeRoute(context) async {
-    // don't use pop because it doesn't refresh the page
-    // RemoveUntil is needed to remove the old outdated  route
-    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
-      context,
-    ) {
-      return SearchOrCreateAttribute();
-    }), (Route<dynamic> route) => false);
   }
 
 //  // navigation for editing entry

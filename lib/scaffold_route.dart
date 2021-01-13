@@ -8,7 +8,6 @@ import './strings.dart' as strings;
 import 'Database/correlations.dart';
 import 'Database/database_helper_attribute.dart';
 import 'Database/database_helper_entry.dart';
-import 'Journal/journal_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import 'Optimize/optimize.dart';
 import 'navigation_helper.dart';
@@ -256,7 +255,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> {
   // bottom navigation bar:
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    JournalRoute(),
+    //JournalRoute(),
     Visualize(),
     Optimize(),
     IntroRoute(),

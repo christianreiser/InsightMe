@@ -43,7 +43,7 @@ class _ImportState extends State<Import> {
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () async {
-            NavigationHelper().navigateToScaffoldRoute(context); // refreshes
+            NavigationHelper().navigateToFutureDesign(context); // refreshes
           },
         ),
         title: Text('Import'),
