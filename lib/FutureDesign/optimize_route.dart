@@ -32,15 +32,14 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
   }
 
   Widget _attributeSelectionAndChart() {
-    return Container(
-      margin: EdgeInsets.all(10),
-      // ChangeNotifierProvider for state management
-      child: ChangeNotifierProvider(
-        create: (context) => OptimizationChangeNotifier(), // builder -> create
+    return ChangeNotifierProvider(
+      create: (context) => OptimizationChangeNotifier(), // builder -> create
 
-        child: SingleChildScrollView(
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Column(
+      child: SingleChildScrollView(
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 //mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -64,19 +63,12 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                         DropDown(false),
                         // true/false do discriminate first and second
                       ]),
-                  Text(
-                    'Highest correlations:',
-                    style: TextStyle(
-                        fontSize: 15.5,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black54),
-                  ),
-                  optimizeNameAndChart('Body weight', 'Calories in'),
-                  optimizeNameAndChart('Happiness', 'Resting Heart Rate')
                 ]),
-          ]),
-        ),
-      ), // type lineChart
+          ),
+          optimizeNameAndChart('Body weight', 'Calories in'),
+          optimizeNameAndChart('Happiness', 'Resting Heart Rate')
+        ]),
+      ),
     );
   }
 
@@ -113,32 +105,35 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     );
   }
 
-  Column optimizeNameAndChart(attributeName1, attributeName2) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      /// SEPARATOR
+  Widget optimizeNameAndChart(attributeName1, attributeName2) {
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          /// SEPARATOR
+          Text(
+            '$attributeName1 & $attributeName2',
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: 20), // needed above chart
+
+          /// visualize chart
+          SizedBox(
+            height: 250,
+
+            /// height constraint
+            child: SizedBox.expand(
+              /// for max width
+              child: futureTwoAttributeAnimatedLineChart(
+                  attributeName1, attributeName2),
+            ),
+          ),
+
+          /// statistics: correlation and confidence
+          Optimize().statistics(context, 0.92, 0.09), // todo
+        ]),
+      ),
       greyLineSeparator(),
-      SizedBox(height: 20), // needed above chart
-      Text(
-        '$attributeName1 & $attributeName2',
-        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
-      ),
-      SizedBox(height: 20), // needed above chart
-
-      /// visualize chart
-      SizedBox(
-        height: 250,
-
-        /// height contstraint
-        child: SizedBox.expand(
-          /// for max width
-          child: futureTwoAttributeAnimatedLineChart(
-              attributeName1, attributeName2),
-        ),
-      ),
-
-      /// statistics: correlation and confidence
-      Optimize().statistics(context, 0.92, 0.09),
-      SizedBox(height: 10)
     ]);
   }
 }

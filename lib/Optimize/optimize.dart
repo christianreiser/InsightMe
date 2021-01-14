@@ -101,7 +101,6 @@ class Optimize extends StatelessWidget {
         ]);
   }
 
-
   Container _correlationBar(_correlationCoefficient) {
     /*
     * input: _correlationCoefficient
@@ -112,10 +111,7 @@ class Optimize extends StatelessWidget {
     debugPrint('_absIntCorrCoeff: $_absIntCorrCoeff');
 
     return Container(
-      /*
-              * correlation / correlation bar
-              * */
-      //padding: const EdgeInsets.all(5.0),
+      /// correlation / correlation bar
       decoration: _statisticsBoxDecoration(),
       child: SizedBox(
         width: 117,
@@ -125,8 +121,7 @@ class Optimize extends StatelessWidget {
           height: 5,
           child: Row(children: [
             Expanded(
-                flex: (_absIntCorrCoeff),
-                child: Container(color: Colors.teal)),
+                flex: (_absIntCorrCoeff), child: Container(color: Colors.teal)),
             Expanded(
               flex: (100 - _absIntCorrCoeff),
               child: Container(),
@@ -136,8 +131,6 @@ class Optimize extends StatelessWidget {
       ),
     );
   }
-
-
 
   Row _confidenceStars(_pValue) {
     /*
@@ -166,8 +159,7 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star_border),
         Icon(Icons.star_border),
       ]);
-    }
-    else if (_pValue <= 0.45 && _pValue > 0.40) {
+    } else if (_pValue <= 0.45 && _pValue > 0.40) {
       return Row(children: [
         Icon(Icons.star),
         Icon(Icons.star_border),
@@ -175,8 +167,7 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star_border),
         Icon(Icons.star_border),
       ]);
-    }
-    else if (_pValue <= 0.4 && _pValue > 0.35) {
+    } else if (_pValue <= 0.4 && _pValue > 0.35) {
       return Row(children: [
         Icon(Icons.star),
         Icon(Icons.star_half),
@@ -184,8 +175,7 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star_border),
         Icon(Icons.star_border),
       ]);
-    }
-    else if (_pValue <= 0.35 && _pValue > 0.3) {
+    } else if (_pValue <= 0.35 && _pValue > 0.3) {
       return Row(children: [
         Icon(Icons.star),
         Icon(Icons.star),
@@ -193,8 +183,7 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star_border),
         Icon(Icons.star_border),
       ]);
-    }
-    else if (_pValue <= 0.3 && _pValue > 0.25) {
+    } else if (_pValue <= 0.3 && _pValue > 0.25) {
       return Row(children: [
         Icon(Icons.star),
         Icon(Icons.star),
@@ -202,8 +191,7 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star_border),
         Icon(Icons.star_border),
       ]);
-    }
-    else if (_pValue <= 0.25 && _pValue > 0.2) {
+    } else if (_pValue <= 0.25 && _pValue > 0.2) {
       return Row(children: [
         Icon(Icons.star),
         Icon(Icons.star),
@@ -211,8 +199,7 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star_border),
         Icon(Icons.star_border),
       ]);
-    }
-    else if (_pValue <= 0.2 && _pValue > 0.15) {
+    } else if (_pValue <= 0.2 && _pValue > 0.15) {
       return Row(children: [
         Icon(Icons.star),
         Icon(Icons.star),
@@ -220,8 +207,7 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star_half),
         Icon(Icons.star_border),
       ]);
-    }
-    else if (_pValue <= 0.15 && _pValue > 0.1) {
+    } else if (_pValue <= 0.15 && _pValue > 0.1) {
       return Row(children: [
         Icon(Icons.star),
         Icon(Icons.star),
@@ -229,8 +215,7 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star),
         Icon(Icons.star_border),
       ]);
-    }
-    else if (_pValue <= 0.1 && _pValue > 0.05) {
+    } else if (_pValue <= 0.1 && _pValue > 0.05) {
       return Row(children: [
         Icon(Icons.star),
         Icon(Icons.star),
@@ -238,8 +223,7 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star),
         Icon(Icons.star_half),
       ]);
-    }
-    else if (_pValue <= 0.05) {
+    } else if (_pValue <= 0.05) {
       return Row(children: [
         Icon(Icons.star),
         Icon(Icons.star),
@@ -247,8 +231,8 @@ class Optimize extends StatelessWidget {
         Icon(Icons.star),
         Icon(Icons.star),
       ]);
-    }
-    else { //_pValue > 0.5
+    } else {
+      //_pValue > 0.5
       return Row(children: [
         Icon(Icons.star_border),
         Icon(Icons.star_border),
