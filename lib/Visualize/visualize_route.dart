@@ -1,7 +1,9 @@
+/*
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/Visualize/statistics.dart';
+import 'package:insightme/FutureDesign/Visualize/statistics.dart';
+import 'package:insightme/Statistics/Widgets/statistics.dart';
 import './attribute_selection.dart';
 import './change_notifier.dart';
 import 'package:provider/provider.dart';
@@ -36,9 +38,11 @@ class Visualize extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
             children: <Widget>[
               Row(
-                  /*
+                  */
+/*
                 * dropdown
-                * */
+                * *//*
+
                   // start: child as close to the start of the main axis as possible
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -89,3 +93,4 @@ class Visualize extends StatelessWidget {
     );
   }
 }
+*/

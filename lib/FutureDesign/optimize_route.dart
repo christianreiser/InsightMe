@@ -5,7 +5,7 @@ import 'package:insightme/Core/widgets/chart.dart';
 import 'package:insightme/Core/widgets/design.dart';
 import 'package:insightme/FutureDesign/Visualize/attribute_selection.dart';
 import 'package:insightme/FutureDesign/Visualize/change_notifier.dart';
-import 'package:insightme/Optimize/optimize.dart';
+import 'package:insightme/Statistics/Widgets/statistics.dart';
 import 'package:provider/provider.dart';
 
 import './../globals.dart' as globals;
@@ -130,7 +130,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
           ),
 
           /// statistics: correlation and confidence
-          Optimize().statistics(context, 0.92, 0.09), // todo
+          statistics(context, 0.92, 0.09), // todo
         ]),
       ),
       greyLineSeparator(),
