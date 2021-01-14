@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../Functions/correlation.dart';
+import '../Functions/readCorrelation.dart';
 
 Widget futureStatistics(attributeName1, attributeName2) {
   return FutureBuilder(
-    future: correlationCoefficient(attributeName1, attributeName2),
+    future: readCorrelationCoefficient(attributeName1, attributeName2),
     builder: (context, snapshot) {
       /// chart data arrived && data found
       /// snapshot is current state of future

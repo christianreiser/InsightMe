@@ -4,7 +4,6 @@ import 'package:insightme/AppIntegrations/overview_route.dart';
 import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './../Database/correlations.dart';
 import './../Import/import_from_json_route.dart';
 import './../Journal/searchOrCreateAttribute.dart';
 import './../globals.dart' as globals;
@@ -12,6 +11,7 @@ import './../strings.dart' as strings;
 import './data_route.dart';
 import './home_route.dart';
 import './optimize_route.dart';
+import '../Statistics/Functions/computeCorrelations.dart';
 //import 'package:starflut/starflut.dart';
 
 enum Choice {

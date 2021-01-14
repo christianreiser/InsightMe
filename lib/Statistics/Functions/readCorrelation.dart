@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_charts/flutter_charts.dart' as fluCa;
 import 'package:path_provider/path_provider.dart';
 
-Future<num> correlationCoefficient(attribute1, attribute2) async {
+Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   /// read csv and transform
   // todo maybe in different file
   final directory = await getApplicationDocumentsDirectory();

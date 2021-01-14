@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starfruit/starfruit.dart';
 
-import 'create_daily_summary.dart';
+import '../../Database/create_daily_summary.dart';
 
 class ComputeCorrelations {
   computeCorrelations() async {
