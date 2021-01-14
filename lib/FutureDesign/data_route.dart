@@ -50,7 +50,7 @@ class DataRoute extends StatelessWidget {
             SizedBox(height: 10),
             SizedBox(
               height: 200,
-              child: futureAnimatedLineChart(attributeName),
+              child: futureOneAttributeAnimatedLineChart(attributeName),
             )
           ]),
     );

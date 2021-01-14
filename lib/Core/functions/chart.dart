@@ -46,15 +46,15 @@ Future<LineChart> oneAttributeChart(attributeName) async {
   return chart;
 }
 
-Future<LineChart> twoAttributeChart(selectedAttribute1, selectedAttribute2) async {
+Future<LineChart> twoAttributeChart(attributeName1, attributeName2) async {
   Map<DateTime, double> dateTimeValueMap1 =
-  await getDateTimeValueMap(selectedAttribute1);
+  await getDateTimeValueMap(attributeName1);
   Map<DateTime, double> dateTimeValueMap2 =
-  await getDateTimeValueMap(selectedAttribute2);
+  await getDateTimeValueMap(attributeName2);
   chart = LineChart.fromDateTimeMaps(
     [dateTimeValueMap1, dateTimeValueMap2],
     [Colors.green, Colors.blue],
-    [selectedAttribute1, selectedAttribute2], // axis numbers
+    [attributeName1, attributeName2], // axis numbers
     tapTextFontWeight: FontWeight.w600,
   );
   return chart;
