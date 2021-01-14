@@ -12,17 +12,15 @@ import '../../Database/create_daily_summary.dart';
 
 class ComputeCorrelations {
   computeCorrelations() async {
-    /*
-  * reads daily summaries CSV,
-  * computes correlations
-  * writes correlations matrix as csv
-  */
+    /// reads daily summaries CSV,
+    /// computes correlations
+    /// writes correlations matrix as csv
 
     int numDays = await getNumDays();
 
     final directory = await getApplicationDocumentsDirectory();
 
-    // get Daily Summaries In Row For Each Day Format. calls WriteDailySummariesCSV
+    /// get Daily Summaries In Row For Each Day Format. calls WriteDailySummariesCSV
     final rowForEachDay =
         await getDailySummariesInRowForEachDayFormat(directory);
 
@@ -32,42 +30,45 @@ class ComputeCorrelations {
 
     final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
 
-    // ini correlation matrix
+    /// ini correlation matrix
     var correlationMatrix = List.generate(
         numLabels + 1, (i) => List(numLabels + 1),
         growable: false);
 
-    // iterate through rows. 1 to skip date
+    /// ini correlationCoefficient
+    var correlationCoefficient;
+
+    /// iterate through rows. 1 to skip date
     for (int row = 1; row < numLabels + 1; row++) {
-      // write labels in first column in correlationMatrix
+      /// write labels in first column in correlationMatrix
       correlationMatrix[row][0] = labels[row - 1];
 
-      // iterate through columns. 1 to skip date
+      /// iterate through columns. 1 to skip date
       for (int column = 1; column < numLabels + 1; column++) {
-
-        // write labels in first row in correlationMatrix
+        /// write labels in first row in correlationMatrix
         correlationMatrix[0][column] = labels[column - 1];
 
-        // skip self and double correlation with if column > row:
+        /// skip self and double correlation with if column > row:
         if (column > row) {
+          /// get xYStats which are needed to compute correlations
+          Map<num, num> xYStats =
+              getXYStats(rowForEachAttribute, numDays, row, column);
 
-          // get xYStats which are needed to compute correlations
-          Map<num, num> xYStats = getXYStats(rowForEachAttribute, numDays, row,
-              column);
+          correlationCoefficient = computeCorrelationCoefficient(xYStats);
 
-          // writeCorrelationCoefficients
-          correlationMatrix = writeCorrelationCoefficients(
-              xYStats, correlationMatrix, row, column);
+          /// writeCorrelationCoefficients
+          correlationMatrix = fillCorrelationCoefficientMatrix(
+              correlationCoefficient, correlationMatrix, row, column);
         }
       }
     } // last for loop
 
-    // save correlations to file
-    saveCorrelationsToFile(correlationMatrix, directory);
+    /// write correlations to file
+    writeCorrelationsToFile(correlationMatrix, directory);
   }
 
   Future<int> getNumDays() async {
-    // get number of days
+    /// get number of days
     final prefs = await SharedPreferences.getInstance();
     int numDays = prefs.getInt('numDays') ?? null;
     debugPrint('numDays $numDays');
@@ -76,12 +77,10 @@ class ComputeCorrelations {
 
   Future<List<dynamic>> getDailySummariesInRowForEachDayFormat(
       directory) async {
-    // call createDailySummariesCSVFromDB
+    /// call createDailySummariesCSVFromDB
     await WriteDailySummariesCSV().writeDailySummariesCSV();
 
-    /*
-    * read daily summaries csv and transform
-    * */
+    /// read daily summaries csv and transform
     final input = new File(directory.path + "/daily_summaries.csv").openRead();
     final rowForEachDay = await input
         .transform(utf8.decoder)
@@ -91,7 +90,7 @@ class ComputeCorrelations {
   }
 
   Future<List<dynamic>> getLabels(rowForEachDay) async {
-    /* separate labels from values*/
+    /// separate labels from values
     final List<dynamic> labels =
         rowForEachDay.removeAt(0); // separate labels from values
     labels.removeAt(0); // remove date-label
@@ -101,7 +100,7 @@ class ComputeCorrelations {
   }
 
   List<dynamic> getRowForEachAttribute(rowForEachDay) {
-    /* remove dates from values*/
+    /// remove dates from values
     var rowForEachAttribute = List<List<dynamic>>.from(
         transpose(rowForEachDay)); // make list variable length
     rowForEachAttribute.removeAt(0); // remove dates
@@ -110,58 +109,53 @@ class ComputeCorrelations {
     return rowForEachAttribute;
   }
 
-  Map<num, num> getXYStats(
-      rowForEachAttribute, numDays, row, column) {
-    /*
-    * get xYStats which are needed to compute correlations
-    * */
+  Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
+    /// get xYStats which are needed to compute correlations
 
-    // ini xYStats
+    /// ini xYStats
     Map<num, num> xYStats = {};
     int duplicateCount = 0;
 
-    // ini key value which are added to xYStats
+    /// ini key value which are added to xYStats
     double key;
     double value;
 
-    // ini keys to keep track of key uniqueness
+    /// ini keys to keep track of key uniqueness
     List<double> keys = [];
-
 
     for (int day = 0; day < numDays; day++) {
       key = (rowForEachAttribute[row - 1][day]).toDouble();
       value = (rowForEachAttribute[column - 1][day]).toDouble();
-      debugPrint('day: $day');
-      debugPrint('key $key');
-      debugPrint('value $value');
+      // debugPrint('day: $day');
+      // debugPrint('key $key');
+      // debugPrint('value $value');
 
-      // exclude day if one of the two attributes has a value of null
+      /// exclude day if one of the two attributes has a value of null
       if (key != null && value != null) {
 //            debugPrint('there is no null');
 
-        debugPrint('row - 1: ${row - 1}, day: $day');
-        debugPrint('key $key');
-        debugPrint('value $value');
+        // debugPrint('row - 1: ${row - 1}, day: $day');
+        // debugPrint('key $key');
+        // debugPrint('value $value');
 
-        // keys must be unique. Track keys. if not unique modify it a little.
-        // search for duplicate
+        /// keys must be unique. Track keys. if not unique modify it a little.
+        /// search for duplicate
         bool duplicate = keys.contains(key);
         if (duplicate) {
-          duplicateCount = duplicateCount +1;
-          debugPrint('key $key not unique. ');
-          // increment key by tiny amount to make it unique
-          key = key + duplicateCount*1E-15;
+          duplicateCount = duplicateCount + 1;
+
+          /// increment key by tiny amount to make it unique
+          key = key + duplicateCount * 1E-13;
           debugPrint('duplicate key incremented to $key');
         }
 
-        // add new key to keys list
         keys.add(key);
-        debugPrint('keys: $keys');
+        //debugPrint('keys: $keys');
         //debugPrint('keys.cardinality: ${keys.cardinality}');
         try {
-          // write xYStats as key value pairs.
+          /// write xYStats as key value pairs.
           xYStats[(key)] = (value);
-          debugPrint('xYStats $xYStats');
+          //debugPrint('xYStats $xYStats');
         } catch (e) {
           debugPrint('_TypeError');
         }
@@ -172,33 +166,37 @@ class ComputeCorrelations {
     return xYStats;
   }
 
-  List<dynamic> writeCorrelationCoefficients(
-      xYStats, correlationMatrix, row, column) {
-    /*
-    * writeCorrelationCoefficients
-    * */
-    if (xYStats.length > 2) {
-      num correlation = StarStatsXY(xYStats).corCoefficient;
+  num computeCorrelationCoefficient(xYStats) {
+    num correlationCoefficient;
 
-      // round if necessary // todo round if too many decimals and hard coded
+    /// writeCorrelationCoefficients
+    if (xYStats.length > 2) {
+      correlationCoefficient = StarStatsXY(xYStats).corCoefficient;
+
+      /// round if necessary // todo round if too many decimals and hard coded
       //if (correlation != 0 && correlation != 1 && correlation != -1) {
       try {
-        correlation = mUtils.roundToDouble(correlation, 2);
+        correlationCoefficient =
+            mUtils.roundToDouble(correlationCoefficient, 2);
       } catch (e) {
-        debugPrint('correlation= $correlation was not rounded');
+        //debugPrint('correlation= $correlationCoefficient was not rounded');
       }
-      correlationMatrix[row][column] = correlation;
     } else {
       debugPrint(
           'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
+      correlationCoefficient = 0;
     }
+    return correlationCoefficient;
+  }
+
+  fillCorrelationCoefficientMatrix(
+      correlation, correlationMatrix, row, column) {
+    correlationMatrix[row][column] = correlation;
     return correlationMatrix;
   }
 
-  void saveCorrelationsToFile(correlationMatrix, directory) {
-    /*
-    * save correlations
-    * */
+  void writeCorrelationsToFile(correlationMatrix, directory) {
+    /// save correlations
     debugPrint('correlationMatrix: $correlationMatrix');
 
     final pathOfTheFileToWrite = directory.path + "/correlation_matrix.csv";
