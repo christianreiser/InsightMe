@@ -5,6 +5,7 @@ import 'package:insightme/Core/widgets/chart.dart';
 import 'package:insightme/Core/widgets/design.dart';
 import 'package:insightme/FutureDesign/Visualize/attribute_selection.dart';
 import 'package:insightme/FutureDesign/Visualize/change_notifier.dart';
+import 'package:insightme/Statistics/Functions/readCorrelation.dart';
 import 'package:insightme/Statistics/Widgets/statistics.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,11 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
   }
 
   Widget _attributeSelectionAndChart() {
+
+    /// todo tmp in progress
+    todoFindNameFunction();
+
+
     return ChangeNotifierProvider(
       create: (context) => OptimizationChangeNotifier(), // builder -> create
 
