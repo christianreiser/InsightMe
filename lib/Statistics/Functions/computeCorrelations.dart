@@ -31,6 +31,7 @@ class ComputeCorrelations {
     final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
 
     /// ini correlation matrix
+    /// todo try List<List<double>> instead of var
     var correlationMatrix = List.generate(
         numLabels + 1, (i) => List(numLabels + 1),
         growable: false);
@@ -125,6 +126,7 @@ class ComputeCorrelations {
 
     for (int day = 0; day < numDays; day++) {
       key = (rowForEachAttribute[row - 1][day]).toDouble();
+      //debugPrint('rowForEachAttribute[column - 1][day]: ${rowForEachAttribute[column - 1][day]}');
       value = (rowForEachAttribute[column - 1][day]).toDouble();
       // debugPrint('day: $day');
       // debugPrint('key $key');
@@ -192,6 +194,7 @@ class ComputeCorrelations {
   fillCorrelationCoefficientMatrix(
       correlation, correlationMatrix, row, column) {
     correlationMatrix[row][column] = correlation;
+    correlationMatrix[column][row] = correlation;
     return correlationMatrix;
   }
 

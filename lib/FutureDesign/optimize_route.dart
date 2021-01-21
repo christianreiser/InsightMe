@@ -35,7 +35,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
   Widget _attributeSelectionAndChart() {
 
     /// todo tmp in progress
-    todoFindNameFunction();
+    sortedAttributeList('Happiness', 'All');
 
 
     return ChangeNotifierProvider(

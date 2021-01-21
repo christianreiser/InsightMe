@@ -1,13 +1,11 @@
 import 'dart:convert' show utf8;
 import 'dart:io';
-import 'dart:math';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/flutter_charts.dart' as fluCa;
 import 'package:flutter_charts/flutter_charts.dart';
-import 'package:ml_linalg/linalg.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
@@ -16,12 +14,35 @@ Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
   int attributeIndex2 =
       fluCa.transpose(correlationMatrix)[0].indexOf(attribute2);
+  return correlationMatrix[attributeIndex1][attributeIndex2];
+}
 
-  // min max is needed as correlation matrix is only half filled and row<column
-  final num _correlationCoefficient =
-      correlationMatrix[min(attributeIndex1, attributeIndex2)]
-          [max(attributeIndex1, attributeIndex2)];
-  return _correlationCoefficient;
+Future<List<dynamic>> readCorrelationCoefficientsOfOneAttribute(
+    attribute) async {
+  print('attribute::: $attribute');
+  var correlationMatrix = await readCorrelationMatrix();
+
+  int attributeIndex = correlationMatrix[0].indexOf(attribute);
+  print('attributeIndex $attributeIndex');
+  debugPrint(
+      'correlationMatrix[attributeIndex]: ${correlationMatrix[attributeIndex]}');
+  var correlationCoefficientsOfOneAttribute = correlationMatrix[attributeIndex];
+  correlationCoefficientsOfOneAttribute.removeAt(0);
+  return correlationCoefficientsOfOneAttribute;
+}
+
+// handleOneSpecificOneAll(
+//     selectedAttribute, correlationCoefficientsOfOneAttribute) async {
+//
+// }
+
+List<dynamic> convertNullTo0(dynamicListWithNulls) {
+  for (int i = 0; i < dynamicListWithNulls.length; i++) {
+    if (dynamicListWithNulls[i] == 'null') {
+      dynamicListWithNulls[i] = 0;
+    }
+  }
+  return dynamicListWithNulls;
 }
 
 Future<List<List>> readCorrelationMatrix() async {
@@ -35,65 +56,82 @@ Future<List<List>> readCorrelationMatrix() async {
   return correlationMatrix;
 }
 
-todoFindNameFunction() async {
+removeFirstEntryOfEachRow(matrix) {
+  /// 1. transpose
+  /// 2. remove
+  /// 3. transpose back
+  // transpose to make remove label column work
+  List<List<dynamic>> matrixT = List<List<dynamic>>.from(transpose(matrix));
+  matrixT.removeAt(0); // remove label column
+  return List<List<dynamic>>.from(transpose(matrixT)); // transpose back;
+}
+
+listArgExtreme(numList) {
+
+  //final vector = Vector.fromList(numList);
+  final maxValue = numList.reduce((curr, next) => curr > next ? curr : next);
+  final minValue = numList.reduce((curr, next) => curr < next ? curr : next);
+  print('minValue ${minValue}');
+  double extreme;
+  if (maxValue >= -minValue) {
+    extreme = maxValue;
+  } else if (maxValue < -minValue) {
+    extreme = minValue;
+  } else {
+    debugPrint('UNHANDLED EXCEPTION: EXTREMEVALUE');
+  }
+
+  /// get extremest index
+  print('numList; $numList');
+  print('numList.runtimeType ${numList.runtimeType}');
+
+  //List<dynamic> numListT = [0.0, 0.01, 0.02];
+  final int argExtreme = numList.indexWhere(
+      (element) => element == extreme);
+
+  debugPrint('argExtreme $argExtreme');
+  return argExtreme;
+}
+
+sortedAttributeList(selectedAttribute1, selectedAttribute2) async {
   //todo refactoring
 
-  debugPrint('inside todoFindNameFunction');
-  final String selectedAttribute1 = 'All';
-  final String selectedAttribute2 = 'All';
-  final correlationMatrix = await readCorrelationMatrix();
-  debugPrint('correlationMatrix:: $correlationMatrix');
-  correlationMatrix.removeAt(0);
+  // readCorrelationMatrix
+  List<List<dynamic>> dynamicLabeledCorrelationMatrix =
+      await readCorrelationMatrix();
+  debugPrint(
+      'dynamicTwiceLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
 
-  /// remove label row
-  debugPrint('correlationMatrix:: $correlationMatrix');
-  var correlationMatrixT = List.from(transpose(
-      correlationMatrix)); // transpose to make remove label column work
-  correlationMatrixT.removeAt(0); // remove label column
-  debugPrint('correlationMatrixT:: $correlationMatrixT');
+  // separate lables
+  final List<dynamic> labels = dynamicLabeledCorrelationMatrix.removeAt(0);
+  debugPrint(
+      'dynamicLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
 
-  /// convert list dynamic with 'null's to list double
-  int rows = correlationMatrixT.length;
-  int columns = correlationMatrixT[0].length;
-  debugPrint('correlationMatrixT.l:: ${correlationMatrixT.length}');
-  debugPrint('correlationMatrixT.dl:: ${correlationMatrixT[0].length}');
-  List<List<double>> doubleList =
-      List.generate(rows, (i) => List(columns), growable: false);
-  for (int row = 0; row < correlationMatrixT.length; row++) {
-    for (int column = 0; column < correlationMatrixT[0].length; column++) {
-      if (correlationMatrixT[row][column] == 'null') {
-        correlationMatrixT[row][column] = 0.0;
-      }
-      doubleList[row][column] = correlationMatrixT[row][column];
-    }
+  //List<num> numList = convertDynamicListWithNullsToNumList(dynamicCorrelationMatrix);
+  //debugPrint('numList:: $numList');
+
+  /// if one selectedAttribute is on all
+  print('selectedAttribute1: $selectedAttribute1');
+  if (selectedAttribute1 != 'All') {
+    var correlationCoefficientsOfOneAttribute =
+        await readCorrelationCoefficientsOfOneAttribute(selectedAttribute1);
+
+    // filter Nulls
+    correlationCoefficientsOfOneAttribute =
+        convertNullTo0(correlationCoefficientsOfOneAttribute);
+    print(
+        'correlationCoefficientsOfOneAttribute $correlationCoefficientsOfOneAttribute');
+
+    int argExtreme =
+        listArgExtreme(correlationCoefficientsOfOneAttribute);
+    print('argExtreme: $argExtreme');
+
+    final String label = labels[argExtreme+1];
+    print(label);
   }
-  print('doubleList $doubleList');
-
-  /// absMax from matrix
-  final matrix1 = Matrix.fromList(doubleList);
-  final maxValue = matrix1.max();
-  final minValue = matrix1.min();
-  final List<double> maxMin = [maxValue, minValue];
-  final double maxAbs = maxMin.reduce(max);
-  debugPrint('maxAbs $maxAbs');
-
-  /// if both selectedAttributes are on all
-  if (selectedAttribute1 == 'All' && selectedAttribute2 == 'All') {
-    debugPrint('inside All All');
-
-    //debugPrint('correlationMatrix.reduce(max): ${correlationMatrix.reduce(max)}');
-    //final minValue = matrix.min();
-    //debugPrint('minValue $minValue');
-  }
-
-  /// if one selectedAttributes is on all
-  else if ((selectedAttribute1 == 'All' && selectedAttribute2 != 'All') ||
-      (selectedAttribute1 != 'All' && selectedAttribute2 == 'All')) {
-  }
-
-  /// if no selectedAttributes is on all
-  else if (selectedAttribute1 != 'All' && selectedAttribute2 != 'All') {
-  } else {
-    debugPrint('ERROR unhandled selected attribute combination');
-  }
+  //
+  // /// if no selectedAttributes is on all
+  // else if (selectedAttribute2 != 'All') {} else {
+  //   debugPrint('ERROR unhandled selected attribute combination');
+  // }
 }
