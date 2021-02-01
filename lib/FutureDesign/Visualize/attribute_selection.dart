@@ -20,7 +20,7 @@ class DropDown extends StatelessWidget {
     final changeNotifier = Provider.of<OptimizationChangeNotifier>(
         context); // send state up the tree // todo _private ?
     return FutureBuilder(
-      future: _getAttributeList(),
+      future: _getAttributeList(boolFirst),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (boolFirst == true) {
@@ -87,7 +87,7 @@ class DropDown extends StatelessWidget {
   }
 
   // get Attributes from DB into a future list
-  Future<List<String>> _getAttributeList() async {
+  Future<List<String>> _getAttributeList(boolFirst) async {
     debugPrint('_getAttributeList');
 
     List<Attribute> attributeList =

@@ -93,7 +93,7 @@ listArgExtreme(numList) {
   return argExtreme;
 }
 
-sortedAttributeList(selectedAttribute1, selectedAttribute2) async {
+Future<String> sortedAttributeList(selectedAttribute1, selectedAttribute2) async {
   //todo refactoring
 
   // readCorrelationMatrix
@@ -112,6 +112,7 @@ sortedAttributeList(selectedAttribute1, selectedAttribute2) async {
 
   /// if one selectedAttribute is on all
   print('selectedAttribute1: $selectedAttribute1');
+  String nextSttributeName;
   if (selectedAttribute1 != 'All') {
     var correlationCoefficientsOfOneAttribute =
         await readCorrelationCoefficientsOfOneAttribute(selectedAttribute1);
@@ -126,12 +127,16 @@ sortedAttributeList(selectedAttribute1, selectedAttribute2) async {
         listArgExtreme(correlationCoefficientsOfOneAttribute);
     print('argExtreme: $argExtreme');
 
-    final String label = labels[argExtreme+1];
-    print(label);
+    nextSttributeName = labels[argExtreme+1];
+    print(nextSttributeName);
   }
   //
   // /// if no selectedAttributes is on all
   // else if (selectedAttribute2 != 'All') {} else {
   //   debugPrint('ERROR unhandled selected attribute combination');
   // }
+  else {
+    nextSttributeName = 'Happiness';
+  }
+  return nextSttributeName;
 }

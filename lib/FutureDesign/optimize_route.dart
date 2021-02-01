@@ -5,7 +5,6 @@ import 'package:insightme/Core/widgets/chart.dart';
 import 'package:insightme/Core/widgets/design.dart';
 import 'package:insightme/FutureDesign/Visualize/attribute_selection.dart';
 import 'package:insightme/FutureDesign/Visualize/change_notifier.dart';
-import 'package:insightme/Statistics/Functions/readCorrelation.dart';
 import 'package:insightme/Statistics/Widgets/statistics.dart';
 import 'package:provider/provider.dart';
 
@@ -33,11 +32,6 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
   }
 
   Widget _attributeSelectionAndChart() {
-
-    /// todo tmp in progress
-    sortedAttributeList('Happiness', 'All');
-
-
     return ChangeNotifierProvider(
       create: (context) => OptimizationChangeNotifier(), // builder -> create
 
@@ -71,8 +65,8 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                       ]),
                 ]),
           ),
-          optimizeNameAndChart('Body weight', 'Calories in'),
-          optimizeNameAndChart('Happiness', 'Resting Heart Rate')
+          optimizeNameAndChart(),//'Happiness', 'Resting Heart Rate'
+          //optimizeNameAndChart('Body weight', 'Calories in'),
         ]),
       ),
     );
@@ -111,35 +105,38 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     );
   }
 
-  Widget optimizeNameAndChart(attributeName1, attributeName2) {
-    return Column(children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          /// SEPARATOR
-          Text(
-            '$attributeName1 & $attributeName2',
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
-          ),
-          SizedBox(height: 20), // needed above chart
-
-          /// visualize chart
-          SizedBox(
-            height: 250,
-
-            /// height constraint
-            child: SizedBox.expand(
-              /// for max width
-              child: futureTwoAttributeAnimatedLineChart(
-                  attributeName1, attributeName2),
+  Widget optimizeNameAndChart() {
+    return Consumer<OptimizationChangeNotifier>(
+      builder: (context, schedule, _) => Column(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            /// SEPARATOR
+            Text(
+              '${schedule.selectedAttribute1} & ${schedule.selectedAttribute2}',
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
             ),
-          ),
+            SizedBox(height: 20), // needed above chart
 
-          /// statistics: correlation and confidence
-          statistics(context, 0.92, 0.09), // todo
-        ]),
-      ),
-      greyLineSeparator(),
-    ]);
+            /// visualize chart
+            SizedBox(
+              height: 250,
+
+              /// height constraint
+              child: SizedBox.expand(
+                /// for max width
+                child: futureTwoAttributeAnimatedLineChart(
+                    schedule.selectedAttribute1, schedule.selectedAttribute2),
+              ),
+            ),
+
+            /// statistics: correlation and confidence
+            statistics(context, 0.92, 0.09), // todo
+          ]),
+        ),
+        greyLineSeparator(),
+      ]),
+    );
   }
 }
