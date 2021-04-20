@@ -5,6 +5,7 @@ import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
 import '../navigation_helper.dart';
+import 'GoogleFit.dart';
 
 class AppIntegrationsOverview extends StatelessWidget {
   final DatabaseHelperEntry helperEntry = // error when static
@@ -34,13 +35,13 @@ class AppIntegrationsOverview extends StatelessWidget {
             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             //crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
             children: <Widget>[
-              _hintInImport(),
+              _hintInImport(context),
             ]),
       ),
     ); // type lineChart
   }
 
-  Container _hintInImport() {
+  Container _hintInImport(context) {
     return Container(
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(10),
@@ -124,26 +125,36 @@ class AppIntegrationsOverview extends StatelessWidget {
           SizedBox(height: 10),
 
           /// Google Fit
-          Row(
-            children: [
-              Expanded(
-                  flex: 50,
-                  child: Image(
-                      image: AssetImage('./assets/icon/logo_googlefit.png'))),
-              SizedBox(width: 10),
-              Expanded(
-                flex: 50,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Steps, workouts, weight',
-                        textScaleFactor: 1.2,
-                      )
-                    ]),
+          Row(children: [
+            Expanded(
+              flex: 50,
+              child: Image(image: AssetImage('./assets/icon/logo_googlefit.png')),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              flex: 50,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Steps, workouts, weight',
+                      textScaleFactor: 1.2,
+                    )
+                  ]),
+            ),
+            Expanded(
+              flex: 10,
+              child: IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GoogleFitIntegration()),
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ]),
           SizedBox(height: 10),
 
           /// forecast
