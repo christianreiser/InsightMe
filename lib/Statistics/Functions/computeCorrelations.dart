@@ -1,5 +1,6 @@
 import 'dart:convert' show utf8;
 import 'dart:io';
+import 'dart:math';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
@@ -179,7 +180,7 @@ class ComputeCorrelations {
       //if (correlation != 0 && correlation != 1 && correlation != -1) {
       try {
         correlationCoefficient =
-            mUtils.roundToDouble(correlationCoefficient, 2);
+            roundDouble(correlationCoefficient, 2);
       } catch (e) {
         //debugPrint('correlation= $correlationCoefficient was not rounded');
       }
@@ -212,5 +213,10 @@ class ComputeCorrelations {
 //  debugPrint('csv $csv');
     file.writeAsString(csv);
     debugPrint('correlation_matrix.csv written');
+  }
+
+  double roundDouble(double value, int places){
+    double mod = pow(10.0, places);
+    return ((value * mod).round().toDouble() / mod);
   }
 }
