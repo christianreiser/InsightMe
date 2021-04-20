@@ -216,6 +216,9 @@ class ComputeCorrelations {
   }
 
   double roundDouble(double value, int places){
+    /*
+    * round to double
+    * */
     double mod = pow(10.0, places);
     return ((value * mod).round().toDouble() / mod);
   }
