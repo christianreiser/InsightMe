@@ -34,6 +34,7 @@ dependencies:
   flutter_colorpicker: ^0.3.4
   ml_linalg: # matrix stuff in correlation //todo tmp?
 #  ml_preprocessing:
+  ff_navigation_bar: ^0.1.5 # ff_bottom_navigation_bar_plugin
 
   #starflut: ^0.6.0 # for python
   #url_launcher:

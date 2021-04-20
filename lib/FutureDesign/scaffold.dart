@@ -12,7 +12,7 @@ import './data_route.dart';
 import './home_route.dart';
 import './optimize_route.dart';
 import '../Statistics/Functions/computeCorrelations.dart';
-//import 'package:starflut/starflut.dart';
+import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 
 enum Choice {
   exportDailySummaries,
@@ -38,8 +38,6 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   }
 
   static const Color iconColor = Colors.black87;
-
-
 
   FutureBuilder welcomeOrStandardScaffold() {
     /*
@@ -78,103 +76,34 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   }
 
   Scaffold standardScaffold() {
-    /*
-    * standard scaffold with bottom navigation bar and floating action button
-    * */
     initializeGlobals();
     return Scaffold(
       appBar: AppBar(
         title: Text(
           strings.appTitle,
         ),
-        automaticallyImplyLeading: false, // hide back button
+        automaticallyImplyLeading: false,
         actions: <Widget>[
-          /// three dots on the top right corner for settings
           _popupMenu(),
         ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-
-      // use below when more then one floatingActionButton and remove top block
-      floatingActionButton: _floatingActionButton(), //_speedDial(),
-
-      // bottom navigation bar
-      bottomNavigationBar: _bottomNavigationBar(),
+      floatingActionButton: _floatingActionButton(),
+      bottomNavigationBar:
+          _ffBottomNavigationBarPlugin(),
     );
   }
 
-  // SPEED DIAL IF MORE THAN ONE FAB (TOO MANY CLICKS :( )
-
-  // Widget _speedDial() {
-  //   /*
-  //   * floating action button with speed dial to add entries or import data
-  //   */
-  //   return SpeedDial(
-  //     animatedIcon: AnimatedIcons.add_event,
-  //     children: [
-  //       // NEW ENTRY
-  //       SpeedDialChild(
-  //           child: Icon(Icons.border_color),
-  //           label: "New Entry",
-  //           onTap: () {
-  //             print("nav to add manually");
-  //             Navigator.of(context).push(
-  //               PageRouteBuilder(
-  //                 opaque: false, // set to false
-  //                 pageBuilder: (_, __, ___) => Container(
-  //                   color: Colors.black.withOpacity(.7),
-  //                   child: Padding(
-  //                     padding: EdgeInsets.fromLTRB(20, 25, 20, 20),
-  //                     child: SearchOrCreateAttribute(),
-  //                   ),
-  //                 ),
-  //               ),
-  //             );
-  //           }),
-  //
-  //       // import from CSV
-  //       SpeedDialChild(
-  //           backgroundColor: Colors.grey,
-  //           child: Icon(Icons.input),
-  //           label: "Import Data",
-  //           onTap: () {
-  //             debugPrint("pressed Import Data");
-  //             Navigator.push(
-  //               context,
-  //               MaterialPageRoute(builder: (context) => Import()),
-  //             ); // Navigate to newManualEntry route when tapped.
-  //           }),
-  //
-  //       // connect service
-//        SpeedDialChild(
-//            backgroundColor: Colors.grey,
-//            child: Icon(Icons.input),
-//            label: "Connect with Service (e.g. Apple Health, FitBit)",
-//            onTap: () {
-//              print("DropDown");
-////                Navigator.push(
-////                  context,
-////                  MaterialPageRoute(builder: (context) => Tmp()),
-////                ); // Navigate to newManualEntry route when tapped.
-//            }),
-//       ],
-//     );
-//   }
-
   Widget _floatingActionButton() {
-    /*
-    * floating action button to add entries
-    */
     return FloatingActionButton(
-      child: Icon(Icons.add), //Icons.border_color
-      //label: "New Entry",
+      child: Icon(Icons.add),
       onPressed: () {
         print("nav to add manually");
         Navigator.of(context).push(
           PageRouteBuilder(
-            opaque: false, // set to false
+            opaque: false,
             pageBuilder: (_, __, ___) => Container(
               color: Colors.black.withOpacity(.7),
               child: Padding(
@@ -188,51 +117,74 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     );
   }
 
+  // Github repo: https://github.com/55Builds/Flutter-FFNavigationBar
+  Widget _ffBottomNavigationBarPlugin() {
+    return FFNavigationBar(
+      theme: FFNavigationBarTheme(
+        barBackgroundColor: Colors.white,
+        selectedItemBorderColor: Colors.white,
+        selectedItemBackgroundColor: Colors.green,
+        selectedItemIconColor: Colors.white,
+        selectedItemLabelColor: Colors.black,
+        barHeight: 75,
+      ),
+      selectedIndex: _selectedIndex,
+      onSelectTab: (index) {
+        _onItemTapped(index);
+      },
+      items: [
+        FFNavigationBarItem(
+          iconData: Icons.home_outlined,
+          label: 'Home',
+        ),
+        FFNavigationBarItem(
+          iconData: Icons.add,
+          label: 'Add',
+        ),
+        FFNavigationBarItem(
+          iconData: Icons.timeline_outlined,
+          label: 'Data',
+        ),
+        FFNavigationBarItem(
+          iconData: Icons.widgets_outlined,
+          label: 'Optimize',
+        )
+      ],
+    );
+  }
+
+  // @deprecated, not used so far
   Widget _bottomNavigationBar() {
-    /*
-    * bottom navigation bar to changes tabs
-    */
     return BottomNavigationBar(
       unselectedIconTheme: IconThemeData(color: Colors.grey),
-
-      //showUnselectedLabels: true, // TODO fix theme/color
-      //unselectedLabelStyle: TextStyle(color: Colors.black),
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.view_list),
+          // ignore: deprecated_member_use
           title: Text('Home'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.timeline),
+          // ignore: deprecated_member_use
           title: Text('Data'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.widgets),
+          // ignore: deprecated_member_use
           title: Text('Optimize'),
         ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.local_hospital),
-//            title: Text('COVID-19'),
-//          ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.arrow_downward),
-//            title: Text('Intro'),
-//          ),
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: Theme.of(context).primaryColorDark,
-
       onTap: _onItemTapped,
     );
   }
 
-  // bottom navigation bar:
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     HomeRoute(),
     DataRoute(),
     OptimizeRoute(),
-    //Covid19(), //IntroRoute(),
     IntroRoute(),
   ];
 
@@ -240,7 +192,6 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     setState(() {
       _selectedIndex = index;
       debugPrint('_selectedIndex= $_selectedIndex');
-      // navigation for editing entry
     });
   }
 
@@ -370,7 +321,6 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
         ),
       ],
     );
-
   }
 
   initializeGlobals() {
