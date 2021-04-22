@@ -33,6 +33,7 @@ dependencies:
   sqflite_migration: ^0.2.0
   flutter_colorpicker: ^0.3.4
   ml_linalg: # matrix stuff in correlation //todo tmp?
+  health: ^3.0.5
 #  ml_preprocessing:
 
   #starflut: ^0.6.0 # for python
