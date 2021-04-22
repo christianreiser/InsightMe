@@ -61,7 +61,7 @@ class _GoogleFitState extends State<GoogleFitIntegration> {
       try {
         /// Fetch new data
         List<HealthDataPoint> healthData =
-        await health.getHealthDataFromTypes(startDate, endDate, types);
+            await health.getHealthDataFromTypes(startDate, endDate, types);
 
         /// Save all the new data points
         _healthDataList.addAll(healthData);
@@ -83,7 +83,7 @@ class _GoogleFitState extends State<GoogleFitIntegration> {
       /// Update the UI to display the results
       setState(() {
         _state =
-        _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
+            _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
       });
     } else {
       print("Authorization not granted");
@@ -123,7 +123,9 @@ class _GoogleFitState extends State<GoogleFitIntegration> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ElevatedButton(
-            onPressed: () => {},
+            onPressed: () {
+              fetchData();
+            },
             child: Text('connect GFit'),
             //other properties
           ),
