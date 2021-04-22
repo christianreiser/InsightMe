@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/AppIntegrations/overview_route.dart';
+import 'package:insightme/FutureDesign/feed_route.dart';
 import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -78,6 +79,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   Scaffold standardScaffold() {
     initializeGlobals();
     return Scaffold(
+      /* NOTE: just uncomment for design purposes
       appBar: AppBar(
         title: Text(
           strings.appTitle,
@@ -87,6 +89,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
           _popupMenu(),
         ],
       ),
+       */
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -182,7 +185,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    HomeRoute(),
+    FeedRoute(), // HomeRoute(),
     DataRoute(),
     OptimizeRoute(),
     IntroRoute(),
