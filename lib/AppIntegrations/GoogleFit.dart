@@ -47,8 +47,13 @@ class GoogleFitIntegration extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ElevatedButton(
+            onPressed: () => {},
+            child: Text('connect GFit'),
+            //other properties
+          ),
           Text(
-            'TODO',
+            'output text',
             textScaleFactor: 1.5,
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
