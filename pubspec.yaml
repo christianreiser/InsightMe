@@ -29,11 +29,17 @@ dependencies:
   shared_preferences: # for persistence data. 1.Intro-seen-flag
   csv: # write csv for daily summaries
   starfruit: ^0.3.1+2 # correlation
-  permission_handler: ^5.0.1+1 # todo back in for export
   sqflite_migration: ^0.2.0
   flutter_colorpicker: ^0.3.4
   ml_linalg: # matrix stuff in correlation //todo tmp?
   health: ^3.0.5
+
+  # plugins for google sign in based on firebase auth
+  permission_handler: #^5.0.1+1 # NOTE: removed versioning due to conflict with firebase auth
+
+  firebase_core: ^1.0.4
+  firebase_auth: ^1.1.1
+  google_sign_in: ^5.0.2
 #  ml_preprocessing:
 
   #starflut: ^0.6.0 # for python

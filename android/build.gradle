@@ -6,15 +6,15 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.google.gms:google-services:4.3.4' // for firebase
-        classpath 'com.android.tools.build:gradle:4.1.0' // going to 4.0 causes error (8.Jun2020), used 3.5
+        classpath 'com.google.gms:google-services:4.3.5'
+        classpath 'com.android.tools.build:gradle:4.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 allprojects {
     repositories {
-        google()
+        google()    // Google's Maven repository
         jcenter()
     }
 }
