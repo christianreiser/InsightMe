@@ -75,118 +75,524 @@ class _FeedRouteState extends State<FeedRoute>
             child: ListView(
               children: <Widget>[
                 Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.fastfood,
+                  elevation: 5,
+                  child: Container(
+                    height: 100.0,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          height: 100.0,
+                          width: 125.0,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(5),
+                                  topLeft: Radius.circular(5)
+                              ),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage("https://i.pinimg.com/originals/3d/8b/df/3d8bdfb670978ee2ee15028cc31c37aa.jpg")
+                              )
+                          ),
+                        ),
+                        Container(
+                          height: 100.0,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 2, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                  child: Container(
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                                        color: Colors.lightGreen
+                                    ),
+                                    child: Text("Health", textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
+                                  child: Container(
+                                    width: 200,
+                                    child: Text("To increase your energy level try "
+                                        "eating less high temperature processed food.", style: TextStyle(
+                                        fontSize: 11
+                                    ),),
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    SizedBox(width: 130),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.share_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    //FlutterLogo(size: 72.0),
-                    title: Text('Energy & Food'),
-                    subtitle: Text(
-                        'To increase your energy level try eating less high temperature processed food.'),
-                    isThreeLine: true,
                   ),
                 ),
                 Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.local_hospital,
+                  elevation: 5,
+                  child: Container(
+                    height: 100.0,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          height: 100.0,
+                          width: 125.0,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(5),
+                                  topLeft: Radius.circular(5)
+                              ),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage("https://i.pinimg.com/564x/b4/a2/6e/b4a26e607557faf37579859188efb2f7.jpg")
+                              )
+                          ),
+                        ),
+                        Container(
+                          height: 100.0,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 2, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                  child: Container(
+                                    width: 75,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                                        color: Colors.lightBlue
+                                    ),
+                                    child: Text("Productivity", textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
+                                  child: Container(
+                                    width: 200,
+                                    child: Text("Try working from home. Your productivity correlates with home-office.", style: TextStyle(
+                                        fontSize: 11
+                                    ),),
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    SizedBox(width: 130),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.share_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    //FlutterLogo(size: 72.0),
-                    title: Text('Energy'),
-                    subtitle: Text(
-                        'Iron Deficiency. \nYour energy level correlates with iron.'),
-                    isThreeLine: true,
+                  ),
+                ),
+                Card(
+                  elevation: 5,
+                  child: Container(
+                    height: 100.0,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          height: 100.0,
+                          width: 125.0,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(5),
+                                  topLeft: Radius.circular(5)
+                              ),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage("https://i.pinimg.com/564x/01/1a/d2/011ad28a5991aa4b5f43c0bc95d9630b.jpg")
+                              )
+                          ),
+                        ),
+                        Container(
+                          height: 100.0,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 2, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                  child: Container(
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                                        color: Colors.redAccent
+                                    ),
+                                    child: Text("Sports", textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
+                                  child: Container(
+                                    width: 200,
+                                    child: Text("Try carbs before running. Carbs correlate with running performance.", style: TextStyle(
+                                        fontSize: 11
+                                    ),),
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    SizedBox(width: 130),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.share_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 5,
+                  child: Container(
+                    height: 100.0,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          height: 100.0,
+                          width: 125.0,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(5),
+                                  topLeft: Radius.circular(5)
+                              ),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage("https://i.pinimg.com/564x/83/21/92/832192ec5a509616ad655b0d6004d981.jpg")
+                              )
+                          ),
+                        ),
+                        Container(
+                          height: 100.0,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 2, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                  child: Container(
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                                        color: Colors.yellow
+                                    ),
+                                    child: Text("Recommendation", textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
+                                  child: Container(
+                                    width: 200,
+                                    child: Text("Want to know how the weather affects you? Then try Dark Sky.", style: TextStyle(
+                                        fontSize: 11
+                                    ),),
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    SizedBox(width: 130),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.share_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 5,
+                  child: Container(
+                    height: 100.0,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          height: 100.0,
+                          width: 125.0,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(5),
+                                  topLeft: Radius.circular(5)
+                              ),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage("https://i.pinimg.com/564x/d3/81/cd/d381cd99cbe62d19f910480c41edeb56.jpg")
+                              )
+                          ),
+                        ),
+                        Container(
+                          height: 100.0,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 2, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                  child: Container(
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                                        color: Colors.yellow
+                                    ),
+                                    child: Text("Recommendation", textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
+                                  child: Container(
+                                    width: 200,
+                                    child: Text("You are happier when you spend more time with friends.", style: TextStyle(
+                                        fontSize: 11
+                                    ),),
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    SizedBox(width: 130),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.share_outlined),
+                                          iconSize: 18,
+                                          onPressed: () {
+                                            //TODO
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           )
-
-          /* TODO: adapt this to current view
-          Container(
-            child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    key: Key(items[index]),
-                    background: Container(
-                      alignment: AlignmentDirectional.centerEnd,
-                      color: Colors.red,
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                    ),
-                    onDismissed: (direction) {
-                      setState(() {
-                        items.removeAt(index);
-                      });
-                    },
-                    direction: DismissDirection.endToStart,
-                    child: Card(
-                      elevation: 5,
-                      child: Container(
-                        height: 100.0,
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              height: 100.0,
-                              width: 70.0,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(5),
-                                      topLeft: Radius.circular(5)
-                                  ),
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage("https://is2-ssl.mzstatic.com/image/thumb/Video2/v4/e1/69/8b/e1698bc0-c23d-2424-40b7-527864c94a8e/pr_source.lsr/268x0w.png")
-                                  )
-                              ),
-                            ),
-                            Container(
-                              height: 100,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(10, 2, 0, 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      items[index],
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 3, 0, 3),
-                                      child: Container(
-                                        width: 30,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.teal),
-                                            borderRadius: BorderRadius.all(Radius.circular(10))
-                                        ),
-                                        child: Text("3D",textAlign: TextAlign.center,),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 2),
-                                      child: Container(
-                                        width: 260,
-                                        child: Text("His genius finally recognized by his idol Chester",style: TextStyle(
-                                            fontSize: 15,
-                                            color: Color.fromARGB(255, 48, 48, 54)
-                                        ),),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }
-            ),
-          )
-           */
         ],
       ),
     );
