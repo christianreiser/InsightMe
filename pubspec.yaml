@@ -19,8 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqflite: # SQLite
-  path_provider: # SQLite
+  sqflite: ^1.1.0                       # SQLite
+  path_provider: ^1.1.0                 # SQLite
   file_picker: # csv file
   fl_animated_linechart:  # chart
   flutter_charts: ^0.1.10 # transpose list
@@ -35,11 +35,7 @@ dependencies:
   ml_linalg: # matrix stuff in correlation //todo tmp?
 
   ff_navigation_bar: ^0.1.5             # ff_bottom_navigation_bar_plugin
-  flutter_staggered_grid_view: ^0.2.7   # add note plugin
-  auto_size_text: ^1.1.2                # add note plugin
-  path:                                 # add note plugin
-  intl: ^0.15.7                         # add note plugin
-  share: ^0.6.1                         # add note plugin
+  intl: ^0.15.8                         # add note plugin
 
   #starflut: ^0.6.0 # for python
   #url_launcher:
