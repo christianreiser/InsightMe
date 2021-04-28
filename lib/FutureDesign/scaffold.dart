@@ -10,10 +10,12 @@ import './../Journal/searchOrCreateAttribute.dart';
 import './../globals.dart' as globals;
 import './../strings.dart' as strings;
 import './data_route.dart';
-import './home_route.dart';
+import 'backup_darts/home_route.dart';
 import './optimize_route.dart';
 import '../Statistics/Functions/computeCorrelations.dart';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
+
+import 'add_import_route.dart';
 
 enum Choice {
   exportDailySummaries,
@@ -93,7 +95,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      floatingActionButton: _floatingActionButton(),
+      //floatingActionButton: _floatingActionButton(),
       bottomNavigationBar:
           _ffBottomNavigationBarPlugin(),
     );
@@ -183,12 +185,12 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     );
   }
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   static List<Widget> _widgetOptions = <Widget>[
-    FeedRoute(), // HomeRoute(),
+    FeedRoute(),
+    AddImportRoute(),
     DataRoute(),
     OptimizeRoute(),
-    IntroRoute(),
   ];
 
   void _onItemTapped(int index) {

@@ -41,7 +41,7 @@ Future<LineChart> oneAttributeChart(attributeName) async {
     [dateTimeValueMap1],
     [Colors.blue],
     [attributeName], // axis numbers
-    tapTextFontWeight: FontWeight.w600,
+    //tapTextFontWeight: FontWeight.w600,
   );
   return chart;
 }
@@ -55,7 +55,7 @@ Future<LineChart> twoAttributeChart(attributeName1, attributeName2) async {
     [dateTimeValueMap1, dateTimeValueMap2],
     [Colors.green, Colors.blue],
     [attributeName1, attributeName2], // axis numbers
-    tapTextFontWeight: FontWeight.w600,
+    //tapTextFontWeight: FontWeight.w600,
   );
   return chart;
 }

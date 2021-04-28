@@ -50,7 +50,7 @@ class Chart extends StatelessWidget {
       [dateTimeValueMap1, dateTimeValueMap2],
       [Colors.green, Colors.blue],
       [selectedAttribute1, selectedAttribute2], // axis numbers
-      tapTextFontWeight: FontWeight.w600,
+      //tapTextFontWeight: FontWeight.w600,
     );
 
     return chart;
