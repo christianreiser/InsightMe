@@ -35,7 +35,10 @@ dependencies:
   ml_linalg: # matrix stuff in correlation //todo tmp?
 
   ff_navigation_bar: ^0.1.5             # ff_bottom_navigation_bar_plugin
-  intl: ^0.15.8                         # add note plugin
+  image_picker: ^0.6.7+11               # plugin for taking notes BEGIN
+  intl: ^0.16.1                         #
+  path: ^1.7.0                          #
+  url_launcher: ^5.7.2                  # END
 
   #starflut: ^0.6.0 # for python
   #url_launcher:

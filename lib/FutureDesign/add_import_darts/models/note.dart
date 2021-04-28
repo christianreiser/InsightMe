@@ -1,0 +1,1 @@
+// NOTE: This class holds id, title, content, date, and image location.

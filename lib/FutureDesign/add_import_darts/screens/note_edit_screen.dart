@@ -1,0 +1,1 @@
+// NOTE: This screen used to create and update note.
