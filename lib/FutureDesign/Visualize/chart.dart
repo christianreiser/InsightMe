@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 import 'package:insightme/Database/entry.dart';
 
+import '../../Core/functions/chart.dart';
+
 class Chart extends StatelessWidget {
   final String selectedAttribute1;
   final String selectedAttribute2;
@@ -38,24 +40,6 @@ class Chart extends StatelessWidget {
     return dateTimeValueMap;
   }
 
-  Future<LineChart> _getChart(selectedAttribute1, selectedAttribute2) async {
-    debugPrint('selectedAttribute1, selectedAttribute2: $selectedAttribute1 $selectedAttribute2');
-    Map<DateTime, double> dateTimeValueMap1 =
-        await _getDateTimeValueMap(selectedAttribute1);
-    debugPrint('dateTimeValueMap1 attribute 1 $dateTimeValueMap1');
-    Map<DateTime, double> dateTimeValueMap2 =
-        await _getDateTimeValueMap(selectedAttribute2);
-    debugPrint('dateTimeValueMap2 attribute 2 $dateTimeValueMap2');
-    chart = LineChart.fromDateTimeMaps(
-      [dateTimeValueMap1, dateTimeValueMap2],
-      [Colors.green, Colors.blue],
-      [selectedAttribute1, selectedAttribute2], // axis numbers
-      tapTextFontWeight: FontWeight.w600,
-    );
-
-    return chart;
-  }
-
   @override
   Widget build(BuildContext context) {
     return
@@ -63,7 +47,7 @@ class Chart extends StatelessWidget {
         // builder: (context, schedule, _) =>
         Expanded(
       child: FutureBuilder(
-        future: _getChart(selectedAttribute1, selectedAttribute2),
+        future: twoAttributeChart(selectedAttribute1, selectedAttribute2),
         builder: (context, snapshot) {
           // chart data arrived && data found
           debugPrint('chart: $chart');

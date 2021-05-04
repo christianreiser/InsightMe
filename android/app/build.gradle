@@ -22,7 +22,7 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
-//apply plugin: 'com.google.gms.google-services' // for firebase
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -44,7 +44,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: com->org. Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.insightme"
         minSdkVersion 16
         targetSdkVersion 30
@@ -61,11 +60,6 @@ android {
         }
     }
     buildTypes {
-//        debug {
-//            // TODO: Add your own signing config for the release build.
-//            // Signing with the debug keys for now, so `flutter run --release` works.
-//            signingConfig signingConfigs.debug
-//        }
         release {
             signingConfig signingConfigs.release
         }
@@ -78,11 +72,9 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:26.0.0') // Import the Firebase BoM
-
-    // Add the dependency for the Firebase SDK for Google Analytics
-    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
     implementation 'com.google.android.gms:play-services-base:17.5.0' //CHREI https://stackoverflow.com/questions/64820697/how-to-fix-exception-thrown-while-unbinding-java-lang-illegalargumentexception
     implementation 'com.google.firebase:firebase-analytics:18.0.0'//CHREI https://stackoverflow.com/questions/64820697/how-to-fix-exception-thrown-while-unbinding-java-lang-illegalargumentexception
 
