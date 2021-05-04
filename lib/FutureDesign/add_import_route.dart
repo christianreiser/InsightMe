@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/AppIntegrations/overview_route.dart';
+import 'package:insightme/FutureDesign/add_import_utils/screens/edit.dart';
 import 'package:insightme/FutureDesign/scaffold.dart';
 import 'package:insightme/Import/import_from_json_route.dart';
 import 'package:insightme/Journal/searchOrCreateAttribute.dart';
@@ -210,6 +211,11 @@ class _AddImportRouteState extends State<AddImportRoute> {
         backgroundColor: Colors.green,
         child: Icon(Icons.add, color: Colors.white),
         onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EditNotePage()),
+          );
+          /*
           Navigator.of(context).push(
             PageRouteBuilder(
               opaque: false,
@@ -222,6 +228,7 @@ class _AddImportRouteState extends State<AddImportRoute> {
               ),
             ),
           );
+          */
         },
       ),
     );

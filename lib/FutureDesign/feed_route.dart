@@ -33,7 +33,6 @@ class _FeedRouteState extends State<FeedRoute>
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 50.0, right: 10.0, left: 10.0),
-      //EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Row(

@@ -1,1 +1,0 @@
-// NOTE: This class lists style constants and color values.

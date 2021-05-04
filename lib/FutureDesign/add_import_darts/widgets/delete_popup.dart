@@ -1,1 +1,0 @@
-// NOTE: Shows alertdialog when the delete note button clicks.

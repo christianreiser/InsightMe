@@ -19,14 +19,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqflite: ^1.1.0                       # SQLite
+  sqflite: ^1.1.5                       # SQLite
   path_provider: ^1.1.0                 # SQLite
   file_picker: # csv file
   fl_animated_linechart:  # chart
   flutter_charts: ^0.1.10 # transpose list
   provider: # state management
   google_fonts:
-  shared_preferences: # for persistence data. 1.Intro-seen-flag
+  shared_preferences: ^0.5.3+1          # for persistence data. 1.Intro-seen-flag
   csv: # write csv for daily summaries
   starfruit: ^0.3.1+2 # correlation
   permission_handler: ^5.0.1+1 # todo back in for export
@@ -35,16 +35,15 @@ dependencies:
   ml_linalg: # matrix stuff in correlation //todo tmp?
 
   ff_navigation_bar: ^0.1.5             # ff_bottom_navigation_bar_plugin
-  image_picker: ^0.6.7+11               # plugin for taking notes BEGIN
-  intl: ^0.16.1                         #
-  path: ^1.7.0                          #
-  url_launcher: ^5.7.2                  # END
+  outline_material_icons: ^0.1.0        # plugins for taking notes
+  intl: ^0.15.8                         # plugins for taking notes
+  url_launcher: ^5.0.3                  # plugins for taking notes
+  share: ^0.6.1+1                       # plugins for taking notes
 
   #starflut: ^0.6.0 # for python
   #url_launcher:
   #flutter_svg: # svg drawing for WHO
   #simple_permissions: ^0.1.9 # for export write access => leads to compiling error
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
