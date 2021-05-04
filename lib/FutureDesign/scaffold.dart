@@ -6,11 +6,8 @@ import 'package:insightme/Intro/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './../Import/import_from_json_route.dart';
-import './../Journal/searchOrCreateAttribute.dart';
 import './../globals.dart' as globals;
-import './../strings.dart' as strings;
 import './data_route.dart';
-import 'backup_darts/home_route.dart';
 import './optimize_route.dart';
 import '../Statistics/Functions/computeCorrelations.dart';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
@@ -81,44 +78,11 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   Scaffold standardScaffold() {
     initializeGlobals();
     return Scaffold(
-      /* NOTE: just uncomment for design purposes
-      appBar: AppBar(
-        title: Text(
-          strings.appTitle,
-        ),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          _popupMenu(),
-        ],
-      ),
-       */
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      //floatingActionButton: _floatingActionButton(),
       bottomNavigationBar:
           _ffBottomNavigationBarPlugin(),
-    );
-  }
-
-  Widget _floatingActionButton() {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-      onPressed: () {
-        print("nav to add manually");
-        Navigator.of(context).push(
-          PageRouteBuilder(
-            opaque: false,
-            pageBuilder: (_, __, ___) => Container(
-              color: Colors.black.withOpacity(.7),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 25, 20, 20),
-                child: SearchOrCreateAttribute(),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -143,8 +107,8 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
           label: 'Home',
         ),
         FFNavigationBarItem(
-          iconData: Icons.add,
-          label: 'Add',
+          iconData: Icons.book_outlined,
+          label: 'Diary',
         ),
         FFNavigationBarItem(
           iconData: Icons.timeline_outlined,
@@ -198,134 +162,6 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       _selectedIndex = index;
       debugPrint('_selectedIndex= $_selectedIndex');
     });
-  }
-
-  Widget _popupMenu() {
-    return PopupMenuButton<Choice>(
-      onSelected: (Choice result) {
-        if (result == Choice.exportDailySummaries) {
-//                exportDailySummaries();// todo permission handler iOS privacy
-        } else if (result == Choice.computeCorrelations) {
-          ComputeCorrelations().computeCorrelations();
-        } else if (result == Choice.importFromCSV) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Import()),
-          );
-        } else if (result == Choice.appIntegrations) {
-          /// todo AppIntegrations:
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
-          );
-        } else if (result == Choice.deleteAllData) {
-          // todo deleteAllData
-          // DatabaseHelperEntry().deleteDb();
-          // DatabaseHelperAttribute().deleteDb();
-        } else if (result == Choice.tmpFunction) {
-          //tmpFunction();
-          // DatabaseHelperEntry().deleteDb();
-          // DatabaseHelperAttribute().deleteDb();
-        }
-
-        setState(() {
-          debugPrint('result $result');
-          Choice _selection = result; // check if needed
-        });
-      },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
-        PopupMenuItem<Choice>(
-          value: Choice.computeCorrelations,
-          child: Row(
-            children: [
-              Icon(
-                Icons.compare_arrows,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Compute correlations'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.appIntegrations,
-          child: Row(
-            children: [
-              Icon(
-                Icons.exit_to_app,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Other app integrations'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.exportDailySummaries,
-          child: Row(
-            children: [
-              Icon(
-                Icons.file_upload,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Export daily summaries'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.importFromCSV,
-          child: Row(
-            children: [
-              Icon(
-                Icons.file_download,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Import data from file'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.deleteAllData,
-          child: Row(
-            children: [
-              Icon(
-                Icons.delete_forever,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Delete all data'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.tmpFunction,
-          child: Row(
-            children: [
-              Icon(
-                Icons.directions_run,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('tmpFunction'),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 
   initializeGlobals() {
