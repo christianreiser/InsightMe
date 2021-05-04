@@ -47,7 +47,7 @@ android {
         // TODO: com->org. Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.insightme"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -86,6 +86,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-base:17.5.0' //CHREI https://stackoverflow.com/questions/64820697/how-to-fix-exception-thrown-while-unbinding-java-lang-illegalargumentexception
     implementation 'com.google.firebase:firebase-analytics:18.0.0'//CHREI https://stackoverflow.com/questions/64820697/how-to-fix-exception-thrown-while-unbinding-java-lang-illegalargumentexception
 
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
+    // Google Fitness and Google Auth dependencies
+    implementation("com.google.android.gms:play-services-fitness:20.0.0")
+    implementation("com.google.android.gms:play-services-auth:19.0.0")
 }

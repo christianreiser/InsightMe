@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/AppIntegrations/health.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
 import '../navigation_helper.dart';
-import 'GoogleFit.dart';
+import 'fit_kit.dart';
 
 class AppIntegrationsOverview extends StatelessWidget {
   final DatabaseHelperEntry helperEntry = // error when static
@@ -124,7 +125,7 @@ class AppIntegrationsOverview extends StatelessWidget {
           ),
           SizedBox(height: 10),
 
-          /// Google Fit
+          // Google fit_kit plugin
           Row(children: [
             Expanded(
               flex: 50,
@@ -137,7 +138,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Steps, workouts, weight',
+                      'fit_kit_1.1.2',
                       textScaleFactor: 1.2,
                     )
                   ]),
@@ -149,7 +150,40 @@ class AppIntegrationsOverview extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GoogleFitIntegration()),
+                    MaterialPageRoute(builder: (context) => FitKitGHub()),
+                  );
+                },
+              ),
+            ),
+          ]),
+          SizedBox(height: 10),
+
+          // Google health plugin
+          Row(children: [
+            Expanded(
+              flex: 50,
+              child: Image(image: AssetImage('./assets/icon/logo_googlefit.png')),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              flex: 50,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'health_3.0.5',
+                      textScaleFactor: 1.2,
+                    )
+                  ]),
+            ),
+            Expanded(
+              flex: 10,
+              child: IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HealthGHub()),
                   );
                 },
               ),

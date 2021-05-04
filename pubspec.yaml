@@ -34,6 +34,9 @@ dependencies:
   flutter_colorpicker: ^0.3.4
   ml_linalg: # matrix stuff in correlation //todo tmp?
   health: ^3.0.5
+
+  fit_kit: ^1.1.2
+
 #  ml_preprocessing:
 
   #starflut: ^0.6.0 # for python
