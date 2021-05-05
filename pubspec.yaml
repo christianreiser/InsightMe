@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.15.8                         # plugins for taking notes
   url_launcher: ^5.0.3                  # plugins for taking notes
   share: ^0.6.1+1                       # plugins for taking notes
+  flutter_rating_bar: ^4.0.0            # plugins for taking notes
 
   #starflut: ^0.6.0 # for python
   #url_launcher:

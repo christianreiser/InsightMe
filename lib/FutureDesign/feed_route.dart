@@ -85,13 +85,11 @@ class _FeedRouteState extends State<FeedRoute>
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(5),
-                                  topLeft: Radius.circular(5)
-                              ),
+                                  topLeft: Radius.circular(5)),
                               image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage("https://i.pinimg.com/originals/3d/8b/df/3d8bdfb670978ee2ee15028cc31c37aa.jpg")
-                              )
-                          ),
+                                  image: NetworkImage(
+                                      "https://i.pinimg.com/originals/3d/8b/df/3d8bdfb670978ee2ee15028cc31c37aa.jpg"))),
                         ),
                         Container(
                           height: 100.0,
@@ -105,21 +103,24 @@ class _FeedRouteState extends State<FeedRoute>
                                   child: Container(
                                     width: 50,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                                        color: Colors.lightGreen
-                                    ),
-                                    child: Text("Health", textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(3)),
+                                        color: Colors.lightGreen),
+                                    child: Text("Health",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12)),
                                   ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
                                   child: Container(
                                     width: 200,
-                                    child: Text("To increase your energy level try "
-                                        "eating less high temperature processed food.", style: TextStyle(
-                                        fontSize: 11
-                                    ),),
+                                    child: Text(
+                                      "To increase your energy level try "
+                                      "eating less high temperature processed food.",
+                                      style: TextStyle(fontSize: 11),
+                                    ),
                                   ),
                                 ),
                                 Row(
@@ -131,7 +132,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_up_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -145,7 +147,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_down_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -159,7 +162,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.share_outlined),
+                                          icon:
+                                              const Icon(Icons.share_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -189,13 +193,11 @@ class _FeedRouteState extends State<FeedRoute>
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(5),
-                                  topLeft: Radius.circular(5)
-                              ),
+                                  topLeft: Radius.circular(5)),
                               image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage("https://i.pinimg.com/564x/b4/a2/6e/b4a26e607557faf37579859188efb2f7.jpg")
-                              )
-                          ),
+                                  image: NetworkImage(
+                                      "https://i.pinimg.com/564x/b4/a2/6e/b4a26e607557faf37579859188efb2f7.jpg"))),
                         ),
                         Container(
                           height: 100.0,
@@ -209,20 +211,23 @@ class _FeedRouteState extends State<FeedRoute>
                                   child: Container(
                                     width: 75,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                                        color: Colors.lightBlue
-                                    ),
-                                    child: Text("Productivity", textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(3)),
+                                        color: Colors.lightBlue),
+                                    child: Text("Productivity",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12)),
                                   ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
                                   child: Container(
                                     width: 200,
-                                    child: Text("Try working from home. Your productivity correlates with home-office.", style: TextStyle(
-                                        fontSize: 11
-                                    ),),
+                                    child: Text(
+                                      "Try working from home. Your productivity correlates with home-office.",
+                                      style: TextStyle(fontSize: 11),
+                                    ),
                                   ),
                                 ),
                                 Row(
@@ -234,7 +239,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_up_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -248,7 +254,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_down_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -262,7 +269,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.share_outlined),
+                                          icon:
+                                              const Icon(Icons.share_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -292,13 +300,11 @@ class _FeedRouteState extends State<FeedRoute>
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(5),
-                                  topLeft: Radius.circular(5)
-                              ),
+                                  topLeft: Radius.circular(5)),
                               image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage("https://i.pinimg.com/564x/01/1a/d2/011ad28a5991aa4b5f43c0bc95d9630b.jpg")
-                              )
-                          ),
+                                  image: NetworkImage(
+                                      "https://i.pinimg.com/564x/01/1a/d2/011ad28a5991aa4b5f43c0bc95d9630b.jpg"))),
                         ),
                         Container(
                           height: 100.0,
@@ -312,20 +318,23 @@ class _FeedRouteState extends State<FeedRoute>
                                   child: Container(
                                     width: 50,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                                        color: Colors.redAccent
-                                    ),
-                                    child: Text("Sports", textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(3)),
+                                        color: Colors.redAccent),
+                                    child: Text("Sports",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12)),
                                   ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
                                   child: Container(
                                     width: 200,
-                                    child: Text("Try carbs before running. Carbs correlate with running performance.", style: TextStyle(
-                                        fontSize: 11
-                                    ),),
+                                    child: Text(
+                                      "Try carbs before running. Carbs correlate with running performance.",
+                                      style: TextStyle(fontSize: 11),
+                                    ),
                                   ),
                                 ),
                                 Row(
@@ -337,7 +346,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_up_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -351,7 +361,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_down_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -365,7 +376,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.share_outlined),
+                                          icon:
+                                              const Icon(Icons.share_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -395,13 +407,11 @@ class _FeedRouteState extends State<FeedRoute>
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(5),
-                                  topLeft: Radius.circular(5)
-                              ),
+                                  topLeft: Radius.circular(5)),
                               image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage("https://i.pinimg.com/564x/83/21/92/832192ec5a509616ad655b0d6004d981.jpg")
-                              )
-                          ),
+                                  image: NetworkImage(
+                                      "https://i.pinimg.com/564x/83/21/92/832192ec5a509616ad655b0d6004d981.jpg"))),
                         ),
                         Container(
                           height: 100.0,
@@ -415,20 +425,23 @@ class _FeedRouteState extends State<FeedRoute>
                                   child: Container(
                                     width: 100,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                                        color: Colors.yellow
-                                    ),
-                                    child: Text("Recommendation", textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(3)),
+                                        color: Colors.yellow),
+                                    child: Text("Recommendation",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12)),
                                   ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
                                   child: Container(
                                     width: 200,
-                                    child: Text("Want to know how the weather affects you? Then try Dark Sky.", style: TextStyle(
-                                        fontSize: 11
-                                    ),),
+                                    child: Text(
+                                      "Want to know how the weather affects you? Then try Dark Sky.",
+                                      style: TextStyle(fontSize: 11),
+                                    ),
                                   ),
                                 ),
                                 Row(
@@ -440,7 +453,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_up_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -454,7 +468,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_down_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -468,7 +483,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.share_outlined),
+                                          icon:
+                                              const Icon(Icons.share_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -498,13 +514,11 @@ class _FeedRouteState extends State<FeedRoute>
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(5),
-                                  topLeft: Radius.circular(5)
-                              ),
+                                  topLeft: Radius.circular(5)),
                               image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage("https://i.pinimg.com/564x/d3/81/cd/d381cd99cbe62d19f910480c41edeb56.jpg")
-                              )
-                          ),
+                                  image: NetworkImage(
+                                      "https://i.pinimg.com/564x/d3/81/cd/d381cd99cbe62d19f910480c41edeb56.jpg"))),
                         ),
                         Container(
                           height: 100.0,
@@ -518,20 +532,23 @@ class _FeedRouteState extends State<FeedRoute>
                                   child: Container(
                                     width: 100,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                                        color: Colors.yellow
-                                    ),
-                                    child: Text("Recommendation", textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(3)),
+                                        color: Colors.yellow),
+                                    child: Text("Recommendation",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12)),
                                   ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
                                   child: Container(
                                     width: 200,
-                                    child: Text("You are happier when you spend more time with friends.", style: TextStyle(
-                                        fontSize: 11
-                                    ),),
+                                    child: Text(
+                                      "You are happier when you spend more time with friends.",
+                                      style: TextStyle(fontSize: 11),
+                                    ),
                                   ),
                                 ),
                                 Row(
@@ -543,7 +560,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_up_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_up_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -557,7 +575,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.thumb_down_outlined),
+                                          icon: const Icon(
+                                              Icons.thumb_down_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
@@ -571,7 +590,8 @@ class _FeedRouteState extends State<FeedRoute>
                                         width: 25,
                                         height: 25,
                                         child: IconButton(
-                                          icon: const Icon(Icons.share_outlined),
+                                          icon:
+                                              const Icon(Icons.share_outlined),
                                           iconSize: 18,
                                           onPressed: () {
                                             //TODO
