@@ -40,6 +40,8 @@ dependencies:
   firebase_core: ^1.0.4
   firebase_auth: ^1.1.1
   google_sign_in: ^5.0.2
+
+  http: ^0.13.3
 #  ml_preprocessing:
 
   #starflut: ^0.6.0 # for python

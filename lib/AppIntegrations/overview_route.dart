@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,6 +9,7 @@ import 'package:insightme/Database/database_helper_entry.dart';
 
 import '../navigation_helper.dart';
 import 'fit_kit.dart';
+import 'gfit_handler.dart';
 
 class AppIntegrationsOverview extends StatelessWidget {
   final DatabaseHelperEntry helperEntry = // error when static
@@ -125,7 +128,7 @@ class AppIntegrationsOverview extends StatelessWidget {
           ),
           SizedBox(height: 10),
 
-          // Google fit_kit plugin
+          // Google http_req
           Row(children: [
             Expanded(
               flex: 50,
@@ -138,7 +141,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'fit_kit_1.1.2',
+                      'http_req',
                       textScaleFactor: 1.2,
                     )
                   ]),
@@ -150,7 +153,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FitKitGHub()),
+                    MaterialPageRoute(builder: (context) => GFitHandler()),
                   );
                 },
               ),
@@ -159,6 +162,7 @@ class AppIntegrationsOverview extends StatelessWidget {
           SizedBox(height: 10),
 
           // Google health plugin
+          /*
           Row(children: [
             Expanded(
               flex: 50,
@@ -190,6 +194,7 @@ class AppIntegrationsOverview extends StatelessWidget {
             ),
           ]),
           SizedBox(height: 10),
+           */
 
           /// forecast
           Row(
