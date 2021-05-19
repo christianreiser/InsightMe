@@ -128,7 +128,7 @@ class AppIntegrationsOverview extends StatelessWidget {
           ),
           SizedBox(height: 10),
 
-          // Google health plugin
+          // Google health
           Row(children: [
             Expanded(
               flex: 50,
@@ -141,7 +141,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'health_3.0.5',
+                      'fit_kit plugin',
                       textScaleFactor: 1.2,
                     )
                   ]),
@@ -153,7 +153,40 @@ class AppIntegrationsOverview extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FitKitGHub()), //HealthGHub()),HealthGHub()),
+                    MaterialPageRoute(builder: (context) => FitKitGHub()), //HealthGHub()),
+                  );
+                },
+              ),
+            ),
+          ]),
+          SizedBox(height: 10),
+
+          // Google health
+          Row(children: [
+            Expanded(
+              flex: 50,
+              child: Image(image: AssetImage('./assets/icon/logo_googlefit.png')),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              flex: 50,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'health plugin',
+                      textScaleFactor: 1.2,
+                    )
+                  ]),
+            ),
+            Expanded(
+              flex: 10,
+              child: IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HealthGHub()),
                   );
                 },
               ),
