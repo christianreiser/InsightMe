@@ -162,7 +162,6 @@ class AppIntegrationsOverview extends StatelessWidget {
           SizedBox(height: 10),
 
           // Google health plugin
-          /*
           Row(children: [
             Expanded(
               flex: 50,
@@ -187,14 +186,13 @@ class AppIntegrationsOverview extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HealthGHub()),
+                    MaterialPageRoute(builder: (context) => FitKitGHub()), //HealthGHub()),HealthGHub()),
                   );
                 },
               ),
             ),
           ]),
           SizedBox(height: 10),
-           */
 
           /// forecast
           Row(
