@@ -1,15 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/AppIntegrations/health.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
 import '../navigation_helper.dart';
 import 'fit_kit.dart';
-import 'gfit_handler.dart';
 
 class AppIntegrationsOverview extends StatelessWidget {
   final DatabaseHelperEntry helperEntry = // error when static
@@ -154,39 +150,6 @@ class AppIntegrationsOverview extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => FitKitGHub()), //HealthGHub()),
-                  );
-                },
-              ),
-            ),
-          ]),
-          SizedBox(height: 10),
-
-          // Google health
-          Row(children: [
-            Expanded(
-              flex: 50,
-              child: Image(image: AssetImage('./assets/icon/logo_googlefit.png')),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              flex: 50,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'health plugin',
-                      textScaleFactor: 1.2,
-                    )
-                  ]),
-            ),
-            Expanded(
-              flex: 10,
-              child: IconButton(
-                icon: Icon(Icons.chevron_right),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HealthGHub()),
                   );
                 },
               ),

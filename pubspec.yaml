@@ -14,7 +14,7 @@ description: Track anything about your life.
 version: 1.0.9+10
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -27,7 +27,7 @@ dependencies:
   provider: # state management
   google_fonts:
   shared_preferences: # for persistence data. 1.Intro-seen-flag
-  csv: # write csv for daily summaries
+  csv: ^5.0.0 # write csv for daily summaries
   starfruit: ^0.3.1+2 # correlation
   sqflite_migration: ^0.2.0
   flutter_colorpicker: ^0.3.4

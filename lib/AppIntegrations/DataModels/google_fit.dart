@@ -1,0 +1,3 @@
+class GoogleFit {
+  //TODO
+}

@@ -14,12 +14,15 @@ class _FitKitGHubState extends State<FitKitGHub> {
   bool permissions;
 
   RangeValues _dateRange = RangeValues(1, 8);
+
   // ignore: deprecated_member_use
   List<DateTime> _dates = List<DateTime>();
   double _limitRange = 0;
 
   DateTime get _dateFrom => _dates[_dateRange.start.round()];
+
   DateTime get _dateTo => _dates[_dateRange.end.round()];
+
   int get _limit => _limitRange == 0.0 ? null : _limitRange.round();
 
   @override
@@ -99,62 +102,100 @@ class _FitKitGHubState extends State<FitKitGHub> {
   @override
   Widget build(BuildContext context) {
     final items =
-    results.entries.expand((entry) => [entry.key, ...entry.value]).toList();
+        results.entries.expand((entry) => [entry.key, ...entry.value]).toList();
 
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('FitKit Example'),
-        ),
-        body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-              Text(
-                  'Date Range: ${_dateToString(_dateFrom)} - ${_dateToString(_dateTo)}'),
-              Text('Limit: $_limit'),
-              Text('Permissions: $permissions'),
-              Text('Result: $result'),
-              _buildDateSlider(context),
-              _buildLimitSlider(context),
-              _buildButtons(context),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    if (item is DataType) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          '$item - ${results[item].length}',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      );
-                    } else if (item is FitData) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 8,
-                        ),
-                        child: Text(
-                          '$item',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      );
-                    }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Google Fit Data'),
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            Text(
+                'Date Range: ${_dateToString(_dateFrom)} - ${_dateToString(_dateTo)}'),
+            Text('Limit: $_limit'),
+            Text('Permissions: $permissions'),
+            Text('Result: $result'),
+            _buildDateSlider(context),
+            _buildLimitSlider(context),
+            _buildButtons(context),
+            Expanded(
+              child: ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  final item = items[index];
+                  if (item is DataType) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        'Datatype: $item',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    );
+                  } else if (item is FitData) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 8,
+                      ),
+                      child: Text(
+                        'Result: $item',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    );
+                  }
 
-                    return Container();
-                  },
-                ),
+                  return Container();
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+      floatingActionButton: _floatingActionButton(),
     );
+  }
+
+  Widget _floatingActionButton() {
+    final items =
+        results.entries.expand((entry) => [entry.key, entry.value]).toList();
+
+    return FloatingActionButton(
+      child: Icon(Icons.save_alt),
+      onPressed: () {
+        //TODO
+        print('$items');
+        print('-------------');
+        _generateCsvFile(items);
+      },
+    );
+  }
+
+  _generateCsvFile(List<Object> list) {
+    List<String> csvHeaders = [];
+    int headerCount = 0;
+
+    csvHeaders.add('Date');
+    for (var type in list) {
+      if (type is DataType) {
+        csvHeaders.add(type.toString());
+        headerCount++;
+      }
+    }
+    csvHeaders.add('UserEntered');
+    print('$csvHeaders');
+    print('Header count: $headerCount');
+
+    //print(list[3]);
+
+    List<Object> googleFitDataSet = [];
+    for (var i = 1; i < list.length; i + 2) {
+      googleFitDataSet.add(list[i]);
+    }
+    print('$googleFitDataSet');
   }
 
   String _dateToString(DateTime dateTime) {
