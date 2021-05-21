@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:fit_kit/fit_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/AppIntegrations/DataModels/google_fit_data.dart';
 
 class FitKitGHub extends StatefulWidget {
   @override
@@ -160,42 +163,31 @@ class _FitKitGHubState extends State<FitKitGHub> {
   }
 
   Widget _floatingActionButton() {
-    final items =
-        results.entries.expand((entry) => [entry.key, entry.value]).toList();
-
     return FloatingActionButton(
       child: Icon(Icons.save_alt),
       onPressed: () {
-        //TODO
-        print('$items');
-        print('-------------');
-        _generateCsvFile(items);
+        _generateLocalJsonFile();
       },
     );
   }
 
-  _generateCsvFile(List<Object> list) {
-    List<String> csvHeaders = [];
-    int headerCount = 0;
+  _generateLocalJsonFile() {
+    final items = results.entries.expand((entry) => [entry.key, entry.value])
+        .toList();
 
-    csvHeaders.add('Date');
-    for (var type in list) {
-      if (type is DataType) {
-        csvHeaders.add(type.toString());
-        headerCount++;
+    print(items);
+    print('------------');
+    for (var data in items) {
+      if (data is DataType) {
+        //TODO
       }
     }
-    csvHeaders.add('UserEntered');
-    print('$csvHeaders');
-    print('Header count: $headerCount');
 
-    //print(list[3]);
-
-    List<Object> googleFitDataSet = [];
-    for (var i = 1; i < list.length; i++) {
-      //TODO
-    }
-    print('$googleFitDataSet');
+    print('------------');
+    //NOTE: Test dataset for json construction
+    Data data = Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
+    GoogleFitData fitData = GoogleFitData("STEP_COUNT", data);
+    print(jsonEncode(fitData.toJson()));
   }
 
   String _dateToString(DateTime dateTime) {

@@ -5,6 +5,7 @@ import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
 import '../navigation_helper.dart';
+import 'Connect_route/fit_kit.dart';
 import 'Connect_route/gfit.dart';
 
 class AppIntegrationsOverview extends StatelessWidget {
@@ -69,8 +70,8 @@ class AppIntegrationsOverview extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => GFit(), //FitKitGHub(),
-                        ), //HealthGHub()),
+                          builder: (context) => FitKitGHub(), //GFit(),
+                        ),
                       );
                     },
                   ),
