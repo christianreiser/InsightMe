@@ -192,8 +192,8 @@ class _FitKitGHubState extends State<FitKitGHub> {
     //print(list[3]);
 
     List<Object> googleFitDataSet = [];
-    for (var i = 1; i < list.length; i + 2) {
-      googleFitDataSet.add(list[i]);
+    for (var i = 1; i < list.length; i++) {
+      //TODO
     }
     print('$googleFitDataSet');
   }
