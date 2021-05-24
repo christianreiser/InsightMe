@@ -133,11 +133,14 @@ class JournalRouteState extends State<JournalRoute> {
   Widget _actionBarWithActionBarCapability() {
     return _multiEntrySelectionActive
         ? AppBar(
-            leading: FlatButton(
+            leading: TextButton(
               onPressed: () {
                 _deselectAll();
               },
-              child: Icon(Icons.close),
+              child: Icon(
+                Icons.close,
+                color: Colors.black,
+              ),
             ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -146,8 +149,11 @@ class JournalRouteState extends State<JournalRoute> {
                   '${_countSelected()}',
                   style: TextStyle(color: Colors.black),
                 ),
-                FlatButton(
-                  child: Icon(Icons.delete),
+                TextButton(
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.black,
+                  ),
                   onPressed: () {
                     _showAlertDialogWithDelete('Delete?', '');
                     setState(() {
@@ -155,8 +161,11 @@ class JournalRouteState extends State<JournalRoute> {
                     });
                   },
                 ),
-                FlatButton(
-                  child: Icon(Icons.select_all),
+                TextButton(
+                  child: Icon(
+                    Icons.select_all,
+                    color: Colors.black,
+                  ),
                   onPressed: () {
                     _isSelectedList = List.filled(_isSelectedList.length, true);
                     setState(() {
@@ -174,7 +183,7 @@ class JournalRouteState extends State<JournalRoute> {
   Widget _getEntryListView() {
     return Column(
       children: [
-        // APP BAR with MULTIPLE SELECTION DELETION capability
+        /// APP BAR with MULTIPLE SELECTION DELETION capability
         _actionBarWithActionBarCapability(),
 
         Flexible(
@@ -182,17 +191,17 @@ class JournalRouteState extends State<JournalRoute> {
           child: ListView.builder(
             itemCount: _countEntry,
             itemBuilder: (BuildContext context, int position) {
-              return Container(
+              return Container( // container wrapping tiles
                 padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
                 color: Theme.of(context).backgroundColor,
                 child: Card(
                   // gives monotone tiles a card shape
-                  // color:
-                  //     _multiEntrySelectionActive // when multi selected, check each
-                  //         ? _isSelectedList[position] == false
-                  //             ? Theme.of(context).backgroundColor
-                  //             : Theme.of(context).accentColor
-                  //         : Theme.of(context).backgroundColor, // when none selected always white
+                  color:
+                      _multiEntrySelectionActive // when multi selected, check each
+                          ? _isSelectedList[position] == false
+                              ? Colors.white
+                              : Colors.grey
+                          : Colors.white, // when none selected always white
                   child: ListTile(
                     onLongPress: () {
                       setState(
@@ -238,7 +247,7 @@ class JournalRouteState extends State<JournalRoute> {
                       ],
                     ),
 
-                    // onTAP TO EDIT
+                    // onTAP TO EDIT or select multiple
                     onTap: () {
                       setState(
                         () {
@@ -265,8 +274,6 @@ class JournalRouteState extends State<JournalRoute> {
       ],
     );
   }
-
-
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
@@ -324,7 +331,7 @@ class JournalRouteState extends State<JournalRoute> {
   void _showAlertDialogWithDelete(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       actions: [
-        FlatButton(
+        TextButton(
           child: Row(
             children: [Icon(Icons.delete), Text('Yes')],
           ),

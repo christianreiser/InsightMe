@@ -74,18 +74,24 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     */
     return _isSelected.contains(true)
         ? AppBar(
-            leading: FlatButton(
+            leading: TextButton(
               onPressed: () {
                 _deselectAll();
               },
-              child: Icon(Icons.close),
+              child: Icon(
+                Icons.close,
+                color: Colors.black,
+              ),
             ),
             title: Row(
               children: [
                 Text('${_countSelected()}',
                     style: TextStyle(color: Colors.black)),
-                FlatButton(
-                  child: Icon(Icons.delete),
+                TextButton(
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.black,
+                  ),
                   onPressed: () {
                     _showAlertDialogWithDelete();
                     setState(() {
@@ -93,8 +99,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     });
                   },
                 ),
-                FlatButton(
-                  child: Icon(Icons.select_all),
+                TextButton(
+                  child: Icon(
+                    Icons.select_all,
+                    color: Colors.black,
+                  ),
                   onPressed: () {
                     _isSelected =
                         List.filled(_attributesToDisplay.length, true);
@@ -113,8 +122,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () async {
-                NavigationHelper()
-                    .navigateToFutureDesign(context); // refreshes
+                NavigationHelper().navigateToFutureDesign(context); // refreshes
               },
             ),
           );
@@ -221,7 +229,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     * ATTRIBUTE LIST
     */
     return ListView.builder(
-      shrinkWrap: true, /// todo it's significantly more expensive. why?
+      shrinkWrap: true,
+
+      /// todo it's significantly more expensive. why?
       itemCount: _attributesToDisplay.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
@@ -548,7 +558,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   void _showAlertDialogWithDelete() {
     AlertDialog alertDialog = AlertDialog(
       actions: [
-        FlatButton(
+        TextButton(
           child: Row(
             children: [Icon(Icons.arrow_back_ios), Text('Back')],
           ),
@@ -556,9 +566,15 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        TextButton(
           child: Row(
-            children: [Icon(Icons.delete), Text('Yes')],
+            children: [
+              Icon(
+                Icons.delete,
+                color: Colors.black,
+              ),
+              Text('Yes')
+            ],
           ),
           onPressed: () {
             Navigator.of(context).pop();
