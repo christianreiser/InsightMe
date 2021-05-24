@@ -34,7 +34,7 @@ class ComputeCorrelations {
     /// ini correlation matrix
     /// todo try List<List<double>> instead of var
     var correlationMatrix = List.generate(
-        numLabels + 1, (i) => List(numLabels + 1),
+        numLabels + 1, (i) => List.filled(numLabels + 1, null),
         growable: false);
 
     /// ini correlationCoefficient

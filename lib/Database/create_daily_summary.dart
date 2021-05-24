@@ -1,12 +1,14 @@
+import 'dart:io';
+
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
+
 import 'attribute.dart';
-import 'entry.dart';
 import 'database_helper_attribute.dart';
 import 'database_helper_entry.dart';
+import 'entry.dart';
 
 class WriteDailySummariesCSV {
   Future<String> writeDailySummariesCSV() async {
@@ -46,7 +48,7 @@ class WriteDailySummariesCSV {
     * Also: gets
     */
     List<String> attributeTitleList =
-        List(attributeListLength + 1); // length = #attributes + 1 for date
+        List.filled(attributeListLength + 1, null); // length = #attributes + 1 for date
     attributeTitleList[0] = 'date';
     for (int attributeCount = 0;
         attributeCount < attributeListLength;

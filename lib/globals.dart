@@ -1,13 +1,13 @@
 // import './../globals.dart' as globals;
 //import 'package:shared_preferences/shared_preferences.dart';
 
-
 import 'package:flutter/cupertino.dart';
 
 import 'Database/attribute.dart';
+import 'Database/database_helper_attribute.dart';
 import 'Database/database_helper_entry.dart';
 import 'Database/entry.dart';
-import 'Database/database_helper_attribute.dart';
+
 String mostRecentAddedEntryName;
 String secondMostRecentAddedEntryName;
 List<Attribute> attributeList; // list to avoid async db operations
@@ -16,9 +16,6 @@ int entryListLength;
 int attributeListLength;
 
 class Global {
-  //
-
-
   Future<List<Attribute>> updateAttributeList() async {
     debugPrint('called updateAttributeList');
     attributeList = await DatabaseHelperAttribute().getAttributeList();
@@ -33,9 +30,6 @@ class Global {
     entryListLength = entryList.length;
     return entryList;
   }
-
-
-
 }
 
 //// Read

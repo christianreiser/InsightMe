@@ -92,10 +92,16 @@ class DropDown extends StatelessWidget {
 
     List<Attribute> attributeList =
         await databaseHelperAttribute.getAttributeList();
-    List<String> itemList = List(attributeList.length+1); /// +1 for 'all'
-    itemList[0] = 'all'; /// to correlate with everything
+    List<String> itemList = List.filled(attributeList.length + 1, null);
+
+    /// +1 for 'all'
+    itemList[0] = 'all';
+
+    /// to correlate with everything
     for (int ele = 0; ele < attributeList.length; ele++) {
-      itemList[ele+1] = attributeList[ele].title; /// +1 for 'all'
+      itemList[ele + 1] = attributeList[ele].title;
+
+      /// +1 for 'all'
       debugPrint('itemList $itemList');
     }
     debugPrint('itemList $itemList');
@@ -106,7 +112,7 @@ class DropDown extends StatelessWidget {
 
   // build Dropdown Menu Items
   List<DropdownMenuItem<String>> buildDropdownMenuItems(List itemList) {
-    List<DropdownMenuItem<String>> items = List();
+    List<DropdownMenuItem<String>> items = [];
     for (String item in itemList) {
       items.add(
         DropdownMenuItem(
