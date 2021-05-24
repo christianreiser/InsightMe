@@ -1,3 +1,4 @@
+/// animated line chart widget
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Database/database_helper_entry.dart';

@@ -1,3 +1,4 @@
+/// everything that's on the optimize route
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -65,7 +66,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                       ]),
                 ]),
           ),
-          optimizeNameAndChart(),//'Happiness', 'Resting Heart Rate'
+          optimizeNameAndChart(), //'Happiness', 'Resting Heart Rate'
           //optimizeNameAndChart('Body weight', 'Calories in'),
         ]),
       ),
@@ -132,7 +133,8 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             ),
 
             /// statistics: correlation and confidence
-            statistics(context, 0.92, 0.09), // todo
+            futureStatistics(
+                schedule.selectedAttribute1, schedule.selectedAttribute2)
           ]),
         ),
         greyLineSeparator(),

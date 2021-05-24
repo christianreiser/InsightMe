@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../Functions/readCorrelation.dart';
+/// correlation coefficient and p-value widgets
 
 Widget futureStatistics(attributeName1, attributeName2) {
+  /// future builder of correlation coefficient and p-value widgets
+
   return FutureBuilder(
     future: readCorrelationCoefficient(attributeName1, attributeName2),
     builder: (context, snapshot) {
@@ -13,7 +16,7 @@ Widget futureStatistics(attributeName1, attributeName2) {
           snapshot.data != null &&
           snapshot.data != 'NaN') {
         return statistics(
-            context, snapshot.data, 0.02); //todo hard coded p value
+            context, snapshot.data, 0.02); //todo hard coded p-value
       }
 
       /// chart data arrived but no data found
@@ -30,6 +33,7 @@ Widget futureStatistics(attributeName1, attributeName2) {
 }
 
 Widget statistics(context, _correlationCoefficient, _pValue) {
+  /// correlation coefficient and p-value widgets
   return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
