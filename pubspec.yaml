@@ -23,14 +23,14 @@ dependencies:
   path_provider: # SQLite
   file_picker: # csv file
   fl_animated_linechart:  # chart
-  flutter_charts: ^0.1.10 # transpose list
+  flutter_charts: ^0.2.0 # transpose list
   provider: # state management
   google_fonts:
   shared_preferences: # for persistence data. 1.Onboarding-seen-flag
   csv: ^5.0.0 # write csv for daily summaries
-  starfruit: ^0.3.1+2 # correlation
-  sqflite_migration: ^0.2.0
-  flutter_colorpicker: ^0.3.4
+  starfruit: ^1.0.0+1 # correlation
+  sqflite_migration: ^0.3.0
+  flutter_colorpicker: ^0.4.0
   ml_linalg: # matrix stuff in correlation //todo tmp?
   health: ^3.0.5
   fit_kit: ^1.1.2
