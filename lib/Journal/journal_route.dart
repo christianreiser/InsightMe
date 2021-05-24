@@ -41,7 +41,7 @@ class JournalRouteState extends State<JournalRoute> {
   Widget build(BuildContext context) {
     // build entry list if null
     if (_entryList == null) {
-      _entryList = List<Entry>();
+      _entryList = [];
       if (context != null) {
         updateEntryListView();
       }

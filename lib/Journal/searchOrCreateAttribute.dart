@@ -169,9 +169,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       child: ButtonTheme(
         minWidth: 0,
         height: 48, // should be same height as TextField
-        child: RaisedButton(
-          color: Theme.of(context).primaryColorDark,
-          textColor: Theme.of(context).primaryColorLight,
+        child: ElevatedButton(
           child: Text(
             'Create',
             textScaleFactor: 1.5,

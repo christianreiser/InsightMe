@@ -55,9 +55,7 @@ class _OnboardingRouteState extends State<OnboardingRoute> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      RaisedButton(
-                        color: Theme.of(context).primaryColorDark,
-                        textColor: Theme.of(context).primaryColorLight,
+                      ElevatedButton(
                         child: Text(
                           'WHAT CAN YOU DO?',
                           textScaleFactor: 1.5,

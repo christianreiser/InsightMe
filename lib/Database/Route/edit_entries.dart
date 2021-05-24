@@ -145,9 +145,7 @@ class EditEntryState extends State<EditEntry> {
             // SAVE BUTTON
             Row(children: <Widget>[
               Expanded(
-                child: RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
+                child: ElevatedButton(
                   child: Text(
                     'Save',
                     textScaleFactor: 1.5,
@@ -167,9 +165,7 @@ class EditEntryState extends State<EditEntry> {
               // hide delete if entry doesn't exist
               thisIsANewEntry == false
                   ? Expanded(
-                      child: RaisedButton(
-                        color: Theme.of(context).primaryColorDark,
-                        textColor: Theme.of(context).primaryColorLight,
+                      child: ElevatedButton(
                         child: Text(
                           'Delete',
                           textScaleFactor: 1.5,

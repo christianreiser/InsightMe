@@ -55,9 +55,7 @@ class _ImportState extends State<Import> {
             //crossAxisAlignment: CrossAxisAlignment.stretch, // max chart width
             children: <Widget>[
               _hintInImport(),
-              RaisedButton(
-                color: Theme.of(context).primaryColorDark,
-                textColor: Theme.of(context).primaryColorLight,
+              ElevatedButton(
                 child: Text(
                   'Pick \".csv\" file to import',
                   textScaleFactor: 1.5,
