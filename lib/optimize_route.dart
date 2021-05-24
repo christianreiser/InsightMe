@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 import 'package:insightme/Core/widgets/design.dart';
-import 'package:insightme/FutureDesign/Visualize/attribute_selection.dart';
-import 'package:insightme/FutureDesign/Visualize/change_notifier.dart';
 import 'package:insightme/Statistics/Widgets/statistics.dart';
+import 'package:insightme/Visualize/attribute_selection.dart';
+import 'package:insightme/Visualize/change_notifier.dart';
 import 'package:provider/provider.dart';
 
-import './../globals.dart' as globals;
+import 'globals.dart' as globals;
 
 class OptimizeRoute extends StatefulWidget {
   @override

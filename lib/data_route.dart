@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 
-import '../globals.dart' as globals;
-import '../navigation_helper.dart';
+import 'globals.dart' as globals;
+import 'navigation_helper.dart';
 
 class DataRoute extends StatelessWidget {
   @override
