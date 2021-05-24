@@ -113,8 +113,8 @@ class EditEntryState extends State<EditEntry> {
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              child: FlatButton(
-                onPressed: () {
+              child:           TextButton(
+              onPressed: () {
                   DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
                       minTime: DateTime(2000, 1, 1),

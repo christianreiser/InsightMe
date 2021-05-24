@@ -71,7 +71,7 @@ class _OnboardingRouteState extends State<OnboardingRoute> {
                       SizedBox(
                         width: 10,
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           NavigationHelper().navigateToFutureDesign(context);
                           setHideWelcomeToTrue(); // set flag to hide Welcome screen from now on

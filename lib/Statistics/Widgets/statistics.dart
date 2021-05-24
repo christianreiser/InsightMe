@@ -43,10 +43,9 @@ Widget statistics(context, _correlationCoefficient, _pValue) {
         Row(children: [
           _correlationBar(_correlationCoefficient),
           Text(' correlation ', textScaleFactor: 1.3),
-          FlatButton(
+          TextButton(
             /* info note for correlation coefficient */
             // to reduce height of correlation info button
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             child: Icon(Icons.info, color: Colors.grey),
             onPressed: () {
               debugPrint('info pressed');
@@ -61,10 +60,9 @@ Widget statistics(context, _correlationCoefficient, _pValue) {
         Row(children: [
           _confidenceStars(_pValue),
           Text(' confidence', textScaleFactor: 1.3),
-          FlatButton(
+          TextButton(
             /* info note for p-Value */
             // to reduce height of correlation info button
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             child: Icon(Icons.info, color: Colors.grey),
             onPressed: () {
               debugPrint('info pressed');

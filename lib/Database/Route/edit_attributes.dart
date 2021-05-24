@@ -191,10 +191,9 @@ class EditAttributeState extends State<EditAttribute> {
           activeColor: Colors.green,
         ),
         Text('Additive'),
-        FlatButton(
+        TextButton(
           /* info note for additive/average */
           // to reduce height of relationship info? button
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           child: Icon(Icons.info, color: Colors.grey),
           onPressed: () {
             debugPrint('info pressed');
@@ -220,7 +219,7 @@ class EditAttributeState extends State<EditAttribute> {
         'The sum which would be 10 does not make sense.';
     AlertDialog alertDialog = AlertDialog(
       actions: [
-        FlatButton(
+        TextButton(
           child: Text('Got it'),
           onPressed: () {
             Navigator.of(context).pop();
@@ -410,7 +409,7 @@ class EditAttributeState extends State<EditAttribute> {
   void _showAlertDialogWithDelete(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       actions: [
-        FlatButton(
+        TextButton(
           child: Row(
             children: [Icon(Icons.arrow_back_ios), Text('Back')],
           ),
@@ -418,7 +417,7 @@ class EditAttributeState extends State<EditAttribute> {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        TextButton(
           child: Row(
             children: [Icon(Icons.delete), Text('Yes')],
           ),

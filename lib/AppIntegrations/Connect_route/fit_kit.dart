@@ -237,9 +237,7 @@ class _FitKitGHubState extends State<FitKitGHub> {
       children: [
         Expanded(
           // ignore: deprecated_member_use
-          child: FlatButton(
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white,
+          child: TextButton(
             onPressed: () => read(),
             child: Text('Read'),
           ),
@@ -247,9 +245,7 @@ class _FitKitGHubState extends State<FitKitGHub> {
         Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
         Expanded(
           // ignore: deprecated_member_use
-          child: FlatButton(
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white,
+          child: TextButton(
             onPressed: () => revokePermissions(),
             child: Text('Revoke permissions'),
           ),
