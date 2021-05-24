@@ -49,7 +49,7 @@ Widget statistics(context, _correlationCoefficient, _pValue) {
             child: Icon(Icons.info, color: Colors.grey),
             onPressed: () {
               debugPrint('info pressed');
-              Scaffold.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
                     'Pearson correlation coefficient = $_correlationCoefficient.'
                         ' Bar shows the absolute value.'),
@@ -66,7 +66,7 @@ Widget statistics(context, _correlationCoefficient, _pValue) {
             child: Icon(Icons.info, color: Colors.grey),
             onPressed: () {
               debugPrint('info pressed');
-              Scaffold.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text('p-Value = $_pValue.'),
               ));
             },

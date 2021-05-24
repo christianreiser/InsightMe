@@ -71,7 +71,7 @@ class EditEntryState extends State<EditEntry> {
               controller: valueController,
               style: textStyle,
               validator: _validateValue,
-              autovalidate: true,
+              autovalidateMode: AutovalidateMode.always,
               onChanged: (value) {
                 debugPrint('Something changed in Value Text Field');
                 debugPrint('_validateValue: $_validateValue');
@@ -308,7 +308,7 @@ class EditEntryState extends State<EditEntry> {
 
   // TODO idk why it is not working
   void _showSnackBar(String message, scaffoldContext) {
-    Scaffold.of(scaffoldContext).showSnackBar(
+    ScaffoldMessenger.of(scaffoldContext).showSnackBar(
       SnackBar(
         content: Text(message),
       ),

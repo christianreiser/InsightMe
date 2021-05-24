@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'dart:async';
-import 'attribute.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_migration/sqflite_migration.dart';
+
+import 'attribute.dart';
 
 class DatabaseHelperAttribute {
   static DatabaseHelperAttribute
@@ -79,7 +81,7 @@ class DatabaseHelperAttribute {
     return await openDatabaseWithMigration(path, config);
   }
 
-  /*creating the table*/
+  /*creating the table*/ /// todo needed?
   void _createDb(Database db, int newVersion) async {
     await db.execute(
         'CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -143,7 +145,7 @@ class DatabaseHelperAttribute {
     int countAttribute =
         attributeMapList.length; // Count the number of map entries in db table
 
-    List<Attribute> attributeList = List<Attribute>();
+    List<Attribute> attributeList = [];
     // For loop to create a 'attribute List' from a 'Map List'
     for (int i = 0; i < countAttribute; i++) {
       debugPrint('${attributeMapList[i]}');

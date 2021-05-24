@@ -200,20 +200,20 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.view_list),
-          title: Text('Home'),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.timeline),
-          title: Text('Data'),
+          label: 'Data',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.widgets),
-          title: Text('Optimize'),
+          label: 'Optimize',
         ),
 
 //          BottomNavigationBarItem(
 //            icon: Icon(Icons.arrow_downward),
-//            title: Text('Onboarding'),
+//            label: 'Onboarding',
 //          ),
       ],
       currentIndex: _selectedIndex,
@@ -271,7 +271,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 
         setState(() {
           debugPrint('result $result');
-          Choice _selection = result; // check if needed
+          Choice _selection = result; // Todo check if needed
         });
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[

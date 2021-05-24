@@ -169,7 +169,7 @@ class DatabaseHelperEntry {
     int countEntry =
         entryMapList.length; // Count the number of map entries in db table
 
-    List<Entry> entryList = List<Entry>();
+    List<Entry> entryList = [];
     // For loop to create a 'entry List' from a 'Map List'
     for (int i = 0; i < countEntry; i++) {
       entryList.add(Entry.fromMapObject(entryMapList[i]));
@@ -185,7 +185,7 @@ class DatabaseHelperEntry {
     int countEntryFiltered = filteredEntryMapList
         .length; // Count the number of map entries in db table
 
-    List<Entry> filteredEntryList = List<Entry>();
+    List<Entry> filteredEntryList = [];
     // For loop to create a 'entry List' from a 'Map List'
     for (int i = 0; i < countEntryFiltered; i++) {
       filteredEntryList.add(Entry.fromMapObject(filteredEntryMapList[i]));

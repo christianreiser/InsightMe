@@ -60,8 +60,7 @@ class NavigationHelper {
   // navigation for editing entry
   void navigateToEditAttribute(
       Attribute attribute, String title, context) async {
-    bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditAttribute(attribute, title);
     }));
   }
@@ -69,7 +68,6 @@ class NavigationHelper {
   // navigation for editing entry
   void navigateToFutureDesign(
       context) async {
-    bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ScaffoldRouteDesign();
     }));

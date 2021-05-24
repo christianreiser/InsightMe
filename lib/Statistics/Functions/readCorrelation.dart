@@ -71,7 +71,7 @@ listArgExtreme(numList) {
   //final vector = Vector.fromList(numList);
   final maxValue = numList.reduce((curr, next) => curr > next ? curr : next);
   final minValue = numList.reduce((curr, next) => curr < next ? curr : next);
-  print('minValue ${minValue}');
+  print('minValue $minValue');
   double extreme;
   if (maxValue >= -minValue) {
     extreme = maxValue;
