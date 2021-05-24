@@ -210,10 +210,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
           icon: Icon(Icons.widgets),
           title: Text('Optimize'),
         ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.local_hospital),
-//            title: Text('COVID-19'),
-//          ),
+
 //          BottomNavigationBarItem(
 //            icon: Icon(Icons.arrow_downward),
 //            title: Text('Onboarding'),
@@ -232,7 +229,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     HomeRoute(),
     DataRoute(),
     OptimizeRoute(),
-    //Covid19(), //OnboardingRoute(),
+    //OnboardingRoute(),
     OnboardingRoute(),
   ];
 

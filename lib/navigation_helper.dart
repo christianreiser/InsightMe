@@ -66,13 +66,6 @@ class NavigationHelper {
     }));
   }
 
-//  // navigation for editing entry
-//  void navigateToCovidStayHealthy(context) async {
-//    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-//      return StayHealthy();
-//    }));
-//  }
-
   // navigation for editing entry
   void navigateToFutureDesign(
       context) async {
