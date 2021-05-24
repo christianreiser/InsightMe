@@ -3,15 +3,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../navigation_helper.dart';
 
-class IntroRoute extends StatefulWidget {
-  IntroRoute({Key key, this.title}) : super(key: key);
+class OnboardingRoute extends StatefulWidget {
+  OnboardingRoute({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _IntroRouteState createState() => _IntroRouteState();
+  _OnboardingRouteState createState() => _OnboardingRouteState();
 }
 
-class _IntroRouteState extends State<IntroRoute> {
+class _OnboardingRouteState extends State<OnboardingRoute> {
   @override
   Widget build(BuildContext context) {
     //createExampleAttributes();
@@ -79,7 +79,7 @@ class _IntroRouteState extends State<IntroRoute> {
                           setHideWelcomeToTrue(); // set flag to hide Welcome screen from now on
                         },
                         child: Row(
-                          children: [Text('Skip Intro')],
+                          children: [Text('Skip Onboarding')],
                         ),
                       ),
                     ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/AppIntegrations/overview_route.dart';
-import 'package:insightme/Intro/first.dart';
+import 'package:insightme/Onboarding/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Import/import_from_json_route.dart';
@@ -34,7 +34,7 @@ class ScaffoldRouteDesign extends StatefulWidget {
 class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   @override
   Widget build(BuildContext context) {
-    return standardScaffold(); //welcomeOrStandardScaffold(); // todo intro back in
+    return standardScaffold(); //welcomeOrStandardScaffold(); // todo Onboarding back in
   }
 
   static const Color iconColor = Colors.black87;
@@ -65,9 +65,9 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             if (!snapshot.hasError) {
               //@ToDo("Return a welcome screen")
               return snapshot.data.getBool("hideWelcome") == null
-                  ? IntroRoute()
+                  ? OnboardingRoute()
                   : snapshot.data.getBool("hideWelcome") == false
-                      ? IntroRoute()
+                      ? OnboardingRoute()
                       : standardScaffold();
             } else {
               return Text('error: ${snapshot.error}');
@@ -216,7 +216,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 //          ),
 //          BottomNavigationBarItem(
 //            icon: Icon(Icons.arrow_downward),
-//            title: Text('Intro'),
+//            title: Text('Onboarding'),
 //          ),
       ],
       currentIndex: _selectedIndex,
@@ -232,8 +232,8 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     HomeRoute(),
     DataRoute(),
     OptimizeRoute(),
-    //Covid19(), //IntroRoute(),
-    IntroRoute(),
+    //Covid19(), //OnboardingRoute(),
+    OnboardingRoute(),
   ];
 
   void _onItemTapped(int index) {
