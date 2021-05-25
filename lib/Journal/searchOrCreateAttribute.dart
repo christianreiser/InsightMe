@@ -375,7 +375,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     * returns:
     * searchResults, and bool indicators if userInput, match, or exactMatch
     */
-    List _searchResult = [];
+    List<Attribute> _searchResult = [];
 
     bool userInput = _attributeInputController.text.isNotEmpty;
     bool match = false;
