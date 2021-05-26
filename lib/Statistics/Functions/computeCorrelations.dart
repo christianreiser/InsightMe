@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_charts/flutter_charts.dart';
+import 'package:insightme/Core/functions/misc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starfruit/starfruit.dart';
@@ -113,28 +113,7 @@ class ComputeCorrelations {
     return rowForEachAttribute;
   }
 
-  List<List<dynamic>> transposeChr(List<List<dynamic>> colsInRows) {
-    int nRows = colsInRows.length;
-    if (colsInRows.length == 0) return colsInRows;
 
-    int nCols = colsInRows[0].length;
-    if (nCols == 0) throw new StateError("Degenerate matrix");
-
-    // Init the transpose to make sure the size is right
-    List<List<dynamic>> rowsInCols = new List.filled(nCols, []);
-    for (int col = 0; col < nCols; col++) {
-      rowsInCols[col] =
-          new List.filled(nRows, new StackableValuePoint.initial());
-    }
-
-    // Transpose
-    for (int row = 0; row < nRows; row++) {
-      for (int col = 0; col < nCols; col++) {
-        rowsInCols[col][row] = colsInRows[row][col];
-      }
-    }
-    return rowsInCols;
-  }
 
   Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
     /// get xYStats which are needed to compute correlations

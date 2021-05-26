@@ -4,15 +4,13 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/flutter_charts.dart' as fluCa;
+import 'package:insightme/Core/functions/misc.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   var correlationMatrix = await readCorrelationMatrix();
-
   int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
-  int attributeIndex2 =
-      fluCa.transpose(correlationMatrix)[0].indexOf(attribute2);
+  int attributeIndex2 = transposeChr(correlationMatrix)[0].indexOf(attribute2);
   return correlationMatrix[attributeIndex1][attributeIndex2];
 }
 
@@ -66,7 +64,6 @@ Future<List<List>> readCorrelationMatrix() async {
 // }
 
 listArgExtreme(numList) {
-
   //final vector = Vector.fromList(numList);
   final maxValue = numList.reduce((curr, next) => curr > next ? curr : next);
   final minValue = numList.reduce((curr, next) => curr < next ? curr : next);
@@ -85,14 +82,14 @@ listArgExtreme(numList) {
   print('numList.runtimeType ${numList.runtimeType}');
 
   //List<dynamic> numListT = [0.0, 0.01, 0.02];
-  final int argExtreme = numList.indexWhere(
-      (element) => element == extreme);
+  final int argExtreme = numList.indexWhere((element) => element == extreme);
 
   debugPrint('argExtreme $argExtreme');
   return argExtreme;
 }
 
-Future<String> sortedAttributeList(selectedAttribute1, selectedAttribute2) async {
+Future<String> sortedAttributeList(
+    selectedAttribute1, selectedAttribute2) async {
   //todo refactoring
 
   // readCorrelationMatrix
@@ -122,11 +119,10 @@ Future<String> sortedAttributeList(selectedAttribute1, selectedAttribute2) async
     print(
         'correlationCoefficientsOfOneAttribute $correlationCoefficientsOfOneAttribute');
 
-    int argExtreme =
-        listArgExtreme(correlationCoefficientsOfOneAttribute);
+    int argExtreme = listArgExtreme(correlationCoefficientsOfOneAttribute);
     print('argExtreme: $argExtreme');
 
-    nextSttributeName = labels[argExtreme+1];
+    nextSttributeName = labels[argExtreme + 1];
     print(nextSttributeName);
   }
   //
