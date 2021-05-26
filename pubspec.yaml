@@ -37,6 +37,7 @@ dependencies:
   json_serializable: ^4.1.2
   json_annotation: ^4.0.1
   built_value: ^8.0.6
+  scidart: ^0.0.2-dev.4
 
   # plugins for google sign in based on firebase auth
   permission_handler: #^5.0.1+1 # NOTE: removed versioning due to conflict with firebase auth
@@ -60,6 +61,8 @@ dependencies:
   flutter_datetime_picker:
     git: # workaround https://github.com/Realank/flutter_datetime_picker/issues/197#issuecomment-725831759
       url: https://github.com/espresso3389/flutter_datetime_picker
+
+
 
 dev_dependencies:
   flutter_launcher_icons:

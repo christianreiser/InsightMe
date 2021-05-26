@@ -29,12 +29,12 @@ class ComputeCorrelations {
     final int numLabels = labels.length;
     debugPrint('numLabels $numLabels');
 
-    final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
+    final rowForEachAttribute = getRowForEachAttribute(rowForEachDay, numDays);
 
     /// ini correlation matrix
     /// todo try List<List<double>> instead of var
     var correlationMatrix = List.generate(
-        numLabels + 1, (i) => List.filled(numLabels + 1, null),
+        numLabels + 1, (i) => List<dynamic>.filled(numLabels + 1, null),
         growable: false);
 
     /// ini correlationCoefficient
@@ -43,6 +43,7 @@ class ComputeCorrelations {
     /// iterate through rows. 1 to skip date
     for (int row = 1; row < numLabels + 1; row++) {
       /// write labels in first column in correlationMatrix
+      debugPrint('labels: $labels');
       correlationMatrix[row][0] = labels[row - 1];
 
       /// iterate through columns. 1 to skip date
@@ -101,14 +102,38 @@ class ComputeCorrelations {
     return labels;
   }
 
-  List<dynamic> getRowForEachAttribute(rowForEachDay) {
+  List<dynamic> getRowForEachAttribute(rowForEachDay, numDays) {
     /// remove dates from values
-    var rowForEachAttribute = List<List<dynamic>>.from(
-        transpose(rowForEachDay)); // make list variable length
-    rowForEachAttribute.removeAt(0); // remove dates
-//  List<List<num>> rowForEachAttributeNum = rowForEachAttribute.cast<List<num>>();
-//debugPrint('rowForEachAttribute $rowForEachAttribute');
+    /// 1. remove dates
+    /// 2. transpose
+    for (int day = 0; day < numDays; day++) {
+      rowForEachDay[day].removeAt(0);
+    }
+    var rowForEachAttribute = transposeChr(rowForEachDay);
     return rowForEachAttribute;
+  }
+
+  List<List<dynamic>> transposeChr(List<List<dynamic>> colsInRows) {
+    int nRows = colsInRows.length;
+    if (colsInRows.length == 0) return colsInRows;
+
+    int nCols = colsInRows[0].length;
+    if (nCols == 0) throw new StateError("Degenerate matrix");
+
+    // Init the transpose to make sure the size is right
+    List<List<dynamic>> rowsInCols = new List.filled(nCols, []);
+    for (int col = 0; col < nCols; col++) {
+      rowsInCols[col] =
+          new List.filled(nRows, new StackableValuePoint.initial());
+    }
+
+    // Transpose
+    for (int row = 0; row < nRows; row++) {
+      for (int col = 0; col < nCols; col++) {
+        rowsInCols[col][row] = colsInRows[row][col];
+      }
+    }
+    return rowsInCols;
   }
 
   Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
@@ -128,7 +153,12 @@ class ComputeCorrelations {
     for (int day = 0; day < numDays; day++) {
       key = (rowForEachAttribute[row - 1][day]).toDouble();
       //debugPrint('rowForEachAttribute[column - 1][day]: ${rowForEachAttribute[column - 1][day]}');
-      value = (rowForEachAttribute[column - 1][day]).toDouble();
+      //debugPrint('rowForEachAttribute: ${rowForEachAttribute}');
+
+      // convert to doubles, but "null" strings can't
+      if (rowForEachAttribute[column - 1][day].runtimeType != String) {
+        value = (rowForEachAttribute[column - 1][day]).toDouble();
+      }
       // debugPrint('day: $day');
       // debugPrint('key $key');
       // debugPrint('value $value');
@@ -179,8 +209,7 @@ class ComputeCorrelations {
       /// round if necessary // todo round if too many decimals and hard coded
       //if (correlation != 0 && correlation != 1 && correlation != -1) {
       try {
-        correlationCoefficient =
-            roundDouble(correlationCoefficient, 2);
+        correlationCoefficient = roundDouble(correlationCoefficient, 2);
       } catch (e) {
         //debugPrint('correlation= $correlationCoefficient was not rounded');
       }
@@ -194,6 +223,8 @@ class ComputeCorrelations {
 
   fillCorrelationCoefficientMatrix(
       correlation, correlationMatrix, row, column) {
+    //debugPrint('correlationMatrix: $correlationMatrix');
+    //debugPrint('correlation: $correlation');
     correlationMatrix[row][column] = correlation;
     correlationMatrix[column][row] = correlation;
     return correlationMatrix;
@@ -201,7 +232,7 @@ class ComputeCorrelations {
 
   void writeCorrelationsToFile(correlationMatrix, directory) {
     /// save correlations
-    debugPrint('correlationMatrix: $correlationMatrix');
+    //debugPrint('correlationMatrix: $correlationMatrix');
 
     final pathOfTheFileToWrite = directory.path + "/correlation_matrix.csv";
 //  debugPrint('directoryTarget $directoryTarget');
@@ -215,7 +246,7 @@ class ComputeCorrelations {
     debugPrint('correlation_matrix.csv written');
   }
 
-  double roundDouble(double value, int places){
+  double roundDouble(double value, int places) {
     /*
     * round to double
     * */

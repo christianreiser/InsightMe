@@ -5,7 +5,6 @@ import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/flutter_charts.dart' as fluCa;
-import 'package:flutter_charts/flutter_charts.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
@@ -56,15 +55,15 @@ Future<List<List>> readCorrelationMatrix() async {
   return correlationMatrix;
 }
 
-removeFirstEntryOfEachRow(matrix) {
-  /// 1. transpose
-  /// 2. remove
-  /// 3. transpose back
-  // transpose to make remove label column work
-  List<List<dynamic>> matrixT = List<List<dynamic>>.from(transpose(matrix));
-  matrixT.removeAt(0); // remove label column
-  return List<List<dynamic>>.from(transpose(matrixT)); // transpose back;
-}
+// removeFirstEntryOfEachRow(matrix) {
+//   /// 1. transpose
+//   /// 2. remove
+//   /// 3. transpose back
+//   // transpose to make remove label column work
+//   List<List<dynamic>> matrixT = List<List<dynamic>>.from(transpose(matrix));
+//   matrixT.removeAt(0); // remove label column
+//   return List<List<dynamic>>.from(transpose(matrixT)); // transpose back;
+// }
 
 listArgExtreme(numList) {
 
