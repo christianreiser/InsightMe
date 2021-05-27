@@ -113,8 +113,8 @@ class EditEntryState extends State<EditEntry> {
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              child:           TextButton(
-              onPressed: () {
+              child: TextButton(
+                onPressed: () {
                   DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
                       minTime: DateTime(2000, 1, 1),
@@ -152,7 +152,8 @@ class EditEntryState extends State<EditEntry> {
                   ),
                   onPressed: () {
                     setState(() {
-                      debugPrint("Save button clicked. _validValue= $_validValue");
+                      debugPrint(
+                          "Save button clicked. _validValue= $_validValue");
                       _save(scaffoldContext);
                     });
                   },
@@ -218,7 +219,7 @@ class EditEntryState extends State<EditEntry> {
     }
     // This is just a regular expression for email addresses
     //final String p = "[0-9\.]{1,256}";
-    // TODO RegExp input is all that's forbidden, better to input allowed characters: "[0-9\.]{1,256}"
+    // TODO minor: RegExp input is all that's forbidden, better to input allowed characters: "[0-9\.]{1,256}"
     final RegExp regExp = RegExp(
         r'[üäöÜÄÖqwertyuiopasdfghjklzxcvbnm¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
     Iterable iterableRegExp = regExp.allMatches(valueController);
@@ -254,7 +255,8 @@ class EditEntryState extends State<EditEntry> {
   // Save data to database
 
   void _save(scaffoldContext) async {
-    if (_validValue) { // don't save if character not allowed
+    if (_validValue) {
+      // don't save if character not allowed
       int result;
 
       // NAVIGATE
@@ -269,7 +271,6 @@ class EditEntryState extends State<EditEntry> {
       // SUCCESS FAILURE STATUS DIALOG
       if (result != 0) {
         // Success
-        // TODO idk why it is not working. S.th. with context
         _showSnackBar('Entry Saved Successfully', scaffoldContext);
       } else {
         // Failure
@@ -306,7 +307,6 @@ class EditEntryState extends State<EditEntry> {
     showDialog(context: context, builder: (_) => alertDialog);
   }
 
-  // TODO idk why it is not working
   void _showSnackBar(String message, scaffoldContext) {
     ScaffoldMessenger.of(scaffoldContext).showSnackBar(
       SnackBar(

@@ -39,7 +39,7 @@ class EditAttributeState extends State<EditAttribute> {
   bool aggregationIsAdditive;
 
   EditAttributeState(this.attribute,
-      this.oldAttributeTitle); //todo oldAttributeTitle not a state
+      this.oldAttributeTitle); //todo performance: oldAttributeTitle not a state
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class EditAttributeState extends State<EditAttribute> {
             ),
 
             // Aggregation switch
-            //aggregationSwitch(), // todo back in
+            //aggregationSwitch(), // todo design: back in
 
             Padding(
               // Note

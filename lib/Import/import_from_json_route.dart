@@ -1,9 +1,3 @@
-// todo when import and already exists, then update (see below)
-//  if (entry with same timestamp AND label exists) {
-//    if (oldValue != new value) {update value}
-//    else {skip}
-//  }
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -75,12 +69,16 @@ class _ImportState extends State<Import> {
     ///  imports data from the picked file.
     /// adds attributes if new
     /// todo importing same data twice only updates and does not add again
-    // todo new beginning
+    // todo important: when import and already exists, then update (see below)
+    //  if (entry with same timestamp AND label exists) {
+    //    if (oldValue != new value) {update value}
+    //    else {skip}
+    //  }
 
     FilePickerResult result = await FilePicker.platform.pickFiles();
 
     File file = File(result.files.single.path);
-    //todo handle if user does not pick file
+    //todo userXP: handle if user does not pick file
     
     debugPrint('file picked');
 
@@ -155,7 +153,7 @@ class _ImportState extends State<Import> {
           debugPrint('Error unknown: $_cellContent');
         }
 
-        // TODO feedback if import was successful
+        // TODO userXP: feedback if import was successful
       }
     }, onDone: () {
       print('File is now closed!');
@@ -222,12 +220,12 @@ class _ImportState extends State<Import> {
       //debugPrint('create new attribute: $_attribute');
 
       // add to faster searchable list
-      // todo ask user if additive or average
+      // todo important: ask user if additive or average
       _dBAttributeList.add(Attribute(
           _attribute, 'imported', defaultLabelColor, defaultAggregation));
 
       // save to db
-      soca.SearchOrCreateAttributeState() // todo await and result feedback
+      soca.SearchOrCreateAttributeState() // todo important performance: await and result feedback
           .saveAttribute(Attribute(
               _attribute, 'imported', defaultLabelColor, defaultAggregation));
 

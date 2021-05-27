@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'attribute.dart';
 import 'database_helper_attribute.dart';
@@ -29,6 +28,7 @@ class WriteDailySummariesCSV {
     // add Attribute Titles To Daily Summaries
     List<List<dynamic>> dailySummariesList = []; // list of daily summaries
     dailySummariesList.add(attributeTitleList);
+    debugPrint('test4');
 
     // add entries to daily summaries list
     dailySummariesList = await addEntriesToDailySummaries(
@@ -47,8 +47,8 @@ class WriteDailySummariesCSV {
     * for that: create a list of the attribute titles and add it
     * Also: gets
     */
-    List<String> attributeTitleList =
-        List.filled(attributeListLength + 1, null); // length = #attributes + 1 for date
+    List<String> attributeTitleList = List.filled(
+        attributeListLength + 1, null); // length = #attributes + 1 for date
     attributeTitleList[0] = 'date';
     for (int attributeCount = 0;
         attributeCount < attributeListLength;
@@ -75,13 +75,10 @@ class WriteDailySummariesCSV {
     // ini first row to add: start with row of nulls
     List<dynamic> rowToAdd = List.filled(attributeListLength + 1, null);
 
-
     rowToAdd[0] = entryList[0].date.substring(0, 10); // add newest date as date
     debugPrint('date: ${entryList[0].date}');
     int entryListLength = entryList.length;
-
-    // save NumDays In Shared Preferences. used in correlations
-    saveNumDaysInSharedPreferences(entryList, entryListLength);
+    debugPrint('test6');
 
     /* fill rowToAdd with data and add to dailySummariesList */
     debugPrint('starting creating daily summaries csv');
@@ -118,26 +115,8 @@ class WriteDailySummariesCSV {
     return dailySummariesList;
   }
 
-  void saveNumDaysInSharedPreferences(entryList, entryListLength) async {
-    // get number of days in db
-    // todo use this number for fixes list size for faster computation
-    int numDays = DateTime.parse(entryList[0].date.substring(0, 10))
-            .difference(DateTime.parse(
-                entryList[entryListLength - 1].date.substring(0, 10)))
-            .inDays +
-        1; // todo: if one day has no data at all, this breaks
-
-    /* save numDays */
-    // todo: numDays used in correlations but should be possible without for faster performance
-    final prefs = await SharedPreferences.getInstance();
-    // set value
-    prefs.setInt('numDays', numDays);
-  }
-
   Future<String> saveDailySummariesToFile(dailySummariesList) async {
-    /*
-    * save dailySummariesList to file and returns csv
-    * */
+    /// save dailySummariesList to file and returns csv
     final directory = await getApplicationDocumentsDirectory();
     final pathOfTheFileToWrite = directory.path + "/daily_summaries.csv";
     //debugPrint('targetPath $pathOfTheFileToWrite');

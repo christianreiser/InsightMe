@@ -17,15 +17,19 @@ class ComputeCorrelations {
     /// computes correlations
     /// writes correlations matrix as csv
 
-    int numDays = await getNumDays();
-
     final directory = await getApplicationDocumentsDirectory();
 
     /// get Daily Summaries In Row For Each Day Format. calls WriteDailySummariesCSV
+    debugPrint('test1');
     final rowForEachDay =
         await getDailySummariesInRowForEachDayFormat(directory);
+    debugPrint('test2');
 
     final List<dynamic> labels = await getLabels(rowForEachDay);
+
+    // getNumDays has to be after getDailySummariesInRowForEachDayFormat because there it is set
+    int numDays = rowForEachDay.length;
+
     final int numLabels = labels.length;
     debugPrint('numLabels $numLabels');
 
@@ -74,7 +78,7 @@ class ComputeCorrelations {
     /// get number of days
     final prefs = await SharedPreferences.getInstance();
     int numDays = prefs.getInt('numDays') ?? null;
-    debugPrint('numDays $numDays');
+    debugPrint('got numDays $numDays');
     return numDays;
   }
 
@@ -82,6 +86,7 @@ class ComputeCorrelations {
       directory) async {
     /// call createDailySummariesCSVFromDB
     await WriteDailySummariesCSV().writeDailySummariesCSV();
+    debugPrint('test3');
 
     /// read daily summaries csv and transform
     final input = new File(directory.path + "/daily_summaries.csv").openRead();
@@ -106,14 +111,14 @@ class ComputeCorrelations {
     /// remove dates from values
     /// 1. remove dates
     /// 2. transpose
-    for (int day = 0; day < numDays; day++) {
+    debugPrint('rowForEachDay: $rowForEachDay');
+    for (int day = 0; day < rowForEachDay.length; day++) {
+      debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
       rowForEachDay[day].removeAt(0);
     }
     var rowForEachAttribute = transposeChr(rowForEachDay);
     return rowForEachAttribute;
   }
-
-
 
   Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
     /// get xYStats which are needed to compute correlations
@@ -130,11 +135,13 @@ class ComputeCorrelations {
     List<double> keys = [];
 
     for (int day = 0; day < numDays; day++) {
-      key = (rowForEachAttribute[row - 1][day]).toDouble();
+      if (rowForEachAttribute[row - 1][day].runtimeType != String) {
+        key = (rowForEachAttribute[row - 1][day]).toDouble();
+      }
       //debugPrint('rowForEachAttribute[column - 1][day]: ${rowForEachAttribute[column - 1][day]}');
       //debugPrint('rowForEachAttribute: ${rowForEachAttribute}');
 
-      // convert to doubles, but "null" strings can't
+      // convert to doubles, skip 'null' Strings
       if (rowForEachAttribute[column - 1][day].runtimeType != String) {
         value = (rowForEachAttribute[column - 1][day]).toDouble();
       }

@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-// TODO adapt code to communicate state with journal and correlate
-
 // ChangeNotifier adds listening capabilities
 class JournalChangeNotifier with ChangeNotifier {
   String _selectedAttribute1;

@@ -13,10 +13,10 @@ class DatabaseHelperEntry {
   static final String entryTable = 'entry_table';
   static final String colId = 'id';
   static final String colTitle =
-      'title'; // TODO rename to attribute also for attribute_helper
+      'title'; // TODO minor: rename to attribute also for attribute_helper
   static final String colValue = 'value';
   static final String colComment = 'comment';
-  static final String colDate = 'date'; // TODO rename to dateTime
+  static final String colDate = 'date'; // TODO minor: rename to dateTime
 
   DatabaseHelperEntry._createInstance(); // Named constructor to create instance of DatabaseHelperEntry
 
@@ -64,9 +64,10 @@ class DatabaseHelperEntry {
 
   /*creating the table*/
   void _createDb(Database db, int newVersion) async {
+    // TODO performance: change the type of $colValue to REAL which means double
     await db.execute('CREATE TABLE $entryTable('
         '$colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colValue TEXT, '
-        '$colComment TEXT, $colDate TEXT)'); // TODO $colValue REAL for double
+        '$colComment TEXT, $colDate TEXT)');
   }
 
   // Fetch Operation: Get all entry objects from database

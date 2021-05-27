@@ -32,7 +32,7 @@ class _OnboardingRouteState extends State<OnboardingRoute> {
                 children: <Widget>[
                   Text(
                     'Hi there,',
-                    // TODO GoogleFonts.handlee instead of TextStyle leads to Error:
+                    //  GoogleFonts.handlee instead of TextStyle leads to Error:
                     //  google_fonts was unable to load font Handlee-Regular because
                     //  the following exception occurred:
                     //  I/flutter (10551): Exception: Failed to load font with url:

@@ -81,7 +81,7 @@ class DatabaseHelperAttribute {
     return await openDatabaseWithMigration(path, config);
   }
 
-  /*creating the table*/ /// todo needed?
+  /*creating the table*/ /// todo important: needed when starting app the first time?
   void _createDb(Database db, int newVersion) async {
     await db.execute(
         'CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'

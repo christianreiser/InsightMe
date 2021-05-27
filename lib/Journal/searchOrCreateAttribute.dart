@@ -183,7 +183,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   defaultLabelColor,
                   defaultAggregation),
             );
-            setState(() {}); // todo not here
+            //setState(() {});
           },
         ),
       ),
@@ -223,13 +223,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   Widget _getAttributeListView() {
-    /*
-    * ATTRIBUTE LIST
-    */
+    /// ATTRIBUTE LIST
     return ListView.builder(
       shrinkWrap: true,
-
-      /// todo it's significantly more expensive. why?
       itemCount: _attributesToDisplay.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
@@ -269,7 +265,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 onTap: () {
                   debugPrint("ListTile Tapped");
                   NavigationHelper().navigateToEditAttribute(
-                      // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
                       _attributesToDisplay[position],
                       _attributesToDisplay[position].title,
                       context);
@@ -531,7 +526,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
         // Deletion in Attribute DB
         _resultList.add(
-          await databaseHelperAttribute // todo feedback with: int result =
+          await databaseHelperAttribute
               .deleteAttribute(_attributesToDisplay[position].id),
         );
       }

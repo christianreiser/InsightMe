@@ -10,7 +10,7 @@ class Entry {
 
   int get id => _id;
   String get title => _title;
-  String get value => _value; // TODO change to double?
+  String get value => _value; // TODO Performance: change to double?
   String get comment => _comment;
   String get date => _date;
 
