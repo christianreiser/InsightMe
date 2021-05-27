@@ -1,14 +1,16 @@
+/// everything that's on the optimize route
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 import 'package:insightme/Core/widgets/design.dart';
-import 'package:insightme/FutureDesign/Visualize/attribute_selection.dart';
-import 'package:insightme/FutureDesign/Visualize/change_notifier.dart';
 import 'package:insightme/Statistics/Widgets/statistics.dart';
+import 'package:insightme/Visualize/attribute_selection.dart';
+import 'package:insightme/Visualize/change_notifier.dart';
 import 'package:provider/provider.dart';
 
-import './../globals.dart' as globals;
+import 'Core/widgets/entryHint.dart';
+import 'globals.dart' as globals;
 
 class OptimizeRoute extends StatefulWidget {
   @override
@@ -25,10 +27,10 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     }
 
     return globals.entryListLength == null
-        ? _makeEntryHint()
+        ? entryHint()
         : globals.entryListLength > 0
             ? _attributeSelectionAndChart()
-            : _makeEntryHint(); // type lineChart
+            : entryHint(); // type lineChart
   }
 
   Widget _attributeSelectionAndChart() {
@@ -52,7 +54,6 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                         TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
                   ),
                   Row(
-
                       ///dropdown
                       // start: child as close to the start of the main axis as possible
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -65,43 +66,10 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                       ]),
                 ]),
           ),
-          optimizeNameAndChart(),//'Happiness', 'Resting Heart Rate'
+          optimizeNameAndChart(), //'Happiness', 'Resting Heart Rate'
           //optimizeNameAndChart('Body weight', 'Calories in'),
         ]),
       ),
-    );
-  }
-
-  Column _makeEntryHint() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(5),
-              color: Colors.tealAccent,
-              child: Row(
-                children: [
-                  Text(
-                    'You have no entries to visualize.\n '
-                    'To create new entries tab here ',
-                    textScaleFactor: 1.2,
-                  ),
-                  Icon(Icons.arrow_forward),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: 30,
-            )
-          ],
-        ),
-        SizedBox(
-          height: 27, // height of button
-        )
-      ],
     );
   }
 
@@ -132,7 +100,8 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             ),
 
             /// statistics: correlation and confidence
-            statistics(context, 0.92, 0.09), // todo
+            futureStatistics(
+                schedule.selectedAttribute1, schedule.selectedAttribute2)
           ]),
         ),
         greyLineSeparator(),

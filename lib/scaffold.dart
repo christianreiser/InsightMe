@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/AppIntegrations/overview_route.dart';
-import 'package:insightme/Intro/first.dart';
+import 'package:insightme/Onboarding/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './../Import/import_from_json_route.dart';
-import './../Journal/searchOrCreateAttribute.dart';
-import './../globals.dart' as globals;
-import './../strings.dart' as strings;
-import './data_route.dart';
-import './home_route.dart';
-import './optimize_route.dart';
-import '../Statistics/Functions/computeCorrelations.dart';
+import 'Import/import_from_json_route.dart';
+import 'Journal/searchOrCreateAttribute.dart';
+import 'Statistics/Functions/computeCorrelations.dart';
+import 'data_route.dart';
+import 'globals.dart' as globals;
+import 'optimize_route.dart';
+import 'strings.dart' as strings;
 //import 'package:starflut/starflut.dart';
 
 enum Choice {
@@ -34,7 +33,7 @@ class ScaffoldRouteDesign extends StatefulWidget {
 class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   @override
   Widget build(BuildContext context) {
-    return standardScaffold(); //welcomeOrStandardScaffold(); // todo intro back in
+    return standardScaffold(); //welcomeOrStandardScaffold(); // todo Onboarding back in
   }
 
   static const Color iconColor = Colors.black87;
@@ -65,9 +64,9 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             if (!snapshot.hasError) {
               //@ToDo("Return a welcome screen")
               return snapshot.data.getBool("hideWelcome") == null
-                  ? IntroRoute()
+                  ? OnboardingRoute()
                   : snapshot.data.getBool("hideWelcome") == false
-                      ? IntroRoute()
+                      ? OnboardingRoute()
                       : standardScaffold();
             } else {
               return Text('error: ${snapshot.error}');
@@ -189,34 +188,29 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   }
 
   Widget _bottomNavigationBar() {
-    /*
-    * bottom navigation bar to changes tabs
-    */
+    /// bottom navigation
     return BottomNavigationBar(
       unselectedIconTheme: IconThemeData(color: Colors.grey),
 
       //showUnselectedLabels: true, // TODO fix theme/color
       //unselectedLabelStyle: TextStyle(color: Colors.black),
       items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.view_list),
-          title: Text('Home'),
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.view_list),
+        //   label: 'Home',
+        // ),
         BottomNavigationBarItem(
           icon: Icon(Icons.timeline),
-          title: Text('Data'),
+          label: 'Data',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.widgets),
-          title: Text('Optimize'),
+          label: 'Optimize',
         ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.local_hospital),
-//            title: Text('COVID-19'),
-//          ),
+
 //          BottomNavigationBarItem(
 //            icon: Icon(Icons.arrow_downward),
-//            title: Text('Intro'),
+//            label: 'Onboarding',
 //          ),
       ],
       currentIndex: _selectedIndex,
@@ -229,11 +223,11 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   // bottom navigation bar:
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    HomeRoute(),
+    //HomeRoute(), // TODO feature
     DataRoute(),
     OptimizeRoute(),
-    //Covid19(), //IntroRoute(),
-    IntroRoute(),
+    //OnboardingRoute(),
+    OnboardingRoute(),
   ];
 
   void _onItemTapped(int index) {
@@ -257,13 +251,12 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             MaterialPageRoute(builder: (context) => Import()),
           );
         } else if (result == Choice.appIntegrations) {
-          /// todo AppIntegrations:
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
           );
         } else if (result == Choice.deleteAllData) {
-          // todo deleteAllData
+          //todo deleteAllData
           // DatabaseHelperEntry().deleteDb();
           // DatabaseHelperAttribute().deleteDb();
         } else if (result == Choice.tmpFunction) {
@@ -274,7 +267,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 
         setState(() {
           debugPrint('result $result');
-          Choice _selection = result; // check if needed
+          Choice _selection = result; // Todo check if needed
         });
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
@@ -293,36 +286,36 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             ],
           ),
         ),
-        PopupMenuItem<Choice>(
-          value: Choice.appIntegrations,
-          child: Row(
-            children: [
-              Icon(
-                Icons.exit_to_app,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Other app integrations'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.exportDailySummaries,
-          child: Row(
-            children: [
-              Icon(
-                Icons.file_upload,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Export daily summaries'),
-            ],
-          ),
-        ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.appIntegrations,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.exit_to_app,
+        //         color: iconColor,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('Other app integrations'),
+        //     ],
+        //   ),
+        // ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.exportDailySummaries,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.file_upload,
+        //         color: iconColor,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('Export daily summaries'),
+        //     ],
+        //   ),
+        // ),
         PopupMenuItem<Choice>(
           value: Choice.importFromCSV,
           child: Row(
@@ -338,36 +331,36 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             ],
           ),
         ),
-        PopupMenuItem<Choice>(
-          value: Choice.deleteAllData,
-          child: Row(
-            children: [
-              Icon(
-                Icons.delete_forever,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Delete all data'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.tmpFunction,
-          child: Row(
-            children: [
-              Icon(
-                Icons.directions_run,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('tmpFunction'),
-            ],
-          ),
-        ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.deleteAllData,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.delete_forever,
+        //         color: Colors.red,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('Delete all data'),
+        //     ],
+        //   ),
+        // ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.tmpFunction,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.directions_run,
+        //         color: Colors.red,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('tmpFunction'),
+        //     ],
+        //   ),
+        // ),
       ],
     );
 

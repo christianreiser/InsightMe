@@ -5,8 +5,8 @@ import 'Database/Route/edit_attributes.dart';
 import 'Database/Route/edit_entries.dart';
 import 'Database/attribute.dart';
 import 'Database/entry.dart';
-import 'FutureDesign/scaffold.dart';
 import 'Journal/searchOrCreateAttribute.dart';
+import 'scaffold.dart';
 
 class NavigationHelper {
   // navigation back to journal and refresh to show new entry
@@ -60,23 +60,14 @@ class NavigationHelper {
   // navigation for editing entry
   void navigateToEditAttribute(
       Attribute attribute, String title, context) async {
-    bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return EditAttribute(attribute, title);
     }));
   }
 
-//  // navigation for editing entry
-//  void navigateToCovidStayHealthy(context) async {
-//    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-//      return StayHealthy();
-//    }));
-//  }
-
   // navigation for editing entry
   void navigateToFutureDesign(
       context) async {
-    bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ScaffoldRouteDesign();
     }));

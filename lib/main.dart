@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './strings.dart' as strings;
-import 'FutureDesign/scaffold.dart';
+import 'scaffold.dart';
 
 void main() => runApp(LifeTrackerApp());
 

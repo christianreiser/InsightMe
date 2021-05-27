@@ -1,28 +1,34 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:insightme/Database/attribute.dart';
+import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:provider/provider.dart';
 
-import './change_notifier.dart';
-import '../Database/attribute.dart';
-import '../Database/database_helper_attribute.dart';
+import 'change_notifier.dart';
 
-class DropDown extends StatelessWidget {
-  final bool boolFirst; // indicates if it's the first or second dropdown
+class DropDown extends StatefulWidget {
+  final bool boolFirst;
 
   DropDown(this.boolFirst);
 
-  List<DropdownMenuItem<String>> _dropdownMenuItems; // ini item list
   static DatabaseHelperAttribute databaseHelperAttribute =
       DatabaseHelperAttribute();
 
   @override
+  _DropDownState createState() => _DropDownState();
+}
+
+class _DropDownState extends State<DropDown> {
+  List<DropdownMenuItem<String>> _dropdownMenuItems;
+  @override
   Widget build(BuildContext context) {
-    final changeNotifier = Provider.of<VisualizationChangeNotifier>(
-        context); // send state up the tree // todo _private ?
+    final changeNotifier = Provider.of<OptimizationChangeNotifier>(
+        context); // send state up the tree
     return FutureBuilder(
-      future: _getAttributeList(),
+      future: _getAttributeList(widget.boolFirst),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          if (boolFirst == true) {
+          if (widget.boolFirst == true) {
             // for first dropdown
             return Expanded(
               // needed
@@ -85,22 +91,31 @@ class DropDown extends StatelessWidget {
     );
   }
 
-  // get Attributes from DB into a future list
-  Future<List<String>> _getAttributeList() async {
+  Future<List<String>> _getAttributeList(boolFirst) async {
+    debugPrint('_getAttributeList');
+
     List<Attribute> attributeList =
-        await databaseHelperAttribute.getAttributeList();
-    List<String> itemList = List(attributeList.length);
+        await DropDown.databaseHelperAttribute.getAttributeList();
+    List<String> itemList = List.filled(attributeList.length + 1, null);
+
+    /// +1 for 'all'
+    itemList[0] = 'all';
+
+    /// to correlate with everything
     for (int ele = 0; ele < attributeList.length; ele++) {
-      itemList[ele] = attributeList[ele].title;
+      itemList[ele + 1] = attributeList[ele].title;
+
+      /// +1 for 'all'
+      debugPrint('itemList $itemList');
     }
+    debugPrint('itemList $itemList');
 
     _dropdownMenuItems = buildDropdownMenuItems(itemList);
     return itemList;
   }
 
-  // build Dropdown Menu Items
   List<DropdownMenuItem<String>> buildDropdownMenuItems(List itemList) {
-    List<DropdownMenuItem<String>> items = List();
+    List<DropdownMenuItem<String>> items = [];
     for (String item in itemList) {
       items.add(
         DropdownMenuItem(
