@@ -59,21 +59,23 @@ Widget statistics(context, _correlationCoefficient, _pValue) {
             },
           )
         ]),
-        Row(children: [
-          _confidenceStars(_pValue),
-          Text(' confidence', textScaleFactor: 1.3),
-          TextButton(
-            /* info note for p-Value */
-            // to reduce height of correlation info button
-            child: Icon(Icons.info, color: Colors.grey),
-            onPressed: () {
-              debugPrint('info pressed');
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('p-Value = $_pValue.'),
-              ));
-            },
-          )
-        ]),
+        /// confidence
+        // todo feature: p-value
+        // Row(children: [
+        //   _confidenceStars(_pValue),
+        //   Text(' confidence', textScaleFactor: 1.3),
+        //   TextButton(
+        //     /* info note for p-Value */
+        //     // to reduce height of correlation info button
+        //     child: Icon(Icons.info, color: Colors.grey),
+        //     onPressed: () {
+        //       debugPrint('info pressed');
+        //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //         content: Text('p-Value = $_pValue.'),
+        //       ));
+        //     },
+        //   )
+        // ]),
       ]);
 }
 

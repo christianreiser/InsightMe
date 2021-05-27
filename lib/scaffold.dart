@@ -255,14 +255,14 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             context,
             MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
           );
-        // } else if (result == Choice.deleteAllData) {
-        //   todo deleteAllData
-        //   DatabaseHelperEntry().deleteDb();
-        //   DatabaseHelperAttribute().deleteDb();
-        // } else if (result == Choice.tmpFunction) {
-        //   //tmpFunction();
-        //   // DatabaseHelperEntry().deleteDb();
-        //   // DatabaseHelperAttribute().deleteDb();
+        } else if (result == Choice.deleteAllData) {
+          //todo deleteAllData
+          // DatabaseHelperEntry().deleteDb();
+          // DatabaseHelperAttribute().deleteDb();
+        } else if (result == Choice.tmpFunction) {
+          //tmpFunction();
+          // DatabaseHelperEntry().deleteDb();
+          // DatabaseHelperAttribute().deleteDb();
         }
 
         setState(() {
@@ -286,36 +286,36 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             ],
           ),
         ),
-        PopupMenuItem<Choice>(
-          value: Choice.appIntegrations,
-          child: Row(
-            children: [
-              Icon(
-                Icons.exit_to_app,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Other app integrations'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.exportDailySummaries,
-          child: Row(
-            children: [
-              Icon(
-                Icons.file_upload,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Export daily summaries'),
-            ],
-          ),
-        ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.appIntegrations,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.exit_to_app,
+        //         color: iconColor,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('Other app integrations'),
+        //     ],
+        //   ),
+        // ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.exportDailySummaries,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.file_upload,
+        //         color: iconColor,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('Export daily summaries'),
+        //     ],
+        //   ),
+        // ),
         PopupMenuItem<Choice>(
           value: Choice.importFromCSV,
           child: Row(
@@ -331,36 +331,36 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             ],
           ),
         ),
-        PopupMenuItem<Choice>(
-          value: Choice.deleteAllData,
-          child: Row(
-            children: [
-              Icon(
-                Icons.delete_forever,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Delete all data'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.tmpFunction,
-          child: Row(
-            children: [
-              Icon(
-                Icons.directions_run,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('tmpFunction'),
-            ],
-          ),
-        ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.deleteAllData,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.delete_forever,
+        //         color: Colors.red,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('Delete all data'),
+        //     ],
+        //   ),
+        // ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.tmpFunction,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.directions_run,
+        //         color: Colors.red,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('tmpFunction'),
+        //     ],
+        //   ),
+        // ),
       ],
     );
 
