@@ -9,7 +9,6 @@ import 'Journal/searchOrCreateAttribute.dart';
 import 'Statistics/Functions/computeCorrelations.dart';
 import 'data_route.dart';
 import 'globals.dart' as globals;
-import 'home_route.dart';
 import 'optimize_route.dart';
 import 'strings.dart' as strings;
 //import 'package:starflut/starflut.dart';
@@ -189,19 +188,17 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   }
 
   Widget _bottomNavigationBar() {
-    /*
-    * bottom navigation bar to changes tabs
-    */
+    /// bottom navigation
     return BottomNavigationBar(
       unselectedIconTheme: IconThemeData(color: Colors.grey),
 
       //showUnselectedLabels: true, // TODO fix theme/color
       //unselectedLabelStyle: TextStyle(color: Colors.black),
       items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.view_list),
-          label: 'Home',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.view_list),
+        //   label: 'Home',
+        // ),
         BottomNavigationBarItem(
           icon: Icon(Icons.timeline),
           label: 'Data',
@@ -226,7 +223,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   // bottom navigation bar:
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    HomeRoute(),
+    //HomeRoute(), // TODO feature
     DataRoute(),
     OptimizeRoute(),
     //OnboardingRoute(),
@@ -258,14 +255,14 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             context,
             MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
           );
-        } else if (result == Choice.deleteAllData) {
-          // todo deleteAllData
-          // DatabaseHelperEntry().deleteDb();
-          // DatabaseHelperAttribute().deleteDb();
-        } else if (result == Choice.tmpFunction) {
-          //tmpFunction();
-          // DatabaseHelperEntry().deleteDb();
-          // DatabaseHelperAttribute().deleteDb();
+        // } else if (result == Choice.deleteAllData) {
+        //   todo deleteAllData
+        //   DatabaseHelperEntry().deleteDb();
+        //   DatabaseHelperAttribute().deleteDb();
+        // } else if (result == Choice.tmpFunction) {
+        //   //tmpFunction();
+        //   // DatabaseHelperEntry().deleteDb();
+        //   // DatabaseHelperAttribute().deleteDb();
         }
 
         setState(() {

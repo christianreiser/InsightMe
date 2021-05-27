@@ -61,6 +61,10 @@ class ComputeCorrelations {
               getXYStats(rowForEachAttribute, numDays, row, column);
 
           correlationCoefficient = computeCorrelationCoefficient(xYStats);
+          debugPrint('row: $row; column: $column');
+          debugPrint('xYStats: $xYStats;');
+          debugPrint('correlationCoefficient: $correlationCoefficient;');
+
 
           /// writeCorrelationCoefficients
           correlationMatrix = fillCorrelationCoefficientMatrix(
@@ -191,6 +195,12 @@ class ComputeCorrelations {
     if (xYStats.length > 2) {
       correlationCoefficient = StarStatsXY(xYStats).corCoefficient;
 
+      // catch if correlationCoefficient == NaN(, due indifferent y values?)
+      if (correlationCoefficient.isNaN) {
+        correlationCoefficient = null;
+        debugPrint('correlationCoefficient.isNaN: ${correlationCoefficient.isNaN}');
+      }
+
       /// round if too many decimals
       //if (correlation != 0 && correlation != 1 && correlation != -1) {
       try {
@@ -203,6 +213,7 @@ class ComputeCorrelations {
           'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
       correlationCoefficient = 0;
     }
+    debugPrint('correlationCoefficient: $correlationCoefficient');
     return correlationCoefficient;
   }
 
@@ -222,11 +233,11 @@ class ComputeCorrelations {
     final pathOfTheFileToWrite = directory.path + "/correlation_matrix.csv";
 //  debugPrint('directoryTarget $directoryTarget');
 
-    debugPrint('targetPath $pathOfTheFileToWrite');
+    debugPrint('targetPath: $pathOfTheFileToWrite');
     File file = File(pathOfTheFileToWrite);
-    debugPrint('file $file');
+    debugPrint('file: $file');
     String csv = const ListToCsvConverter().convert(correlationMatrix);
-//  debugPrint('csv $csv');
+    debugPrint('correlation matrix csv: $csv');
     file.writeAsString(csv);
     debugPrint('correlation_matrix.csv written');
   }

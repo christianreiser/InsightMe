@@ -12,16 +12,18 @@ Widget futureStatistics(attributeName1, attributeName2) {
       /// chart data arrived && data found
       /// snapshot is current state of future
       debugPrint('FutureBuilder: _correlationCoefficient: ${snapshot.data}');
+      debugPrint('FutureBuilder: snapshot.data..runtimeType: ${snapshot.data.runtimeType}');
+
       if (snapshot.connectionState == ConnectionState.done &&
-          snapshot.data != null &&
-          snapshot.data != 'NaN') {
+          snapshot.data != null) {
+
         return statistics(
             context, snapshot.data, 0.02); //todo feature: hard coded p-value
       }
 
       /// chart data arrived but no data found
       else if (snapshot.connectionState == ConnectionState.done &&
-          snapshot.data == null) {
+          (snapshot.data == null)) {
         return Text('Correlation Coefficient: -');
 
         /// else: i.e. data didn't arrive
