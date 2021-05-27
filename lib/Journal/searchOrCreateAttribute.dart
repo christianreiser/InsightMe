@@ -225,7 +225,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   Widget _getAttributeListView() {
     /// ATTRIBUTE LIST
     return ListView.builder(
-      //shrinkWrap: true,
+      shrinkWrap: true, // needed to give space for entry hint
       itemCount: _attributesToDisplay.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(

@@ -9,6 +9,7 @@ import 'package:insightme/Visualize/attribute_selection.dart';
 import 'package:insightme/Visualize/change_notifier.dart';
 import 'package:provider/provider.dart';
 
+import 'Core/widgets/entryHint.dart';
 import 'globals.dart' as globals;
 
 class OptimizeRoute extends StatefulWidget {
@@ -26,10 +27,10 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     }
 
     return globals.entryListLength == null
-        ? _makeEntryHint()
+        ? entryHint()
         : globals.entryListLength > 0
             ? _attributeSelectionAndChart()
-            : _makeEntryHint(); // type lineChart
+            : entryHint(); // type lineChart
   }
 
   Widget _attributeSelectionAndChart() {
@@ -73,38 +74,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     );
   }
 
-  Column _makeEntryHint() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(5),
-              color: Colors.tealAccent,
-              child: Row(
-                children: [
-                  Text(
-                    'You have no entries to visualize.\n '
-                    'To create new entries tab here ',
-                    textScaleFactor: 1.2,
-                  ),
-                  Icon(Icons.arrow_forward),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: 30,
-            )
-          ],
-        ),
-        SizedBox(
-          height: 27, // height of button
-        )
-      ],
-    );
-  }
+
 
   Widget optimizeNameAndChart() {
     return Consumer<OptimizationChangeNotifier>(

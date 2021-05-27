@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 
+import 'Core/widgets/entryHint.dart';
 import 'globals.dart' as globals;
 import 'navigation_helper.dart';
 
@@ -11,6 +12,14 @@ class DataRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('globals.attributeList: ${globals.attributeList}');
 
+    return globals.entryListLength == null
+        ? entryHint()
+        : globals.entryListLength > 0
+            ? dataListView()
+            : entryHint(); // type lineChart;
+  }
+
+  Widget dataListView() {
     return ListView.builder(
       itemCount: globals.attributeListLength,
       itemBuilder: (BuildContext context, int position) {
@@ -40,8 +49,8 @@ class DataRoute extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.chevron_right),
                   onPressed: () {
-                    NavigationHelper()
-                        .navigateToJournalRoute(context, attributeName); // refreshes
+                    NavigationHelper().navigateToJournalRoute(
+                        context, attributeName); // refreshes
                   },
                 ),
               ],
