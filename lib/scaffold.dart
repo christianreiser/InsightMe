@@ -254,7 +254,6 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             MaterialPageRoute(builder: (context) => Import()),
           );
         } else if (result == Choice.appIntegrations) {
-          /// todo AppIntegrations:
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),

@@ -185,7 +185,7 @@ class _HomeRouteState extends State<HomeRoute> {
             children: [Icon(Icons.thumb_up), Text(' Show more')],
           ),
           onPressed: () {
-            //todo implement show more functionality
+            //todo feature: implement show more functionality
             Navigator.of(context).pop();
           },
         ),
@@ -200,7 +200,7 @@ class _HomeRouteState extends State<HomeRoute> {
             ],
           ),
           onPressed: () {
-            //todo implement show more functionality
+            //todo feature: implement show more functionality
             Navigator.of(context).pop();
           },
         ),

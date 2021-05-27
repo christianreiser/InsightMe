@@ -12,7 +12,6 @@ class DataRoute extends StatelessWidget {
     debugPrint('globals.attributeList: ${globals.attributeList}');
 
     return ListView.builder(
-      //shrinkWrap: true, /// todo true is way more expensive. why used it in journal and searchOrCreate?
       itemCount: globals.attributeListLength,
       itemBuilder: (BuildContext context, int position) {
         return oneAttributeNameAndChart(

@@ -191,7 +191,7 @@ class ComputeCorrelations {
     if (xYStats.length > 2) {
       correlationCoefficient = StarStatsXY(xYStats).corCoefficient;
 
-      /// round if necessary // todo round if too many decimals and hard coded
+      /// round if too many decimals
       //if (correlation != 0 && correlation != 1 && correlation != -1) {
       try {
         correlationCoefficient = roundDouble(correlationCoefficient, 2);
