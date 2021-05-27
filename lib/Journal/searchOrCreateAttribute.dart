@@ -215,7 +215,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     // if ATTRIBUTE LIST is not empty
                     : globals.attributeListLength < 3
                         ? ListView(
-                            children: [_getAttributeListView(), _entryHint()],
+                            children: [
+                              _getAttributeListView(),
+                              _attributeHint()
+                            ],
                           )
                         : _getAttributeListView(),
       ),
@@ -295,7 +298,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     );
   }
 
-  Widget _entryHint() {
+  Widget _attributeHint() {
     /*
     * SECOND HINT: explains how to write entries or create new labels
     * */
@@ -564,7 +567,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             children: [
               Icon(
                 Icons.delete,
-                color: Colors.black,
               ),
               Text('Yes')
             ],

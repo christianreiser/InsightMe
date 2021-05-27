@@ -8,15 +8,14 @@ import '../../Database/entry.dart';
 final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
 //  reset chart
-LineChart chart;// = null;
-
+LineChart chart; // = null;
 
 Future<Map<DateTime, double>> getDateTimeValueMap(attributeName) async {
   // Get dateTime and values of entries from database and set as state
   // input: selectedAttribute
   // returns: dateTimeValueMap
   List<Entry> filteredEntryList =
-  await databaseHelperEntry.getFilteredEntryList(attributeName);
+      await databaseHelperEntry.getFilteredEntryList(attributeName);
 
   // create dateTimeValueMap:
   Map<DateTime, double> dateTimeValueMap = {};
@@ -35,22 +34,23 @@ Future<Map<DateTime, double>> getDateTimeValueMap(attributeName) async {
 Future<LineChart> oneAttributeChart(attributeName) async {
   // used in data tab
   Map<DateTime, double> dateTimeValueMap1 =
-  await getDateTimeValueMap(attributeName);
-
+      await getDateTimeValueMap(attributeName);
+  debugPrint('dateTimeValueMap1: $dateTimeValueMap1');
   chart = LineChart.fromDateTimeMaps(
     [dateTimeValueMap1],
     [Colors.blue],
     [attributeName], // axis numbers
     tapTextFontWeight: FontWeight.w600,
   );
+  debugPrint('chart: $chart');
   return chart;
 }
 
 Future<LineChart> twoAttributeChart(attributeName1, attributeName2) async {
   Map<DateTime, double> dateTimeValueMap1 =
-  await getDateTimeValueMap(attributeName1);
+      await getDateTimeValueMap(attributeName1);
   Map<DateTime, double> dateTimeValueMap2 =
-  await getDateTimeValueMap(attributeName2);
+      await getDateTimeValueMap(attributeName2);
   chart = LineChart.fromDateTimeMaps(
     [dateTimeValueMap1, dateTimeValueMap2],
     [Colors.green, Colors.blue],
@@ -59,4 +59,3 @@ Future<LineChart> twoAttributeChart(attributeName1, attributeName2) async {
   );
   return chart;
 }
-

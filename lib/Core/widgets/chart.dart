@@ -11,6 +11,7 @@ Widget futureOneAttributeAnimatedLineChart(attributeName) {
       // chart data arrived && data found
       if (snapshot.connectionState == ConnectionState.done &&
           chart != null && snapshot.data != null) {
+        debugPrint('snapshot.data: ${snapshot.data}');
         return AnimatedLineChart(snapshot.data);
       }
 

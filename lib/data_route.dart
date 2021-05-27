@@ -11,12 +11,19 @@ class DataRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('globals.attributeList: ${globals.attributeList}');
+    debugPrint('globals.entryListLength: ${globals.entryListLength}');
 
     return globals.entryListLength == null
         ? entryHint()
-        : globals.entryListLength > 0
-            ? dataListView()
-            : entryHint(); // type lineChart;
+        : globals.entryListLength == 0
+            ? entryHint() // type lineChart;
+            : globals.entryListLength == 1
+                ? Column(
+                    children: [Expanded(child: (dataListView())), entryHint()],
+                  )
+                : globals.entryListLength > 1
+                    ? dataListView()
+                    : Text('?');
   }
 
   Widget dataListView() {
