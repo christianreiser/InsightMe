@@ -6,7 +6,7 @@ Column entryHint() {
     mainAxisAlignment: MainAxisAlignment.end,
     children: [
       Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Container(
             padding: EdgeInsets.all(5),
@@ -14,8 +14,7 @@ Column entryHint() {
             child: Row(
               children: [
                 Text(
-                  'You have no entries to visualize.\n '
-                      'To create new entries tab here ',
+                  'Create new entries ',
                   textScaleFactor: 1.2,
                 ),
                 Icon(Icons.arrow_forward),
@@ -23,7 +22,7 @@ Column entryHint() {
             ),
           ),
           SizedBox(
-            width: 30,
+            width: 75,
           )
         ],
       ),

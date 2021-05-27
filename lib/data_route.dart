@@ -7,11 +7,20 @@ import 'Core/widgets/entryHint.dart';
 import 'globals.dart' as globals;
 import 'navigation_helper.dart';
 
-class DataRoute extends StatelessWidget {
+class DataRoute extends StatefulWidget {
+  @override
+  _DataRouteState createState() => _DataRouteState();
+}
+
+class _DataRouteState extends State<DataRoute> {
   @override
   Widget build(BuildContext context) {
     debugPrint('globals.attributeList: ${globals.attributeList}');
     debugPrint('globals.entryListLength: ${globals.entryListLength}');
+
+    if (globals.entryListLength == null || globals.entryListLength == 0) {
+      globals.Global().updateEntryList();
+    }
 
     return globals.entryListLength == null
         ? entryHint()
