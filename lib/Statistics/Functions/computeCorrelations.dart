@@ -36,7 +36,6 @@ class ComputeCorrelations {
     final rowForEachAttribute = getRowForEachAttribute(rowForEachDay, numDays);
 
     /// ini correlation matrix
-    /// todo try List<List<double>> instead of var
     var correlationMatrix = List.generate(
         numLabels + 1, (i) => List<dynamic>.filled(numLabels + 1, null),
         growable: false);

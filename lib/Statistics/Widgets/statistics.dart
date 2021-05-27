@@ -16,7 +16,7 @@ Widget futureStatistics(attributeName1, attributeName2) {
           snapshot.data != null &&
           snapshot.data != 'NaN') {
         return statistics(
-            context, snapshot.data, 0.02); //todo hard coded p-value
+            context, snapshot.data, 0.02); //todo feature: hard coded p-value
       }
 
       /// chart data arrived but no data found

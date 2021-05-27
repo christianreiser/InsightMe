@@ -18,13 +18,11 @@ class Chart extends StatefulWidget {
 }
 
 class _ChartState extends State<Chart> {
-  LineChart chart = null;
+  LineChart chart;
 
   @override
   Widget build(BuildContext context) {
     return
-        // Consumer<OptimizationChangeNotifier>( // todo move state up
-        // builder: (context, schedule, _) =>
         Expanded(
       child: FutureBuilder(
         future: twoAttributeChart(widget.selectedAttribute1, widget.selectedAttribute2),

@@ -23,7 +23,7 @@ class _DropDownState extends State<DropDown> {
   @override
   Widget build(BuildContext context) {
     final changeNotifier = Provider.of<OptimizationChangeNotifier>(
-        context); // send state up the tree // todo _private ?
+        context); // send state up the tree
     return FutureBuilder(
       future: _getAttributeList(widget.boolFirst),
       builder: (context, snapshot) {

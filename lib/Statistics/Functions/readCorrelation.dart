@@ -74,7 +74,7 @@ listArgExtreme(numList) {
   } else if (maxValue < -minValue) {
     extreme = minValue;
   } else {
-    debugPrint('UNHANDLED EXCEPTION: EXTREMEVALUE');
+    debugPrint('UNHANDLED EXCEPTION: EXTREME-VALUE');
   }
 
   /// get extremest index
@@ -90,25 +90,20 @@ listArgExtreme(numList) {
 
 Future<String> sortedAttributeList(
     selectedAttribute1, selectedAttribute2) async {
-  //todo refactoring
-
   // readCorrelationMatrix
   List<List<dynamic>> dynamicLabeledCorrelationMatrix =
       await readCorrelationMatrix();
   debugPrint(
       'dynamicTwiceLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
 
-  // separate lables
+  // separate labels
   final List<dynamic> labels = dynamicLabeledCorrelationMatrix.removeAt(0);
   debugPrint(
       'dynamicLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
 
-  //List<num> numList = convertDynamicListWithNullsToNumList(dynamicCorrelationMatrix);
-  //debugPrint('numList:: $numList');
-
   /// if one selectedAttribute is on all
   print('selectedAttribute1: $selectedAttribute1');
-  String nextSttributeName;
+  String nextAttributeName;
   if (selectedAttribute1 != 'All') {
     var correlationCoefficientsOfOneAttribute =
         await readCorrelationCoefficientsOfOneAttribute(selectedAttribute1);
@@ -122,8 +117,8 @@ Future<String> sortedAttributeList(
     int argExtreme = listArgExtreme(correlationCoefficientsOfOneAttribute);
     print('argExtreme: $argExtreme');
 
-    nextSttributeName = labels[argExtreme + 1];
-    print(nextSttributeName);
+    nextAttributeName = labels[argExtreme + 1];
+    print(nextAttributeName);
   }
   //
   // /// if no selectedAttributes is on all
@@ -131,7 +126,7 @@ Future<String> sortedAttributeList(
   //   debugPrint('ERROR unhandled selected attribute combination');
   // }
   else {
-    nextSttributeName = 'Happiness';
+    nextAttributeName = 'Happiness';
   }
-  return nextSttributeName;
+  return nextAttributeName;
 }
