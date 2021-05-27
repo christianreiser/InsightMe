@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
+import '../../globals.dart' as globals;
 import '../../navigation_helper.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
@@ -272,6 +273,8 @@ class EditEntryState extends State<EditEntry> {
       if (result != 0) {
         // Success
         _showSnackBar('Entry Saved Successfully', scaffoldContext);
+        globals.Global().updateEntryList();
+
       } else {
         // Failure
         _showAlertDialog('Status', 'Problem Saving Entry');

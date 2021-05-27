@@ -28,6 +28,7 @@ class Global {
   Future<List<Entry>> updateEntryList() async {
     entryList = await DatabaseHelperEntry().getEntryList();
     entryListLength = entryList.length;
+    debugPrint('updated entry list');
     return entryList;
   }
 }

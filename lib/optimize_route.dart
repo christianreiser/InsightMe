@@ -54,7 +54,6 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                         TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
                   ),
                   Row(
-
                       ///dropdown
                       // start: child as close to the start of the main axis as possible
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -73,8 +72,6 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
       ),
     );
   }
-
-
 
   Widget optimizeNameAndChart() {
     return Consumer<OptimizationChangeNotifier>(

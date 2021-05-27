@@ -20,27 +20,51 @@ class _DataRouteState extends State<DataRoute> {
 
     if (globals.entryListLength == null || globals.entryListLength == 0) {
       globals.Global().updateEntryList();
+      globals.Global().updateAttributeList();
     }
 
-    return globals.entryListLength == null
-        ? entryHint()
-        : globals.entryListLength == 0
-            ? entryHint() // type lineChart;
-            : globals.entryListLength == 1
-                ? Column(
-                    children: [Expanded(child: (dataListView())), entryHint()],
-                  )
-                : globals.entryListLength > 1
-                    ? dataListView()
-                    : Text('?');
+    return FutureBuilder(
+      future: globals.Global().updateAttributeList(),
+      //schedule.selectedAttribute1
+      builder: (context, snapshot) {
+        // chart data arrived && data found
+        if (snapshot.connectionState == ConnectionState.done &&
+            globals.attributeList != null &&
+            snapshot.data != null) {
+          return globals.entryListLength == 0
+              ? entryHint() // type lineChart;
+              : globals.entryListLength == 1
+                  ? Column(
+                      children: [
+                        Expanded(child: (dataListView(snapshot.data))),
+                        entryHint()
+                      ],
+                    )
+                  : globals.entryListLength > 1
+                      ? dataListView(snapshot.data)
+                      : Text('?');
+        }
+
+        // chart data arrived but no data found
+        else if (snapshot.connectionState == ConnectionState.done &&
+            (globals.attributeList == null || snapshot.data == null)) {
+          return Text('No data found for this label');
+
+          // else: i.e. data didn't arrive
+        } else {
+          return CircularProgressIndicator(); // when Future doesn't get data
+        } // snapshot is current state of future
+      },
+    );
   }
 
-  Widget dataListView() {
+  // Future<void> read() async {
+
+  Widget dataListView(attributeList) {
     return ListView.builder(
       itemCount: globals.attributeListLength,
       itemBuilder: (BuildContext context, int position) {
-        return oneAttributeNameAndChart(
-            globals.attributeList[position].title, context);
+        return oneAttributeNameAndChart(attributeList[position].title, context);
       },
     );
   }
