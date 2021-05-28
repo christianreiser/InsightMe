@@ -22,23 +22,21 @@ dependencies:
   sqflite: # SQLite
   path_provider: # SQLite
   file_picker: # csv file
-  fl_animated_linechart:  # chart
-  flutter_charts: ^0.1.10 # transpose list
+  fl_animated_linechart: ^1.1.4 # charts
+  flutter_charts: ^0.2.0 # transpose list
   provider: # state management
-  google_fonts:
+  #google_fonts:
   shared_preferences: # for persistence data. 1.Intro-seen-flag
   csv: # write csv for daily summaries
-  starfruit: ^0.3.1+2 # correlation
-  permission_handler: ^5.0.1+1 # todo back in for export
-  sqflite_migration: ^0.2.0
-  flutter_colorpicker: ^0.3.4
-  ml_linalg: # matrix stuff in correlation //todo tmp?
+  starfruit: ^1.0.0+1 # correlation
+  permission_handler: ^8.0.0+2 # todo back in for export
+  sqflite_migration: ^0.3.0
+  flutter_colorpicker: ^0.4.0
+  #ml_linalg: # matrix stuff in correlation //todo tmp?
   health: ^3.0.5
-#  ml_preprocessing:
 
   #starflut: ^0.6.0 # for python
   #url_launcher:
-  #flutter_svg: # svg drawing for WHO
   #simple_permissions: ^0.1.9 # for export write access => leads to compiling error
 
 
