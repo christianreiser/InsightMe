@@ -195,10 +195,10 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       //showUnselectedLabels: true, // TODO fix theme/color
       //unselectedLabelStyle: TextStyle(color: Colors.black),
       items: const <BottomNavigationBarItem>[
-        // BottomNavigationBarItem(
-        //   icon: Icon(Icons.view_list),
-        //   label: 'Home',
-        // ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.view_list),
+          label: 'Home',
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.timeline),
           label: 'Data',
@@ -223,7 +223,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   // bottom navigation bar:
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    //HomeRoute(), // TODO feature
+    HomeRoute(), // TODO feature
     DataRoute(),
     OptimizeRoute(),
     //OnboardingRoute(),
@@ -286,36 +286,36 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             ],
           ),
         ),
-        // PopupMenuItem<Choice>(
-        //   value: Choice.appIntegrations,
-        //   child: Row(
-        //     children: [
-        //       Icon(
-        //         Icons.exit_to_app,
-        //         color: iconColor,
-        //       ),
-        //       SizedBox(
-        //         width: 5,
-        //       ),
-        //       Text('Other app integrations'),
-        //     ],
-        //   ),
-        // ),
-        // PopupMenuItem<Choice>(
-        //   value: Choice.exportDailySummaries,
-        //   child: Row(
-        //     children: [
-        //       Icon(
-        //         Icons.file_upload,
-        //         color: iconColor,
-        //       ),
-        //       SizedBox(
-        //         width: 5,
-        //       ),
-        //       Text('Export daily summaries'),
-        //     ],
-        //   ),
-        // ),
+        PopupMenuItem<Choice>(
+          value: Choice.appIntegrations,
+          child: Row(
+            children: [
+              Icon(
+                Icons.exit_to_app,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Other app integrations'),
+            ],
+          ),
+        ),
+        PopupMenuItem<Choice>(
+          value: Choice.exportDailySummaries,
+          child: Row(
+            children: [
+              Icon(
+                Icons.file_upload,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Export daily summaries'),
+            ],
+          ),
+        ),
         PopupMenuItem<Choice>(
           value: Choice.importFromCSV,
           child: Row(
@@ -331,21 +331,21 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             ],
           ),
         ),
-        // PopupMenuItem<Choice>(
-        //   value: Choice.deleteAllData,
-        //   child: Row(
-        //     children: [
-        //       Icon(
-        //         Icons.delete_forever,
-        //         color: Colors.red,
-        //       ),
-        //       SizedBox(
-        //         width: 5,
-        //       ),
-        //       Text('Delete all data'),
-        //     ],
-        //   ),
-        // ),
+        PopupMenuItem<Choice>(
+          value: Choice.deleteAllData,
+          child: Row(
+            children: [
+              Icon(
+                Icons.delete_forever,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Delete all data'),
+            ],
+          ),
+        ),
         // PopupMenuItem<Choice>(
         //   value: Choice.tmpFunction,
         //   child: Row(
