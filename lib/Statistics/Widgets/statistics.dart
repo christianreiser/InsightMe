@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 
 import '../Functions/readCorrelation.dart';
+/// correlation coefficient and p-value widgets
 
 Widget futureStatistics(attributeName1, attributeName2) {
+  /// future builder of correlation coefficient and p-value widgets
+
   return FutureBuilder(
     future: readCorrelationCoefficient(attributeName1, attributeName2),
     builder: (context, snapshot) {
       /// chart data arrived && data found
       /// snapshot is current state of future
       debugPrint('FutureBuilder: _correlationCoefficient: ${snapshot.data}');
+      debugPrint('FutureBuilder: snapshot.data..runtimeType: ${snapshot.data.runtimeType}');
+
       if (snapshot.connectionState == ConnectionState.done &&
-          snapshot.data != null &&
-          snapshot.data != 'NaN') {
+          snapshot.data != null) {
+
         return statistics(
-            context, snapshot.data, 0.02); //todo hard coded p value
+            context, snapshot.data, 0.02); //todo feature: hard coded p-value
       }
 
       /// chart data arrived but no data found
       else if (snapshot.connectionState == ConnectionState.done &&
-          snapshot.data == null) {
+          (snapshot.data == null)) {
         return Text('Correlation Coefficient: -');
 
         /// else: i.e. data didn't arrive
@@ -30,6 +35,7 @@ Widget futureStatistics(attributeName1, attributeName2) {
 }
 
 Widget statistics(context, _correlationCoefficient, _pValue) {
+  /// correlation coefficient and p-value widgets
   return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -39,14 +45,13 @@ Widget statistics(context, _correlationCoefficient, _pValue) {
         Row(children: [
           _correlationBar(_correlationCoefficient),
           Text(' correlation ', textScaleFactor: 1.3),
-          FlatButton(
+          TextButton(
             /* info note for correlation coefficient */
             // to reduce height of correlation info button
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             child: Icon(Icons.info, color: Colors.grey),
             onPressed: () {
               debugPrint('info pressed');
-              Scaffold.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
                     'Pearson correlation coefficient = $_correlationCoefficient.'
                         ' Bar shows the absolute value.'),
@@ -54,22 +59,23 @@ Widget statistics(context, _correlationCoefficient, _pValue) {
             },
           )
         ]),
-        Row(children: [
-          _confidenceStars(_pValue),
-          Text(' confidence', textScaleFactor: 1.3),
-          FlatButton(
-            /* info note for p-Value */
-            // to reduce height of correlation info button
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            child: Icon(Icons.info, color: Colors.grey),
-            onPressed: () {
-              debugPrint('info pressed');
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text('p-Value = $_pValue.'),
-              ));
-            },
-          )
-        ]),
+        /// confidence
+        // todo feature: p-value
+        // Row(children: [
+        //   _confidenceStars(_pValue),
+        //   Text(' confidence', textScaleFactor: 1.3),
+        //   TextButton(
+        //     /* info note for p-Value */
+        //     // to reduce height of correlation info button
+        //     child: Icon(Icons.info, color: Colors.grey),
+        //     onPressed: () {
+        //       debugPrint('info pressed');
+        //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //         content: Text('p-Value = $_pValue.'),
+        //       ));
+        //     },
+        //   )
+        // ]),
       ]);
 }
 

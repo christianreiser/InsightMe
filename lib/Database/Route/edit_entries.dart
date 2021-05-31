@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
+import '../../globals.dart' as globals;
 import '../../navigation_helper.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
@@ -71,7 +72,7 @@ class EditEntryState extends State<EditEntry> {
               controller: valueController,
               style: textStyle,
               validator: _validateValue,
-              autovalidate: true,
+              autovalidateMode: AutovalidateMode.always,
               onChanged: (value) {
                 debugPrint('Something changed in Value Text Field');
                 debugPrint('_validateValue: $_validateValue');
@@ -113,7 +114,7 @@ class EditEntryState extends State<EditEntry> {
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              child: FlatButton(
+              child: TextButton(
                 onPressed: () {
                   DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
@@ -145,16 +146,15 @@ class EditEntryState extends State<EditEntry> {
             // SAVE BUTTON
             Row(children: <Widget>[
               Expanded(
-                child: RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
+                child: ElevatedButton(
                   child: Text(
                     'Save',
                     textScaleFactor: 1.5,
                   ),
                   onPressed: () {
                     setState(() {
-                      debugPrint("Save button clicked. _validValue= $_validValue");
+                      debugPrint(
+                          "Save button clicked. _validValue= $_validValue");
                       _save(scaffoldContext);
                     });
                   },
@@ -167,9 +167,7 @@ class EditEntryState extends State<EditEntry> {
               // hide delete if entry doesn't exist
               thisIsANewEntry == false
                   ? Expanded(
-                      child: RaisedButton(
-                        color: Theme.of(context).primaryColorDark,
-                        textColor: Theme.of(context).primaryColorLight,
+                      child: ElevatedButton(
                         child: Text(
                           'Delete',
                           textScaleFactor: 1.5,
@@ -222,7 +220,7 @@ class EditEntryState extends State<EditEntry> {
     }
     // This is just a regular expression for email addresses
     //final String p = "[0-9\.]{1,256}";
-    // TODO RegExp input is all that's forbidden, better to input allowed characters: "[0-9\.]{1,256}"
+    // TODO minor: RegExp input is all that's forbidden, better to input allowed characters: "[0-9\.]{1,256}"
     final RegExp regExp = RegExp(
         r'[üäöÜÄÖqwertyuiopasdfghjklzxcvbnm¹²£¥¢©®™¿¡÷¦¬×§¶°$—⅛¼⅓⅔⅜⁴⅝ⁿ⅞—¯≠≈‰„“«»”×ʼ‹‡†›÷¡¿±³€½¾{},!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
     Iterable iterableRegExp = regExp.allMatches(valueController);
@@ -258,7 +256,8 @@ class EditEntryState extends State<EditEntry> {
   // Save data to database
 
   void _save(scaffoldContext) async {
-    if (_validValue) { // don't save if character not allowed
+    if (_validValue) {
+      // don't save if character not allowed
       int result;
 
       // NAVIGATE
@@ -273,8 +272,9 @@ class EditEntryState extends State<EditEntry> {
       // SUCCESS FAILURE STATUS DIALOG
       if (result != 0) {
         // Success
-        // TODO idk why it is not working. S.th. with context
         _showSnackBar('Entry Saved Successfully', scaffoldContext);
+        globals.Global().updateEntryList();
+
       } else {
         // Failure
         _showAlertDialog('Status', 'Problem Saving Entry');
@@ -310,9 +310,8 @@ class EditEntryState extends State<EditEntry> {
     showDialog(context: context, builder: (_) => alertDialog);
   }
 
-  // TODO idk why it is not working
   void _showSnackBar(String message, scaffoldContext) {
-    Scaffold.of(scaffoldContext).showSnackBar(
+    ScaffoldMessenger.of(scaffoldContext).showSnackBar(
       SnackBar(
         content: Text(message),
       ),

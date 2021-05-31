@@ -62,7 +62,6 @@ class _HomeRouteState extends State<HomeRoute> {
                       isThreeLine: true,
                     ),
                   ),
-
                   Card(
                     child: ListTile(
                       leading: Icon(
@@ -107,7 +106,8 @@ class _HomeRouteState extends State<HomeRoute> {
                       trailing: _voteUpDownButton(),
                       isThreeLine: true,
                     ),
-                  ),                  Card(
+                  ),
+                  Card(
                     child: ListTile(
                       leading: Icon(
                         Icons.local_hospital,
@@ -163,7 +163,7 @@ class _HomeRouteState extends State<HomeRoute> {
     /// button for voting up or down
     return SizedBox(
       width: 50,
-      child: FlatButton(
+      child: TextButton(
         onPressed: () {
           _voteUpDownDialog();
         },
@@ -180,16 +180,16 @@ class _HomeRouteState extends State<HomeRoute> {
     /// dialog for voting up or down
     AlertDialog alertDialog = AlertDialog(
       actions: [
-        FlatButton(
+        TextButton(
           child: Row(
             children: [Icon(Icons.thumb_up), Text(' Show more')],
           ),
           onPressed: () {
-            //todo implement show more functionality
+            //todo feature: implement show more functionality
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        TextButton(
           child: Row(
             children: [
               SizedBox(
@@ -200,7 +200,7 @@ class _HomeRouteState extends State<HomeRoute> {
             ],
           ),
           onPressed: () {
-            //todo implement show more functionality
+            //todo feature: implement show more functionality
             Navigator.of(context).pop();
           },
         ),

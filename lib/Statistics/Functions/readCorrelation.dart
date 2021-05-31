@@ -4,16 +4,13 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/flutter_charts.dart' as fluCa;
-import 'package:flutter_charts/flutter_charts.dart';
+import 'package:insightme/Core/functions/misc.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   var correlationMatrix = await readCorrelationMatrix();
-
   int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
-  int attributeIndex2 =
-      fluCa.transpose(correlationMatrix)[0].indexOf(attribute2);
+  int attributeIndex2 = transposeChr(correlationMatrix)[0].indexOf(attribute2);
   return correlationMatrix[attributeIndex1][attributeIndex2];
 }
 
@@ -56,29 +53,28 @@ Future<List<List>> readCorrelationMatrix() async {
   return correlationMatrix;
 }
 
-removeFirstEntryOfEachRow(matrix) {
-  /// 1. transpose
-  /// 2. remove
-  /// 3. transpose back
-  // transpose to make remove label column work
-  List<List<dynamic>> matrixT = List<List<dynamic>>.from(transpose(matrix));
-  matrixT.removeAt(0); // remove label column
-  return List<List<dynamic>>.from(transpose(matrixT)); // transpose back;
-}
+// removeFirstEntryOfEachRow(matrix) {
+//   /// 1. transpose
+//   /// 2. remove
+//   /// 3. transpose back
+//   // transpose to make remove label column work
+//   List<List<dynamic>> matrixT = List<List<dynamic>>.from(transpose(matrix));
+//   matrixT.removeAt(0); // remove label column
+//   return List<List<dynamic>>.from(transpose(matrixT)); // transpose back;
+// }
 
 listArgExtreme(numList) {
-
   //final vector = Vector.fromList(numList);
   final maxValue = numList.reduce((curr, next) => curr > next ? curr : next);
   final minValue = numList.reduce((curr, next) => curr < next ? curr : next);
-  print('minValue ${minValue}');
+  print('minValue $minValue');
   double extreme;
   if (maxValue >= -minValue) {
     extreme = maxValue;
   } else if (maxValue < -minValue) {
     extreme = minValue;
   } else {
-    debugPrint('UNHANDLED EXCEPTION: EXTREMEVALUE');
+    debugPrint('UNHANDLED EXCEPTION: EXTREME-VALUE');
   }
 
   /// get extremest index
@@ -86,33 +82,28 @@ listArgExtreme(numList) {
   print('numList.runtimeType ${numList.runtimeType}');
 
   //List<dynamic> numListT = [0.0, 0.01, 0.02];
-  final int argExtreme = numList.indexWhere(
-      (element) => element == extreme);
+  final int argExtreme = numList.indexWhere((element) => element == extreme);
 
   debugPrint('argExtreme $argExtreme');
   return argExtreme;
 }
 
-Future<String> sortedAttributeList(selectedAttribute1, selectedAttribute2) async {
-  //todo refactoring
-
+Future<String> sortedAttributeList(
+    selectedAttribute1, selectedAttribute2) async {
   // readCorrelationMatrix
   List<List<dynamic>> dynamicLabeledCorrelationMatrix =
       await readCorrelationMatrix();
   debugPrint(
       'dynamicTwiceLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
 
-  // separate lables
+  // separate labels
   final List<dynamic> labels = dynamicLabeledCorrelationMatrix.removeAt(0);
   debugPrint(
       'dynamicLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
 
-  //List<num> numList = convertDynamicListWithNullsToNumList(dynamicCorrelationMatrix);
-  //debugPrint('numList:: $numList');
-
   /// if one selectedAttribute is on all
   print('selectedAttribute1: $selectedAttribute1');
-  String nextSttributeName;
+  String nextAttributeName;
   if (selectedAttribute1 != 'All') {
     var correlationCoefficientsOfOneAttribute =
         await readCorrelationCoefficientsOfOneAttribute(selectedAttribute1);
@@ -123,12 +114,11 @@ Future<String> sortedAttributeList(selectedAttribute1, selectedAttribute2) async
     print(
         'correlationCoefficientsOfOneAttribute $correlationCoefficientsOfOneAttribute');
 
-    int argExtreme =
-        listArgExtreme(correlationCoefficientsOfOneAttribute);
+    int argExtreme = listArgExtreme(correlationCoefficientsOfOneAttribute);
     print('argExtreme: $argExtreme');
 
-    nextSttributeName = labels[argExtreme+1];
-    print(nextSttributeName);
+    nextAttributeName = labels[argExtreme + 1];
+    print(nextAttributeName);
   }
   //
   // /// if no selectedAttributes is on all
@@ -136,7 +126,7 @@ Future<String> sortedAttributeList(selectedAttribute1, selectedAttribute2) async
   //   debugPrint('ERROR unhandled selected attribute combination');
   // }
   else {
-    nextSttributeName = 'Happiness';
+    nextAttributeName = 'Happiness';
   }
-  return nextSttributeName;
+  return nextAttributeName;
 }

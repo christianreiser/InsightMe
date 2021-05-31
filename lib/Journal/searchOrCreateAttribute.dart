@@ -74,18 +74,24 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     */
     return _isSelected.contains(true)
         ? AppBar(
-            leading: FlatButton(
+            leading: TextButton(
               onPressed: () {
                 _deselectAll();
               },
-              child: Icon(Icons.close),
+              child: Icon(
+                Icons.close,
+                color: Colors.black,
+              ),
             ),
             title: Row(
               children: [
                 Text('${_countSelected()}',
                     style: TextStyle(color: Colors.black)),
-                FlatButton(
-                  child: Icon(Icons.delete),
+                TextButton(
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.black,
+                  ),
                   onPressed: () {
                     _showAlertDialogWithDelete();
                     setState(() {
@@ -93,8 +99,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     });
                   },
                 ),
-                FlatButton(
-                  child: Icon(Icons.select_all),
+                TextButton(
+                  child: Icon(
+                    Icons.select_all,
+                    color: Colors.black,
+                  ),
                   onPressed: () {
                     _isSelected =
                         List.filled(_attributesToDisplay.length, true);
@@ -113,8 +122,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () async {
-                NavigationHelper()
-                    .navigateToFutureDesign(context); // refreshes
+                NavigationHelper().navigateToFutureDesign(context); // refreshes
               },
             ),
           );
@@ -161,9 +169,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       child: ButtonTheme(
         minWidth: 0,
         height: 48, // should be same height as TextField
-        child: RaisedButton(
-          color: Theme.of(context).primaryColorDark,
-          textColor: Theme.of(context).primaryColorLight,
+        child: ElevatedButton(
           child: Text(
             'Create',
             textScaleFactor: 1.5,
@@ -177,7 +183,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   defaultLabelColor,
                   defaultAggregation),
             );
-            setState(() {}); // todo not here
+            //setState(() {});
           },
         ),
       ),
@@ -209,7 +215,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                     // if ATTRIBUTE LIST is not empty
                     : globals.attributeListLength < 3
                         ? ListView(
-                            children: [_getAttributeListView(), _entryHint()],
+                            children: [
+                              _getAttributeListView(),
+                              _attributeHint()
+                            ],
                           )
                         : _getAttributeListView(),
       ),
@@ -217,11 +226,9 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   }
 
   Widget _getAttributeListView() {
-    /*
-    * ATTRIBUTE LIST
-    */
+    /// ATTRIBUTE LIST
     return ListView.builder(
-      shrinkWrap: true, /// todo it's significantly more expensive. why?
+      shrinkWrap: true, // needed to give space for entry hint
       itemCount: _attributesToDisplay.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
@@ -261,7 +268,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 onTap: () {
                   debugPrint("ListTile Tapped");
                   NavigationHelper().navigateToEditAttribute(
-                      // todo such that no 2 _attributesToDisplay needed as input. (rename attribute)
                       _attributesToDisplay[position],
                       _attributesToDisplay[position].title,
                       context);
@@ -292,7 +298,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     );
   }
 
-  Widget _entryHint() {
+  Widget _attributeHint() {
     /*
     * SECOND HINT: explains how to write entries or create new labels
     * */
@@ -367,7 +373,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     * returns:
     * searchResults, and bool indicators if userInput, match, or exactMatch
     */
-    List _searchResult = List<Attribute>();
+    List<Attribute> _searchResult = [];
 
     bool userInput = _attributeInputController.text.isNotEmpty;
     bool match = false;
@@ -523,7 +529,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
         // Deletion in Attribute DB
         _resultList.add(
-          await databaseHelperAttribute // todo feedback with: int result =
+          await databaseHelperAttribute
               .deleteAttribute(_attributesToDisplay[position].id),
         );
       }
@@ -548,7 +554,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   void _showAlertDialogWithDelete() {
     AlertDialog alertDialog = AlertDialog(
       actions: [
-        FlatButton(
+        TextButton(
           child: Row(
             children: [Icon(Icons.arrow_back_ios), Text('Back')],
           ),
@@ -556,9 +562,14 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        TextButton(
           child: Row(
-            children: [Icon(Icons.delete), Text('Yes')],
+            children: [
+              Icon(
+                Icons.delete,
+              ),
+              Text('Yes')
+            ],
           ),
           onPressed: () {
             Navigator.of(context).pop();
