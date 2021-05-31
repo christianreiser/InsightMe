@@ -40,10 +40,9 @@ Future<LineChart> oneAttributeChart(attributeName) async {
   chart = LineChart.fromDateTimeMaps( // todo final chart?
     [dateTimeValueMap1],
     [Colors.blue],
-    /* NOTE: conflict too many arguments
+     // NOTE: conflict too many arguments
     [attributeName], // axis numbers
     tapTextFontWeight: FontWeight.w600,
-     */
   );
   return chart;
 }
@@ -56,10 +55,9 @@ Future<LineChart> twoAttributeChart(attributeName1, attributeName2) async {
   chart = LineChart.fromDateTimeMaps(
     [dateTimeValueMap1, dateTimeValueMap2],
     [Colors.green, Colors.blue],
-    /* NOTE: conflict too many arguments
+     // NOTE: conflict too many arguments
     [attributeName1, attributeName2], // axis numbers
     tapTextFontWeight: FontWeight.w600,
-     */
   );
   return chart;
 }
