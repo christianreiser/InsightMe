@@ -195,10 +195,10 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       //showUnselectedLabels: true, // TODO fix theme/color
       //unselectedLabelStyle: TextStyle(color: Colors.black),
       items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.view_list),
-          label: 'Home',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.view_list),
+        //   label: 'Home',
+        // ),
         BottomNavigationBarItem(
           icon: Icon(Icons.timeline),
           label: 'Data',
@@ -223,10 +223,9 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   // bottom navigation bar:
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    HomeRoute(), // TODO feature
+    // HomeRoute(), // TODO feature
     DataRoute(),
     OptimizeRoute(),
-    //OnboardingRoute(),
     OnboardingRoute(),
   ];
 
