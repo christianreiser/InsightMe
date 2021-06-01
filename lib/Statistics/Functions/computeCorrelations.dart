@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_charts/flutter_charts.dart';
+import 'package:insightme/Core/functions/misc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starfruit/starfruit.dart';
@@ -17,8 +17,6 @@ class ComputeCorrelations {
     /// computes correlations
     /// writes correlations matrix as csv
 
-    int numDays = await getNumDays();
-
     final directory = await getApplicationDocumentsDirectory();
 
     /// get Daily Summaries In Row For Each Day Format. calls WriteDailySummariesCSV
@@ -26,15 +24,18 @@ class ComputeCorrelations {
         await getDailySummariesInRowForEachDayFormat(directory);
 
     final List<dynamic> labels = await getLabels(rowForEachDay);
-    final int numLabels = labels.length;
-    debugPrint('numLabels $numLabels');
 
-    final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
+    // getNumDays has to be after getDailySummariesInRowForEachDayFormat because there it is set
+    int numDays = rowForEachDay.length;
+
+    final int numLabels = labels.length;
+    debugPrint('numLabels: $numLabels');
+
+    final rowForEachAttribute = getRowForEachAttribute(rowForEachDay, numDays);
 
     /// ini correlation matrix
-    /// todo try List<List<double>> instead of var
     var correlationMatrix = List.generate(
-        numLabels + 1, (i) => List(numLabels + 1),
+        numLabels + 1, (i) => List<dynamic>.filled(numLabels + 1, null),
         growable: false);
 
     /// ini correlationCoefficient
@@ -43,6 +44,7 @@ class ComputeCorrelations {
     /// iterate through rows. 1 to skip date
     for (int row = 1; row < numLabels + 1; row++) {
       /// write labels in first column in correlationMatrix
+      debugPrint('labels: $labels');
       correlationMatrix[row][0] = labels[row - 1];
 
       /// iterate through columns. 1 to skip date
@@ -57,6 +59,8 @@ class ComputeCorrelations {
               getXYStats(rowForEachAttribute, numDays, row, column);
 
           correlationCoefficient = computeCorrelationCoefficient(xYStats);
+          debugPrint('\nrow: $row; column: $column; correlationCoefficient: $correlationCoefficient\n\n;');
+          // debugPrint('xYStats: $xYStats;');
 
           /// writeCorrelationCoefficients
           correlationMatrix = fillCorrelationCoefficientMatrix(
@@ -73,7 +77,7 @@ class ComputeCorrelations {
     /// get number of days
     final prefs = await SharedPreferences.getInstance();
     int numDays = prefs.getInt('numDays') ?? null;
-    debugPrint('numDays $numDays');
+    debugPrint('got numDays $numDays');
     return numDays;
   }
 
@@ -97,17 +101,20 @@ class ComputeCorrelations {
         rowForEachDay.removeAt(0); // separate labels from values
     labels.removeAt(0); // remove date-label
 //  debugPrint('labels $labels');
-    debugPrint('rowForEachDay $rowForEachDay');
+    debugPrint('rowForEachDay: $rowForEachDay');
     return labels;
   }
 
-  List<dynamic> getRowForEachAttribute(rowForEachDay) {
+  List<dynamic> getRowForEachAttribute(rowForEachDay, numDays) {
     /// remove dates from values
-    var rowForEachAttribute = List<List<dynamic>>.from(
-        transpose(rowForEachDay)); // make list variable length
-    rowForEachAttribute.removeAt(0); // remove dates
-//  List<List<num>> rowForEachAttributeNum = rowForEachAttribute.cast<List<num>>();
-//debugPrint('rowForEachAttribute $rowForEachAttribute');
+    /// 1. remove dates
+    /// 2. transpose
+    debugPrint('rowForEachDay: $rowForEachDay');
+    for (int day = 0; day < rowForEachDay.length; day++) {
+      //debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
+      rowForEachDay[day].removeAt(0);
+    }
+    var rowForEachAttribute = transposeChr(rowForEachDay);
     return rowForEachAttribute;
   }
 
@@ -126,9 +133,16 @@ class ComputeCorrelations {
     List<double> keys = [];
 
     for (int day = 0; day < numDays; day++) {
-      key = (rowForEachAttribute[row - 1][day]).toDouble();
+      if (rowForEachAttribute[row - 1][day].runtimeType != String) {
+        key = (rowForEachAttribute[row - 1][day]).toDouble();
+      }
       //debugPrint('rowForEachAttribute[column - 1][day]: ${rowForEachAttribute[column - 1][day]}');
-      value = (rowForEachAttribute[column - 1][day]).toDouble();
+      //debugPrint('rowForEachAttribute: ${rowForEachAttribute}');
+
+      // convert to doubles, skip 'null' Strings
+      if (rowForEachAttribute[column - 1][day].runtimeType != String) {
+        value = (rowForEachAttribute[column - 1][day]).toDouble();
+      }
       // debugPrint('day: $day');
       // debugPrint('key $key');
       // debugPrint('value $value');
@@ -149,7 +163,7 @@ class ComputeCorrelations {
 
           /// increment key by tiny amount to make it unique
           key = key + duplicateCount * 1E-13;
-          debugPrint('duplicate key incremented to $key');
+          //debugPrint('duplicate key incremented to $key');
         }
 
         keys.add(key);
@@ -176,11 +190,19 @@ class ComputeCorrelations {
     if (xYStats.length > 2) {
       correlationCoefficient = StarStatsXY(xYStats).corCoefficient;
 
-      /// round if necessary // todo round if too many decimals and hard coded
+      // catch if correlationCoefficient == NaN(, due indifferent y values?)
+      if (correlationCoefficient != null) { // is nan doesn't work on null
+        if (correlationCoefficient.isNaN) {
+          correlationCoefficient = null;
+          // debugPrint(
+          //     'correlationCoefficient.isNaN: ${correlationCoefficient.isNaN}');
+        }
+      }
+
+      /// round if too many decimals
       //if (correlation != 0 && correlation != 1 && correlation != -1) {
       try {
-        correlationCoefficient =
-            roundDouble(correlationCoefficient, 2);
+        correlationCoefficient = roundDouble(correlationCoefficient, 2);
       } catch (e) {
         //debugPrint('correlation= $correlationCoefficient was not rounded');
       }
@@ -189,11 +211,14 @@ class ComputeCorrelations {
           'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
       correlationCoefficient = 0;
     }
+    //debugPrint('correlationCoefficient: $correlationCoefficient');
     return correlationCoefficient;
   }
 
   fillCorrelationCoefficientMatrix(
       correlation, correlationMatrix, row, column) {
+    //debugPrint('correlationMatrix: $correlationMatrix');
+    //debugPrint('correlation: $correlation');
     correlationMatrix[row][column] = correlation;
     correlationMatrix[column][row] = correlation;
     return correlationMatrix;
@@ -201,21 +226,21 @@ class ComputeCorrelations {
 
   void writeCorrelationsToFile(correlationMatrix, directory) {
     /// save correlations
-    debugPrint('correlationMatrix: $correlationMatrix');
+    //debugPrint('correlationMatrix: $correlationMatrix');
 
     final pathOfTheFileToWrite = directory.path + "/correlation_matrix.csv";
 //  debugPrint('directoryTarget $directoryTarget');
 
-    debugPrint('targetPath $pathOfTheFileToWrite');
+    debugPrint('targetPath: $pathOfTheFileToWrite');
     File file = File(pathOfTheFileToWrite);
-    debugPrint('file $file');
+    debugPrint('file: $file');
     String csv = const ListToCsvConverter().convert(correlationMatrix);
-//  debugPrint('csv $csv');
+    debugPrint('correlation matrix csv: $csv');
     file.writeAsString(csv);
     debugPrint('correlation_matrix.csv written');
   }
 
-  double roundDouble(double value, int places){
+  double roundDouble(double value, int places) {
     /*
     * round to double
     * */

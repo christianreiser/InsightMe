@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:insightme/navigation_helper.dart';
+
+import './../../globals.dart' as globals;
+import './../entry.dart';
 import '../attribute.dart';
 import '../database_helper_attribute.dart';
 import '../database_helper_entry.dart';
-import './../entry.dart';
-import './../../globals.dart' as globals;
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 /*
 * SEARCH OR CREATE NEW ATTRIBUTE FILE: TEXT INPUT
@@ -38,7 +39,7 @@ class EditAttributeState extends State<EditAttribute> {
   bool aggregationIsAdditive;
 
   EditAttributeState(this.attribute,
-      this.oldAttributeTitle); //todo oldAttributeTitle not a state
+      this.oldAttributeTitle); //todo performance: oldAttributeTitle not a state
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +92,7 @@ class EditAttributeState extends State<EditAttribute> {
             ),
 
             // Aggregation switch
-            //aggregationSwitch(), // todo back in
+            //aggregationSwitch(), // todo design: back in
 
             Padding(
               // Note
@@ -123,9 +124,7 @@ class EditAttributeState extends State<EditAttribute> {
                 children: <Widget>[
                   Expanded(
                     // SAVE BUTTON
-                    child: RaisedButton(
-                      color: Theme.of(context).primaryColorDark,
-                      textColor: Theme.of(context).primaryColorLight,
+                    child: ElevatedButton(
                       child: Text(
                         'Save',
                         textScaleFactor: 1.5,
@@ -141,9 +140,7 @@ class EditAttributeState extends State<EditAttribute> {
                   ),
                   Expanded(
                     // DELETE BUTTON
-                    child: RaisedButton(
-                      color: Theme.of(context).primaryColorDark,
-                      textColor: Theme.of(context).primaryColorLight,
+                    child: ElevatedButton(
                       child: Text(
                         'Delete',
                         textScaleFactor: 1.5,
@@ -194,10 +191,9 @@ class EditAttributeState extends State<EditAttribute> {
           activeColor: Colors.green,
         ),
         Text('Additive'),
-        FlatButton(
+        TextButton(
           /* info note for additive/average */
           // to reduce height of relationship info? button
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           child: Icon(Icons.info, color: Colors.grey),
           onPressed: () {
             debugPrint('info pressed');
@@ -223,7 +219,7 @@ class EditAttributeState extends State<EditAttribute> {
         'The sum which would be 10 does not make sense.';
     AlertDialog alertDialog = AlertDialog(
       actions: [
-        FlatButton(
+        TextButton(
           child: Text('Got it'),
           onPressed: () {
             Navigator.of(context).pop();
@@ -238,8 +234,7 @@ class EditAttributeState extends State<EditAttribute> {
 
   Widget colorPicker(BuildContext context) {
     debugPrint('currentColor $currentColor');
-    return RaisedButton(
-      elevation: 3.0,
+    return ElevatedButton(
       onPressed: () {
         showDialog(
           context: context,
@@ -281,7 +276,7 @@ class EditAttributeState extends State<EditAttribute> {
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: const Text('Looks good'),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -292,11 +287,10 @@ class EditAttributeState extends State<EditAttribute> {
           },
         );
       },
-      child: const Text('Color'),
-      color: currentColor,
-      textColor: useWhiteForeground(currentColor)
-          ? const Color(0xffffffff)
-          : const Color(0xff000000),
+      child: const Text(
+        'Color',
+        textScaleFactor: 1.5,
+      ),
     );
   }
 
@@ -415,7 +409,7 @@ class EditAttributeState extends State<EditAttribute> {
   void _showAlertDialogWithDelete(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       actions: [
-        FlatButton(
+        TextButton(
           child: Row(
             children: [Icon(Icons.arrow_back_ios), Text('Back')],
           ),
@@ -423,7 +417,7 @@ class EditAttributeState extends State<EditAttribute> {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        TextButton(
           child: Row(
             children: [Icon(Icons.delete), Text('Yes')],
           ),

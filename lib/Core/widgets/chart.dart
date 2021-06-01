@@ -10,13 +10,14 @@ Widget futureOneAttributeAnimatedLineChart(attributeName) {
     builder: (context, snapshot) {
       // chart data arrived && data found
       if (snapshot.connectionState == ConnectionState.done &&
-          chart != null) {
+          chart != null && snapshot.data != null) {
+        debugPrint('snapshot.data: ${snapshot.data}');
         return AnimatedLineChart(snapshot.data);
       }
 
       // chart data arrived but no data found
       else if (snapshot.connectionState == ConnectionState.done &&
-          chart == null) {
+          (chart == null || snapshot.data == null)) {
         return Text('No data found for this label');
 
         // else: i.e. data didn't arrive
@@ -34,13 +35,13 @@ Widget futureTwoAttributeAnimatedLineChart(attributeName1, attributeName2) {
     builder: (context, snapshot) {
       // chart data arrived && data found
       if (snapshot.connectionState == ConnectionState.done &&
-          chart != null) {
+          chart != null && snapshot.data != null) {
         return AnimatedLineChart(snapshot.data);
       }
 
       // chart data arrived but no data found
       else if (snapshot.connectionState == ConnectionState.done &&
-          chart == null) {
+          (chart == null || snapshot.data == null)) {
         return Text('No data found for this label');
 
         // else: i.e. data didn't arrive
