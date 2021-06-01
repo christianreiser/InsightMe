@@ -37,7 +37,7 @@ class Attribute {
 
   set note(String newNote) {
     if (newNote.length <= 255) {
-      // todo tell user about 255 length
+      // todo userXP: tell user about 255 length
       this._note = newNote;
     }
   }

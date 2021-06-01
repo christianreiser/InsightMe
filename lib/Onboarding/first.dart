@@ -3,15 +3,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../navigation_helper.dart';
 
-class IntroRoute extends StatefulWidget {
-  IntroRoute({Key key, this.title}) : super(key: key);
+class OnboardingRoute extends StatefulWidget {
+  OnboardingRoute({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _IntroRouteState createState() => _IntroRouteState();
+  _OnboardingRouteState createState() => _OnboardingRouteState();
 }
 
-class _IntroRouteState extends State<IntroRoute> {
+class _OnboardingRouteState extends State<OnboardingRoute> {
   @override
   Widget build(BuildContext context) {
     //createExampleAttributes();
@@ -32,7 +32,7 @@ class _IntroRouteState extends State<IntroRoute> {
                 children: <Widget>[
                   Text(
                     'Hi there,',
-                    // TODO GoogleFonts.handlee instead of TextStyle leads to Error:
+                    //  GoogleFonts.handlee instead of TextStyle leads to Error:
                     //  google_fonts was unable to load font Handlee-Regular because
                     //  the following exception occurred:
                     //  I/flutter (10551): Exception: Failed to load font with url:
@@ -55,9 +55,7 @@ class _IntroRouteState extends State<IntroRoute> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      RaisedButton(
-                        color: Theme.of(context).primaryColorDark,
-                        textColor: Theme.of(context).primaryColorLight,
+                      ElevatedButton(
                         child: Text(
                           'WHAT CAN YOU DO?',
                           textScaleFactor: 1.5,
@@ -73,13 +71,13 @@ class _IntroRouteState extends State<IntroRoute> {
                       SizedBox(
                         width: 10,
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           NavigationHelper().navigateToFutureDesign(context);
                           setHideWelcomeToTrue(); // set flag to hide Welcome screen from now on
                         },
                         child: Row(
-                          children: [Text('Skip Intro')],
+                          children: [Text('Skip Onboarding')],
                         ),
                       ),
                     ],

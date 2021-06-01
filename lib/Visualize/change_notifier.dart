@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
-import './../globals.dart' as globals;
+
+import '../globals.dart' as globals;
 
 // ChangeNotifier adds listening capabilities 
-class VisualizationChangeNotifier with ChangeNotifier {
+class OptimizationChangeNotifier with ChangeNotifier {
   static DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
 
   Future<String> getDefaultVisualizationAttribute() async {
@@ -17,7 +18,8 @@ class VisualizationChangeNotifier with ChangeNotifier {
     }
     return defaultVisualizationAttribute;
   }
-  String _selectedAttribute1 = globals.mostRecentAddedEntryName; // default value
+  // String _selectedAttribute1 = globals.mostRecentAddedEntryName; // default value
+  String _selectedAttribute1 = 'all'; // default value
   String get selectedAttribute1 => _selectedAttribute1;
 
   set selectedAttribute1(String newValue) {
@@ -25,7 +27,8 @@ class VisualizationChangeNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedAttribute2 = globals.secondMostRecentAddedEntryName; // default value
+  // String _selectedAttribute2 = globals.secondMostRecentAddedEntryName; // default value
+  String _selectedAttribute2 = 'all'; // default value
 
   String get selectedAttribute2 => _selectedAttribute2;
 
