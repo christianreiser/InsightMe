@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
+
 import 'fit_kit.dart';
 
 class GFit extends StatefulWidget {
