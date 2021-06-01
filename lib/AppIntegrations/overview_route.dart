@@ -78,7 +78,7 @@ class AppIntegrationsOverview extends StatelessWidget {
               ]),
               SizedBox(height: 10),
 
-              /*/// FitBit
+              /// FitBit
             Row(
               children: [
                 Expanded(
@@ -374,7 +374,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                       ]),
                 ),
               ],
-            ),*/
+            ),
               SizedBox(height: 10),
             ],
           ),

@@ -9,6 +9,7 @@ import 'Journal/searchOrCreateAttribute.dart';
 import 'Statistics/Functions/computeCorrelations.dart';
 import 'data_route.dart';
 import 'globals.dart' as globals;
+import 'home_route.dart';
 import 'optimize_route.dart';
 import 'strings.dart' as strings;
 //import 'package:starflut/starflut.dart';
@@ -226,8 +227,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     HomeRoute(), // TODO feature
     DataRoute(),
     OptimizeRoute(),
-    //OnboardingRoute(),
-    OnboardingRoute(),
+    // OnboardingRoute(),
   ];
 
   void _onItemTapped(int index) {
