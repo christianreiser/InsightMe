@@ -92,7 +92,7 @@ class EditAttributeState extends State<EditAttribute> {
             ),
 
             // Aggregation switch
-            //aggregationSwitch(), // todo design: back in
+            aggregationSwitch(), // todo design: back in
 
             Padding(
               // Note
