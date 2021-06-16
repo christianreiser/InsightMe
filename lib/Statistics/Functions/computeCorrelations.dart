@@ -20,10 +20,8 @@ class ComputeCorrelations {
     final directory = await getApplicationDocumentsDirectory();
 
     /// get Daily Summaries In Row For Each Day Format. calls WriteDailySummariesCSV
-    debugPrint('test1');
     final rowForEachDay =
         await getDailySummariesInRowForEachDayFormat(directory);
-    debugPrint('test2');
 
     final List<dynamic> labels = await getLabels(rowForEachDay);
 
@@ -31,7 +29,7 @@ class ComputeCorrelations {
     int numDays = rowForEachDay.length;
 
     final int numLabels = labels.length;
-    debugPrint('numLabels $numLabels');
+    debugPrint('numLabels: $numLabels');
 
     final rowForEachAttribute = getRowForEachAttribute(rowForEachDay, numDays);
 
@@ -61,10 +59,8 @@ class ComputeCorrelations {
               getXYStats(rowForEachAttribute, numDays, row, column);
 
           correlationCoefficient = computeCorrelationCoefficient(xYStats);
-          debugPrint('row: $row; column: $column');
-          debugPrint('xYStats: $xYStats;');
-          debugPrint('correlationCoefficient: $correlationCoefficient;');
-
+          debugPrint('\nrow: $row; column: $column; correlationCoefficient: $correlationCoefficient\n\n;');
+          // debugPrint('xYStats: $xYStats;');
 
           /// writeCorrelationCoefficients
           correlationMatrix = fillCorrelationCoefficientMatrix(
@@ -89,7 +85,6 @@ class ComputeCorrelations {
       directory) async {
     /// call createDailySummariesCSVFromDB
     await WriteDailySummariesCSV().writeDailySummariesCSV();
-    debugPrint('test3');
 
     /// read daily summaries csv and transform
     final input = new File(directory.path + "/daily_summaries.csv").openRead();
@@ -106,7 +101,7 @@ class ComputeCorrelations {
         rowForEachDay.removeAt(0); // separate labels from values
     labels.removeAt(0); // remove date-label
 //  debugPrint('labels $labels');
-    debugPrint('rowForEachDay $rowForEachDay');
+    debugPrint('rowForEachDay: $rowForEachDay');
     return labels;
   }
 
@@ -116,7 +111,7 @@ class ComputeCorrelations {
     /// 2. transpose
     debugPrint('rowForEachDay: $rowForEachDay');
     for (int day = 0; day < rowForEachDay.length; day++) {
-      debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
+      //debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
       rowForEachDay[day].removeAt(0);
     }
     var rowForEachAttribute = transposeChr(rowForEachDay);
@@ -168,7 +163,7 @@ class ComputeCorrelations {
 
           /// increment key by tiny amount to make it unique
           key = key + duplicateCount * 1E-13;
-          debugPrint('duplicate key incremented to $key');
+          //debugPrint('duplicate key incremented to $key');
         }
 
         keys.add(key);
@@ -196,9 +191,12 @@ class ComputeCorrelations {
       correlationCoefficient = StarStatsXY(xYStats).corCoefficient;
 
       // catch if correlationCoefficient == NaN(, due indifferent y values?)
-      if (correlationCoefficient.isNaN) {
-        correlationCoefficient = null;
-        debugPrint('correlationCoefficient.isNaN: ${correlationCoefficient.isNaN}');
+      if (correlationCoefficient != null) { // is nan doesn't work on null
+        if (correlationCoefficient.isNaN) {
+          correlationCoefficient = null;
+          // debugPrint(
+          //     'correlationCoefficient.isNaN: ${correlationCoefficient.isNaN}');
+        }
       }
 
       /// round if too many decimals
@@ -213,7 +211,7 @@ class ComputeCorrelations {
           'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
       correlationCoefficient = 0;
     }
-    debugPrint('correlationCoefficient: $correlationCoefficient');
+    //debugPrint('correlationCoefficient: $correlationCoefficient');
     return correlationCoefficient;
   }
 

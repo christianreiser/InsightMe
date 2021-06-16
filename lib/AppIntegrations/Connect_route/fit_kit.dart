@@ -185,9 +185,11 @@ class _FitKitGHubState extends State<FitKitGHub> {
 
     print('------------');
     //NOTE: Test dataset for json construction
-    Data data = Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
-    GoogleFitData fitData = GoogleFitData("STEP_COUNT", data);
-    print(jsonEncode(fitData.toJson()));
+    List<Data> googleFitDataSet = [];
+    Data data1 = Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
+    Data data2 = Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
+    GoogleFitData fitData = GoogleFitData("STEP_COUNT", googleFitDataSet);
+    //print(jsonEncode(fitData.toJson()));
   }
 
   String _dateToString(DateTime dateTime) {
