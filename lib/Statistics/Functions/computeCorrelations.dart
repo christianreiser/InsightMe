@@ -20,18 +20,17 @@ class ComputeCorrelations {
     final directory = await getApplicationDocumentsDirectory();
 
     /// get Daily Summaries In Row For Each Day Format. calls WriteDailySummariesCSV
-    debugPrint('test1');
     final rowForEachDay =
         await getDailySummariesInRowForEachDayFormat(directory);
-    debugPrint('test2');
 
+    debugPrint('right before getLabels.');
     final List<dynamic> labels = await getLabels(rowForEachDay);
 
     // getNumDays has to be after getDailySummariesInRowForEachDayFormat because there it is set
     int numDays = rowForEachDay.length;
 
     final int numLabels = labels.length;
-    debugPrint('numLabels $numLabels');
+    debugPrint('numLabels: $numLabels');
 
     final rowForEachAttribute = getRowForEachAttribute(rowForEachDay, numDays);
 
@@ -46,7 +45,7 @@ class ComputeCorrelations {
     /// iterate through rows. 1 to skip date
     for (int row = 1; row < numLabels + 1; row++) {
       /// write labels in first column in correlationMatrix
-      debugPrint('labels: $labels');
+      debugPrint('progress: row $row of $numLabels (numLabels) rows.');
       correlationMatrix[row][0] = labels[row - 1];
 
       /// iterate through columns. 1 to skip date
@@ -61,10 +60,10 @@ class ComputeCorrelations {
               getXYStats(rowForEachAttribute, numDays, row, column);
 
           correlationCoefficient = computeCorrelationCoefficient(xYStats);
-          debugPrint('row: $row; column: $column');
-          debugPrint('xYStats: $xYStats;');
-          debugPrint('correlationCoefficient: $correlationCoefficient;');
-
+          // debugPrint('row: $row; '
+          //     'column: $column; '
+          //     'correlationCoefficient: $correlationCoefficient; ');
+          // debugPrint('xYStats: $xYStats;');
 
           /// writeCorrelationCoefficients
           correlationMatrix = fillCorrelationCoefficientMatrix(
@@ -89,7 +88,6 @@ class ComputeCorrelations {
       directory) async {
     /// call createDailySummariesCSVFromDB
     await WriteDailySummariesCSV().writeDailySummariesCSV();
-    debugPrint('test3');
 
     /// read daily summaries csv and transform
     final input = new File(directory.path + "/daily_summaries.csv").openRead();
@@ -97,16 +95,17 @@ class ComputeCorrelations {
         .transform(utf8.decoder)
         .transform(new CsvToListConverter())
         .toList();
+    debugPrint('rowForEachDay: $rowForEachDay');
     return rowForEachDay;
   }
 
   Future<List<dynamic>> getLabels(rowForEachDay) async {
     /// separate labels from values
+    debugPrint('inside getLabels.');
     final List<dynamic> labels =
         rowForEachDay.removeAt(0); // separate labels from values
     labels.removeAt(0); // remove date-label
-//  debugPrint('labels $labels');
-    debugPrint('rowForEachDay $rowForEachDay');
+    debugPrint('labels: $labels');
     return labels;
   }
 
@@ -114,9 +113,9 @@ class ComputeCorrelations {
     /// remove dates from values
     /// 1. remove dates
     /// 2. transpose
-    debugPrint('rowForEachDay: $rowForEachDay');
+    // debugPrint('rowForEachDay: $rowForEachDay');
     for (int day = 0; day < rowForEachDay.length; day++) {
-      debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
+      // debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
       rowForEachDay[day].removeAt(0);
     }
     var rowForEachAttribute = transposeChr(rowForEachDay);
@@ -168,7 +167,7 @@ class ComputeCorrelations {
 
           /// increment key by tiny amount to make it unique
           key = key + duplicateCount * 1E-13;
-          debugPrint('duplicate key incremented to $key');
+          // debugPrint('duplicate key incremented to $key');
         }
 
         keys.add(key);
@@ -182,7 +181,7 @@ class ComputeCorrelations {
           debugPrint('_TypeError');
         }
       } else {
-        debugPrint('skipping because value is null');
+        // debugPrint('skipping because value is null');
       }
     }
     return xYStats;
@@ -198,7 +197,8 @@ class ComputeCorrelations {
       // catch if correlationCoefficient == NaN(, due indifferent y values?)
       if (correlationCoefficient.isNaN) {
         correlationCoefficient = null;
-        debugPrint('correlationCoefficient.isNaN: ${correlationCoefficient.isNaN}');
+        debugPrint(
+            'correlationCoefficient.isNaN: ${correlationCoefficient.isNaN}');
       }
 
       /// round if too many decimals
@@ -213,7 +213,7 @@ class ComputeCorrelations {
           'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
       correlationCoefficient = 0;
     }
-    debugPrint('correlationCoefficient: $correlationCoefficient');
+    // debugPrint('correlationCoefficient: $correlationCoefficient');
     return correlationCoefficient;
   }
 

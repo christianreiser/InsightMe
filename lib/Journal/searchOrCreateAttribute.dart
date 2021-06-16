@@ -24,7 +24,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   List<Attribute> _attributesToDisplay = globals.attributeList;
 
   // ini _isSelected
-  //debugPrint('${globals.attributeList.length}');
+  //debugPrint('globals.attributeList.length: ${globals.attributeList.length}');
   List<bool> _isSelected =
       List.filled(globals.attributeListLength, false); // true if long pressed
   bool _createButtonVisible = false; // initially don't show create button

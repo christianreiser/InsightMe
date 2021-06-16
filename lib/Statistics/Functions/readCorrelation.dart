@@ -49,7 +49,7 @@ Future<List<List>> readCorrelationMatrix() async {
       .transform(utf8.decoder)
       .transform(new CsvToListConverter())
       .toList();
-  debugPrint('got correlationMatrix $correlationMatrix');
+  debugPrint('got correlationMatrix: $correlationMatrix');
   return correlationMatrix;
 }
 

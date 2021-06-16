@@ -28,13 +28,12 @@ class WriteDailySummariesCSV {
     // add Attribute Titles To Daily Summaries
     List<List<dynamic>> dailySummariesList = []; // list of daily summaries
     dailySummariesList.add(attributeTitleList);
-    debugPrint('test4');
 
     // add entries to daily summaries list
     dailySummariesList = await addEntriesToDailySummaries(
         attributeListLength, attributeTitleList, dailySummariesList);
 
-    debugPrint('dailySummariesList $dailySummariesList');
+    // debugPrint('dailySummariesList: $dailySummariesList');
 
     // save to file
     return await saveDailySummariesToFile(dailySummariesList);
@@ -55,9 +54,9 @@ class WriteDailySummariesCSV {
         attributeCount++) {
       attributeTitleList[attributeCount + 1] =
           attributeList[attributeCount].title;
-      debugPrint('attributeCount $attributeCount');
-      debugPrint(
-          'attributeTitleList[attributeCount + 1]: ${attributeTitleList[attributeCount + 1]}');
+      // debugPrint('attributeCount $attributeCount');
+      // debugPrint(
+      //     'attributeTitleList[attributeCount + 1]: ${attributeTitleList[attributeCount + 1]}');
     }
     return attributeTitleList;
   }
@@ -76,15 +75,15 @@ class WriteDailySummariesCSV {
     List<dynamic> rowToAdd = List.filled(attributeListLength + 1, null);
 
     rowToAdd[0] = entryList[0].date.substring(0, 10); // add newest date as date
-    debugPrint('date: ${entryList[0].date}');
+    // debugPrint('date: ${entryList[0].date}');
     int entryListLength = entryList.length;
-    debugPrint('test6');
 
     /* fill rowToAdd with data and add to dailySummariesList */
     debugPrint('starting creating daily summaries csv');
-
+//sudo kiss
     // iterate through all entries
     for (int entryCount = 0; entryCount < entryListLength; entryCount++) {
+      // debugPrint('progress: $entryCount of $entryListLength.');
       // if date of entry matches row date:
       if (entryList[entryCount].date.substring(0, 10) == rowToAdd[0]) {
         // get column index:
@@ -97,12 +96,12 @@ class WriteDailySummariesCSV {
         // if date of entry does not match row date means a new date started:
       } else {
         dailySummariesList.add(rowToAdd); // add yesterday to dailySummariesList
-        debugPrint('rowToAdd $rowToAdd');
+        // debugPrint('rowToAdd: $rowToAdd');
         // clear rowToAdd from yesterdays values
         rowToAdd = List.filled(attributeListLength + 1, null);
         // set new date
         rowToAdd[0] = entryList[entryCount].date.substring(0, 10);
-        debugPrint('date: ${entryList[entryCount].date}');
+        // debugPrint('date: ${entryList[entryCount].date}');
         // get column index (same as above):
         int columnIndex =
             attributeTitleList.indexOf(entryList[entryCount].title);
@@ -111,7 +110,7 @@ class WriteDailySummariesCSV {
       }
     }
     dailySummariesList.add(rowToAdd); // add to dailySummariesList
-    debugPrint('rowToAdd $rowToAdd');
+    // debugPrint('rowToAdd: $rowToAdd');
     return dailySummariesList;
   }
 
@@ -123,7 +122,7 @@ class WriteDailySummariesCSV {
     File file = File(pathOfTheFileToWrite);
     //debugPrint('file $file');
     String csv = const ListToCsvConverter().convert(dailySummariesList);
-    debugPrint('csv $csv');
+    // debugPrint('csv: $csv');
     file.writeAsString(csv);
     return csv;
   }
