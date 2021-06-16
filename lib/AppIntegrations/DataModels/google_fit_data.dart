@@ -3,14 +3,16 @@ import 'package:json_annotation/json_annotation.dart';
 @JsonSerializable(explicitToJson: true)
 class GoogleFitData {
   String dataType;
-  Data data;
+  //Data data;
+  List<Data> dataSet;
 
-  GoogleFitData(this.dataType, this.data);
+  GoogleFitData(this.dataType, this.dataSet);
   Map<String, dynamic> toJson() => _$FitDataToJson(this);
 
   Map<String, dynamic> _$FitDataToJson(GoogleFitData instance) => <String, dynamic> {
     'dataType': instance.dataType,
-    'FitData': instance.data,
+    //'FitData': instance.data,
+    'dataSet': instance.dataSet,
   };
 }
 

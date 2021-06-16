@@ -115,7 +115,7 @@ class ComputeCorrelations {
     /// 2. transpose
     // debugPrint('rowForEachDay: $rowForEachDay');
     for (int day = 0; day < rowForEachDay.length; day++) {
-      // debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
+      //debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
       rowForEachDay[day].removeAt(0);
     }
     var rowForEachAttribute = transposeChr(rowForEachDay);
@@ -167,7 +167,7 @@ class ComputeCorrelations {
 
           /// increment key by tiny amount to make it unique
           key = key + duplicateCount * 1E-13;
-          // debugPrint('duplicate key incremented to $key');
+          //debugPrint('duplicate key incremented to $key');
         }
 
         keys.add(key);
@@ -213,7 +213,7 @@ class ComputeCorrelations {
           'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
       correlationCoefficient = 0;
     }
-    // debugPrint('correlationCoefficient: $correlationCoefficient');
+    //debugPrint('correlationCoefficient: $correlationCoefficient');
     return correlationCoefficient;
   }
 

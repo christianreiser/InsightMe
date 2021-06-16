@@ -96,12 +96,12 @@ class WriteDailySummariesCSV {
         // if date of entry does not match row date means a new date started:
       } else {
         dailySummariesList.add(rowToAdd); // add yesterday to dailySummariesList
-        // debugPrint('rowToAdd: $rowToAdd');
+        //debugPrint('rowToAdd $rowToAdd');
         // clear rowToAdd from yesterdays values
         rowToAdd = List.filled(attributeListLength + 1, null);
         // set new date
         rowToAdd[0] = entryList[entryCount].date.substring(0, 10);
-        // debugPrint('date: ${entryList[entryCount].date}');
+        //debugPrint('date: ${entryList[entryCount].date}');
         // get column index (same as above):
         int columnIndex =
             attributeTitleList.indexOf(entryList[entryCount].title);
@@ -110,7 +110,7 @@ class WriteDailySummariesCSV {
       }
     }
     dailySummariesList.add(rowToAdd); // add to dailySummariesList
-    // debugPrint('rowToAdd: $rowToAdd');
+    //debugPrint('rowToAdd $rowToAdd');
     return dailySummariesList;
   }
 
