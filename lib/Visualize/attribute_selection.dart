@@ -108,7 +108,7 @@ class _DropDownState extends State<DropDown> {
       /// +1 for 'all'
       //debugPrint('itemList $itemList');
     }
-    debugPrint('itemList: $itemList');
+    // debugPrint('itemList: $itemList');
 
     _dropdownMenuItems = buildDropdownMenuItems(itemList);
     return itemList;

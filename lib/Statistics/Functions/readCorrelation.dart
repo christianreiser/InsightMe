@@ -49,19 +49,9 @@ Future<List<List>> readCorrelationMatrix() async {
       .transform(utf8.decoder)
       .transform(new CsvToListConverter())
       .toList();
-  debugPrint('got correlationMatrix: $correlationMatrix');
+  // debugPrint('got correlationMatrix: $correlationMatrix');
   return correlationMatrix;
 }
-
-// removeFirstEntryOfEachRow(matrix) {
-//   /// 1. transpose
-//   /// 2. remove
-//   /// 3. transpose back
-//   // transpose to make remove label column work
-//   List<List<dynamic>> matrixT = List<List<dynamic>>.from(transpose(matrix));
-//   matrixT.removeAt(0); // remove label column
-//   return List<List<dynamic>>.from(transpose(matrixT)); // transpose back;
-// }
 
 listArgExtreme(numList) {
   //final vector = Vector.fromList(numList);
@@ -88,45 +78,45 @@ listArgExtreme(numList) {
   return argExtreme;
 }
 
-Future<String> sortedAttributeList(
-    selectedAttribute1, selectedAttribute2) async {
-  // readCorrelationMatrix
-  List<List<dynamic>> dynamicLabeledCorrelationMatrix =
-      await readCorrelationMatrix();
-  debugPrint(
-      'dynamicTwiceLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
-
-  // separate labels
-  final List<dynamic> labels = dynamicLabeledCorrelationMatrix.removeAt(0);
-  debugPrint(
-      'dynamicLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
-
-  /// if one selectedAttribute is on all
-  print('selectedAttribute1: $selectedAttribute1');
-  String nextAttributeName;
-  if (selectedAttribute1 != 'All') {
-    var correlationCoefficientsOfOneAttribute =
-        await readCorrelationCoefficientsOfOneAttribute(selectedAttribute1);
-
-    // filter Nulls
-    correlationCoefficientsOfOneAttribute =
-        convertNullTo0(correlationCoefficientsOfOneAttribute);
-    print(
-        'correlationCoefficientsOfOneAttribute $correlationCoefficientsOfOneAttribute');
-
-    int argExtreme = listArgExtreme(correlationCoefficientsOfOneAttribute);
-    print('argExtreme: $argExtreme');
-
-    nextAttributeName = labels[argExtreme + 1];
-    print(nextAttributeName);
-  }
-  //
-  // /// if no selectedAttributes is on all
-  // else if (selectedAttribute2 != 'All') {} else {
-  //   debugPrint('ERROR unhandled selected attribute combination');
-  // }
-  else {
-    nextAttributeName = 'Happiness';
-  }
-  return nextAttributeName;
-}
+// Future<String> sortedAttributeList(
+//     selectedAttribute1, selectedAttribute2) async {
+//   // readCorrelationMatrix
+//   List<List<dynamic>> dynamicLabeledCorrelationMatrix =
+//       await readCorrelationMatrix();
+//   debugPrint(
+//       'dynamicTwiceLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
+//
+//   // separate labels
+//   final List<dynamic> labels = dynamicLabeledCorrelationMatrix.removeAt(0);
+//   debugPrint(
+//       'dynamicLabeledCorrelationMatrix:good: $dynamicLabeledCorrelationMatrix');
+//
+//   /// if one selectedAttribute is on all
+//   print('selectedAttribute1: $selectedAttribute1');
+//   String nextAttributeName;
+//   if (selectedAttribute1 != 'All') {
+//     var correlationCoefficientsOfOneAttribute =
+//         await readCorrelationCoefficientsOfOneAttribute(selectedAttribute1);
+//
+//     // filter Nulls
+//     correlationCoefficientsOfOneAttribute =
+//         convertNullTo0(correlationCoefficientsOfOneAttribute);
+//     print(
+//         'correlationCoefficientsOfOneAttribute $correlationCoefficientsOfOneAttribute');
+//
+//     int argExtreme = listArgExtreme(correlationCoefficientsOfOneAttribute);
+//     print('argExtreme: $argExtreme');
+//
+//     nextAttributeName = labels[argExtreme + 1];
+//     debugPrint('nextAttributeName $nextAttributeName');
+//   }
+//   //
+//   // /// if no selectedAttributes is on all
+//   // else if (selectedAttribute2 != 'All') {} else {
+//   //   debugPrint('ERROR unhandled selected attribute combination');
+//   // }
+//   else {
+//     nextAttributeName = 'Happiness';
+//   }
+//   return nextAttributeName;
+// }

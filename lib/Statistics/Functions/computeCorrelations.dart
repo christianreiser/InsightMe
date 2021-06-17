@@ -1,15 +1,13 @@
-import 'dart:convert' show utf8;
 import 'dart:io';
 import 'dart:math';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:insightme/Core/functions/misc.dart';
+import 'package:insightme/Core/functions/aggregatedData.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starfruit/starfruit.dart';
 
-import '../../Database/create_daily_summary.dart';
 
 class ComputeCorrelations {
   computeCorrelations() async {
@@ -32,7 +30,7 @@ class ComputeCorrelations {
     final int numLabels = labels.length;
     debugPrint('numLabels: $numLabels');
 
-    final rowForEachAttribute = getRowForEachAttribute(rowForEachDay, numDays);
+    final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
 
     /// ini correlation matrix
     var correlationMatrix = List.generate(
@@ -82,109 +80,6 @@ class ComputeCorrelations {
     int numDays = prefs.getInt('numDays') ?? null;
     debugPrint('got numDays $numDays');
     return numDays;
-  }
-
-  Future<List<dynamic>> getDailySummariesInRowForEachDayFormat(
-      directory) async {
-    /// call createDailySummariesCSVFromDB
-    await WriteDailySummariesCSV().writeDailySummariesCSV();
-
-    /// read daily summaries csv and transform
-    final input = new File(directory.path + "/daily_summaries.csv").openRead();
-    final rowForEachDay = await input
-        .transform(utf8.decoder)
-        .transform(new CsvToListConverter())
-        .toList();
-    debugPrint('rowForEachDay: $rowForEachDay');
-    return rowForEachDay;
-  }
-
-  Future<List<dynamic>> getLabels(rowForEachDay) async {
-    /// separate labels from values
-    debugPrint('inside getLabels.');
-    final List<dynamic> labels =
-        rowForEachDay.removeAt(0); // separate labels from values
-    labels.removeAt(0); // remove date-label
-    debugPrint('labels: $labels');
-    return labels;
-  }
-
-  List<dynamic> getRowForEachAttribute(rowForEachDay, numDays) {
-    /// remove dates from values
-    /// 1. remove dates
-    /// 2. transpose
-    // debugPrint('rowForEachDay: $rowForEachDay');
-    for (int day = 0; day < rowForEachDay.length; day++) {
-      //debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
-      rowForEachDay[day].removeAt(0);
-    }
-    var rowForEachAttribute = transposeChr(rowForEachDay);
-    return rowForEachAttribute;
-  }
-
-  Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
-    /// get xYStats which are needed to compute correlations
-
-    /// ini xYStats
-    Map<num, num> xYStats = {};
-    int duplicateCount = 0;
-
-    /// ini key value which are added to xYStats
-    double key;
-    double value;
-
-    /// ini keys to keep track of key uniqueness
-    List<double> keys = [];
-
-    for (int day = 0; day < numDays; day++) {
-      if (rowForEachAttribute[row - 1][day].runtimeType != String) {
-        key = (rowForEachAttribute[row - 1][day]).toDouble();
-      }
-      //debugPrint('rowForEachAttribute[column - 1][day]: ${rowForEachAttribute[column - 1][day]}');
-      //debugPrint('rowForEachAttribute: ${rowForEachAttribute}');
-
-      // convert to doubles, skip 'null' Strings
-      if (rowForEachAttribute[column - 1][day].runtimeType != String) {
-        value = (rowForEachAttribute[column - 1][day]).toDouble();
-      }
-      // debugPrint('day: $day');
-      // debugPrint('key $key');
-      // debugPrint('value $value');
-
-      /// exclude day if one of the two attributes has a value of null
-      if (key != null && value != null) {
-//            debugPrint('there is no null');
-
-        // debugPrint('row - 1: ${row - 1}, day: $day');
-        // debugPrint('key $key');
-        // debugPrint('value $value');
-
-        /// keys must be unique. Track keys. if not unique modify it a little.
-        /// search for duplicate
-        bool duplicate = keys.contains(key);
-        if (duplicate) {
-          duplicateCount = duplicateCount + 1;
-
-          /// increment key by tiny amount to make it unique
-          key = key + duplicateCount * 1E-13;
-          //debugPrint('duplicate key incremented to $key');
-        }
-
-        keys.add(key);
-        //debugPrint('keys: $keys');
-        //debugPrint('keys.cardinality: ${keys.cardinality}');
-        try {
-          /// write xYStats as key value pairs.
-          xYStats[(key)] = (value);
-          //debugPrint('xYStats $xYStats');
-        } catch (e) {
-          debugPrint('_TypeError');
-        }
-      } else {
-        // debugPrint('skipping because value is null');
-      }
-    }
-    return xYStats;
   }
 
   num computeCorrelationCoefficient(xYStats) {

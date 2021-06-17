@@ -108,7 +108,7 @@ class DatabaseHelperEntry {
         where: whereString,
         whereArgs: whereArguments);
 
-    //result.forEach((row) => print(row)); // needed?
+    //result.forEach((row) => print('row: $row')); // needed?
 
     return result;
   }

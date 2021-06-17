@@ -53,23 +53,22 @@ Widget sfCartesianChart(chartDataList) {
   return SfCartesianChart(
       primaryXAxis:
           DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
-      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round
-          ),
-      series: <ChartSeries>[        scatterSeries(chartDataList),
+      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
+      series: <ChartSeries>[
+        scatterSeries(chartDataList),
       ]);
 }
 
-Widget twoAttributeSfCartesianChart(chartDataListList) {
+Widget twoAttributeSfCartesianChart(chartDataList) {
   return SfCartesianChart(
-      primaryXAxis:
-          DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
-      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round
-          ),
+      primaryXAxis: NumericAxis(
+        // desiredIntervals: 3,
+      ),
+      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
       // zoomPanBehavior: _zoomPanBehavior, // todo
       // tooltipBehavior: _tooltipBehavior, // todo
       series: <ChartSeries>[
-        scatterSeries(chartDataListList[0]),
-        scatterSeries(chartDataListList[1]),
+        scatterSeries(chartDataList),
       ]);
 }
 

@@ -159,8 +159,7 @@ class _ImportState extends State<Import> {
     }, onDone: () {
       debugPrint('Done!');
     }, onError: (e) {
-      debugPrint('ERROR!');
-      debugPrint(e.toString());
+      debugPrint('ERROR! ${e.toString()}');
     });
   }
 
