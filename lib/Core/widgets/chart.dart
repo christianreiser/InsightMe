@@ -49,26 +49,12 @@ class ChartData {
 
 Widget sfCartesianChart(chartDataList) {
   debugPrint('chartData[0]: ${(ChartData)}');
-  // inspect(chartData);
 
   return SfCartesianChart(
       primaryXAxis:
           DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
       primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round
-          // minimum: chartData[value].reduce(min),
-          // maximum: chartData['value'].reduce(max),
           ),
-      // borderWidth: 5,
-      // borderColor: Colors.red, // none
-      // backgroundColor: Colors.yellow,
-      // plotAreaBackgroundColor: Colors.green,
-      // plotAreaBorderColor: Colors.blue,
-      // plotAreaBorderWidth: 7,
-      //plotAreaBackgroundImage: 'images/livechart.png',
-      annotations: <CartesianChartAnnotation>[],
-      // zoomPanBehavior: _zoomPanBehavior,
-      // tooltipBehavior: _tooltipBehavior,
-      // Enable tooltip
       series: <ChartSeries>[        scatterSeries(chartDataList),
       ]);
 }
@@ -78,20 +64,9 @@ Widget twoAttributeSfCartesianChart(chartDataListList) {
       primaryXAxis:
           DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
       primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round
-          // minimum: chartData[value].reduce(min),
-          // maximum: chartData['value'].reduce(max),
           ),
-      // borderWidth: 5,
-      // borderColor: Colors.red, // none
-      // backgroundColor: Colors.yellow,
-      // plotAreaBackgroundColor: Colors.green,
-      // plotAreaBorderColor: Colors.blue,
-      // plotAreaBorderWidth: 7,
-      //plotAreaBackgroundImage: 'images/livechart.png',
-      annotations: <CartesianChartAnnotation>[],
-      // zoomPanBehavior: _zoomPanBehavior,
-      // tooltipBehavior: _tooltipBehavior,
-      // Enable tooltip
+      // zoomPanBehavior: _zoomPanBehavior, // todo
+      // tooltipBehavior: _tooltipBehavior, // todo
       series: <ChartSeries>[
         scatterSeries(chartDataListList[0]),
         scatterSeries(chartDataListList[1]),

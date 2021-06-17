@@ -7,7 +7,6 @@ import '../../Database/entry.dart';
 final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
 
-/// todo remove green lines
 Future<List<ChartData>> oneAttributeChartData(attributeName) async {
   // Get dateTime and values of entries from database and set as state
   List<Entry> filteredEntryList =
