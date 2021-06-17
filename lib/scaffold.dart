@@ -259,7 +259,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
           // DatabaseHelperEntry().deleteDb();
           // DatabaseHelperAttribute().deleteDb();
         } else if (result == Choice.tmpFunction) {
-          //tmpFunction();
+          tmpFunction();
           // DatabaseHelperEntry().deleteDb();
           // DatabaseHelperAttribute().deleteDb();
         }
@@ -345,21 +345,21 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
         //     ],
         //   ),
         // ),
-        // PopupMenuItem<Choice>(
-        //   value: Choice.tmpFunction,
-        //   child: Row(
-        //     children: [
-        //       Icon(
-        //         Icons.directions_run,
-        //         color: Colors.red,
-        //       ),
-        //       SizedBox(
-        //         width: 5,
-        //       ),
-        //       Text('tmpFunction'),
-        //     ],
-        //   ),
-        // ),
+        PopupMenuItem<Choice>(
+          value: Choice.tmpFunction,
+          child: Row(
+            children: [
+              Icon(
+                Icons.directions_run,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('tmpFunction'),
+            ],
+          ),
+        ),
       ],
     );
 
@@ -373,5 +373,13 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       debugPrint('attributeListLength ${globals.attributeListLength}');
       print('globals.attributeListLength ${globals.attributeListLength}');
     }
+  }
+
+  tmpFunction() {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => TmpRoute()),
+    // );
+
   }
 }

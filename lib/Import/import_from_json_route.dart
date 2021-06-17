@@ -104,11 +104,12 @@ class _ImportState extends State<Import> {
         .listen((String line) {
       List column = line.split(','); // split by comma
       lineCounter++;
-      debugPrint('lineCounter $lineCounter');
+      debugPrint('day: $lineCounter');
 
       // iterate through columns
-      for (int columnCount = 0; columnCount < column.length; columnCount++) {
-        //debugPrint('\ncolumnCount $columnCount');
+      final int columnLength = column.length;
+      for (int columnCount = 0; columnCount < columnLength; columnCount++) {
+        //debugPrint('\nProgress: column $columnCount of $columnLength'); // too much
         String _cellContent = column[columnCount];
 
         if (lineCounter > 0 && columnCount > 0) {
@@ -133,7 +134,7 @@ class _ImportState extends State<Import> {
         else if (lineCounter > 0 && columnCount == 0) {
           // temporarily store dateTime
           dateTimeStamp = DateTime.parse(_cellContent);
-          debugPrint('got dateTime $_cellContent and stored temporarily');
+          // debugPrint('got dateTime $_cellContent and stored temporarily');
         }
 
         // get attribute names
@@ -156,9 +157,10 @@ class _ImportState extends State<Import> {
         // TODO userXP: feedback if import was successful
       }
     }, onDone: () {
-      print('File is now closed!');
+      debugPrint('Done!');
     }, onError: (e) {
-      print(e.toString());
+      debugPrint('ERROR!');
+      debugPrint(e.toString());
     });
   }
 
@@ -181,7 +183,7 @@ class _ImportState extends State<Import> {
     } else {
       // Case 2: Insert Operation
       result = await helperEntry.insertEntry(entry);
-      debugPrint('saved entry from: ${entry.date}');
+      // debugPrint('saved entry from: ${entry.date}');
     }
 
     // SUCCESS FAILURE STATUS DIALOG

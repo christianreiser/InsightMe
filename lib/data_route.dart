@@ -98,7 +98,7 @@ class _DataRouteState extends State<DataRoute> {
             SizedBox(height: 10),
             SizedBox(
               height: 200,
-              child: futureOneAttributeAnimatedLineChart(attributeName),
+              child: futureOneAttributeScatterPlot(attributeName),
             )
           ]),
     );

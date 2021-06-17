@@ -1,6 +1,7 @@
 import 'package:fl_animated_linechart/chart/line_chart.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
+import 'package:insightme/Core/widgets/chart.dart';
 
 import '../../Database/database_helper_entry.dart';
 import '../../Database/entry.dart';
@@ -9,6 +10,30 @@ final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
 //  reset chart
 LineChart chart; // = null;
+List<ChartData> chartData = [];
+
+
+/// todo remove green lines
+Future<List<ChartData>> oneAttributeChartData(attributeName) async {
+  // Get dateTime and values of entries from database and set as state
+  List<Entry> filteredEntryList =
+      await databaseHelperEntry.getFilteredEntryList(attributeName);
+
+  // create chartDataList:
+  List<ChartData> chartDataList = <ChartData>[];
+
+  // fill chartDataList
+  for (int ele = 0; ele < filteredEntryList.length; ele++) {
+    chartDataList.add(
+      ChartData(
+        DateTime.parse(filteredEntryList[ele].date),
+        double.parse(filteredEntryList[ele].value),
+      ),
+    );
+  }
+  debugPrint('chartDataList: $chartDataList');
+  return chartDataList;
+}
 
 Future<Map<DateTime, double>> getDateTimeValueMap(attributeName) async {
   // Get dateTime and values of entries from database and set as state
@@ -29,21 +54,6 @@ Future<Map<DateTime, double>> getDateTimeValueMap(attributeName) async {
     )] = double.parse(filteredEntryList[ele].value);
   }
   return dateTimeValueMap;
-}
-
-Future<LineChart> oneAttributeChart(attributeName) async {
-  // used in data tab
-  Map<DateTime, double> dateTimeValueMap1 =
-      await getDateTimeValueMap(attributeName);
-  debugPrint('dateTimeValueMap1: $dateTimeValueMap1');
-  chart = LineChart.fromDateTimeMaps(
-    [dateTimeValueMap1],
-    [Colors.blue],
-    [attributeName], // axis numbers
-    tapTextFontWeight: FontWeight.w600,
-  );
-  debugPrint('chart: $chart');
-  return chart;
 }
 
 Future<LineChart> twoAttributeChart(attributeName1, attributeName2) async {
