@@ -197,8 +197,8 @@ class ComputeCorrelations {
       // catch if correlationCoefficient == NaN(, due indifferent y values?)
       if (correlationCoefficient.isNaN) {
         correlationCoefficient = null;
-        debugPrint(
-            'correlationCoefficient.isNaN: ${correlationCoefficient.isNaN}');
+        // debugPrint(
+        //     'correlationCoefficient.isNaN: ${correlationCoefficient.isNaN}');
       }
 
       /// round if too many decimals

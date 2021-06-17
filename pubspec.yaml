@@ -21,7 +21,7 @@ dependencies:
   csv: ^5.0.0 # write csv for daily summaries
   starfruit: ^1.0.0+1 # correlation
   sqflite_migration: ^0.3.0 # database version update
-  flutter_colorpicker: ^0.4.0 # pick color for label
+  flutter_colorpicker: 0.4.0 # todo ^ pick try later to upgrade again # color for label
   health: ^3.0.5
   fit_kit: ^1.1.2
   json_serializable: ^4.1.2
