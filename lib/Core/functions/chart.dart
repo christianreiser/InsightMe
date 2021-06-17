@@ -6,10 +6,6 @@ import '../../Database/entry.dart';
 
 final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
-//  reset chart
-// LineChart chart; // = null;
-//List<ChartData> chartData = [];
-
 
 /// todo remove green lines
 Future<List<ChartData>> oneAttributeChartData(attributeName) async {

@@ -1,10 +1,8 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Core/functions/chart.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 
 /// TODO: zoom, tooltip, trackball
 /// Error: Cannot run with sound null safety, because the following dependencies
@@ -49,18 +47,17 @@ class ChartData {
   final double value;
 }
 
-Widget sfCartesianChart(chartData) {
-  debugPrint('ChartData data len: ${(chartData.length)}');
+Widget sfCartesianChart(chartDataList) {
   debugPrint('chartData[0]: ${(ChartData)}');
   // inspect(chartData);
 
   return SfCartesianChart(
       primaryXAxis:
-      DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
+          DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
       primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round
-        // minimum: chartData[value].reduce(min),
-        // maximum: chartData['value'].reduce(max),
-      ),
+          // minimum: chartData[value].reduce(min),
+          // maximum: chartData['value'].reduce(max),
+          ),
       // borderWidth: 5,
       // borderColor: Colors.red, // none
       // backgroundColor: Colors.yellow,
@@ -72,40 +69,18 @@ Widget sfCartesianChart(chartData) {
       // zoomPanBehavior: _zoomPanBehavior,
       // tooltipBehavior: _tooltipBehavior,
       // Enable tooltip
-      series: <ChartSeries>[
-        // Renders scatter chart
-        ScatterSeries<ChartData, DateTime>(
-          opacity: 0.4,
-          markerSettings:
-          MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
-          animationDuration: 3000,
-          enableTooltip: true,
-          dataSource: chartData,
-          trendlines: <Trendline>[
-            Trendline(
-                type: TrendlineType.movingAverage,
-                color: Colors.teal,
-                width: 2,
-                opacity: 0.4,
-                enableTooltip: true,
-                period: 7,
-                animationDuration: 5000.0)
-          ],
-          xValueMapper: (ChartData data, _) => data.dateTime,
-          yValueMapper: (ChartData data, _) => data.value,
-        )
+      series: <ChartSeries>[        scatterSeries(chartDataList),
       ]);
 }
 
 Widget twoAttributeSfCartesianChart(chartDataListList) {
-
   return SfCartesianChart(
       primaryXAxis:
-      DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
+          DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
       primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round
-        // minimum: chartData[value].reduce(min),
-        // maximum: chartData['value'].reduce(max),
-      ),
+          // minimum: chartData[value].reduce(min),
+          // maximum: chartData['value'].reduce(max),
+          ),
       // borderWidth: 5,
       // borderColor: Colors.red, // none
       // backgroundColor: Colors.yellow,
@@ -118,28 +93,33 @@ Widget twoAttributeSfCartesianChart(chartDataListList) {
       // tooltipBehavior: _tooltipBehavior,
       // Enable tooltip
       series: <ChartSeries>[
-        // Renders scatter chart
-        ScatterSeries<ChartData, DateTime>(
-          opacity: 0.4,
-          markerSettings:
-          MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
-          animationDuration: 3000,
-          enableTooltip: true,
-          dataSource: chartDataListList[0],
-          trendlines: <Trendline>[
-            Trendline(
-                type: TrendlineType.movingAverage,
-                color: Colors.teal,
-                width: 2,
-                opacity: 0.4,
-                enableTooltip: true,
-                period: 7,
-                animationDuration: 5000.0)
-          ],
-          xValueMapper: (ChartData data, _) => data.dateTime,
-          yValueMapper: (ChartData data, _) => data.value,
-        )
+        scatterSeries(chartDataListList[0]),
+        scatterSeries(chartDataListList[1]),
       ]);
+}
+
+scatterSeries(chartDataList) {
+// Renders scatter chart
+  return ScatterSeries<ChartData, DateTime>(
+    opacity: 0.4,
+    markerSettings:
+        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+    animationDuration: 3000,
+    enableTooltip: true,
+    dataSource: chartDataList,
+    trendlines: <Trendline>[
+      Trendline(
+          type: TrendlineType.movingAverage,
+          color: Colors.teal,
+          width: 2,
+          opacity: 0.4,
+          enableTooltip: true,
+          period: 7,
+          animationDuration: 5000.0)
+    ],
+    xValueMapper: (ChartData data, _) => data.dateTime,
+    yValueMapper: (ChartData data, _) => data.value,
+  );
 }
 
 Widget futureOneAttributeScatterPlot(attributeName) {
