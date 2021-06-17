@@ -1,5 +1,3 @@
-import 'package:fl_animated_linechart/chart/line_chart.dart';
-import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 
@@ -9,8 +7,8 @@ import '../../Database/entry.dart';
 final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
 //  reset chart
-LineChart chart; // = null;
-List<ChartData> chartData = [];
+// LineChart chart; // = null;
+//List<ChartData> chartData = [];
 
 
 /// todo remove green lines
@@ -35,37 +33,9 @@ Future<List<ChartData>> oneAttributeChartData(attributeName) async {
   return chartDataList;
 }
 
-Future<Map<DateTime, double>> getDateTimeValueMap(attributeName) async {
-  // Get dateTime and values of entries from database and set as state
-  // input: selectedAttribute
-  // returns: dateTimeValueMap
-  List<Entry> filteredEntryList =
-      await databaseHelperEntry.getFilteredEntryList(attributeName);
-
-  // create dateTimeValueMap:
-  Map<DateTime, double> dateTimeValueMap = {};
-  dateTimeValueMap[DateTime.parse(
-    (filteredEntryList[0].date),
-  )] = 1.0; // =1 is needed
-  debugPrint('filteredEntryList.length ${filteredEntryList.length}');
-  for (int ele = 0; ele < filteredEntryList.length; ele++) {
-    dateTimeValueMap[DateTime.parse(
-      (filteredEntryList[ele].date),
-    )] = double.parse(filteredEntryList[ele].value);
-  }
-  return dateTimeValueMap;
-}
-
-Future<LineChart> twoAttributeChart(attributeName1, attributeName2) async {
-  Map<DateTime, double> dateTimeValueMap1 =
-      await getDateTimeValueMap(attributeName1);
-  Map<DateTime, double> dateTimeValueMap2 =
-      await getDateTimeValueMap(attributeName2);
-  chart = LineChart.fromDateTimeMaps(
-    [dateTimeValueMap1, dateTimeValueMap2],
-    [Colors.green, Colors.blue],
-    [attributeName1, attributeName2],
-    tapTextFontWeight: FontWeight.w600,
-  );
-  return chart;
+Future<List<List<ChartData>>> twoAttributeChartData(attributeName1, attributeName2) async {
+  List<ChartData> chartDataList1 = await oneAttributeChartData(attributeName1);
+  List<ChartData> chartDataList2 = await oneAttributeChartData(attributeName2);
+  List<List<ChartData>> chartDataListList = [chartDataList1,chartDataList2];
+  return chartDataListList;
 }

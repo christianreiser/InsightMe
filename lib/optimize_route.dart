@@ -94,7 +94,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
               /// height constraint
               child: SizedBox.expand(
                 /// for max width
-                child: futureTwoAttributeAnimatedLineChart(
+                child: futureTwoAttributeScatterPlot(
                     schedule.selectedAttribute1, schedule.selectedAttribute2),
               ),
             ),
