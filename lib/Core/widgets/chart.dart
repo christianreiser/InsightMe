@@ -89,7 +89,7 @@ Widget sfCartesianChart(chartData) {
                 width: 2,
                 opacity: 0.4,
                 enableTooltip: true,
-                period: 10,
+                period: 7,
                 animationDuration: 5000.0)
           ],
           xValueMapper: (ChartData data, _) => data.dateTime,
