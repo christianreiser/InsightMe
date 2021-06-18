@@ -30,5 +30,6 @@ List<List<dynamic>> transposeChr(List<List<dynamic>> colsInRows) {
       rowsInCols[col][row] = colsInRows[row][col];
     }
   }
+  // debugPrint('after transpose rowsInCols: $rowsInCols');
   return rowsInCols;
 }

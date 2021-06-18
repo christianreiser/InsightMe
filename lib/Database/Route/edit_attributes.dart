@@ -306,7 +306,8 @@ class EditAttributeState extends State<EditAttribute> {
 
   // Update the title of attribute object
   void updateTitle() {
-    attribute.title = titleController.text;
+    /// TODO "0" or "null" breaks reading correlation matrix as there are also 0 and "null"
+    attribute.title = titleController.text.toString();
   }
 
   // Update the note of attribute object
