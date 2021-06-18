@@ -12,7 +12,7 @@ Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   var correlationMatrix = await readCorrelationMatrix();
   int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
   //debugPrint('2');
-  int attributeIndex2 = transposeChr(correlationMatrix)[0].indexOf(attribute2);
+  final int attributeIndex2 = transposeChr(correlationMatrix)[0].indexOf(attribute2);
   debugPrint('correlationMatrix[attributeIndex1][attributeIndex2]: ${correlationMatrix[attributeIndex1][attributeIndex2]}');
   final num correlationCoefficient = correlationMatrix[attributeIndex1][attributeIndex2];
   return correlationCoefficient;

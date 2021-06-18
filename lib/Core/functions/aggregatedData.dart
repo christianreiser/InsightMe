@@ -7,7 +7,6 @@ import 'package:insightme/Database/create_daily_summary.dart';
 
 import 'misc.dart';
 
-
 Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
   /// get xYStats which are needed to compute correlations
 
@@ -73,8 +72,7 @@ Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
   return xYStats;
 }
 
-Future<List<dynamic>> getDailySummariesInRowForEachDayFormat(
-    directory) async {
+Future<List<dynamic>> getDailySummariesInRowForEachDayFormat(directory) async {
   /// call createDailySummariesCSVFromDB
   await WriteDailySummariesCSV().writeDailySummariesCSV();
 
@@ -84,7 +82,9 @@ Future<List<dynamic>> getDailySummariesInRowForEachDayFormat(
       .transform(utf8.decoder)
       .transform(new CsvToListConverter())
       .toList();
-  // debugPrint('rowForEachDay: $rowForEachDay');
+  if (rowForEachDay.isEmpty) {
+    debugPrint('ERROR!!!: rowForEachDay is empty: $rowForEachDay');
+  }
   return rowForEachDay;
 }
 
@@ -97,14 +97,14 @@ List<dynamic> getRowForEachAttribute(rowForEachDay) {
     //debugPrint('rowForEachDay[day]: ${rowForEachDay[day]}');
     rowForEachDay[day].removeAt(0);
   }
-  var rowForEachAttribute = transposeChr(rowForEachDay);
+  final rowForEachAttribute = transposeChr(rowForEachDay);
   return rowForEachAttribute;
 }
 
 Future<List<dynamic>> getLabels(rowForEachDay) async {
   /// separate labels from values
   final List<dynamic> labels =
-  rowForEachDay.removeAt(0); // separate labels from values
+      rowForEachDay.removeAt(0); // separate labels from values
   labels.removeAt(0); // remove date-label
   // debugPrint('labels: $labels');
   return labels;

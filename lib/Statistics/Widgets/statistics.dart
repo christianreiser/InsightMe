@@ -102,7 +102,8 @@ Container _correlationBar(_correlationCoefficient) {
         height: 5,
         child: Row(children: [
           Expanded(
-              flex: (_absIntCorrCoeff), child: Container(color: Colors.teal)),
+              flex: (_absIntCorrCoeff),
+              child: Container(color: barColor(_correlationCoefficient))),
           Expanded(
             flex: (100 - _absIntCorrCoeff),
             child: Container(),
@@ -111,6 +112,16 @@ Container _correlationBar(_correlationCoefficient) {
       ),
     ),
   );
+}
+
+Color barColor(_correlationCoefficient) {
+  Color barColor;
+  if (_correlationCoefficient >= 0) {
+    barColor = Colors.teal;
+  } else {
+    barColor = Colors.red;
+  }
+  return barColor;
 }
 
 Row _confidenceStars(_pValue) {

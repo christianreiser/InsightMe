@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_charts/flutter_charts.dart';
 
 getFirstLetter(String title) {
@@ -11,10 +12,10 @@ getFirstLetter(String title) {
 }
 
 List<List<dynamic>> transposeChr(List<List<dynamic>> colsInRows) {
-  int nRows = colsInRows.length;
+  final int nRows = colsInRows.length;
   if (colsInRows.length == 0) return colsInRows;
 
-  int nCols = colsInRows[0].length;
+  final int nCols = colsInRows[0].length;
   if (nCols == 0) throw new StateError("Degenerate matrix");
 
   // Init the transpose to make sure the size is right
@@ -26,7 +27,11 @@ List<List<dynamic>> transposeChr(List<List<dynamic>> colsInRows) {
 
   // Transpose
   for (int row = 0; row < nRows; row++) {
+    debugPrint('row: ${row+1} of $nRows');
+
     for (int col = 0; col < nCols; col++) {
+      // debugPrint('colsInRows[row][col]: ${colsInRows[row][col]}');
+      // debugPrint('rowsInCols[col][row]: ${rowsInCols[col][row]=1}');
       rowsInCols[col][row] = colsInRows[row][col];
     }
   }

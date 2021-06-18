@@ -31,38 +31,21 @@ Future<List<ChartData>> oneAttributeChartData(attributeName) async {
 
 Future<List<ChartDataOptimize>> twoAttributeChartData(
     attributeName1, attributeName2) async {
-  debugPrint('entered twoAttributeChartData');
-  debugPrint('1asf');
-
   final rowForEachDay = await getDailySummariesInRowForEachDayFormat(
       await getApplicationDocumentsDirectory());
-  debugPrint('2asf');
-
-  // getNumDays has to be after getDailySummariesInRowForEachDayFormat because there it is set
-  debugPrint('4asf');
-
   final List<dynamic> labels = await getLabels(rowForEachDay);
-  debugPrint('4.1asf');
-  debugPrint('labels: $labels');
   final int row = labels.indexOf(attributeName1) + 1;
-  debugPrint('row: $row');
   final int column = labels.indexOf(attributeName2) + 1;
-  debugPrint('column: $column');
-  var rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
-  debugPrint('rowForEachAttribute: $rowForEachAttribute');
-
-  final Map<num, num> xYStats =
-      getXYStats(rowForEachAttribute, rowForEachDay.length, row, column);
-  debugPrint('xYStats.length: ${xYStats.length}');
-  debugPrint('xYStats.keys.length: ${xYStats.keys.length}');
+  final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
   List<ChartDataOptimize> chartDataOptimizeList = [];
+  if (rowForEachDay.isNotEmpty) {
+    final Map<num, num> xYStats =
+    getXYStats(rowForEachAttribute, rowForEachDay.length, row, column);
 
-  xYStats.forEach((k, v) => chartDataOptimizeList.add(
-        ChartDataOptimize(k, v),
-      ));
-  debugPrint('chartDataList: ${chartDataOptimizeList}');
-
-
+    xYStats.forEach((k, v) => chartDataOptimizeList.add(
+      ChartDataOptimize(k, v),
+    ));
+  }
   return chartDataOptimizeList;
 }
 
