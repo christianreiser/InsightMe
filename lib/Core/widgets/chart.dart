@@ -40,76 +40,6 @@ void initState() {
   );
 }*/
 
-class ChartData {
-  ChartData(this.dateTime, this.value);
-
-  final DateTime dateTime;
-  final double value;
-}
-
-Widget sfCartesianChart(chartDataList) {
-  debugPrint('chartData[0]: ${(ChartData)}');
-
-  return SfCartesianChart(
-      primaryXAxis:
-          DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
-      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
-      series: <ChartSeries>[
-        scatterSeries(chartDataList),
-      ]);
-}
-
-Widget twoAttributeSfCartesianChart(chartDataOptimizeList) {
-  return SfCartesianChart(
-      primaryXAxis: NumericAxis(
-          // desiredIntervals: 3,
-          ),
-      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
-      // zoomPanBehavior: _zoomPanBehavior, // todo
-      // tooltipBehavior: _tooltipBehavior, // todo
-      series: <ChartSeries>[
-        scatterSeriesOptimize(chartDataOptimizeList),
-      ]);
-}
-
-scatterSeries(chartDataList) {
-// Renders scatter chart
-  return ScatterSeries<ChartData, DateTime>(
-    opacity: 0.4,
-    markerSettings:
-        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
-    animationDuration: 3000,
-    enableTooltip: true,
-    dataSource: chartDataList,
-    trendlines: <Trendline>[
-      Trendline(
-          type: TrendlineType.movingAverage,
-          color: Colors.teal,
-          width: 2,
-          opacity: 0.4,
-          enableTooltip: true,
-          period: 7,
-          animationDuration: 5000.0)
-    ],
-    xValueMapper: (ChartData data, _) => data.dateTime,
-    yValueMapper: (ChartData data, _) => data.value,
-  );
-}
-
-scatterSeriesOptimize(chartDataOptimizeList) {
-// Renders scatter chart
-  return ScatterSeries<ChartDataOptimize, num>(
-    opacity: 0.4,
-    markerSettings:
-        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
-    animationDuration: 3000,
-    enableTooltip: true,
-    dataSource: chartDataOptimizeList,
-    xValueMapper: (ChartDataOptimize data, _) => data.value1,
-    yValueMapper: (ChartDataOptimize data, _) => data.value2,
-  );
-}
-
 Widget futureOneAttributeScatterPlot(attributeName) {
   return FutureBuilder(
     future: oneAttributeChartData(attributeName), //schedule.selectedAttribute1
@@ -161,4 +91,92 @@ Widget futureTwoAttributeScatterPlot(attributeName1, attributeName2) {
   } else {
     return Text('No data found for this label');
   }
+}
+
+Widget sfCartesianChart(chartDataList) {
+  debugPrint('chartData[0]: ${(ChartData)}');
+
+  return SfCartesianChart(
+      primaryXAxis:
+          DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
+      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
+      series: <ChartSeries>[
+        oneAttributeScatterSeries(chartDataList),
+      ]);
+}
+
+Widget twoAttributeSfCartesianChart(chartDataOptimizeList) {
+  return SfCartesianChart(
+      primaryXAxis: NumericAxis(
+          // desiredIntervals: 3,
+          ),
+      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
+      // zoomPanBehavior: _zoomPanBehavior, // todo
+      // tooltipBehavior: _tooltipBehavior, // todo
+      series: <ChartSeries>[
+        twoAttributeScatterSeries(chartDataOptimizeList),
+      ]);
+}
+
+oneAttributeScatterSeries(chartDataList) {
+// Renders scatter chart
+  return ScatterSeries<ChartData, DateTime>(
+    opacity: 0.4,
+    markerSettings:
+        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+    animationDuration: 3000,
+    enableTooltip: true,
+    dataSource: chartDataList,
+    trendlines: <Trendline>[
+      Trendline(
+          type: TrendlineType.movingAverage,
+          color: Colors.teal,
+          width: 2,
+          opacity: 0.4,
+          enableTooltip: true,
+          period: 7,
+          animationDuration: 5000.0)
+    ],
+    xValueMapper: (ChartData data, _) => data.dateTime,
+    yValueMapper: (ChartData data, _) => data.value,
+  );
+}
+
+twoAttributeScatterSeries(chartDataOptimizeList) {
+// Renders scatter chart
+  return ScatterSeries<ChartDataOptimize, num>(
+    opacity: 0.4,
+    markerSettings:
+        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+    animationDuration: 3000,
+    enableTooltip: true,
+    dataSource: chartDataOptimizeList,
+    xValueMapper: (ChartDataOptimize data, _) => data.value1,
+    yValueMapper: (ChartDataOptimize data, _) => data.value2,
+    trendlines: <Trendline>[
+      Trendline(
+          type: TrendlineType.polynomial,
+          color: Colors.teal,
+          width: 2,
+          opacity: 0.4,
+          enableTooltip: true,
+          period: 7,
+          animationDuration: 5000.0),
+      Trendline(
+          type: TrendlineType.linear,
+          color: Colors.grey,
+          width: 2,
+          opacity: 0.4,
+          enableTooltip: true,
+          period: 7,
+          animationDuration: 5000.0)
+    ],
+  );
+}
+
+class ChartData {
+  ChartData(this.dateTime, this.value);
+
+  final DateTime dateTime;
+  final double value;
 }

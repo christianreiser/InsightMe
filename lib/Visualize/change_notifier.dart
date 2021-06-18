@@ -19,7 +19,7 @@ class OptimizationChangeNotifier with ChangeNotifier {
     return defaultVisualizationAttribute;
   }
   // String _selectedAttribute1 = globals.mostRecentAddedEntryName; // default value
-  String _selectedAttribute1 = 'Average weight (kg)'; // default value
+  String _selectedAttribute1 = 'productive_min'; // default value
   String get selectedAttribute1 => _selectedAttribute1;
 
   set selectedAttribute1(String newValue) {
@@ -28,7 +28,7 @@ class OptimizationChangeNotifier with ChangeNotifier {
   }
 
   // String _selectedAttribute2 = globals.secondMostRecentAddedEntryName; // default value
-  String _selectedAttribute2 = 'fibre'; // default value
+  String _selectedAttribute2 = 'mood'; // default value
 
   String get selectedAttribute2 => _selectedAttribute2;
 
