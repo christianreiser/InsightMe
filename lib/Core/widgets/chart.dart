@@ -62,8 +62,8 @@ Widget sfCartesianChart(chartDataList) {
 Widget twoAttributeSfCartesianChart(chartDataOptimizeList) {
   return SfCartesianChart(
       primaryXAxis: NumericAxis(
-        // desiredIntervals: 3,
-      ),
+          // desiredIntervals: 3,
+          ),
       primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
       // zoomPanBehavior: _zoomPanBehavior, // todo
       // tooltipBehavior: _tooltipBehavior, // todo
@@ -71,12 +71,13 @@ Widget twoAttributeSfCartesianChart(chartDataOptimizeList) {
         scatterSeriesOptimize(chartDataOptimizeList),
       ]);
 }
+
 scatterSeries(chartDataList) {
 // Renders scatter chart
   return ScatterSeries<ChartData, DateTime>(
     opacity: 0.4,
     markerSettings:
-    MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
     animationDuration: 3000,
     enableTooltip: true,
     dataSource: chartDataList,
@@ -136,24 +137,28 @@ Widget futureOneAttributeScatterPlot(attributeName) {
 }
 
 Widget futureTwoAttributeScatterPlot(attributeName1, attributeName2) {
-  return FutureBuilder(
-    future: twoAttributeChartData(attributeName1, attributeName2),
-    builder: (context, snapshot) {
-      // chart data arrived && data found
-      if (snapshot.connectionState == ConnectionState.done &&
-          snapshot.data != null) {
-        return twoAttributeSfCartesianChart(snapshot.data);
-      }
+  if (attributeName1 != attributeName2) {
+    return FutureBuilder(
+      future: twoAttributeChartData(attributeName1, attributeName2),
+      builder: (context, snapshot) {
+        // chart data arrived && data found
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.data != null) {
+          return twoAttributeSfCartesianChart(snapshot.data);
+        }
 
-      // chart data arrived but no data found
-      else if (snapshot.connectionState == ConnectionState.done &&
-          (snapshot.data == null)) {
-        return Text('No data found for this label');
+        // chart data arrived but no data found
+        else if (snapshot.connectionState == ConnectionState.done &&
+            (snapshot.data == null)) {
+          return Text('No data found for this label');
 
-        // else: i.e. data didn't arrive
-      } else {
-        return CircularProgressIndicator(); // when Future doesn't get data
-      } // snapshot is current state of future
-    },
-  );
+          // else: i.e. data didn't arrive
+        } else {
+          return CircularProgressIndicator(); // when Future doesn't get data
+        } // snapshot is current state of future
+      },
+    );
+  } else {
+    return Text('No data found for this label');
+  }
 }

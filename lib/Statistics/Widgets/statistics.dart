@@ -1,37 +1,41 @@
 import 'package:flutter/material.dart';
 
 import '../Functions/readCorrelation.dart';
+
 /// correlation coefficient and p-value widgets
 
 Widget futureStatistics(attributeName1, attributeName2) {
   /// future builder of correlation coefficient and p-value widgets
+  if (attributeName1 != attributeName2) {
+    return FutureBuilder(
+      future: readCorrelationCoefficient(attributeName1, attributeName2),
+      builder: (context, snapshot) {
+        /// chart data arrived && data found
+        /// snapshot is current state of future
+        debugPrint('FutureBuilder: _correlationCoefficient: ${snapshot.data}');
+        debugPrint(
+            'FutureBuilder: snapshot.data..runtimeType: ${snapshot.data.runtimeType}');
 
-  return FutureBuilder(
-    future: readCorrelationCoefficient(attributeName1, attributeName2),
-    builder: (context, snapshot) {
-      /// chart data arrived && data found
-      /// snapshot is current state of future
-      debugPrint('FutureBuilder: _correlationCoefficient: ${snapshot.data}');
-      debugPrint('FutureBuilder: snapshot.data..runtimeType: ${snapshot.data.runtimeType}');
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.data != null) {
+          return statistics(
+              context, snapshot.data, 0.02); //todo feature: hard coded p-value
+        }
 
-      if (snapshot.connectionState == ConnectionState.done &&
-          snapshot.data != null) {
+        /// chart data arrived but no data found
+        else if (snapshot.connectionState == ConnectionState.done &&
+            (snapshot.data == null)) {
+          return Text('Correlation Coefficient: -');
 
-        return statistics(
-            context, snapshot.data, 0.02); //todo feature: hard coded p-value
-      }
-
-      /// chart data arrived but no data found
-      else if (snapshot.connectionState == ConnectionState.done &&
-          (snapshot.data == null)) {
-        return Text('Correlation Coefficient: -');
-
-        /// else: i.e. data didn't arrive
-      } else {
-        return CircularProgressIndicator(); // when Future doesn't get data
-      }
-    },
-  );
+          /// else: i.e. data didn't arrive
+        } else {
+          return CircularProgressIndicator(); // when Future doesn't get data
+        }
+      },
+    );
+  } else {
+    return Text('Correlation Coefficient: -');
+  }
 }
 
 Widget statistics(context, _correlationCoefficient, _pValue) {
@@ -54,11 +58,12 @@ Widget statistics(context, _correlationCoefficient, _pValue) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
                     'Pearson correlation coefficient = $_correlationCoefficient.'
-                        ' Bar shows the absolute value.'),
+                    ' Bar shows the absolute value.'),
               ));
             },
           )
         ]),
+
         /// confidence
         // todo feature: p-value
 //         Row(children: [
@@ -87,7 +92,6 @@ Container _correlationBar(_correlationCoefficient) {
   debugPrint('_absIntCorrCoeff: $_absIntCorrCoeff');
 
   return Container(
-
     /// correlation / correlation bar
     decoration: _statisticsBoxDecoration(),
     child: SizedBox(
@@ -110,21 +114,21 @@ Container _correlationBar(_correlationCoefficient) {
 }
 
 Row _confidenceStars(_pValue) {
-    /// from _Value to confidence stars:
-    ///
-    /// p-Value   | stars
-    /// -----------------
-    /// 0.50-0.45 | 0.5
-    /// 0.45-0.40 | 1.0
-    /// 0.40-0.35 | 1.5
-    /// 0.35-0.30 | 2.0
-    /// 0.30-0.25 | 2.5
-    /// 0.25-0.20 | 3.0
-    /// 0.20-0.15 | 3.5
-    /// 0.15-0.10 | 4.0
-    /// 0.10-0.05 | 4.5
-    /// 0.05-0.00 | 5.0
-    /// 1.00-0.50 | 0.0
+  /// from _Value to confidence stars:
+  ///
+  /// p-Value   | stars
+  /// -----------------
+  /// 0.50-0.45 | 0.5
+  /// 0.45-0.40 | 1.0
+  /// 0.40-0.35 | 1.5
+  /// 0.35-0.30 | 2.0
+  /// 0.30-0.25 | 2.5
+  /// 0.25-0.20 | 3.0
+  /// 0.20-0.15 | 3.5
+  /// 0.15-0.10 | 4.0
+  /// 0.10-0.05 | 4.5
+  /// 0.05-0.00 | 5.0
+  /// 1.00-0.50 | 0.0
 
   if (_pValue <= 0.5 && _pValue > 0.45) {
     return Row(children: [
@@ -221,8 +225,6 @@ Row _confidenceStars(_pValue) {
 BoxDecoration _statisticsBoxDecoration() {
   return BoxDecoration(
     border: Border.all(width: 1.5),
-    borderRadius: BorderRadius.all(
-        Radius.circular(5.0)
-    ),
+    borderRadius: BorderRadius.all(Radius.circular(5.0)),
   );
 }
