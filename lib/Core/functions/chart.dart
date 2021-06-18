@@ -44,9 +44,9 @@ Future<List<ChartDataOptimize>> twoAttributeChartData(
   final List<dynamic> labels = await getLabels(rowForEachDay);
   debugPrint('4.1asf');
   debugPrint('labels: $labels');
-  final int row = labels.indexOf(attributeName1) + 2;
+  final int row = labels.indexOf(attributeName1) + 1;
   debugPrint('row: $row');
-  final int column = labels.indexOf(attributeName2) + 2;
+  final int column = labels.indexOf(attributeName2) + 1;
   debugPrint('column: $column');
   var rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
   debugPrint('rowForEachAttribute: $rowForEachAttribute');

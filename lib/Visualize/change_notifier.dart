@@ -28,7 +28,7 @@ class OptimizationChangeNotifier with ChangeNotifier {
   }
 
   // String _selectedAttribute2 = globals.secondMostRecentAddedEntryName; // default value
-  String _selectedAttribute2 = '0String'; // default value
+  String _selectedAttribute2 = 'fibre'; // default value
 
   String get selectedAttribute2 => _selectedAttribute2;
 
