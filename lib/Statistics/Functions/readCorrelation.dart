@@ -8,14 +8,13 @@ import 'package:insightme/Core/functions/misc.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
-  debugPrint('attribute1: $attribute1, attribute2: $attribute2');
+  //debugPrint('attribute1: $attribute1, attribute2: $attribute2');
   var correlationMatrix = await readCorrelationMatrix();
-  debugPrint('1');
   int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
-  debugPrint('2');
+  //debugPrint('2');
   int attributeIndex2 = transposeChr(correlationMatrix)[0].indexOf(attribute2);
-  debugPrint('3');
-  debugPrint('correlationMatrix[attributeIndex1][attributeIndex2]; ${correlationMatrix[attributeIndex1][attributeIndex2]}');
+  //debugPrint('3');
+  //debugPrint('correlationMatrix[attributeIndex1][attributeIndex2]; ${correlationMatrix[attributeIndex1][attributeIndex2]}');
   return correlationMatrix[attributeIndex1][attributeIndex2];
 }
 

@@ -59,7 +59,7 @@ Widget sfCartesianChart(chartDataList) {
       ]);
 }
 
-Widget twoAttributeSfCartesianChart(chartDataList) {
+Widget twoAttributeSfCartesianChart(chartDataOptimizeList) {
   return SfCartesianChart(
       primaryXAxis: NumericAxis(
         // desiredIntervals: 3,
@@ -68,16 +68,15 @@ Widget twoAttributeSfCartesianChart(chartDataList) {
       // zoomPanBehavior: _zoomPanBehavior, // todo
       // tooltipBehavior: _tooltipBehavior, // todo
       series: <ChartSeries>[
-        scatterSeries(chartDataList),
+        scatterSeriesOptimize(chartDataOptimizeList),
       ]);
 }
-
 scatterSeries(chartDataList) {
 // Renders scatter chart
   return ScatterSeries<ChartData, DateTime>(
     opacity: 0.4,
     markerSettings:
-        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+    MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
     animationDuration: 3000,
     enableTooltip: true,
     dataSource: chartDataList,
@@ -93,6 +92,20 @@ scatterSeries(chartDataList) {
     ],
     xValueMapper: (ChartData data, _) => data.dateTime,
     yValueMapper: (ChartData data, _) => data.value,
+  );
+}
+
+scatterSeriesOptimize(chartDataOptimizeList) {
+// Renders scatter chart
+  return ScatterSeries<ChartDataOptimize, num>(
+    opacity: 0.4,
+    markerSettings:
+        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+    animationDuration: 3000,
+    enableTooltip: true,
+    dataSource: chartDataOptimizeList,
+    xValueMapper: (ChartDataOptimize data, _) => data.value1,
+    yValueMapper: (ChartDataOptimize data, _) => data.value2,
   );
 }
 

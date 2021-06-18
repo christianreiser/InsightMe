@@ -8,7 +8,6 @@ import '../../Database/entry.dart';
 
 final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
-
 Future<List<ChartData>> oneAttributeChartData(attributeName) async {
   // Get dateTime and values of entries from database and set as state
   List<Entry> filteredEntryList =
@@ -30,15 +29,14 @@ Future<List<ChartData>> oneAttributeChartData(attributeName) async {
   return chartDataList;
 }
 
-Future<List<ChartDataOptimize>> twoAttributeChartData(attributeName1, attributeName2) async {
+Future<List<ChartDataOptimize>> twoAttributeChartData(
+    attributeName1, attributeName2) async {
   debugPrint('entered twoAttributeChartData');
   debugPrint('1asf');
 
-  final rowForEachDay =
-  await getDailySummariesInRowForEachDayFormat(await getApplicationDocumentsDirectory());
+  final rowForEachDay = await getDailySummariesInRowForEachDayFormat(
+      await getApplicationDocumentsDirectory());
   debugPrint('2asf');
-
-
 
   // getNumDays has to be after getDailySummariesInRowForEachDayFormat because there it is set
   debugPrint('4asf');
@@ -46,37 +44,31 @@ Future<List<ChartDataOptimize>> twoAttributeChartData(attributeName1, attributeN
   final List<dynamic> labels = await getLabels(rowForEachDay);
   debugPrint('4.1asf');
   debugPrint('labels: $labels');
-  final int row = labels.indexOf(attributeName1)+2;
+  final int row = labels.indexOf(attributeName1) + 2;
   debugPrint('row: $row');
-  final int column = labels.indexOf(attributeName2)+2;
+  final int column = labels.indexOf(attributeName2) + 2;
   debugPrint('column: $column');
+  var rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
+  debugPrint('rowForEachAttribute: $rowForEachAttribute');
 
   final Map<num, num> xYStats =
-  getXYStats(getRowForEachAttribute(rowForEachDay), rowForEachDay.length, row, column);
+      getXYStats(rowForEachAttribute, rowForEachDay.length, row, column);
   debugPrint('xYStats.length: ${xYStats.length}');
   debugPrint('xYStats.keys.length: ${xYStats.keys.length}');
-  final List<num> attributeValues1 = xYStats.keys;
-  debugPrint('attributeValues1.length: ${attributeValues1.length}');
-  debugPrint('xYStats.values.length: ${xYStats.values.length}');
-  final List<num> attributeValues2 = xYStats.values;
-  debugPrint('attributeValues2: ${attributeValues2.length}');
   List<ChartDataOptimize> chartDataOptimizeList = [];
-  debugPrint('chartDataOptimizeList.length: ${chartDataOptimizeList.length}');
 
-  // fill chartDataList
-  for (int i = 0; i < xYStats.length; i++) {
-    chartDataOptimizeList.add(
-      ChartDataOptimize(
-        attributeValues1[i],
-        attributeValues2[i],
-      ),
-    );
-  }
+  xYStats.forEach((k, v) => chartDataOptimizeList.add(
+        ChartDataOptimize(k, v),
+      ));
+  debugPrint('chartDataList: ${chartDataOptimizeList}');
+
+
   return chartDataOptimizeList;
 }
 
 class ChartDataOptimize {
   ChartDataOptimize(this.value1, this.value2);
+
   final num value1;
   final num value2;
 }
