@@ -75,16 +75,27 @@ Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
 Future<List<dynamic>> getDailySummariesInRowForEachDayFormat(directory) async {
   /// call createDailySummariesCSVFromDB
   await WriteDailySummariesCSV().writeDailySummariesCSV();
-
+  sleep(Duration(milliseconds:20)); /// somehow probably needed to avoid empty rowForEachDay
   /// read daily summaries csv and transform
   final input = new File(directory.path + "/daily_summaries.csv").openRead();
-  final rowForEachDay = await input
+  var rowForEachDay = await input
       .transform(utf8.decoder)
       .transform(new CsvToListConverter())
       .toList();
+
+  /// ugly workaround with waiting to avoid empty rowForEachDay
   if (rowForEachDay.isEmpty) {
     debugPrint('ERROR!!!: rowForEachDay is empty: $rowForEachDay');
+    sleep(Duration(milliseconds:20)); /// somehow probably needed to avoid empty rowForEachDay
+    /// read daily summaries csv and transform
+    final input = new File(directory.path + "/daily_summaries.csv").openRead();
+    rowForEachDay = await input
+        .transform(utf8.decoder)
+        .transform(new CsvToListConverter())
+        .toList();
   }
+  /// end of bad workaround
+
   return rowForEachDay;
 }
 
