@@ -10,7 +10,7 @@ import 'database_helper_entry.dart';
 import 'entry.dart';
 
 class WriteDailySummariesCSV {
-  Future<String> writeDailySummariesCSV() async {
+  Future<File> writeDailySummariesCSV() async {
     /*
     * reads from db,
     * writes daily summaries csv
@@ -114,7 +114,7 @@ class WriteDailySummariesCSV {
     return dailySummariesList;
   }
 
-  Future<String> saveDailySummariesToFile(dailySummariesList) async {
+  Future<File> saveDailySummariesToFile(dailySummariesList) async {
     /// save dailySummariesList to file and returns csv
     final directory = await getApplicationDocumentsDirectory();
     final pathOfTheFileToWrite = directory.path + "/daily_summaries.csv";
@@ -123,7 +123,7 @@ class WriteDailySummariesCSV {
     //debugPrint('file $file');
     String csv = const ListToCsvConverter().convert(dailySummariesList);
     // debugPrint('csv: $csv');
-    file.writeAsString(csv);
-    return csv;
+    await file.writeAsString(csv);
+    return file;
   }
 }
