@@ -71,7 +71,7 @@ Future<List<dynamic>> getDailySummariesInRowForEachDayFormat(directory) async {
   await WriteDailySummariesCSV().writeDailySummariesCSV();
   /// read daily summaries csv and transform
   final input = new File(directory.path + "/daily_summaries.csv").openRead();
-  var rowForEachDay = await input
+  final rowForEachDay = await input
       .transform(utf8.decoder)
       .transform(new CsvToListConverter())
       .toList();
