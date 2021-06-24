@@ -50,7 +50,7 @@ Widget futureOneAttributeScatterPlot(attributeName) {
 
       if (snapshot.connectionState == ConnectionState.done &&
           snapshot.data != null) {
-        return sfCartesianChart(snapshot.data);
+        return oneAttributeSfCartesianChart(snapshot.data);
       }
 
       // chart data arrived but no data found
@@ -74,7 +74,7 @@ Widget futureTwoAttributeScatterPlot(attributeName1, attributeName2) {
         // chart data arrived && data found
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return twoAttributeSfCartesianChart(snapshot.data);
+          return twoAttributeSfCartesianChart(snapshot.data, attributeName1);
         }
 
         // chart data arrived but no data found
@@ -93,9 +93,7 @@ Widget futureTwoAttributeScatterPlot(attributeName1, attributeName2) {
   }
 }
 
-Widget sfCartesianChart(chartDataList) {
-  debugPrint('chartData[0]: ${(ChartData)}');
-
+Widget oneAttributeSfCartesianChart(chartDataList) {
   return SfCartesianChart(
       primaryXAxis:
           DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
@@ -105,12 +103,24 @@ Widget sfCartesianChart(chartDataList) {
       ]);
 }
 
-Widget twoAttributeSfCartesianChart(chartDataOptimizeList) {
+Widget twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
   return SfCartesianChart(
       primaryXAxis: NumericAxis(
-          // desiredIntervals: 3,
-          ),
-      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
+        labelStyle: TextStyle(color: Colors.green),
+        title: AxisTitle(
+          text: attributeName1,
+          textStyle: TextStyle(
+              color: Colors.green,
+              fontFamily: 'Roboto',
+              fontSize: 17,
+              fontWeight: FontWeight.w300),
+        ),
+      ),
+      primaryYAxis: NumericAxis(
+          labelStyle: TextStyle(color: Colors.blue),
+
+          // title: AxisTitle(text: 'Y-Axis'),
+          rangePadding: ChartRangePadding.round),
       // zoomPanBehavior: _zoomPanBehavior, // todo
       // tooltipBehavior: _tooltipBehavior, // todo
       series: <ChartSeries>[
@@ -156,7 +166,7 @@ twoAttributeScatterSeries(chartDataOptimizeList) {
     trendlines: <Trendline>[
       Trendline(
           type: TrendlineType.polynomial,
-          color: Colors.teal,
+          color: Colors.grey,
           width: 2,
           opacity: 0.4,
           enableTooltip: true,
@@ -164,7 +174,7 @@ twoAttributeScatterSeries(chartDataOptimizeList) {
           animationDuration: 5000.0),
       Trendline(
           type: TrendlineType.linear,
-          color: Colors.grey,
+          color: Colors.teal,
           width: 2,
           opacity: 0.4,
           enableTooltip: true,

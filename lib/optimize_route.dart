@@ -80,16 +80,10 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
           padding: const EdgeInsets.all(8.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            /// SEPARATOR
-            Text(
-              '${schedule.selectedAttribute1} & ${schedule.selectedAttribute2}',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(height: 20), // needed above chart
 
             /// visualize chart
             SizedBox(
-              height: 250,
+              height: 450,
 
               /// height constraint
               child: SizedBox.expand(
