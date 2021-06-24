@@ -45,9 +45,6 @@ Widget futureOneAttributeScatterPlot(attributeName) {
     future: oneAttributeChartData(attributeName), //schedule.selectedAttribute1
     builder: (context, snapshot) {
       // chart data arrived && data found
-      // debugPrint('snapshot: $snapshot');
-      // debugPrint('snapshot.data: ${snapshot.data}');
-
       if (snapshot.connectionState == ConnectionState.done &&
           snapshot.data != null) {
         return oneAttributeSfCartesianChart(snapshot.data);

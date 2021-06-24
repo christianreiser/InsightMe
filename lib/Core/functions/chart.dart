@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -25,7 +24,6 @@ Future<List<ChartData>> oneAttributeChartData(attributeName) async {
       ),
     );
   }
-  debugPrint('chartDataList: $chartDataList');
   return chartDataList;
 }
 

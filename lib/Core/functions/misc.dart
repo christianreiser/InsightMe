@@ -26,14 +26,9 @@ List<List<dynamic>> transposeChr(List<List<dynamic>> colsInRows) {
 
   // Transpose
   for (int row = 0; row < nRows; row++) {
-    // debugPrint('row: ${row+1} of $nRows');
-
     for (int col = 0; col < nCols; col++) {
-      // debugPrint('colsInRows[row][col]: ${colsInRows[row][col]}');
-      // debugPrint('rowsInCols[col][row]: ${rowsInCols[col][row]=1}');
       rowsInCols[col][row] = colsInRows[row][col];
     }
   }
-  // debugPrint('after transpose rowsInCols: $rowsInCols');
   return rowsInCols;
 }

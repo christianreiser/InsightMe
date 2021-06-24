@@ -54,9 +54,6 @@ class WriteDailySummariesCSV {
         attributeCount++) {
       attributeTitleList[attributeCount + 1] =
           attributeList[attributeCount].title;
-      // debugPrint('attributeCount $attributeCount');
-      // debugPrint(
-      //     'attributeTitleList[attributeCount + 1]: ${attributeTitleList[attributeCount + 1]}');
     }
     return attributeTitleList;
   }
@@ -75,7 +72,6 @@ class WriteDailySummariesCSV {
     List<dynamic> rowToAdd = List.filled(attributeListLength + 1, null);
 
     rowToAdd[0] = entryList[0].date.substring(0, 10); // add newest date as date
-    // debugPrint('date: ${entryList[0].date}');
     int entryListLength = entryList.length;
 
     /* fill rowToAdd with data and add to dailySummariesList */

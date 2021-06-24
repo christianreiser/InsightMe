@@ -295,10 +295,7 @@ class EditAttributeState extends State<EditAttribute> {
   }
 
   void changeColor(Color color) => setState(() {
-        debugPrint('currentColor.toString(): ${currentColor.toString()}');
         currentColor = color;
-        debugPrint(
-            'int color: ${int.parse(currentColor.toString().split('(0x')[1].split(')')[0], radix: 16)}');
         attribute.color = int.parse(
             currentColor.toString().split('(0x')[1].split(')')[0],
             radix: 16);

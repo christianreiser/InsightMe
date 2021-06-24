@@ -31,7 +31,7 @@ Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
       value = (rowForEachAttribute[column - 1][day]).toDouble();
     }
 
-    /// exclude day if one of the two attributes has a value of null
+    /// skip if key or value is null
     if (key != null && value != null) {
 
       /// keys must be unique. Track keys. if not unique modify it a little.
@@ -49,11 +49,18 @@ Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
       try {
         /// write xYStats as key value pairs.
         xYStats[(key)] = (value);
+        key = null;
+        value = null;
       } catch (e) {
         debugPrint('_TypeError');
+        key = null;
+        value = null;
       }
+      /// skip if key or value is null and reset key and value variables
     } else {
       // debugPrint('skipping because value is null');
+      key = null;
+      value = null;
     }
   }
   return xYStats;
