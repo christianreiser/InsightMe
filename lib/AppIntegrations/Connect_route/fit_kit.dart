@@ -1,10 +1,12 @@
 import 'dart:io';
+
+import 'package:csv/csv.dart';
 import 'package:fit_kit/fit_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:csv/csv.dart';
-import 'package:ext_storage/ext_storage.dart';
+import 'package:path_provider/path_provider.dart';
+// import 'package:ext_storage/ext_storage.dart';
 
 class FitKitGHub extends StatefulWidget {
   @override
@@ -201,16 +203,14 @@ class _FitKitGHubState extends State<FitKitGHub> {
     rows.add(row);
 
     var csv = const ListToCsvConverter().convert(rows);
-    String dir = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_DOWNLOADS);
-    /*
-    File file = File("$dir" + "/myData.csv");
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = directory.path + "/health_api.csv";
+    debugPrint('targetPath: $filePath');
+    File file = File(filePath);
+    debugPrint('file: $file');
+    debugPrint('health_api csv: $csv');
     file.writeAsString(csv);
-     */
-
-    print('------------Debug data------------');
-    print("dir $dir");
-    print(csv);
+    debugPrint('health_api.csv written');
   }
 
   String _dateToString(DateTime dateTime) {
