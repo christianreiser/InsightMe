@@ -35,7 +35,7 @@ Future<LineChart> oneAttributeChart(attributeName) async {
   // used in data tab
   Map<DateTime, double> dateTimeValueMap1 =
       await getDateTimeValueMap(attributeName);
-  debugPrint('dateTimeValueMap1: $dateTimeValueMap1');
+  // debugPrint('dateTimeValueMap1: $dateTimeValueMap1');
   chart = LineChart.fromDateTimeMaps(
     [dateTimeValueMap1],
     [Colors.blue],

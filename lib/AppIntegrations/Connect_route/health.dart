@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
+import 'package:insightme/Core/functions/misc.dart';
 
 class Health extends StatefulWidget {
   @override
@@ -53,9 +54,8 @@ class _HealthState extends State<Health> {
       try {
         /// Fetch new data
         List<HealthDataPoint> healthData =
-        await health.getHealthDataFromTypes(startDate, endDate, types);
-        print("healthData: $healthData");
-
+            await health.getHealthDataFromTypes(startDate, endDate, types);
+        // print("healthData: $healthData");
 
         /// Save all the new data points
         _healthDataList.addAll(healthData);
@@ -65,20 +65,50 @@ class _HealthState extends State<Health> {
 
       /// Filter out duplicates
       _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
-      print('_healthDataList: $_healthDataList');
+      var healthDataList = _healthDataList;
+      // healthDataList.forEach((dataPoint) {
+      //   var test = dataPoint;
+      // });
+      // print('_healthDataList: ${_healthDataList[0]}');
+
+      /// gete attribute ttle list
+      List<String> attributeTitleList = List.filled(types.length + 1, null);
+      final attributeListLength = _healthDataList.length;
+      attributeTitleList[0] = 'date';
+      for (int attributeCount = 0;
+          attributeCount < types.length;
+          attributeCount++) {
+        attributeTitleList[attributeCount + 1] =
+            (types[attributeCount]).toString();
+      }
+      // length = #attributes + 1 for date
+      List<List<dynamic>> importList = [];
+      importList.add(attributeTitleList);
+
+
 
       /// Print the results
       _healthDataList.forEach((x) {
         print("Data point: $x");
-        steps += x.value.round();
+        steps = x.value.round();
+        var date = x.dateFrom;
+
+        List<dynamic> rowToAdd = List.filled(types.length + 1, null);
+        rowToAdd[0] = [date, steps]; // add newest date as date
+        importList.add(rowToAdd); // add yesterday to dailySummariesList
+
+        print('steps: $steps, date: $date');
       });
 
-      print("Steps: $steps");
+      // save to file
+      await save2DListToCSVFile(importList, "/health_api.csv");
+
+      print("importList: $importList");
 
       /// Update the UI to display the results
       setState(() {
         _state =
-        _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
+            _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
       });
     } else {
       print("Authorization not granted");
@@ -156,7 +186,6 @@ class _HealthState extends State<Health> {
         ),
         body: Center(
           child: _content(),
-        )
-    );
+        ));
   }
 }

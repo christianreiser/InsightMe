@@ -1,8 +1,6 @@
-import 'dart:io';
 
-import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:insightme/Core/functions/misc.dart';
 
 import 'attribute.dart';
 import 'database_helper_attribute.dart';
@@ -36,7 +34,7 @@ class WriteDailySummariesCSV {
     debugPrint('dailySummariesList $dailySummariesList');
 
     // save to file
-    return await saveDailySummariesToFile(dailySummariesList);
+    return await save2DListToCSVFile(dailySummariesList, "/daily_summaries.csv");
   }
 
   Future<List<String>> getAttributeTitleList(
@@ -113,16 +111,5 @@ class WriteDailySummariesCSV {
     return dailySummariesList;
   }
 
-  Future<String> saveDailySummariesToFile(dailySummariesList) async {
-    /// save dailySummariesList to file and returns csv
-    final directory = await getApplicationDocumentsDirectory();
-    final pathOfTheFileToWrite = directory.path + "/daily_summaries.csv";
-    //debugPrint('targetPath $pathOfTheFileToWrite');
-    File file = File(pathOfTheFileToWrite);
-    //debugPrint('file $file');
-    String csv = const ListToCsvConverter().convert(dailySummariesList);
-    debugPrint('csv $csv');
-    file.writeAsString(csv);
-    return csv;
-  }
+
 }

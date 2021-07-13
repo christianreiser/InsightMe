@@ -1,4 +1,10 @@
+import 'dart:io';
+
+import 'package:csv/csv.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_charts/flutter_charts.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 getFirstLetter(String title) {
   /* get first letter for yellow circle avatar */
@@ -31,4 +37,17 @@ List<List<dynamic>> transposeChr(List<List<dynamic>> colsInRows) {
     }
   }
   return rowsInCols;
+}
+
+Future<String> save2DListToCSVFile(dailySummariesList, path) async {
+  /// save dailySummariesList to file and returns csv
+  final directory = await getApplicationDocumentsDirectory();
+  final pathOfTheFileToWrite = directory.path + path;
+  //debugPrint('targetPath $pathOfTheFileToWrite');
+  File file = File(pathOfTheFileToWrite);
+  //debugPrint('file $file');
+  String csv = const ListToCsvConverter().convert(dailySummariesList);
+  debugPrint('csv:\n $csv');
+  file.writeAsString(csv);
+  return csv;
 }
