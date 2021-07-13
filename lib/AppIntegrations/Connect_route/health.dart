@@ -27,7 +27,7 @@ class _HealthState extends State<Health> {
 
   Future fetchData() async {
     /// Get everything from midnight until now
-    DateTime startDate = DateTime(2020, 11, 07, 0, 0, 0);
+    DateTime startDate = DateTime(2019, 11, 07, 0, 0, 0);
     DateTime endDate = DateTime(2025, 11, 07, 23, 59, 59);
 
     HealthFactory health = HealthFactory();
@@ -36,15 +36,16 @@ class _HealthState extends State<Health> {
     List<HealthDataType> types = [
       HealthDataType.STEPS,
       HealthDataType.WEIGHT,
-      HealthDataType.HEIGHT,
-      HealthDataType.BLOOD_GLUCOSE,
-      HealthDataType.DISTANCE_WALKING_RUNNING,
+      // HealthDataType.HEIGHT,
+      // HealthDataType.BLOOD_GLUCOSE,
+      // HealthDataType.DISTANCE_WALKING_RUNNING,
     ];
 
     setState(() => _state = AppState.FETCHING_DATA);
 
     /// You MUST request access to the data types before reading them
     bool accessWasGranted = await health.requestAuthorization(types);
+    print('accessWasGranted: $accessWasGranted');
 
     int steps = 0;
 
@@ -53,6 +54,8 @@ class _HealthState extends State<Health> {
         /// Fetch new data
         List<HealthDataPoint> healthData =
         await health.getHealthDataFromTypes(startDate, endDate, types);
+        print("healthData: $healthData");
+
 
         /// Save all the new data points
         _healthDataList.addAll(healthData);
@@ -62,6 +65,7 @@ class _HealthState extends State<Health> {
 
       /// Filter out duplicates
       _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
+      print('_healthDataList: $_healthDataList');
 
       /// Print the results
       _healthDataList.forEach((x) {

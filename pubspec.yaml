@@ -24,7 +24,7 @@ dependencies:
   starfruit: ^1.0.0+1 # correlation
   sqflite_migration: ^0.3.0 # database version update
   flutter_colorpicker: ^0.4.0 # pick color for label
-  health: ^3.0.4
+  health: 3.0.4 # TODO workaround: v^ & remove IDE -> Run -> edit configurations -> Additional run args: "--no-sound-null-safety"
   fit_kit: ^1.1.2
   json_serializable: ^4.1.2
   json_annotation: ^4.0.1
