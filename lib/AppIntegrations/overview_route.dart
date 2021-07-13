@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/AppIntegrations/Connect_route/health.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
@@ -69,7 +70,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FitKitGHub(), //GFit(),
+                          builder: (context) => Health(), //FitKitGHub(), //GFit(),
                         ),
                       );
                     },
