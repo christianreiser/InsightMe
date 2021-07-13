@@ -19,6 +19,8 @@ dependencies:
   provider: # state management
   shared_preferences: # for persistence data. 1.Onboarding-seen-flag
   csv: ^5.0.0 # write csv for daily summaries
+  ext_storage: ^1.0.3 # provide external storage path
+  permission_handler: ^8.1.1 # permission handler for device
   starfruit: ^1.0.0+1 # correlation
   sqflite_migration: ^0.3.0 # database version update
   flutter_colorpicker: ^0.4.0 # pick color for label
@@ -27,9 +29,6 @@ dependencies:
   json_serializable: ^4.1.2
   json_annotation: ^4.0.1
   built_value: ^8.0.6
-
-
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

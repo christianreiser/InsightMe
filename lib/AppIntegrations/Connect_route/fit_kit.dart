@@ -1,10 +1,10 @@
-import 'dart:convert';
-
+import 'dart:io';
 import 'package:fit_kit/fit_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/AppIntegrations/DataModels/google_fit_data.dart';
+import 'package:csv/csv.dart';
+import 'package:ext_storage/ext_storage.dart';
 
 class FitKitGHub extends StatefulWidget {
   @override
@@ -166,30 +166,51 @@ class _FitKitGHubState extends State<FitKitGHub> {
     return FloatingActionButton(
       child: Icon(Icons.save_alt),
       onPressed: () {
-        _generateLocalJsonFile();
+        _toCSV();
       },
     );
   }
 
-  _generateLocalJsonFile() {
+  void _toCSV() async {
     final items = results.entries.expand((entry) => [entry.key, entry.value])
         .toList();
 
+    print('------------Request result------------');
     print(items);
-    print('------------');
-    for (var data in items) {
-      if (data is DataType) {
-        //TODO
+    print('------------Conversion result------------');
+    List<String> headers = [];
+    List<String> fitData = [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] is DataType) {
+        headers.add(items[i].toString());
+      } else {
+        fitData.add(items[i].toString());
       }
     }
 
-    print('------------');
-    //NOTE: Test dataset for json construction
-    List<Data> googleFitDataSet = [];
-    Data data1 = Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
-    Data data2 = Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
-    GoogleFitData fitData = GoogleFitData("STEP_COUNT", googleFitDataSet);
-    //print(jsonEncode(fitData.toJson()));
+    List<List<dynamic>> rows = [];
+    List<dynamic> row = [];
+
+    for (var j = 0; j < headers.length; j++) {
+      row.add(headers[j]);
+    }
+
+    for (var k = 0; k < fitData.length; k++) {
+      row.add(fitData[k]);
+    }
+    rows.add(row);
+
+    var csv = const ListToCsvConverter().convert(rows);
+    String dir = await ExtStorage.getExternalStoragePublicDirectory(
+        ExtStorage.DIRECTORY_DOWNLOADS);
+    /*
+    File file = File("$dir" + "/myData.csv");
+    file.writeAsString(csv);
+     */
+
+    print('------------Debug data------------');
+    print("dir $dir");
+    print(csv);
   }
 
   String _dateToString(DateTime dateTime) {
