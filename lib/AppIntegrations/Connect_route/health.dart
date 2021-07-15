@@ -28,7 +28,7 @@ class _HealthState extends State<Health> {
 
   Future fetchData() async {
     /// Get everything from midnight until now
-    DateTime startDate = DateTime(2019, 4, 07, 0, 0, 0);
+    DateTime startDate = DateTime(2020, 10, 01, 0, 0, 0);
     DateTime endDate = DateTime(2025, 11, 07, 23, 59, 59);
 
     HealthFactory health = HealthFactory();
@@ -112,13 +112,13 @@ class _HealthState extends State<Health> {
           }
         // }
 
-        for (var i=0; i<types.length; i++) {
-          // rowToAdd[1] = steps;
-          // HealthDataType param1 = x;
-          // print('param1: $param1');
-          // rowToAdd[1] = param1;
-
-        }
+        // for (var i=0; i<types.length; i++) {
+        //   // rowToAdd[1] = steps;
+        //   // HealthDataType param1 = x;
+        //   // print('param1: $param1');
+        //   // rowToAdd[1] = param1;
+        //
+        // }
         importList.add(rowToAdd); // add yesterday to dailySummariesList
 
         // print('steps: $steps, date: $date');
