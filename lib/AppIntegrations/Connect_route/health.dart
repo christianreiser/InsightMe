@@ -28,18 +28,20 @@ class _HealthState extends State<Health> {
 
   Future fetchData() async {
     /// Get everything from midnight until now
-    DateTime startDate = DateTime(2019, 11, 07, 0, 0, 0);
+    DateTime startDate = DateTime(2019, 4, 07, 0, 0, 0);
     DateTime endDate = DateTime(2025, 11, 07, 23, 59, 59);
 
     HealthFactory health = HealthFactory();
 
     /// Define the types to get.
     List<HealthDataType> types = [
-      HealthDataType.STEPS,
+      // HealthDataType.STEPS,
       HealthDataType.WEIGHT,
       // HealthDataType.HEIGHT,
       // HealthDataType.BLOOD_GLUCOSE,
       // HealthDataType.DISTANCE_WALKING_RUNNING,
+      HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
+      HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
     ];
 
     setState(() => _state = AppState.FETCHING_DATA);
@@ -55,7 +57,6 @@ class _HealthState extends State<Health> {
         /// Fetch new data
         List<HealthDataPoint> healthData =
             await health.getHealthDataFromTypes(startDate, endDate, types);
-        // print("healthData: $healthData");
 
         /// Save all the new data points
         _healthDataList.addAll(healthData);
@@ -64,6 +65,7 @@ class _HealthState extends State<Health> {
       }
 
       /// Filter out duplicates
+      print("healthData: $_healthDataList");
       _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
       var healthDataList = _healthDataList;
       // healthDataList.forEach((dataPoint) {
@@ -71,7 +73,7 @@ class _HealthState extends State<Health> {
       // });
       // print('_healthDataList: ${_healthDataList[0]}');
 
-      /// gete attribute ttle list
+      /// gete attribute title list
       List<String> attributeTitleList = List.filled(types.length + 1, null);
       final attributeListLength = _healthDataList.length;
       attributeTitleList[0] = 'date';
@@ -88,16 +90,38 @@ class _HealthState extends State<Health> {
 
 
       /// Print the results
+      print("_healthDataList: ${_healthDataList}");
       _healthDataList.forEach((x) {
-        print("Data point: $x");
-        steps = x.value.round();
-        var date = x.dateFrom;
+        print("Data point x: $x");
+        var weight = x.value;//.round();
+
+        final date = x.dateFrom;
+
 
         List<dynamic> rowToAdd = List.filled(types.length + 1, null);
-        rowToAdd[0] = [date, steps]; // add newest date as date
+        rowToAdd[0] = date; // add newest date as date
+        // for (var i=0; i<types.length; i++) {
+          if (x.type == types[0]) {
+            rowToAdd[1] = x.value;
+          }
+          else if (x.type == types[1]) {
+            rowToAdd[2] = x.value;
+          }
+          else if (x.type == types[2]) {
+            rowToAdd[3] = x.value;
+          }
+        // }
+
+        for (var i=0; i<types.length; i++) {
+          // rowToAdd[1] = steps;
+          // HealthDataType param1 = x;
+          // print('param1: $param1');
+          // rowToAdd[1] = param1;
+
+        }
         importList.add(rowToAdd); // add yesterday to dailySummariesList
 
-        print('steps: $steps, date: $date');
+        // print('steps: $steps, date: $date');
       });
 
       // save to file
