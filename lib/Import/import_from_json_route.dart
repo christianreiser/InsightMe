@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Core/widgets/misc.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
@@ -55,8 +56,8 @@ class _ImportState extends State<Import> {
                   textScaleFactor: 1.5,
                 ),
                 onPressed: () {
-                  _showAlertDialog('Status',
-                      'Import started in the background. This might take a while.');
+                  showAlertDialog('Status',
+                      'Import started in the background. This might take a while.', context);
                   importCSVFile();
                 },
               ),
@@ -115,13 +116,10 @@ class _ImportState extends State<Import> {
           // filter entries
           if ((_cellContent).length > 0) {
             // skip empty cells in csv-file
-
-            //debugPrint('and attributeName ${attributeNames[columnCount]}');
-
             Entry entry = Entry(attributeNames[columnCount], _cellContent,
                 '$dateTimeStamp', 'csv import'); // title, value, time, comment
 
-            _save(entry);
+            save(entry, context);
 //            debugPrint(
 //                'called _save for entry with dateTimeStamp $dateTimeStamp and attributeName ${attributeNames[columnCount]}');
           } else {
@@ -162,39 +160,9 @@ class _ImportState extends State<Import> {
     });
   }
 
-// DIALOG
-  void _showAlertDialog(String title, String message) {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text(title),
-      content: Text(message),
-    );
-    showDialog(context: context, builder: (_) => alertDialog);
-  }
 
-// SAVE
-  Future<int> _save(entry) async {
-    // Update Operation: Update a to-do object and save it to database
-    int result;
-    if (entry.id != null) {
-      // Case 1: Update operation
-      result = await helperEntry.updateEntry(entry);
-    } else {
-      // Case 2: Insert Operation
-      result = await helperEntry.insertEntry(entry);
-      debugPrint('saved entry from: ${entry.date}');
-    }
 
-    // SUCCESS FAILURE STATUS DIALOG
-    // Success
-    if (result != 0) {
-      //importSuccessCounter++;
-    } else {
-      // Failure
-      _showAlertDialog('Status', 'Problem Saving Entry. Title: ${entry.title}');
-      //importFailureCounter++;
-    }
-    return result;
-  }
+
 
 // add attributes to DB if new
   Future<bool> _saveAttributeToDBIfNew(_attribute, _dBAttributeList) async {

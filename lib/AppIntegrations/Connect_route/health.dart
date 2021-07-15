@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
 import 'package:insightme/Core/functions/misc.dart';
+import 'package:insightme/Database/database_helper_entry.dart';
+
+import '../../Database/entry.dart';
 
 class Health extends StatefulWidget {
   @override
@@ -81,18 +84,26 @@ class _HealthState extends State<Health> {
       importList.add(attributeTitleList);
 
       /// Print the results
-      _healthDataList.forEach((entry) {
-        final date = entry.dateFrom;
+      _healthDataList.forEach((_healthData) {
+        final date = _healthData.dateFrom;
 
         List<dynamic> rowToAdd = List.filled(types.length + 1, null);
         rowToAdd[0] = date;
 
-        if (entry.type == types[0]) {
-          rowToAdd[1] = entry.value;
-        } else if (entry.type == types[1]) {
-          rowToAdd[2] = entry.value;
-        } else if (entry.type == types[2]) {
-          rowToAdd[3] = entry.value;
+        /// save to DB
+        Entry entry = Entry(
+            _healthData.type.toString(), _healthData.value.toString(),
+            _healthData.dateFrom.toString(), 'Google API import'); // title, value, time, comment
+        save(entry, context);
+
+        /// write CSV
+        if (_healthData.type == types[0]) {
+          rowToAdd[1] = _healthData.value;
+
+        } else if (_healthData.type == types[1]) {
+          rowToAdd[2] = _healthData.value;
+        } else if (_healthData.type == types[2]) {
+          rowToAdd[3] = _healthData.value;
         }
 
         importList.add(rowToAdd);

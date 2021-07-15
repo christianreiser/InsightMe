@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 
+import './../Core/widgets/misc.dart';
 import 'entry.dart';
 
 class DatabaseHelperEntry {
@@ -193,4 +194,31 @@ class DatabaseHelperEntry {
     }
     return filteredEntryList;
   }
+}
+
+// SAVE
+Future<int> save(entry, context) async {
+  final DatabaseHelperEntry helperEntry = // error when static
+  DatabaseHelperEntry();
+  // Update Operation: Update a to-do object and save it to database
+  int result;
+  if (entry.id != null) {
+    // Case 1: Update operation
+    result = await helperEntry.updateEntry(entry);
+  } else {
+    // Case 2: Insert Operation
+    result = await helperEntry.insertEntry(entry);
+    debugPrint('saved entry from: ${entry.date}');
+  }
+
+  // SUCCESS FAILURE STATUS DIALOG
+  // Success
+  if (result != 0) {
+    //importSuccessCounter++;
+  } else {
+    // Failure
+    showAlertDialog('Status', 'Problem Saving Entry. Title: ${entry.title}', context);
+    //importFailureCounter++;
+  }
+  return result;
 }
