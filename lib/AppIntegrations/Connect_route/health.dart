@@ -67,15 +67,9 @@ class _HealthState extends State<Health> {
       /// Filter out duplicates
       print("healthData: $_healthDataList");
       _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
-      var healthDataList = _healthDataList;
-      // healthDataList.forEach((dataPoint) {
-      //   var test = dataPoint;
-      // });
-      // print('_healthDataList: ${_healthDataList[0]}');
 
-      /// gete attribute title list
+      /// get attribute title list
       List<String> attributeTitleList = List.filled(types.length + 1, null);
-      final attributeListLength = _healthDataList.length;
       attributeTitleList[0] = 'date';
       for (int attributeCount = 0;
           attributeCount < types.length;
@@ -83,51 +77,30 @@ class _HealthState extends State<Health> {
         attributeTitleList[attributeCount + 1] =
             (types[attributeCount]).toString();
       }
-      // length = #attributes + 1 for date
       List<List<dynamic>> importList = [];
       importList.add(attributeTitleList);
 
-
-
       /// Print the results
-      print("_healthDataList: ${_healthDataList}");
-      _healthDataList.forEach((x) {
-        print("Data point x: $x");
-        var weight = x.value;//.round();
-
-        final date = x.dateFrom;
-
+      _healthDataList.forEach((entry) {
+        final date = entry.dateFrom;
 
         List<dynamic> rowToAdd = List.filled(types.length + 1, null);
-        rowToAdd[0] = date; // add newest date as date
-        // for (var i=0; i<types.length; i++) {
-          if (x.type == types[0]) {
-            rowToAdd[1] = x.value;
-          }
-          else if (x.type == types[1]) {
-            rowToAdd[2] = x.value;
-          }
-          else if (x.type == types[2]) {
-            rowToAdd[3] = x.value;
-          }
-        // }
+        rowToAdd[0] = date;
 
-        // for (var i=0; i<types.length; i++) {
-        //   // rowToAdd[1] = steps;
-        //   // HealthDataType param1 = x;
-        //   // print('param1: $param1');
-        //   // rowToAdd[1] = param1;
-        //
-        // }
-        importList.add(rowToAdd); // add yesterday to dailySummariesList
+        if (entry.type == types[0]) {
+          rowToAdd[1] = entry.value;
+        } else if (entry.type == types[1]) {
+          rowToAdd[2] = entry.value;
+        } else if (entry.type == types[2]) {
+          rowToAdd[3] = entry.value;
+        }
 
-        // print('steps: $steps, date: $date');
+        importList.add(rowToAdd);
       });
 
       // save to file
       await save2DListToCSVFile(importList, "/health_api.csv");
 
-      print("importList: $importList");
 
       /// Update the UI to display the results
       setState(() {
