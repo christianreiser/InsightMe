@@ -61,7 +61,7 @@ class _HealthState extends State<Health> {
       try {
         /// Fetch new data
         List<HealthDataPoint> healthData =
-            await health.getHealthDataFromTypes(startDate, endDate, types);
+        await health.getHealthDataFromTypes(startDate, endDate, types);
 
         /// Save all the new data points
         _healthDataList.addAll(healthData);
@@ -77,8 +77,8 @@ class _HealthState extends State<Health> {
       List<String> attributeTitleList = List.filled(types.length + 1, null);
       attributeTitleList[0] = 'date';
       for (int attributeCount = 0;
-          attributeCount < types.length;
-          attributeCount++) {
+      attributeCount < types.length;
+      attributeCount++) {
         attributeTitleList[attributeCount + 1] =
             (types[attributeCount]).toString();
       }
@@ -102,9 +102,25 @@ class _HealthState extends State<Health> {
         /// save Attribute To DB If its New
         saveAttributeToDBIfNew(_healthData.type.toString().substring(15), _dBAttributeList);
 
+        String label = "";
+        switch (_healthData.type) {
+          case HealthDataType.WEIGHT:
+            label = "weight";
+            break;
+          case HealthDataType.BLOOD_PRESSURE_DIASTOLIC:
+            label = "blood pressure diastolic";
+            break;
+          case HealthDataType.BLOOD_PRESSURE_SYSTOLIC:
+            label = "blood pressure systolic";
+            break;
+          default:
+            label = "n.A.";
+            break;
+        }
+
         /// save to DB
         Entry entry = Entry(
-            _healthData.type.toString().substring(15), _healthData.value.toString(),
+            label, _healthData.value.toString(),
             _healthData.dateFrom.toString(), 'Google API import'); // title, value, time, comment
         save(entry, context);
 
@@ -128,7 +144,7 @@ class _HealthState extends State<Health> {
       /// Update the UI to display the results
       setState(() {
         _state =
-            _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
+        _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
       });
     } else {
       print("Authorization not granted");
