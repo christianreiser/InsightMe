@@ -124,14 +124,95 @@ class _HealthState extends State<Health> {
 
         String label = "";
         switch (_healthData.type) {
-          case HealthDataType.WEIGHT:
-            label = "weight";
+          case HealthDataType.ACTIVE_ENERGY_BURNED:
+            label = "active energy burned";
+            break;
+          case HealthDataType.BASAL_ENERGY_BURNED:
+            label = "basal energy burned";
+            break;
+          case HealthDataType.BLOOD_GLUCOSE:
+            label = "blood glucose";
+            break;
+          case HealthDataType.BLOOD_OXYGEN:
+            label = "blood oxygen";
             break;
           case HealthDataType.BLOOD_PRESSURE_DIASTOLIC:
             label = "blood pressure diastolic";
             break;
           case HealthDataType.BLOOD_PRESSURE_SYSTOLIC:
             label = "blood pressure systolic";
+            break;
+          case HealthDataType.BODY_FAT_PERCENTAGE:
+            label = "body fat percentage";
+            break;
+          case HealthDataType.BODY_MASS_INDEX:
+            label = "body mass index";
+            break;
+          case HealthDataType.BODY_TEMPERATURE:
+            label = "body temperature";
+            break;
+          case HealthDataType.ELECTRODERMAL_ACTIVITY:
+            label = "electrodermal activity";
+            break;
+          case HealthDataType.HEART_RATE:
+            label = "heart rate";
+            break;
+          case HealthDataType.HEIGHT:
+            label = "height";
+            break;
+          case HealthDataType.RESTING_HEART_RATE:
+            label = "resting heart rate";
+            break;
+          case HealthDataType.STEPS:
+            label = "steps";
+            break;
+          case HealthDataType.WAIST_CIRCUMFERENCE:
+            label = "waist circumference";
+            break;
+          case HealthDataType.WALKING_HEART_RATE:
+            label = "walking heart rate";
+            break;
+          case HealthDataType.WEIGHT:
+            label = "weight";
+            break;
+          case HealthDataType.DISTANCE_WALKING_RUNNING:
+            label = "distance walking running";
+            break;
+          case HealthDataType.FLIGHTS_CLIMBED:
+            label = "flights climbed";
+            break;
+          case HealthDataType.MOVE_MINUTES:
+            label = "move minutes";
+            break;
+          case HealthDataType.DISTANCE_DELTA:
+            label = "distance delta";
+            break;
+          case HealthDataType.MINDFULNESS:
+            label = "mindfulness";
+            break;
+          case HealthDataType.SLEEP_IN_BED:
+            label = "sleep in bed";
+            break;
+          case HealthDataType.SLEEP_ASLEEP:
+            label = "sleep asleep";
+            break;
+          case HealthDataType.SLEEP_AWAKE:
+            label = "sleep awake";
+            break;
+          case HealthDataType.WATER:
+            label = "water";
+            break;
+          case HealthDataType.HIGH_HEART_RATE_EVENT:
+            label = "high heart rate event";
+            break;
+          case HealthDataType.LOW_HEART_RATE_EVENT:
+            label = "low heart rate event";
+            break;
+          case HealthDataType.IRREGULAR_HEART_RATE_EVENT:
+            label = "irregular heart rate event";
+            break;
+          case HealthDataType.HEART_RATE_VARIABILITY_SDNN:
+            label = "heart rate variability sdnn";
             break;
           default:
             label = "n.A.";
