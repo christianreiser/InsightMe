@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
 import 'package:insightme/Core/functions/misc.dart';
+import 'package:insightme/Database/attribute.dart';
+import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
 import '../../Database/entry.dart';
@@ -83,6 +85,13 @@ class _HealthState extends State<Health> {
       List<List<dynamic>> importList = [];
       importList.add(attributeTitleList);
 
+      // get attribute list as a sting such that searching if new requires only one db query
+      DatabaseHelperAttribute databaseHelperAttribute =
+      DatabaseHelperAttribute();
+      List<Attribute> _dBAttributeList =
+      await databaseHelperAttribute.getAttributeList();
+      debugPrint('got attribute list from db');
+
       /// Print the results
       _healthDataList.forEach((_healthData) {
         final date = _healthData.dateFrom;
@@ -91,7 +100,7 @@ class _HealthState extends State<Health> {
         rowToAdd[0] = date;
 
         /// save Attribute To DB If its New
-        saveAttributeToDBIfNew(_healthData.type.toString());
+        saveAttributeToDBIfNew(_healthData.type.toString(), _dBAttributeList);
 
         /// save to DB
         Entry entry = Entry(

@@ -4,7 +4,6 @@ import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_charts/flutter_charts.dart';
 import 'package:insightme/Database/attribute.dart';
-import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../Journal/searchOrCreateAttribute.dart' as soca;
@@ -58,13 +57,7 @@ Future<String> save2DListToCSVFile(dailySummariesList, path) async {
 }
 
 // add attributes to DB if new
-Future<bool> saveAttributeToDBIfNew(_attribute) async {
-  DatabaseHelperAttribute databaseHelperAttribute =
-  DatabaseHelperAttribute();
-
-  List<Attribute> _dBAttributeList =
-  await databaseHelperAttribute.getAttributeList();
-
+Future<bool> saveAttributeToDBIfNew(_attribute, _dBAttributeList) async {
   bool addedNewAttributeToDB;
   bool _exactMatch = false;
 

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/functions/misc.dart';
 import 'package:insightme/Core/widgets/misc.dart';
+import 'package:insightme/Database/attribute.dart';
+import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
 import '../Database/entry.dart';
@@ -85,6 +87,14 @@ class _ImportState extends State<Import> {
 
     DateTime dateTimeStamp;
 
+    // get attribute list as a sting such that searching if new requires only one db query
+    DatabaseHelperAttribute databaseHelperAttribute =
+    DatabaseHelperAttribute();
+    List<Attribute> _dBAttributeList =
+    await databaseHelperAttribute.getAttributeList();
+    debugPrint('got attribute list from db');
+
+
     // open file
     Stream<List> inputStream = file.openRead();
     debugPrint('file opened');
@@ -130,7 +140,7 @@ class _ImportState extends State<Import> {
           //debugPrint('_attributeName $_cellContent');
           attributeNames.add(_cellContent); // store attribute names
 
-          saveAttributeToDBIfNew(_cellContent);
+          saveAttributeToDBIfNew(_cellContent, _dBAttributeList);
           //debugPrint('call _saveAttributeToDBIfNew with $_cellContent');
         }
         // skip dateTime label
