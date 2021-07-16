@@ -100,11 +100,11 @@ class _HealthState extends State<Health> {
         rowToAdd[0] = date;
 
         /// save Attribute To DB If its New
-        saveAttributeToDBIfNew(_healthData.type.toString(), _dBAttributeList);
+        saveAttributeToDBIfNew(_healthData.type.toString().substring(15), _dBAttributeList);
 
         /// save to DB
         Entry entry = Entry(
-            _healthData.type.toString(), _healthData.value.toString(),
+            _healthData.type.toString().substring(15), _healthData.value.toString(),
             _healthData.dateFrom.toString(), 'Google API import'); // title, value, time, comment
         save(entry, context);
 
