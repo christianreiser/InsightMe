@@ -40,13 +40,36 @@ class _HealthState extends State<Health> {
 
     /// Define the types to get.
     List<HealthDataType> types = [
-      // HealthDataType.STEPS,
-      HealthDataType.WEIGHT,
-      // HealthDataType.HEIGHT,
-      // HealthDataType.BLOOD_GLUCOSE,
-      // HealthDataType.DISTANCE_WALKING_RUNNING,
+      HealthDataType.ACTIVE_ENERGY_BURNED,
+      HealthDataType.BASAL_ENERGY_BURNED,
+      HealthDataType.BLOOD_GLUCOSE,
+      HealthDataType.BLOOD_OXYGEN,
       HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
       HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
+      HealthDataType.BODY_FAT_PERCENTAGE,
+      HealthDataType.BODY_MASS_INDEX,
+      HealthDataType.BODY_TEMPERATURE,
+      HealthDataType.ELECTRODERMAL_ACTIVITY,
+      HealthDataType.HEART_RATE,
+      HealthDataType.HEIGHT,
+      HealthDataType.RESTING_HEART_RATE,
+      HealthDataType.STEPS,
+      HealthDataType.WAIST_CIRCUMFERENCE,
+      HealthDataType.WALKING_HEART_RATE,
+      HealthDataType.WEIGHT,
+      HealthDataType.DISTANCE_WALKING_RUNNING,
+      HealthDataType.FLIGHTS_CLIMBED,
+      HealthDataType.MOVE_MINUTES,
+      HealthDataType.DISTANCE_DELTA,
+      HealthDataType.MINDFULNESS,
+      HealthDataType.SLEEP_IN_BED,
+      HealthDataType.SLEEP_ASLEEP,
+      HealthDataType.SLEEP_AWAKE,
+      HealthDataType.WATER,
+      HealthDataType.HIGH_HEART_RATE_EVENT,
+      HealthDataType.LOW_HEART_RATE_EVENT,
+      HealthDataType.IRREGULAR_HEART_RATE_EVENT,
+      HealthDataType.HEART_RATE_VARIABILITY_SDNN,
     ];
 
     setState(() => _state = AppState.FETCHING_DATA);
@@ -99,9 +122,6 @@ class _HealthState extends State<Health> {
         List<dynamic> rowToAdd = List.filled(types.length + 1, null);
         rowToAdd[0] = date;
 
-        /// save Attribute To DB If its New
-        saveAttributeToDBIfNew(_healthData.type.toString().substring(15), _dBAttributeList);
-
         String label = "";
         switch (_healthData.type) {
           case HealthDataType.WEIGHT:
@@ -118,28 +138,15 @@ class _HealthState extends State<Health> {
             break;
         }
 
+        /// save Attribute To DB If its New
+        saveAttributeToDBIfNew(label, _dBAttributeList);
+
         /// save to DB
         Entry entry = Entry(
             label, _healthData.value.toString(),
             _healthData.dateFrom.toString(), 'Google API import'); // title, value, time, comment
         save(entry, context);
-
-        // /// write CSV
-        // if (_healthData.type == types[0]) {
-        //   rowToAdd[1] = _healthData.value;
-        //
-        // } else if (_healthData.type == types[1]) {
-        //   rowToAdd[2] = _healthData.value;
-        // } else if (_healthData.type == types[2]) {
-        //   rowToAdd[3] = _healthData.value;
-        // }
-        //
-        // importList.add(rowToAdd);
       });
-
-      // save to file
-      // await save2DListToCSVFile(importList, "/health_api.csv");
-
 
       /// Update the UI to display the results
       setState(() {
