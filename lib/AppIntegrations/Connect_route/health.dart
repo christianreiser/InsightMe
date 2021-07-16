@@ -40,36 +40,36 @@ class _HealthState extends State<Health> {
 
     /// Define the types to get.
     List<HealthDataType> types = [
-      HealthDataType.ACTIVE_ENERGY_BURNED,
-      HealthDataType.BASAL_ENERGY_BURNED,
-      HealthDataType.BLOOD_GLUCOSE,
-      HealthDataType.BLOOD_OXYGEN,
-      HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
-      HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
-      HealthDataType.BODY_FAT_PERCENTAGE,
-      HealthDataType.BODY_MASS_INDEX,
-      HealthDataType.BODY_TEMPERATURE,
-      HealthDataType.ELECTRODERMAL_ACTIVITY,
-      HealthDataType.HEART_RATE,
-      HealthDataType.HEIGHT,
-      HealthDataType.RESTING_HEART_RATE,
-      HealthDataType.STEPS,
-      HealthDataType.WAIST_CIRCUMFERENCE,
-      HealthDataType.WALKING_HEART_RATE,
-      HealthDataType.WEIGHT,
-      HealthDataType.DISTANCE_WALKING_RUNNING,
-      HealthDataType.FLIGHTS_CLIMBED,
-      HealthDataType.MOVE_MINUTES,
-      HealthDataType.DISTANCE_DELTA,
-      HealthDataType.MINDFULNESS,
-      HealthDataType.SLEEP_IN_BED,
-      HealthDataType.SLEEP_ASLEEP,
-      HealthDataType.SLEEP_AWAKE,
-      HealthDataType.WATER,
-      HealthDataType.HIGH_HEART_RATE_EVENT,
-      HealthDataType.LOW_HEART_RATE_EVENT,
-      HealthDataType.IRREGULAR_HEART_RATE_EVENT,
-      HealthDataType.HEART_RATE_VARIABILITY_SDNN,
+      // HealthDataType.ACTIVE_ENERGY_BURNED,
+      HealthDataType.BASAL_ENERGY_BURNED, /// Not available on platform PlatformType.ANDROID
+      // HealthDataType.BLOOD_GLUCOSE,
+      // HealthDataType.BLOOD_OXYGEN,
+      // HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
+      // HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
+      // HealthDataType.BODY_FAT_PERCENTAGE,
+      // HealthDataType.BODY_MASS_INDEX,
+      // HealthDataType.BODY_TEMPERATURE,
+      // HealthDataType.ELECTRODERMAL_ACTIVITY,
+      // HealthDataType.HEART_RATE,
+      // HealthDataType.HEIGHT,
+      // HealthDataType.RESTING_HEART_RATE,
+      // HealthDataType.STEPS,
+      // HealthDataType.WAIST_CIRCUMFERENCE,
+      // HealthDataType.WALKING_HEART_RATE,
+      // HealthDataType.WEIGHT,
+      // HealthDataType.DISTANCE_WALKING_RUNNING,
+      // HealthDataType.FLIGHTS_CLIMBED,
+      // HealthDataType.MOVE_MINUTES,
+      // HealthDataType.DISTANCE_DELTA,
+      // HealthDataType.MINDFULNESS,
+      // HealthDataType.SLEEP_IN_BED,
+      // HealthDataType.SLEEP_ASLEEP,
+      // HealthDataType.SLEEP_AWAKE,
+      // HealthDataType.WATER,
+      // HealthDataType.HIGH_HEART_RATE_EVENT,
+      // HealthDataType.LOW_HEART_RATE_EVENT,
+      // HealthDataType.IRREGULAR_HEART_RATE_EVENT,
+      // HealthDataType.HEART_RATE_VARIABILITY_SDNN,
     ];
 
     setState(() => _state = AppState.FETCHING_DATA);
@@ -77,8 +77,6 @@ class _HealthState extends State<Health> {
     /// You MUST request access to the data types before reading them
     bool accessWasGranted = await health.requestAuthorization(types);
     print('accessWasGranted: $accessWasGranted');
-
-    int steps = 0;
 
     if (accessWasGranted) {
       try {
