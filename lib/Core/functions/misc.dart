@@ -3,7 +3,12 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_charts/flutter_charts.dart';
+import 'package:insightme/Database/attribute.dart';
+import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../../Journal/searchOrCreateAttribute.dart' as soca;
+import '../../strings.dart';
 
 
 getFirstLetter(String title) {
@@ -50,4 +55,51 @@ Future<String> save2DListToCSVFile(dailySummariesList, path) async {
   debugPrint('csv:\n $csv');
   file.writeAsString(csv);
   return csv;
+}
+
+// add attributes to DB if new
+Future<bool> saveAttributeToDBIfNew(_attribute) async {
+  DatabaseHelperAttribute databaseHelperAttribute =
+  DatabaseHelperAttribute();
+
+  List<Attribute> _dBAttributeList =
+  await databaseHelperAttribute.getAttributeList();
+
+  bool addedNewAttributeToDB;
+  bool _exactMatch = false;
+
+  // go through all db attributes one by one and compare
+  //debugPrint('_exactMatch before search: $_exactMatch');
+  for (int i = 0; i < _dBAttributeList.length; i++) {
+    // check if there is a exact attribute match
+    if (_dBAttributeList[i]
+        .title
+        .toLowerCase()
+        .compareTo(_attribute.toLowerCase()) ==
+        0) {
+      _exactMatch = true;
+      //debugPrint('exact match: ${_dBAttributeList[i].title} vs $_attribute');
+    }
+  }
+
+  // save attribute if new
+  if (_exactMatch == false) {
+    //debugPrint('create new attribute: $_attribute');
+
+    // add to faster searchable list
+    // todo important: ask user if additive or average
+    _dBAttributeList.add(Attribute(
+        _attribute, 'imported', defaultLabelColor, defaultAggregation));
+
+    // save to db
+    soca.SearchOrCreateAttributeState() // todo important performance: await and result feedback
+        .saveAttribute(Attribute(
+        _attribute, 'imported', defaultLabelColor, defaultAggregation));
+
+    addedNewAttributeToDB = true;
+  } else {
+    //debugPrint('not creating new attribute as there is a exact match: $_attribute exists in $_dBAttributeList');
+    addedNewAttributeToDB = false;
+  }
+  return addedNewAttributeToDB;
 }

@@ -90,27 +90,30 @@ class _HealthState extends State<Health> {
         List<dynamic> rowToAdd = List.filled(types.length + 1, null);
         rowToAdd[0] = date;
 
+        /// save Attribute To DB If its New
+        saveAttributeToDBIfNew(_healthData.type.toString());
+
         /// save to DB
         Entry entry = Entry(
             _healthData.type.toString(), _healthData.value.toString(),
             _healthData.dateFrom.toString(), 'Google API import'); // title, value, time, comment
         save(entry, context);
 
-        /// write CSV
-        if (_healthData.type == types[0]) {
-          rowToAdd[1] = _healthData.value;
-
-        } else if (_healthData.type == types[1]) {
-          rowToAdd[2] = _healthData.value;
-        } else if (_healthData.type == types[2]) {
-          rowToAdd[3] = _healthData.value;
-        }
-
-        importList.add(rowToAdd);
+        // /// write CSV
+        // if (_healthData.type == types[0]) {
+        //   rowToAdd[1] = _healthData.value;
+        //
+        // } else if (_healthData.type == types[1]) {
+        //   rowToAdd[2] = _healthData.value;
+        // } else if (_healthData.type == types[2]) {
+        //   rowToAdd[3] = _healthData.value;
+        // }
+        //
+        // importList.add(rowToAdd);
       });
 
       // save to file
-      await save2DListToCSVFile(importList, "/health_api.csv");
+      // await save2DListToCSVFile(importList, "/health_api.csv");
 
 
       /// Update the UI to display the results

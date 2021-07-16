@@ -6,15 +6,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Core/functions/misc.dart';
 import 'package:insightme/Core/widgets/misc.dart';
-import 'package:insightme/Database/attribute.dart';
-import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
 import '../Database/entry.dart';
-import '../Journal/searchOrCreateAttribute.dart' as soca;
 import '../navigation_helper.dart';
-import '../strings.dart';
 
 class Import extends StatefulWidget {
   @override
@@ -25,8 +22,7 @@ class _ImportState extends State<Import> {
   final DatabaseHelperEntry helperEntry = // error when static
       DatabaseHelperEntry();
 
-  static DatabaseHelperAttribute databaseHelperAttribute =
-      DatabaseHelperAttribute();
+
 
 //  int importSuccessCounter = 0;
 //  int importFailureCounter = 0;
@@ -89,11 +85,6 @@ class _ImportState extends State<Import> {
 
     DateTime dateTimeStamp;
 
-    // get attribute list as a sting such that searching if new requires only one db query
-    List<Attribute> _dBAttributeList =
-        await databaseHelperAttribute.getAttributeList();
-    debugPrint('got attribute list from db');
-
     // open file
     Stream<List> inputStream = file.openRead();
     debugPrint('file opened');
@@ -139,7 +130,7 @@ class _ImportState extends State<Import> {
           //debugPrint('_attributeName $_cellContent');
           attributeNames.add(_cellContent); // store attribute names
 
-          _saveAttributeToDBIfNew(_cellContent, _dBAttributeList);
+          saveAttributeToDBIfNew(_cellContent);
           //debugPrint('call _saveAttributeToDBIfNew with $_cellContent');
         }
         // skip dateTime label
@@ -158,51 +149,6 @@ class _ImportState extends State<Import> {
     }, onError: (e) {
       print(e.toString());
     });
-  }
-
-
-
-
-
-// add attributes to DB if new
-  Future<bool> _saveAttributeToDBIfNew(_attribute, _dBAttributeList) async {
-    bool addedNewAttributeToDB;
-    bool _exactMatch = false;
-
-    // go through all db attributes one by one and compare
-    //debugPrint('_exactMatch before search: $_exactMatch');
-    for (int i = 0; i < _dBAttributeList.length; i++) {
-      // check if there is a exact attribute match
-      if (_dBAttributeList[i]
-              .title
-              .toLowerCase()
-              .compareTo(_attribute.toLowerCase()) ==
-          0) {
-        _exactMatch = true;
-        //debugPrint('exact match: ${_dBAttributeList[i].title} vs $_attribute');
-      }
-    }
-
-    // save attribute if new
-    if (_exactMatch == false) {
-      //debugPrint('create new attribute: $_attribute');
-
-      // add to faster searchable list
-      // todo important: ask user if additive or average
-      _dBAttributeList.add(Attribute(
-          _attribute, 'imported', defaultLabelColor, defaultAggregation));
-
-      // save to db
-      soca.SearchOrCreateAttributeState() // todo important performance: await and result feedback
-          .saveAttribute(Attribute(
-              _attribute, 'imported', defaultLabelColor, defaultAggregation));
-
-      addedNewAttributeToDB = true;
-    } else {
-      //debugPrint('not creating new attribute as there is a exact match: $_attribute exists in $_dBAttributeList');
-      addedNewAttributeToDB = false;
-    }
-    return addedNewAttributeToDB;
   }
 
   Container _hintInImport() {

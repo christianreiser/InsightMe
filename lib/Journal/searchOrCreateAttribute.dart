@@ -470,7 +470,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {
       // Success
-      _showAlertDialog('Status', 'Attribute Saved Successfully');
+      // _showAlertDialog('Status', 'Attribute Saved Successfully');
     } else {
       // Failure
       _showAlertDialog('Status', 'Problem Saving Attribute');
