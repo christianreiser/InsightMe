@@ -24,7 +24,7 @@ dependencies:
   cupertino_icons: ^1.0.3 # iOS style
   flutter_datetime_picker: ^1.5.1 # new entry date selection
   syncfusion_flutter_charts: ^19.1.69+1 # scatter chart
-  health: ^3.0.5
+  health: 3.0.4
   fit_kit: ^1.1.2
   json_serializable: ^4.1.2
   json_annotation: ^4.0.1
