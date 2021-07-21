@@ -39,10 +39,25 @@ class _GFitState extends State<GFit> {
     super.initState();
   }
 
-  Future<void> _currentDirectory() async {
+  Future<void> _dateToLogFile(String filename, String content) async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-    print("_current path: $appDocPath");
+    final path = '${appDocDir.path}/$filename';
+    final file = File(path);
+    print("_log file saved to: $path");
+    await file.writeAsString(content);
+  }
+
+  void _readDateFromLogFile(String filename) async {
+    String content;
+    try {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      final file = File('${appDocDir.path}/$filename');
+      content = await file.readAsString();
+    } catch (e) {
+      print("Error reading the file.");
+    }
+
+    print("_date from log file: $content");
   }
 
   Future fetchData() async {
@@ -288,11 +303,19 @@ class _GFitState extends State<GFit> {
           SizedBox(height: 20),
           FloatingActionButton.extended(
               onPressed: () {
-                //TODO: create log file
-                _currentDirectory();
+                //TODO: save log file
+                _dateToLogFile("lastPulledGFitDate.txt", DateTime.now().toString());
               },
               icon: const Icon(Icons.add),
-              label: Text('Save the date (DEBUG)'))
+              label: Text('Save date data (DEBUG)')),
+          SizedBox(height: 20),
+          FloatingActionButton.extended(
+              onPressed: () {
+                //TODO: read log file
+                _readDateFromLogFile("lastPulledGFitDate.txt");
+              },
+              icon: const Icon(Icons.add),
+              label: Text('Read date data (DEBUG)'))
         ]),
       ),
     ); // type lineChart
