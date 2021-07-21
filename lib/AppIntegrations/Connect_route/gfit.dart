@@ -39,12 +39,15 @@ class _GFitState extends State<GFit> {
     super.initState();
   }
 
-  Future<void> _dateToLogFile(String filename, String content) async {
+  Future<void> _dateToLogFile(String filename) async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     final path = '${appDocDir.path}/$filename';
     final file = File(path);
     print("_log file saved to: $path");
-    await file.writeAsString(content);
+
+    DateTime currentDate = DateTime.now();
+    DateTime dateTwoWeeksAgo = currentDate.subtract(const Duration(days: 14));
+    await file.writeAsString(currentDate.toString() + "\n" + dateTwoWeeksAgo.toString());
   }
 
   void _readDateFromLogFile(String filename) async {
@@ -304,7 +307,7 @@ class _GFitState extends State<GFit> {
           FloatingActionButton.extended(
               onPressed: () {
                 //TODO: save log file
-                _dateToLogFile("lastPulledGFitDate.txt", DateTime.now().toString());
+                _dateToLogFile("lastPulledGFitDate.txt");
               },
               icon: const Icon(Icons.add),
               label: Text('Save date data (DEBUG)')),
