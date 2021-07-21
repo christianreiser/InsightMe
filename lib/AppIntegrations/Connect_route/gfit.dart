@@ -47,36 +47,20 @@ class _GFitState extends State<GFit> {
 
     /// Define the types to get.
     List<HealthDataType> types = [
-      // HealthDataType.ACTIVE_ENERGY_BURNED,
-      HealthDataType.BASAL_ENERGY_BURNED, /// Not available on platform PlatformType.ANDROID
-      // HealthDataType.BLOOD_GLUCOSE,
-      // HealthDataType.BLOOD_OXYGEN,
-      // HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
-      // HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
-      // HealthDataType.BODY_FAT_PERCENTAGE,
-      // HealthDataType.BODY_MASS_INDEX,
-      // HealthDataType.BODY_TEMPERATURE,
-      // HealthDataType.ELECTRODERMAL_ACTIVITY,
-      // HealthDataType.HEART_RATE,
-      // HealthDataType.HEIGHT,
-      // HealthDataType.RESTING_HEART_RATE,
-      // HealthDataType.STEPS,
-      // HealthDataType.WAIST_CIRCUMFERENCE,
-      // HealthDataType.WALKING_HEART_RATE,
-      // HealthDataType.WEIGHT,
-      // HealthDataType.DISTANCE_WALKING_RUNNING,
-      // HealthDataType.FLIGHTS_CLIMBED,
-      // HealthDataType.MOVE_MINUTES,
-      // HealthDataType.DISTANCE_DELTA,
-      // HealthDataType.MINDFULNESS,
-      // HealthDataType.SLEEP_IN_BED,
-      // HealthDataType.SLEEP_ASLEEP,
-      // HealthDataType.SLEEP_AWAKE,
-      // HealthDataType.WATER,
-      // HealthDataType.HIGH_HEART_RATE_EVENT,
-      // HealthDataType.LOW_HEART_RATE_EVENT,
-      // HealthDataType.IRREGULAR_HEART_RATE_EVENT,
-      // HealthDataType.HEART_RATE_VARIABILITY_SDNN,
+      HealthDataType.ACTIVE_ENERGY_BURNED,
+      HealthDataType.BLOOD_GLUCOSE,
+      HealthDataType.BLOOD_OXYGEN,
+      HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
+      HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
+      HealthDataType.BODY_FAT_PERCENTAGE,
+      HealthDataType.BODY_MASS_INDEX,
+      HealthDataType.BODY_TEMPERATURE,
+      HealthDataType.HEART_RATE,
+      HealthDataType.HEIGHT,
+      HealthDataType.STEPS,
+      HealthDataType.WEIGHT,
+      HealthDataType.MOVE_MINUTES,
+      HealthDataType.WATER
     ];
 
     setState(() => _state = AppState.FETCHING_DATA);
@@ -132,9 +116,6 @@ class _GFitState extends State<GFit> {
           case HealthDataType.ACTIVE_ENERGY_BURNED:
             label = "active energy burned";
             break;
-          case HealthDataType.BASAL_ENERGY_BURNED:
-            label = "basal energy burned";
-            break;
           case HealthDataType.BLOOD_GLUCOSE:
             label = "blood glucose";
             break;
@@ -156,68 +137,23 @@ class _GFitState extends State<GFit> {
           case HealthDataType.BODY_TEMPERATURE:
             label = "body temperature";
             break;
-          case HealthDataType.ELECTRODERMAL_ACTIVITY:
-            label = "electrodermal activity";
-            break;
           case HealthDataType.HEART_RATE:
             label = "heart rate";
             break;
           case HealthDataType.HEIGHT:
             label = "height";
             break;
-          case HealthDataType.RESTING_HEART_RATE:
-            label = "resting heart rate";
-            break;
           case HealthDataType.STEPS:
             label = "steps";
-            break;
-          case HealthDataType.WAIST_CIRCUMFERENCE:
-            label = "waist circumference";
-            break;
-          case HealthDataType.WALKING_HEART_RATE:
-            label = "walking heart rate";
             break;
           case HealthDataType.WEIGHT:
             label = "weight";
             break;
-          case HealthDataType.DISTANCE_WALKING_RUNNING:
-            label = "distance walking running";
-            break;
-          case HealthDataType.FLIGHTS_CLIMBED:
-            label = "flights climbed";
-            break;
           case HealthDataType.MOVE_MINUTES:
             label = "move minutes";
             break;
-          case HealthDataType.DISTANCE_DELTA:
-            label = "distance delta";
-            break;
-          case HealthDataType.MINDFULNESS:
-            label = "mindfulness";
-            break;
-          case HealthDataType.SLEEP_IN_BED:
-            label = "sleep in bed";
-            break;
-          case HealthDataType.SLEEP_ASLEEP:
-            label = "sleep asleep";
-            break;
-          case HealthDataType.SLEEP_AWAKE:
-            label = "sleep awake";
-            break;
           case HealthDataType.WATER:
             label = "water";
-            break;
-          case HealthDataType.HIGH_HEART_RATE_EVENT:
-            label = "high heart rate event";
-            break;
-          case HealthDataType.LOW_HEART_RATE_EVENT:
-            label = "low heart rate event";
-            break;
-          case HealthDataType.IRREGULAR_HEART_RATE_EVENT:
-            label = "irregular heart rate event";
-            break;
-          case HealthDataType.HEART_RATE_VARIABILITY_SDNN:
-            label = "heart rate variability sdnn";
             break;
           default:
             label = "n.A.";
