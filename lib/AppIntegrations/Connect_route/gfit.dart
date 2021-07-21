@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:health/health.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,7 @@ import 'package:insightme/Core/functions/misc.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../Database/entry.dart';
 
 class GFit extends StatefulWidget {
@@ -38,10 +39,16 @@ class _GFitState extends State<GFit> {
     super.initState();
   }
 
+  Future<void> _currentDirectory() async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    print("_current path: $appDocPath");
+  }
+
   Future fetchData() async {
     /// Get everything from midnight until now
-    DateTime startDate = DateTime(2020, 10, 01, 0, 0, 0);
-    DateTime endDate = DateTime(2025, 11, 07, 23, 59, 59);
+    DateTime startDate = DateTime.now();
+    DateTime endDate = new DateTime(startDate.year, startDate.month, startDate.day - 14);
 
     HealthFactory health = HealthFactory();
 
@@ -268,7 +275,15 @@ class _GFitState extends State<GFit> {
                 fetchData();
               },
               icon: const Icon(Icons.add),
-              label: Text('connect'))
+              label: Text('connect')),
+          SizedBox(height: 20),
+          FloatingActionButton.extended(
+              onPressed: () {
+                //TODO: create log file
+                _currentDirectory();
+              },
+              icon: const Icon(Icons.add),
+              label: Text('Save the date (DEBUG)'))
         ]),
       ),
     ); // type lineChart
