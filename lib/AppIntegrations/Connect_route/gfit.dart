@@ -47,13 +47,19 @@ class _GFitState extends State<GFit> {
 
   Future fetchData() async {
     /// Get everything from midnight until now
+    /*
     DateTime startDate = DateTime.now();
     DateTime endDate = new DateTime(startDate.year, startDate.month, startDate.day - 14);
+    */
+
+    DateTime startDate = DateTime(2020, 10, 01, 0, 0, 0);
+    DateTime endDate = DateTime(2025, 11, 07, 23, 59, 59);
 
     HealthFactory health = HealthFactory();
 
     /// Define the types to get.
     List<HealthDataType> types = [
+      /*
       HealthDataType.ACTIVE_ENERGY_BURNED,
       HealthDataType.BLOOD_GLUCOSE,
       HealthDataType.BLOOD_OXYGEN,
@@ -62,12 +68,16 @@ class _GFitState extends State<GFit> {
       HealthDataType.BODY_FAT_PERCENTAGE,
       HealthDataType.BODY_MASS_INDEX,
       HealthDataType.BODY_TEMPERATURE,
+       */
       HealthDataType.HEART_RATE,
       HealthDataType.HEIGHT,
       HealthDataType.STEPS,
       HealthDataType.WEIGHT,
+      /*
       HealthDataType.MOVE_MINUTES,
       HealthDataType.WATER
+
+       */
     ];
 
     setState(() => _state = AppState.FETCHING_DATA);
