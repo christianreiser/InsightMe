@@ -11,7 +11,7 @@ import '../../Database/entry.dart';
 
 class Health extends StatefulWidget {
   @override
-  _HealthState createState() => _HealthState();
+  HealthState createState() => HealthState();
 }
 
 enum AppState {
@@ -22,7 +22,7 @@ enum AppState {
   AUTH_NOT_GRANTED
 }
 
-class _HealthState extends State<Health> {
+class HealthState extends State<Health> {
   List<HealthDataPoint> _healthDataList = [];
   AppState _state = AppState.DATA_NOT_FETCHED;
 

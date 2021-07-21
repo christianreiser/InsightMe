@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/AppIntegrations/Connect_route/health.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
 import '../navigation_helper.dart';
-import 'Connect_route/fit_kit.dart';
+import 'Connect_route/gfit.dart';
 
 class AppIntegrationsOverview extends StatelessWidget {
   final DatabaseHelperEntry helperEntry = // error when static
@@ -70,7 +69,7 @@ class AppIntegrationsOverview extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Health(), //FitKitGHub(), //GFit(),
+                          builder: (context) => GFit(),
                         ),
                       );
                     },
