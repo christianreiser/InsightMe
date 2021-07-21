@@ -76,7 +76,6 @@ class _GFitState extends State<GFit> {
       /*
       HealthDataType.MOVE_MINUTES,
       HealthDataType.WATER
-
        */
     ];
 
