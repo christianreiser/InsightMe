@@ -41,10 +41,28 @@ class _GFitState extends State<GFit> {
     super.initState();
   }
 
-  Future<void> _currentDirectory() async {
+  Future<void> _dateToLogFile(String filename) async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-    print("_current path: $appDocPath");
+    final path = '${appDocDir.path}/$filename';
+    final file = File(path);
+    print("_log file saved to: $path");
+
+    DateTime currentDate = DateTime.now();
+    DateTime dateTwoWeeksAgo = currentDate.subtract(const Duration(days: 14));
+    await file.writeAsString(currentDate.toString() + "\n" + dateTwoWeeksAgo.toString());
+  }
+
+  void _readDateFromLogFile(String filename) async {
+    String content;
+    try {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      final file = File('${appDocDir.path}/$filename');
+      content = await file.readAsString();
+    } catch (e) {
+      print("Error reading the file.");
+    }
+
+    print("_date from log file: $content");
   }
 
   Future fetchData() async {
@@ -293,11 +311,19 @@ class _GFitState extends State<GFit> {
           FloatingActionButton.extended(
               heroTag: "btn2",
               onPressed: () {
-                //TODO: create log file
-                _currentDirectory();
+                //TODO: save log file
+                _dateToLogFile("lastPulledGFitDate.txt");
               },
               icon: const Icon(Icons.add),
-              label: Text('Save the date (DEBUG)'))
+              label: Text('Save date data (DEBUG)')),
+          SizedBox(height: 20),
+          FloatingActionButton.extended(
+              onPressed: () {
+                //TODO: read log file
+                _readDateFromLogFile("lastPulledGFitDate.txt");
+              },
+              icon: const Icon(Icons.add),
+              label: Text('Read date data (DEBUG)'))
         ]),
       ),
     ); // type lineChart
