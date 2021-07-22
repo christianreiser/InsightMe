@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
-import 'package:health/health.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:health/health.dart';
 import 'package:insightme/Core/functions/misc.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 import 'package:path_provider/path_provider.dart';
+
 import '../../Database/entry.dart';
 
 class GFit extends StatefulWidget {
@@ -53,7 +55,7 @@ class _GFitState extends State<GFit> {
     */
 
     DateTime startDate = DateTime(2020, 10, 01, 0, 0, 0);
-    DateTime endDate = DateTime(2025, 11, 07, 23, 59, 59);
+    DateTime endDate = DateTime(2025, 10, 02, 23, 59, 59);
 
     HealthFactory health = HealthFactory();
 
@@ -69,9 +71,9 @@ class _GFitState extends State<GFit> {
       HealthDataType.BODY_MASS_INDEX,
       HealthDataType.BODY_TEMPERATURE,
        */
-      HealthDataType.HEART_RATE,
-      HealthDataType.HEIGHT,
-      HealthDataType.STEPS,
+      // HealthDataType.HEART_RATE,
+      // HealthDataType.HEIGHT,
+      // HealthDataType.STEPS,
       HealthDataType.WEIGHT,
       /*
       HealthDataType.MOVE_MINUTES,
@@ -91,7 +93,7 @@ class _GFitState extends State<GFit> {
         List<HealthDataPoint> healthData =
         await health.getHealthDataFromTypes(startDate, endDate, types);
 
-        /// Save all the new data points
+        /// add all the new data points
         _healthDataList.addAll(healthData);
       } catch (e) {
         print("Caught exception in getHealthDataFromTypes: $e");
@@ -180,10 +182,14 @@ class _GFitState extends State<GFit> {
         saveAttributeToDBIfNew(label, _dBAttributeList);
 
         /// save to DB
+        final DatabaseHelperEntry helperEntry = // error when static
+        DatabaseHelperEntry();
+
         Entry entry = Entry(
             label, _healthData.value.toString(),
             _healthData.dateFrom.toString(), 'Google API import'); // title, value, time, comment
-        save(entry, context);
+        // save(entry, context);
+        helperEntry.saveOrUpdateEntry(entry, context);
       });
 
       /// Update the UI to display the results
@@ -255,10 +261,7 @@ class _GFitState extends State<GFit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () async {},
-        ),
+
         title: Text('Google Fit'),
       ),
       body: Padding(
@@ -280,6 +283,7 @@ class _GFitState extends State<GFit> {
           ),
           SizedBox(height: 20),
           FloatingActionButton.extended(
+              heroTag: "btn1",
               onPressed: () {
                 fetchData();
               },
@@ -287,6 +291,7 @@ class _GFitState extends State<GFit> {
               label: Text('connect')),
           SizedBox(height: 20),
           FloatingActionButton.extended(
+              heroTag: "btn2",
               onPressed: () {
                 //TODO: create log file
                 _currentDirectory();

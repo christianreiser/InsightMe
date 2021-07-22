@@ -86,6 +86,8 @@ class _ImportState extends State<Import> {
     List<String> attributeNames = [];
 
     DateTime dateTimeStamp;
+    final DatabaseHelperEntry helperEntry = // error when static
+    DatabaseHelperEntry();
 
     // get attribute list as a sting such that searching if new requires only one db query
     DatabaseHelperAttribute databaseHelperAttribute =
@@ -120,9 +122,7 @@ class _ImportState extends State<Import> {
             Entry entry = Entry(attributeNames[columnCount], _cellContent,
                 '$dateTimeStamp', 'csv import'); // title, value, time, comment
 
-            save(entry, context);
-//            debugPrint(
-//                'called _save for entry with dateTimeStamp $dateTimeStamp and attributeName ${attributeNames[columnCount]}');
+            helperEntry.saveOrUpdateEntry(entry, context);
           } else {
             //debugPrint('skip empty entry cell');
           }
@@ -141,7 +141,6 @@ class _ImportState extends State<Import> {
           attributeNames.add(_cellContent); // store attribute names
 
           saveAttributeToDBIfNew(_cellContent, _dBAttributeList);
-          //debugPrint('call _saveAttributeToDBIfNew with $_cellContent');
         }
         // skip dateTime label
         else if (lineCounter == 0 && columnCount == 0) {
