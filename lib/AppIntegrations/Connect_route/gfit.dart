@@ -39,18 +39,17 @@ class _GFitState extends State<GFit> {
     super.initState();
   }
 
-  Future<void> _dateToLogFile(String filename) async {
+  void _dateToLogFile(String filename) async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     final path = '${appDocDir.path}/$filename';
     final file = File(path);
     print("_log file saved to: $path");
 
     DateTime currentDate = DateTime.now();
-    DateTime dateTwoWeeksAgo = currentDate.subtract(const Duration(days: 14));
-    await file.writeAsString(currentDate.toString() + "\n" + dateTwoWeeksAgo.toString());
+    await file.writeAsString(currentDate.toString());
   }
 
-  void _readDateFromLogFile(String filename) async {
+  Future<String> _readDateFromLogFile(String filename) async {
     String content;
     try {
       Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -60,18 +59,14 @@ class _GFitState extends State<GFit> {
       print("Error reading the file.");
     }
 
-    print("_date from log file: $content");
+    return content;
   }
 
   Future fetchData() async {
     /// Get everything from midnight until now
-    /*
-    DateTime startDate = DateTime.now();
-    DateTime endDate = new DateTime(startDate.year, startDate.month, startDate.day - 14);
-    */
-
-    DateTime startDate = DateTime(2020, 10, 01, 0, 0, 0);
-    DateTime endDate = DateTime(2025, 11, 07, 23, 59, 59);
+    DateTime endDate = DateTime.parse(await _readDateFromLogFile("lastGFitPull.txt"));
+    DateTime startDate = endDate.subtract(const Duration(days: 10000));
+    print("__(DEBUG)__ startDate: $endDate" + "\n__(DEBUG)__ endDate: $startDate");
 
     HealthFactory health = HealthFactory();
 
@@ -299,6 +294,7 @@ class _GFitState extends State<GFit> {
           SizedBox(height: 20),
           FloatingActionButton.extended(
               onPressed: () {
+                _dateToLogFile("lastGFitPull.txt");
                 fetchData();
               },
               icon: const Icon(Icons.add),
@@ -307,18 +303,10 @@ class _GFitState extends State<GFit> {
           FloatingActionButton.extended(
               onPressed: () {
                 //TODO: save log file
-                _dateToLogFile("lastPulledGFitDate.txt");
+                _dateToLogFile("lastGFitPull.txt");
               },
               icon: const Icon(Icons.add),
-              label: Text('Save date data (DEBUG)')),
-          SizedBox(height: 20),
-          FloatingActionButton.extended(
-              onPressed: () {
-                //TODO: read log file
-                _readDateFromLogFile("lastPulledGFitDate.txt");
-              },
-              icon: const Icon(Icons.add),
-              label: Text('Read date data (DEBUG)'))
+              label: Text('Save date data (DEBUG)'))
         ]),
       ),
     ); // type lineChart

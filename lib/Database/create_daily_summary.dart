@@ -110,6 +110,4 @@ class WriteDailySummariesCSV {
     //debugPrint('rowToAdd $rowToAdd');
     return dailySummariesList;
   }
-
-
 }
