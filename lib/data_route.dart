@@ -58,8 +58,6 @@ class _DataRouteState extends State<DataRoute> {
     );
   }
 
-  // Future<void> read() async {
-
   Widget dataListView(attributeList) {
     return ListView.builder(
       itemCount: globals.attributeListLength,

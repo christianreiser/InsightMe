@@ -57,7 +57,7 @@ Future<List<dynamic>> readCorrelationCoefficientsOfOneAttribute(
     final String valueKey = '${currentCoeffAbsString}_${attributeNames[i]}';
     corrCoeffTargetMap[valueKey] = {attributeNames[i]: currentCoeff};
   }
-
+  var keyValuesSorted = corrCoeffTargetMap.values;
   // print('corrCoeffTargetMap: $corrCoeffTargetMap'); // todo remove print
   for (final String key in corrCoeffTargetMap.keys) {
     print("$key : ${corrCoeffTargetMap[key]}");

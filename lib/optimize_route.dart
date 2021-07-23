@@ -10,6 +10,7 @@ import 'package:insightme/Visualize/change_notifier.dart';
 import 'package:provider/provider.dart';
 
 import 'Core/widgets/entryHint.dart';
+import 'Statistics/Functions/readCorrelation.dart';
 import 'globals.dart' as globals;
 
 class OptimizeRoute extends StatefulWidget {
@@ -54,6 +55,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                         TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
                   ),
                   Row(
+
                       ///dropdown
                       // start: child as close to the start of the main axis as possible
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -66,40 +68,56 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                       ]),
                 ]),
           ),
-          optimizeNameAndChart(), //'Happiness', 'Resting Heart Rate'
-          //optimizeNameAndChart('Body weight', 'Calories in'),
+          oneOptimizeNameAndChart('productive_min', 'mood'),
+          //'Happiness', 'Resting Heart Rate'
+          //oneOptimizeNameAndChart('Body weight', 'Calories in'),
         ]),
       ),
     );
   }
 
-  Widget optimizeNameAndChart() {
+  Widget optimizeListView(attributeList) {
     return Consumer<OptimizationChangeNotifier>(
-      builder: (context, schedule, _) => Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        builder: (context, schedule, _) {
+      var att1 = schedule.selectedAttribute1;
+      var coeffsMap = readCorrelationCoefficientsOfOneAttribute(att1);
+      return ListView.builder(
+        itemCount: globals.attributeListLength - 1,
+        //actually coeffsMap.length
+        itemBuilder: (BuildContext context, int position) {
+          return oneOptimizeNameAndChart(att1, att1);
+        },
+      );
+    });
+  }
 
-            /// visualize chart
-            SizedBox(
-              height: 450,
+  Widget oneOptimizeNameAndChart(att1, att2) {
+    return Consumer<OptimizationChangeNotifier>(
+      builder: (context, schedule, _) {
+        return Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              /// visualize chart
+              SizedBox(
+                height: 450,
 
-              /// height constraint
-              child: SizedBox.expand(
-                /// for max width
-                child: futureTwoAttributeScatterPlot(
-                    schedule.selectedAttribute1, schedule.selectedAttribute2),
+                /// height constraint
+                child: SizedBox.expand(
+                  /// for max width
+                  child: futureTwoAttributeScatterPlot(att1, att2),
+                ),
               ),
-            ),
 
-            /// statistics: correlation and confidence
-            futureStatistics(
-                schedule.selectedAttribute1, schedule.selectedAttribute2)
-          ]),
-        ),
-        greyLineSeparator(),
-      ]),
+              /// statistics: correlation and confidence
+              futureStatistics(
+                  schedule.selectedAttribute1, schedule.selectedAttribute2)
+            ]),
+          ),
+          greyLineSeparator(),
+        ]);
+      },
     );
   }
 }
