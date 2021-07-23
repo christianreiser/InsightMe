@@ -1,3 +1,4 @@
+import "dart:collection";
 import 'dart:convert' show utf8;
 import 'dart:io';
 
@@ -12,30 +13,72 @@ Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   var correlationMatrix = await _readCorrelationMatrix();
   int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
   //debugPrint('2');
-  final int attributeIndex2 = transposeChr(correlationMatrix)[0].indexOf(attribute2);
-  debugPrint('correlationMatrix[attributeIndex1][attributeIndex2]: ${correlationMatrix[attributeIndex1][attributeIndex2]}');
-  final num correlationCoefficient = correlationMatrix[attributeIndex1][attributeIndex2];
+  final int attributeIndex2 =
+      transposeChr(correlationMatrix)[0].indexOf(attribute2);
+  debugPrint(
+      'correlationMatrix[attributeIndex1][attributeIndex2]: ${correlationMatrix[attributeIndex1][attributeIndex2]}');
+  final num correlationCoefficient =
+      correlationMatrix[attributeIndex1][attributeIndex2];
   return correlationCoefficient;
 }
 
-Future<List<dynamic>> _readCorrelationCoefficientsOfOneAttribute(
+Future<List<dynamic>> readCorrelationCoefficientsOfOneAttribute(
     attribute) async {
-  print('attribute::: $attribute');
+  // corr matrix
   var correlationMatrix = await _readCorrelationMatrix();
 
-  int attributeIndex = correlationMatrix[0].indexOf(attribute);
-  print('attributeIndex $attributeIndex');
-  debugPrint(
-      'correlationMatrix[attributeIndex]: ${correlationMatrix[attributeIndex]}');
-  var correlationCoefficientsOfOneAttribute = correlationMatrix[attributeIndex];
-  correlationCoefficientsOfOneAttribute.removeAt(0);
-  return correlationCoefficientsOfOneAttribute;
+  // labels
+  List<dynamic> attributeNames = correlationMatrix[0];
+
+  // corr Coeffs Target
+  int attributeIndex = attributeNames.indexOf(attribute);
+  var corrCoeffsTarget = correlationMatrix[attributeIndex];
+  corrCoeffsTarget.removeAt(0);
+  attributeNames.removeAt(0);
+
+  // ini self balancing key tree. key consists of 'value_label'
+  final SplayTreeMap<String, Map<String, double>> corrCoeffTargetMap =
+      SplayTreeMap<String, Map<String, double>>();
+
+  // fill self balancing tree with coeffs
+  for (int i = 0; i < attributeNames.length; i++) {
+    var currentCoeff = corrCoeffsTarget[i];
+    if (currentCoeff == null || currentCoeff == 'null') {
+      currentCoeff = 0.00;
+    }
+
+    // abs
+    String currentCoeffAbsString = '${double.parse('$currentCoeff').abs()}';
+
+    // add zeros if missing
+    currentCoeffAbsString = _treeSignificantDigits(currentCoeffAbsString);
+
+    // fill tree
+    final String valueKey = '${currentCoeffAbsString}_${attributeNames[i]}';
+    corrCoeffTargetMap[valueKey] = {attributeNames[i]: currentCoeff};
+  }
+
+  // print('corrCoeffTargetMap: $corrCoeffTargetMap'); // todo remove print
+  for (final String key in corrCoeffTargetMap.keys) {
+    print("$key : ${corrCoeffTargetMap[key]}");
+  }
+
+  return corrCoeffsTarget;
+}
+
+String _treeSignificantDigits(numString) {
+  if (numString.length < 3) {
+    numString = numString + '00';
+  } else if (numString.length < 4) {
+    numString = numString + '0';
+  }
+  return numString;
 }
 
 List<dynamic> _convertNullTo0(dynamicListWithNulls) {
   for (int i = 0; i < dynamicListWithNulls.length; i++) {
     if (dynamicListWithNulls[i] == 'null') {
-      dynamicListWithNulls[i] = 0;
+      dynamicListWithNulls[i] = 0.00;
     }
   }
   return dynamicListWithNulls;

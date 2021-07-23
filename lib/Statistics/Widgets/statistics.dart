@@ -8,7 +8,8 @@ Widget futureStatistics(attributeName1, attributeName2) {
   /// future builder of correlation coefficient and p-value widgets
   if (attributeName1 != attributeName2) {
     return FutureBuilder(
-      future: readCorrelationCoefficient(attributeName1, attributeName2),
+      // future: readCorrelationCoefficient(attributeName1, attributeName2),
+      future: readCorrelationCoefficientsOfOneAttribute(attributeName1),
       builder: (context, snapshot) {
         /// chart data arrived && data found
         /// snapshot is current state of future
@@ -18,7 +19,7 @@ Widget futureStatistics(attributeName1, attributeName2) {
 
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return statistics(
+          return _statistics(
               context, snapshot.data, 0.02); //todo feature: hard coded p-value
         }
 
@@ -38,7 +39,7 @@ Widget futureStatistics(attributeName1, attributeName2) {
   }
 }
 
-Widget statistics(context, _correlationCoefficient, _pValue) {
+Widget _statistics(context, _correlationCoefficient, _pValue) {
   /// correlation coefficient and p-value widgets
   return Column(
       mainAxisSize: MainAxisSize.min,
@@ -103,7 +104,7 @@ Container _correlationBar(_correlationCoefficient) {
         child: Row(children: [
           Expanded(
               flex: (_absIntCorrCoeff),
-              child: Container(color: barColor(_correlationCoefficient))),
+              child: Container(color: _barColor(_correlationCoefficient))),
           Expanded(
             flex: (100 - _absIntCorrCoeff),
             child: Container(),
@@ -114,7 +115,7 @@ Container _correlationBar(_correlationCoefficient) {
   );
 }
 
-Color barColor(_correlationCoefficient) {
+Color _barColor(_correlationCoefficient) {
   Color barColor;
   if (_correlationCoefficient >= 0) {
     barColor = Colors.teal;
