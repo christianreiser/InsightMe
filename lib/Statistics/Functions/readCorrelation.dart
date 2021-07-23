@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   //debugPrint('attribute1: $attribute1, attribute2: $attribute2');
-  var correlationMatrix = await readCorrelationMatrix();
+  var correlationMatrix = await _readCorrelationMatrix();
   int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
   //debugPrint('2');
   final int attributeIndex2 = transposeChr(correlationMatrix)[0].indexOf(attribute2);
@@ -18,10 +18,10 @@ Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   return correlationCoefficient;
 }
 
-Future<List<dynamic>> readCorrelationCoefficientsOfOneAttribute(
+Future<List<dynamic>> _readCorrelationCoefficientsOfOneAttribute(
     attribute) async {
   print('attribute::: $attribute');
-  var correlationMatrix = await readCorrelationMatrix();
+  var correlationMatrix = await _readCorrelationMatrix();
 
   int attributeIndex = correlationMatrix[0].indexOf(attribute);
   print('attributeIndex $attributeIndex');
@@ -32,12 +32,7 @@ Future<List<dynamic>> readCorrelationCoefficientsOfOneAttribute(
   return correlationCoefficientsOfOneAttribute;
 }
 
-// handleOneSpecificOneAll(
-//     selectedAttribute, correlationCoefficientsOfOneAttribute) async {
-//
-// }
-
-List<dynamic> convertNullTo0(dynamicListWithNulls) {
+List<dynamic> _convertNullTo0(dynamicListWithNulls) {
   for (int i = 0; i < dynamicListWithNulls.length; i++) {
     if (dynamicListWithNulls[i] == 'null') {
       dynamicListWithNulls[i] = 0;
@@ -46,7 +41,7 @@ List<dynamic> convertNullTo0(dynamicListWithNulls) {
   return dynamicListWithNulls;
 }
 
-Future<List<List>> readCorrelationMatrix() async {
+Future<List<List>> _readCorrelationMatrix() async {
   final directory = await getApplicationDocumentsDirectory();
   final input = new File(directory.path + "/correlation_matrix.csv").openRead();
   final correlationMatrix = await input
@@ -57,7 +52,7 @@ Future<List<List>> readCorrelationMatrix() async {
   return correlationMatrix;
 }
 
-listArgExtreme(numList) {
+_listArgExtreme(numList) {
   //final vector = Vector.fromList(numList);
   final maxValue = numList.reduce((curr, next) => curr > next ? curr : next);
   final minValue = numList.reduce((curr, next) => curr < next ? curr : next);
