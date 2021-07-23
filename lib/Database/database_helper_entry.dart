@@ -175,7 +175,7 @@ class DatabaseHelperEntry {
         debugPrint('updated entry from: ${entry.date}');
       }
       else {
-        print('value not aupdated, as it\'s the same');
+        print('value not updated as it\'s the same');
       }
     }
   }
