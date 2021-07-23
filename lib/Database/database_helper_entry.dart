@@ -167,11 +167,16 @@ class DatabaseHelperEntry {
         queryList.add(Entry.fromMapObject(queryMapList[i]));
       }
 
-      /// update entry
+      /// update entry if value changed
       Entry entryUpdated = queryList[0];
-      entryUpdated.value = entry.value;
-      await updateEntry(entryUpdated);
-      debugPrint('updated entry from: ${entry.date}');
+      if (entryUpdated.value != entry.value) {
+        entryUpdated.value = entry.value;
+        await updateEntry(entryUpdated);
+        debugPrint('updated entry from: ${entry.date}');
+      }
+      else {
+        print('value not aupdated, as it\'s the same');
+      }
     }
   }
 
