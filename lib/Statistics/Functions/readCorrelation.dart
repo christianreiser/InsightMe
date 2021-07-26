@@ -22,7 +22,7 @@ Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   return correlationCoefficient;
 }
 
-Future<List<dynamic>> readCorrelationCoefficientsOfOneAttribute(
+Future<Map<String,double>> readCorrelationCoefficientsOfOneAttribute(
     attribute) async {
   // corr matrix
   var correlationMatrix = await _readCorrelationMatrix();
@@ -37,7 +37,7 @@ Future<List<dynamic>> readCorrelationCoefficientsOfOneAttribute(
   attributeNames.removeAt(0);
 
   // ini self balancing key tree. key consists of 'value_label'
-  final SplayTreeMap<String, Map<String, double>> corrCoeffTargetMap =
+  final SplayTreeMap<String, Map<String, double>> corrCoeffTargetSplayTreeMap =
       SplayTreeMap<String, Map<String, double>>();
 
   // fill self balancing tree with coeffs
@@ -55,15 +55,19 @@ Future<List<dynamic>> readCorrelationCoefficientsOfOneAttribute(
 
     // fill tree
     final String valueKey = '${currentCoeffAbsString}_${attributeNames[i]}';
-    corrCoeffTargetMap[valueKey] = {attributeNames[i]: currentCoeff};
-  }
-  var keyValuesSorted = corrCoeffTargetMap.values;
-  // print('corrCoeffTargetMap: $corrCoeffTargetMap'); // todo remove print
-  for (final String key in corrCoeffTargetMap.keys) {
-    print("$key : ${corrCoeffTargetMap[key]}");
+    corrCoeffTargetSplayTreeMap[valueKey] = {attributeNames[i]: currentCoeff};
   }
 
-  return corrCoeffsTarget;
+  final corrCoeffTargetSortedMapList = corrCoeffTargetSplayTreeMap.values.toList();
+
+
+  final Map<String,double> corrCoeffTargetSortedMap =   Map<String,double>();
+  for (int i =corrCoeffTargetSortedMapList.length-1; i>=0; i--) {
+    corrCoeffTargetSortedMap[corrCoeffTargetSortedMapList[i].keys.first] = corrCoeffTargetSortedMapList[i].values.first;
+  }
+  print('corrCoeffTargetSortedMap: $corrCoeffTargetSortedMap');
+
+  return corrCoeffTargetSortedMap;
 }
 
 String _treeSignificantDigits(numString) {
@@ -91,7 +95,6 @@ Future<List<List>> _readCorrelationMatrix() async {
       .transform(utf8.decoder)
       .transform(new CsvToListConverter())
       .toList();
-  // debugPrint('got correlationMatrix: $correlationMatrix');
   return correlationMatrix;
 }
 

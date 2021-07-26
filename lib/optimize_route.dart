@@ -68,7 +68,8 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                       ]),
                 ]),
           ),
-          oneOptimizeNameAndChart('productive_min', 'mood'),
+          optimizeListView(),
+          // oneOptimizeNameAndChart('productive_min', 'mood'),
           //'Happiness', 'Resting Heart Rate'
           //oneOptimizeNameAndChart('Body weight', 'Calories in'),
         ]),
@@ -76,48 +77,67 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     );
   }
 
-  Widget optimizeListView(attributeList) {
+  Widget optimizeListView() {
     return Consumer<OptimizationChangeNotifier>(
         builder: (context, schedule, _) {
       var att1 = schedule.selectedAttribute1;
-      var coeffsMap = readCorrelationCoefficientsOfOneAttribute(att1);
-      return ListView.builder(
-        itemCount: globals.attributeListLength - 1,
-        //actually coeffsMap.length
-        itemBuilder: (BuildContext context, int position) {
-          return oneOptimizeNameAndChart(att1, att1);
-        },
-      );
+      return FutureBuilder(
+          future: readCorrelationCoefficientsOfOneAttribute(att1),
+          builder: (context, snapshot) {
+            // chart data arrived && data found
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.data != null) {
+              Map<String, double> coeffsMap = snapshot.data;
+              return SizedBox(
+                height: 400,
+                child: ListView.builder(
+                  itemCount: coeffsMap.length,
+                  itemBuilder: (BuildContext context, int position) {
+                    final String att2 =
+                        coeffsMap.entries.toList()[position].key;
+                    final double corrCoeff =
+                        coeffsMap.entries.toList()[position].value;
+
+                    return oneOptimizeNameAndChart(att1, att2, corrCoeff);
+                  },
+                ),
+              );
+            }
+
+            // chart data arrived but no data found
+            else if (snapshot.connectionState == ConnectionState.done &&
+                (snapshot.data == null)) {
+              return Text('No data found for this label');
+
+              // else: i.e. data didn't arrive
+            } else {
+              return CircularProgressIndicator(); // when Future doesn't get data
+            } // snapshot is current state of future
+          });
     });
   }
 
-  Widget oneOptimizeNameAndChart(att1, att2) {
-    return Consumer<OptimizationChangeNotifier>(
-      builder: (context, schedule, _) {
-        return Column(children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              /// visualize chart
-              SizedBox(
-                height: 450,
+  Widget oneOptimizeNameAndChart(att1, att2, corrCoeff) {
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          /// visualize chart
+          SizedBox(
+            height: 350, // todo check if good
 
-                /// height constraint
-                child: SizedBox.expand(
-                  /// for max width
-                  child: futureTwoAttributeScatterPlot(att1, att2),
-                ),
-              ),
-
-              /// statistics: correlation and confidence
-              futureStatistics(
-                  schedule.selectedAttribute1, schedule.selectedAttribute2)
-            ]),
+            /// height constraint
+            child: SizedBox.expand(
+              /// for max width
+              child: futureTwoAttributeScatterPlot(att2, att1),
+            ),
           ),
-          greyLineSeparator(),
-        ]);
-      },
-    );
+
+          /// statistics: correlation and confidence
+          statistics(context, corrCoeff, 0.02) // todo pvalue not hardcoded
+        ]),
+      ),
+      greyLineSeparator(),
+    ]);
   }
 }

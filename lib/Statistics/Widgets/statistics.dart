@@ -1,45 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../Functions/readCorrelation.dart';
-
 /// correlation coefficient and p-value widgets
 
-Widget futureStatistics(attributeName1, attributeName2) {
-  /// future builder of correlation coefficient and p-value widgets
-  if (attributeName1 != attributeName2) {
-    return FutureBuilder(
-      // future: readCorrelationCoefficient(attributeName1, attributeName2),
-      future: readCorrelationCoefficientsOfOneAttribute(attributeName1),
-      builder: (context, snapshot) {
-        /// chart data arrived && data found
-        /// snapshot is current state of future
-        debugPrint('FutureBuilder: _correlationCoefficient: ${snapshot.data}');
-        debugPrint(
-            'FutureBuilder: snapshot.data..runtimeType: ${snapshot.data.runtimeType}');
 
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data != null) {
-          return _statistics(
-              context, snapshot.data, 0.02); //todo feature: hard coded p-value
-        }
 
-        /// chart data arrived but no data found
-        else if (snapshot.connectionState == ConnectionState.done &&
-            (snapshot.data == null)) {
-          return Text('Correlation Coefficient: -');
-
-          /// else: i.e. data didn't arrive
-        } else {
-          return CircularProgressIndicator(); // when Future doesn't get data
-        }
-      },
-    );
-  } else {
-    return Text('Correlation Coefficient: -');
-  }
-}
-
-Widget _statistics(context, _correlationCoefficient, _pValue) {
+Widget statistics(context, corrCoeff, _pValue) {
   /// correlation coefficient and p-value widgets
   return Column(
       mainAxisSize: MainAxisSize.min,
@@ -48,7 +13,7 @@ Widget _statistics(context, _correlationCoefficient, _pValue) {
       // stretch for max chart width
       children: <Widget>[
         Row(children: [
-          _correlationBar(_correlationCoefficient),
+          _correlationBar(corrCoeff),
           Text(' correlation ', textScaleFactor: 1.3),
           TextButton(
             /* info note for correlation coefficient */
@@ -58,7 +23,7 @@ Widget _statistics(context, _correlationCoefficient, _pValue) {
               debugPrint('info pressed');
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
-                    'Pearson correlation coefficient = $_correlationCoefficient.'
+                    'Pearson correlation coefficient = $corrCoeff.'
                     ' Bar shows the absolute value.'),
               ));
             },
