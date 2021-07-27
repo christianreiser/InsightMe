@@ -106,7 +106,7 @@ class JournalRouteState extends State<JournalRoute> {
           children: [
             Container(
               padding: EdgeInsets.all(5),
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
               child: Row(
                 children: [
                   Text(
@@ -175,7 +175,7 @@ class JournalRouteState extends State<JournalRoute> {
                 )
               ],
             ),
-            backgroundColor: Theme.of(context).accentColor,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
           )
         : Container();
   }

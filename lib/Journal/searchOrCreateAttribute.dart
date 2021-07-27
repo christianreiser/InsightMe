@@ -307,7 +307,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         Center(
           child: Container(
             padding: EdgeInsets.all(10),
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             child: Column(
               children: [
                 Icon(
@@ -339,7 +339,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         Center(
           child: Container(
             padding: EdgeInsets.all(10),
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             child: Column(
               children: [
                 Icon(

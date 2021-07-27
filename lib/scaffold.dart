@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/AppIntegrations/overview_route.dart';
 import 'package:insightme/Onboarding/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +10,6 @@ import 'data_route.dart';
 import 'globals.dart' as globals;
 import 'optimize_route.dart';
 import 'strings.dart' as strings;
-//import 'package:starflut/starflut.dart';
 
 enum Choice {
   exportDailySummaries,
@@ -249,11 +247,11 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             context,
             MaterialPageRoute(builder: (context) => Import()),
           );
-        } else if (result == Choice.appIntegrations) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
-          );
+        // } else if (result == Choice.appIntegrations) {
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
+        //   );
         } else if (result == Choice.deleteAllData) {
           //todo deleteAllData
           // DatabaseHelperEntry().deleteDb();
