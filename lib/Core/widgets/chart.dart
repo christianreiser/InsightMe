@@ -144,7 +144,7 @@ _oneAttributeScatterSeries(chartDataList) {
           type: TrendlineType.movingAverage,
           color: Colors.teal,
           width: 2,
-          opacity: 0.4,
+          opacity: 0.7,
           enableTooltip: true,
           period: 7,
           animationDuration: 5000.0)

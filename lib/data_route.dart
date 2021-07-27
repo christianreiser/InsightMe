@@ -70,7 +70,7 @@ class _DataRouteState extends State<DataRoute> {
   Widget _oneAttributeNameAndChart(attributeName, context) {
     // creates chart widget of one Attribute with name as heading
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.fromLTRB(1,10,1,10),
       child: Column(
           mainAxisSize: MainAxisSize.max,
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,9 +80,14 @@ class _DataRouteState extends State<DataRoute> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  attributeName,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                Row(
+                  children: [
+                    SizedBox(width: 16),
+                    Text(
+                      attributeName,
+                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                    ),
+                  ],
                 ),
                 IconButton(
                   icon: Icon(Icons.chevron_right),
@@ -95,7 +100,7 @@ class _DataRouteState extends State<DataRoute> {
             ),
             SizedBox(height: 10),
             SizedBox(
-              height: 200,
+              height: 300,
               child: futureOneAttributeScatterPlot(attributeName),
             )
           ]),
