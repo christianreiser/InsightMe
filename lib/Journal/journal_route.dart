@@ -278,7 +278,6 @@ class JournalRouteState extends State<JournalRoute> {
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
   void _updateEntryListView() async {
-    debugPrint('attributeName $attributeName');
     _entryList = await databaseHelperEntry.getFilteredEntryList(attributeName);
     globals.entryListLength = _entryList.length;
 

@@ -150,8 +150,6 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         ),
         controller: _attributeInputController,
         onChanged: (value) {
-          debugPrint("Something changed search or create new attribute:"
-              " ${_attributeInputController.text}");
           _getAttributesToDisplay();
           setState(() {});
         },
@@ -447,11 +445,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       _createButtonVisible = false;
     }
     _isSelected = List.filled(_attributesToDisplay.length, false);
-    debugPrint('_attributesToDisplay $_attributesToDisplay');
     return [_attributesToDisplay, _createButtonVisible, _createButtonVisible];
   }
 
-  Future<int> saveAttribute(attribute) async { // not private as used elsewhere
+  Future<int> saveAttribute(attribute) async {
+    // not private as used elsewhere
     /*
     * Update Operation: Update a attribute object and save it to database
     */

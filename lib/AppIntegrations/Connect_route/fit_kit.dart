@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fit_kit/fit_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -172,8 +170,8 @@ class _FitKitGHubState extends State<FitKitGHub> {
   }
 
   _generateLocalJsonFile() {
-    final items = results.entries.expand((entry) => [entry.key, entry.value])
-        .toList();
+    final items =
+        results.entries.expand((entry) => [entry.key, entry.value]).toList();
 
     print(items);
     print('------------');
@@ -186,8 +184,10 @@ class _FitKitGHubState extends State<FitKitGHub> {
     print('------------');
     //NOTE: Test dataset for json construction
     List<Data> googleFitDataSet = [];
-    Data data1 = Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
-    Data data2 = Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
+    Data data1 =
+        Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
+    Data data2 =
+        Data(10.0, "2021-05-20", "2021-05-20", "BMI160 Step counter", false);
     GoogleFitData fitData = GoogleFitData("STEP_COUNT", googleFitDataSet);
     //print(jsonEncode(fitData.toJson()));
   }

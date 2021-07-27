@@ -33,7 +33,6 @@ class WriteDailySummariesCSV {
     dailySummariesList = await addEntriesToDailySummaries(
         attributeListLength, attributeTitleList, dailySummariesList);
 
-    // debugPrint('dailySummariesList: $dailySummariesList');
 
     // save to file
     return await _saveDailySummariesToFile(dailySummariesList);
@@ -106,7 +105,6 @@ class WriteDailySummariesCSV {
       }
     }
     dailySummariesList.add(rowToAdd); // add to dailySummariesList
-    //debugPrint('rowToAdd $rowToAdd');
     return dailySummariesList;
   }
 
@@ -114,11 +112,8 @@ class WriteDailySummariesCSV {
     /// save dailySummariesList to file and returns csv
     final directory = await getApplicationDocumentsDirectory();
     final pathOfTheFileToWrite = directory.path + "/daily_summaries.csv";
-    //debugPrint('targetPath $pathOfTheFileToWrite');
     File file = File(pathOfTheFileToWrite);
-    //debugPrint('file $file');
     String csv = const ListToCsvConverter().convert(dailySummariesList);
-    // debugPrint('csv: $csv');
     await file.writeAsString(csv);
     return file;
   }

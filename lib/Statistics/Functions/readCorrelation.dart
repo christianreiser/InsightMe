@@ -3,26 +3,21 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 
 import 'package:csv/csv.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:insightme/Core/functions/misc.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
-  //debugPrint('attribute1: $attribute1, attribute2: $attribute2');
   var correlationMatrix = await _readCorrelationMatrix();
   int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
-  //debugPrint('2');
   final int attributeIndex2 =
       transposeChr(correlationMatrix)[0].indexOf(attribute2);
-  debugPrint(
-      'correlationMatrix[attributeIndex1][attributeIndex2]: ${correlationMatrix[attributeIndex1][attributeIndex2]}');
+
   final num correlationCoefficient =
       correlationMatrix[attributeIndex1][attributeIndex2];
   return correlationCoefficient;
 }
 
-Future<Map<String,double>> readCorrelationCoefficientsOfOneAttribute(
+Future<Map<String, double>> readCorrelationCoefficientsOfOneAttribute(
     attribute) async {
   // corr matrix
   var correlationMatrix = await _readCorrelationMatrix();
@@ -58,15 +53,14 @@ Future<Map<String,double>> readCorrelationCoefficientsOfOneAttribute(
     corrCoeffTargetSplayTreeMap[valueKey] = {attributeNames[i]: currentCoeff};
   }
 
-  final corrCoeffTargetSortedMapList = corrCoeffTargetSplayTreeMap.values.toList();
+  final corrCoeffTargetSortedMapList =
+      corrCoeffTargetSplayTreeMap.values.toList();
 
-
-  final Map<String,double> corrCoeffTargetSortedMap =   Map<String,double>();
-  for (int i =corrCoeffTargetSortedMapList.length-1; i>=0; i--) {
-    corrCoeffTargetSortedMap[corrCoeffTargetSortedMapList[i].keys.first] = corrCoeffTargetSortedMapList[i].values.first;
+  final Map<String, double> corrCoeffTargetSortedMap = Map<String, double>();
+  for (int i = corrCoeffTargetSortedMapList.length - 1; i >= 0; i--) {
+    corrCoeffTargetSortedMap[corrCoeffTargetSortedMapList[i].keys.first] =
+        corrCoeffTargetSortedMapList[i].values.first;
   }
-  print('corrCoeffTargetSortedMap: $corrCoeffTargetSortedMap');
-
   return corrCoeffTargetSortedMap;
 }
 
@@ -77,15 +71,6 @@ String _treeSignificantDigits(numString) {
     numString = numString + '0';
   }
   return numString;
-}
-
-List<dynamic> _convertNullTo0(dynamicListWithNulls) {
-  for (int i = 0; i < dynamicListWithNulls.length; i++) {
-    if (dynamicListWithNulls[i] == 'null') {
-      dynamicListWithNulls[i] = 0.00;
-    }
-  }
-  return dynamicListWithNulls;
 }
 
 Future<List<List>> _readCorrelationMatrix() async {

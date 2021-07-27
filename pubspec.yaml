@@ -22,13 +22,12 @@ dependencies:
   sqflite_migration: ^0.3.0 # database version update
   flutter_colorpicker: ^0.5.0  # color for label
   cupertino_icons: ^1.0.3 # iOS style
-  flutter_datetime_picker: # new entry date selection todo update to ^1.5.2
+  flutter_datetime_picker: # new entry date selection todo update as soon as ^1.5.2 is available
     git:
       url: https://github.com/Realank/flutter_datetime_picker.git
       ref: master
   syncfusion_flutter_charts: ^19.1.69+1 # scatter chart
-  health: 3.0.4
-  fit_kit: ^1.1.2
+  health: 3.0.4 # TODO wait for bugfix after 3.0.5
   json_serializable: ^4.1.2
   json_annotation: ^4.0.1
   built_value: ^8.0.6

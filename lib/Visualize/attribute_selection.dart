@@ -114,12 +114,8 @@ class _DropDownState extends State<DropDown> {
 
     /// to correlate with everything
     for (int ele = 0; ele < attributeList.length; ele++) {
-      itemList[ele + 1] = attributeList[ele].title;
-
-      /// +1 for 'all'
-      //debugPrint('itemList $itemList');
+      itemList[ele + 1] = attributeList[ele].title; // +1 for 'all'
     }
-    // debugPrint('itemList: $itemList');
 
     _dropdownMenuItems = _buildDropdownMenuItems(itemList);
     return itemList;

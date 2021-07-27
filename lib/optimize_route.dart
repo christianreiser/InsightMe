@@ -48,15 +48,15 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 // max chart width
                 children: <Widget>[
+                  /// HEADING
                   Text(
-                    /// HEADING
                     'What do you want to correlate?',
                     style:
                         TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
                   ),
-                  Row(
 
-                      ///dropdown
+                  ///dropdown
+                  Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         // true/false do discriminate first and second
@@ -118,7 +118,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
   Widget _oneOptimizeNameAndChart(att1, att2, corrCoeff) {
     return Column(children: [
       Padding(
-        padding: const EdgeInsets.fromLTRB(0,0,0,0),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           /// visualize chart
           SizedBox(
