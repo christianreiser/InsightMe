@@ -12,55 +12,64 @@ Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
 
   /// ini xYStats
   Map<num, num> xYStats = {};
-  int duplicateCount = 0;
 
-  /// ini key value which are added to xYStats
-  double key;
-  double value;
+  /// check if there are corrCoeffs but data-points are missing, this could
+  /// happen when data is deleted but correlations not updated.
+  /// if that is the case row or column is 0 (-1 +1 = 0).
+  /// the -1 because not found.
+  if (row > 0 && column > 0) {
 
-  /// ini keys to keep track of key uniqueness
-  List<double> keys = [];
+    /// duplicate counter
+    int duplicateCount = 0;
 
-  for (int day = 0; day < numDays; day++) {
-    if (rowForEachAttribute[row - 1][day].runtimeType != String) {
-      key = (rowForEachAttribute[row - 1][day]).toDouble();
-    }
+    /// ini key value which are added to xYStats
+    double key;
+    double value;
 
-    // convert to doubles, skip 'null' Strings
-    if (rowForEachAttribute[column - 1][day].runtimeType != String) {
-      value = (rowForEachAttribute[column - 1][day]).toDouble();
-    }
+    /// ini keys to keep track of key uniqueness
+    List<double> keys = [];
 
-    /// skip if key or value is null
-    if (key != null && value != null) {
-
-      /// keys must be unique. Track keys. if not unique modify it a little.
-      /// search for duplicate
-      bool duplicate = keys.contains(key);
-      if (duplicate) {
-        duplicateCount = duplicateCount + 1;
-
-        /// increment key by tiny amount to make it unique
-        key = key + duplicateCount * 1E-13;
+    for (int day = 0; day < numDays; day++) {
+      if (rowForEachAttribute[row - 1][day].runtimeType != String) {
+        key = (rowForEachAttribute[row - 1][day]).toDouble();
       }
 
-      keys.add(key);
+      // convert to doubles, skip 'null' Strings
+      if (rowForEachAttribute[column - 1][day].runtimeType != String) {
+        value = (rowForEachAttribute[column - 1][day]).toDouble();
+      }
 
-      try {
-        /// write xYStats as key value pairs.
-        xYStats[(key)] = (value);
-        key = null;
-        value = null;
-      } catch (e) {
-        debugPrint('_TypeError');
+      /// skip if key or value is null
+      if (key != null && value != null) {
+        /// keys must be unique. Track keys. if not unique modify it a little.
+        /// search for duplicate
+        bool duplicate = keys.contains(key);
+        if (duplicate) {
+          duplicateCount = duplicateCount + 1;
+
+          /// increment key by tiny amount to make it unique
+          key = key + duplicateCount * 1E-13;
+        }
+
+        keys.add(key);
+
+        try {
+          /// write xYStats as key value pairs.
+          xYStats[(key)] = (value);
+          key = null;
+          value = null;
+        } catch (e) {
+          debugPrint('_TypeError');
+          key = null;
+          value = null;
+        }
+
+        /// skip if key or value is null and reset key and value variables
+      } else {
+        // debugPrint('skipping because value is null');
         key = null;
         value = null;
       }
-      /// skip if key or value is null and reset key and value variables
-    } else {
-      // debugPrint('skipping because value is null');
-      key = null;
-      value = null;
     }
   }
   return xYStats;
@@ -69,6 +78,7 @@ Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
 Future<List<dynamic>> getDailySummariesInRowForEachDayFormat(directory) async {
   /// call createDailySummariesCSVFromDB
   await WriteDailySummariesCSV().writeDailySummariesCSV();
+
   /// read daily summaries csv and transform
   final input = new File(directory.path + "/daily_summaries.csv").openRead();
   final rowForEachDay = await input
