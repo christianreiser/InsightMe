@@ -36,7 +36,7 @@ class WriteDailySummariesCSV {
     // debugPrint('dailySummariesList: $dailySummariesList');
 
     // save to file
-    return await saveDailySummariesToFile(dailySummariesList);
+    return await _saveDailySummariesToFile(dailySummariesList);
   }
 
   Future<List<String>> getAttributeTitleList(
@@ -110,7 +110,7 @@ class WriteDailySummariesCSV {
     return dailySummariesList;
   }
 
-  Future<File> saveDailySummariesToFile(dailySummariesList) async {
+  Future<File> _saveDailySummariesToFile(dailySummariesList) async {
     /// save dailySummariesList to file and returns csv
     final directory = await getApplicationDocumentsDirectory();
     final pathOfTheFileToWrite = directory.path + "/daily_summaries.csv";

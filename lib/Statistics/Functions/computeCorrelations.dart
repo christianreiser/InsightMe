@@ -5,9 +5,7 @@ import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:insightme/Core/functions/aggregatedData.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starfruit/starfruit.dart';
-
 
 class ComputeCorrelations {
   computeCorrelations() async {
@@ -57,32 +55,24 @@ class ComputeCorrelations {
           Map<num, num> xYStats =
               getXYStats(rowForEachAttribute, numDays, row, column);
 
-          correlationCoefficient = computeCorrelationCoefficient(xYStats);
+          correlationCoefficient = _computeCorrelationCoefficient(xYStats);
           // debugPrint('row: $row; '
           //     'column: $column; '
           //     'correlationCoefficient: $correlationCoefficient; ');
           // debugPrint('xYStats: $xYStats;');
 
           /// writeCorrelationCoefficients
-          correlationMatrix = fillCorrelationCoefficientMatrix(
+          correlationMatrix = _fillCorrelationCoefficientMatrix(
               correlationCoefficient, correlationMatrix, row, column);
         }
       }
     } // last for loop
 
     /// write correlations to file
-    writeCorrelationsToFile(correlationMatrix, directory);
+    _writeCorrelationsToFile(correlationMatrix, directory);
   }
 
-  Future<int> getNumDays() async {
-    /// get number of days
-    final prefs = await SharedPreferences.getInstance();
-    int numDays = prefs.getInt('numDays') ?? null;
-    debugPrint('got numDays $numDays');
-    return numDays;
-  }
-
-  num computeCorrelationCoefficient(xYStats) {
+  num _computeCorrelationCoefficient(xYStats) {
     num correlationCoefficient;
 
     /// writeCorrelationCoefficients
@@ -99,7 +89,7 @@ class ComputeCorrelations {
       /// round if too many decimals
       //if (correlation != 0 && correlation != 1 && correlation != -1) {
       try {
-        correlationCoefficient = roundDouble(correlationCoefficient, 2);
+        correlationCoefficient = _roundDouble(correlationCoefficient, 2);
       } catch (e) {
         //debugPrint('correlation= $correlationCoefficient was not rounded');
       }
@@ -112,7 +102,7 @@ class ComputeCorrelations {
     return correlationCoefficient;
   }
 
-  fillCorrelationCoefficientMatrix(
+  _fillCorrelationCoefficientMatrix(
       correlation, correlationMatrix, row, column) {
     //debugPrint('correlationMatrix: $correlationMatrix');
     //debugPrint('correlation: $correlation');
@@ -121,7 +111,7 @@ class ComputeCorrelations {
     return correlationMatrix;
   }
 
-  void writeCorrelationsToFile(correlationMatrix, directory) {
+  void _writeCorrelationsToFile(correlationMatrix, directory) {
     /// save correlations
     //debugPrint('correlationMatrix: $correlationMatrix');
 
@@ -137,7 +127,7 @@ class ComputeCorrelations {
     debugPrint('correlation_matrix.csv written');
   }
 
-  double roundDouble(double value, int places) {
+  double _roundDouble(double value, int places) {
     /*
     * round to double
     * */

@@ -8,7 +8,7 @@ import '../globals.dart' as globals;
 class OptimizationChangeNotifier with ChangeNotifier {
   static DatabaseHelperAttribute databaseHelperAttribute = DatabaseHelperAttribute();
 
-  Future<String> getDefaultVisualizationAttribute() async {
+  Future<String> _getDefaultVisualizationAttribute() async {
     String defaultVisualizationAttribute;
     List<Attribute> attributeList = await databaseHelperAttribute.getAttributeList();
     for (int i = 0; i < attributeList.length; i++) {

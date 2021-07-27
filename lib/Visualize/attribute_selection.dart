@@ -121,11 +121,11 @@ class _DropDownState extends State<DropDown> {
     }
     // debugPrint('itemList: $itemList');
 
-    _dropdownMenuItems = buildDropdownMenuItems(itemList);
+    _dropdownMenuItems = _buildDropdownMenuItems(itemList);
     return itemList;
   }
 
-  List<DropdownMenuItem<String>> buildDropdownMenuItems(List itemList) {
+  List<DropdownMenuItem<String>> _buildDropdownMenuItems(List itemList) {
     List<DropdownMenuItem<String>> items = [];
     for (String item in itemList) {
       items.add(

@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
-import '../navigation_helper.dart';
+import '../Core/functions/navigation_helper.dart';
 import 'Connect_route/fit_kit.dart';
 
 class AppIntegrationsOverview extends StatelessWidget {

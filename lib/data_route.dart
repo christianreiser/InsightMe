@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 
+import 'Core/functions/navigation_helper.dart';
 import 'Core/widgets/entryHint.dart';
 import 'globals.dart' as globals;
-import 'navigation_helper.dart';
 
 class DataRoute extends StatefulWidget {
   @override

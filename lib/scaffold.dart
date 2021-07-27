@@ -33,14 +33,14 @@ class ScaffoldRouteDesign extends StatefulWidget {
 class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   @override
   Widget build(BuildContext context) {
-    return standardScaffold(); //welcomeOrStandardScaffold(); // todo Onboarding back in
+    return _standardScaffold(); //welcomeOrStandardScaffold(); // todo Onboarding back in
   }
 
   static const Color iconColor = Colors.black87;
 
 
 
-  FutureBuilder welcomeOrStandardScaffold() {
+  FutureBuilder _welcomeOrStandardScaffold() {
     /*
     * decides if standard scaffold or welcome screen should be shown
     * Logic:
@@ -57,9 +57,9 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
           (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
-            return standardScaffold();
+            return _standardScaffold();
           case ConnectionState.waiting:
-            return standardScaffold();
+            return _standardScaffold();
           default:
             if (!snapshot.hasError) {
               //@ToDo("Return a welcome screen")
@@ -67,7 +67,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
                   ? OnboardingRoute()
                   : snapshot.data.getBool("hideWelcome") == false
                       ? OnboardingRoute()
-                      : standardScaffold();
+                      : _standardScaffold();
             } else {
               return Text('error: ${snapshot.error}');
             }
@@ -76,11 +76,11 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     );
   }
 
-  Scaffold standardScaffold() {
+  Scaffold _standardScaffold() {
     /*
     * standard scaffold with bottom navigation bar and floating action button
     * */
-    initializeGlobals();
+    _initializeGlobals();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -259,7 +259,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
           // DatabaseHelperEntry().deleteDb();
           // DatabaseHelperAttribute().deleteDb();
         } else if (result == Choice.tmpFunction) {
-          tmpFunction();
+          _tmpFunction();
           // DatabaseHelperEntry().deleteDb();
           // DatabaseHelperAttribute().deleteDb();
         }
@@ -365,7 +365,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 
   }
 
-  initializeGlobals() {
+  _initializeGlobals() {
     // async update local attribute list if null to load for other routes later on
     if (globals.attributeListLength == null) {
       debugPrint('call updateAttributeList');
@@ -375,7 +375,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     }
   }
 
-  tmpFunction() {
+  _tmpFunction() {
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => TmpRoute()),

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
+import '../../Core/functions/navigation_helper.dart';
 import '../../globals.dart' as globals;
-import '../../navigation_helper.dart';
 import '../database_helper_entry.dart';
 import '../entry.dart';
 

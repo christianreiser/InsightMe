@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:insightme/Journal/journal_route.dart';
 
-import 'Database/Route/edit_attributes.dart';
-import 'Database/Route/edit_entries.dart';
-import 'Database/attribute.dart';
-import 'Database/entry.dart';
-import 'Journal/searchOrCreateAttribute.dart';
-import 'scaffold.dart';
+import '../../Database/Route/edit_attributes.dart';
+import '../../Database/Route/edit_entries.dart';
+import '../../Database/attribute.dart';
+import '../../Database/entry.dart';
+import '../../Journal/searchOrCreateAttribute.dart';
+import '../../scaffold.dart';
 
 class NavigationHelper {
   // navigation back to journal and refresh to show new entry

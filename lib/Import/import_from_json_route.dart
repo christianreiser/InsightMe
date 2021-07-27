@@ -10,9 +10,9 @@ import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
+import '../Core/functions/navigation_helper.dart';
 import '../Database/entry.dart';
 import '../Journal/searchOrCreateAttribute.dart' as soca;
-import '../navigation_helper.dart';
 import '../strings.dart';
 
 class Import extends StatefulWidget {
@@ -57,7 +57,7 @@ class _ImportState extends State<Import> {
                 onPressed: () {
                   _showAlertDialog('Status',
                       'Import started in the background. This might take a while.');
-                  importCSVFile();
+                  _importCSVFile();
                 },
               ),
             ]),
@@ -65,7 +65,7 @@ class _ImportState extends State<Import> {
     ); // type lineChart
   }
 
-  void importCSVFile() async {
+  void _importCSVFile() async {
     ///  imports data from the picked file.
     /// adds attributes if new
     /// todo importing same data twice only updates and does not add again
