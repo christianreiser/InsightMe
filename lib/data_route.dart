@@ -36,12 +36,12 @@ class _DataRouteState extends State<DataRoute> {
               : globals.entryListLength == 1
                   ? Column(
                       children: [
-                        Expanded(child: (dataListView(snapshot.data))),
+                        Expanded(child: (_dataListView(snapshot.data))),
                         entryHint()
                       ],
                     )
                   : globals.entryListLength > 1
-                      ? dataListView(snapshot.data)
+                      ? _dataListView(snapshot.data)
                       : Text('?');
         }
 
@@ -58,16 +58,16 @@ class _DataRouteState extends State<DataRoute> {
     );
   }
 
-  Widget dataListView(attributeList) {
+  Widget _dataListView(attributeList) {
     return ListView.builder(
       itemCount: globals.attributeListLength,
       itemBuilder: (BuildContext context, int position) {
-        return oneAttributeNameAndChart(attributeList[position].title, context);
+        return _oneAttributeNameAndChart(attributeList[position].title, context);
       },
     );
   }
 
-  Widget oneAttributeNameAndChart(attributeName, context) {
+  Widget _oneAttributeNameAndChart(attributeName, context) {
     // creates chart widget of one Attribute with name as heading
     return Padding(
       padding: const EdgeInsets.all(10.0),

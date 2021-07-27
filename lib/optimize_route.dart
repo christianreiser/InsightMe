@@ -57,30 +57,26 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                   Row(
 
                       ///dropdown
-                      // start: child as close to the start of the main axis as possible
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         // true/false do discriminate first and second
                         DropDown(true),
                         SizedBox(width: 15),
                         DropDown(false),
-                        // true/false do discriminate first and second
                       ]),
                 ]),
           ),
-          optimizeListView(),
-          // oneOptimizeNameAndChart('productive_min', 'mood'),
-          //'Happiness', 'Resting Heart Rate'
-          //oneOptimizeNameAndChart('Body weight', 'Calories in'),
+          _optimizeListView(),
         ]),
       ),
     );
   }
 
-  Widget optimizeListView() {
+  Widget _optimizeListView() {
     return Consumer<OptimizationChangeNotifier>(
         builder: (context, schedule, _) {
-      var att1 = schedule.selectedAttribute1;
+      final String att1 = schedule.selectedAttribute1;
+      String att2 = schedule.selectedAttribute2;
       return FutureBuilder(
           future: readCorrelationCoefficientsOfOneAttribute(att1),
           builder: (context, snapshot) {
@@ -88,19 +84,23 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.data != null) {
               Map<String, double> coeffsMap = snapshot.data;
-              return SizedBox(
-                height: 400,
-                child: ListView.builder(
-                  itemCount: coeffsMap.length,
-                  itemBuilder: (BuildContext context, int position) {
-                    final String att2 =
-                        coeffsMap.entries.toList()[position].key;
-                    final double corrCoeff =
-                        coeffsMap.entries.toList()[position].value;
+              return Container(
+                  height: 800, // constrain height
+                  child:
+                  // att2 == 'all' ?
+                  ListView.builder(
+                          itemCount: coeffsMap.length,
+                          itemBuilder: (BuildContext context, int position) {
+                            String att2 =
+                                coeffsMap.entries.toList()[position].key;
+                            final double corrCoeff =
+                                coeffsMap.entries.toList()[position].value;
 
-                    return oneOptimizeNameAndChart(att1, att2, corrCoeff);
-                  },
-                ),
+                            return _oneOptimizeNameAndChart(
+                                att1, att2, corrCoeff);
+                          },
+                        )
+                      // : _oneOptimizeNameAndChart(att1, att2, coeffsMap.entries.toList()[position].value)
               );
             }
 
@@ -117,19 +117,19 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     });
   }
 
-  Widget oneOptimizeNameAndChart(att1, att2, corrCoeff) {
+  Widget _oneOptimizeNameAndChart(att1, att2, corrCoeff) {
     return Column(children: [
       Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(0.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           /// visualize chart
           SizedBox(
-            height: 350, // todo check if good
+            height: 450, // todo check if good
 
             /// height constraint
             child: SizedBox.expand(
               /// for max width
-              child: futureTwoAttributeScatterPlot(att2, att1),
+              child: futureTwoAttributeScatterPlot(att1, att2),
             ),
           ),
 

@@ -6,32 +6,34 @@ import 'package:flutter/material.dart';
 
 Widget statistics(context, corrCoeff, _pValue) {
   /// correlation coefficient and p-value widgets
-  return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      // stretch for max chart width
-      children: <Widget>[
-        Row(children: [
-          _correlationBar(corrCoeff),
-          Text(' correlation ', textScaleFactor: 1.3),
-          TextButton(
-            /* info note for correlation coefficient */
-            // to reduce height of correlation info button
-            child: Icon(Icons.info, color: Colors.grey),
-            onPressed: () {
-              debugPrint('info pressed');
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(
-                    'Pearson correlation coefficient = $corrCoeff.'
-                    ' Bar shows the absolute value.'),
-              ));
-            },
-          )
-        ]),
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(8.0,0,8,0),
+    child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        // stretch for max chart width
+        children: <Widget>[
+          Row(children: [
+            _correlationBar(corrCoeff),
+            Text(' correlation ', textScaleFactor: 1.3),
+            TextButton(
+              /* info note for correlation coefficient */
+              // to reduce height of correlation info button
+              child: Icon(Icons.info, color: Colors.grey),
+              onPressed: () {
+                debugPrint('info pressed');
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                      'Pearson correlation coefficient = $corrCoeff.'
+                      ' Bar shows the absolute value.'),
+                ));
+              },
+            )
+          ]),
 
-        /// confidence
-        // todo feature: p-value
+          /// confidence
+          // todo feature: p-value
 //         Row(children: [
 //           _confidenceStars(_pValue),
 //           Text(' confidence', textScaleFactor: 1.3),
@@ -47,7 +49,8 @@ Widget statistics(context, corrCoeff, _pValue) {
 //             },
 //           )
 //         ]),
-      ]);
+        ]),
+  );
 }
 
 Container _correlationBar(_correlationCoefficient) {

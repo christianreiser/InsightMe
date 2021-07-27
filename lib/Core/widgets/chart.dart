@@ -47,7 +47,7 @@ Widget futureOneAttributeScatterPlot(attributeName) {
       // chart data arrived && data found
       if (snapshot.connectionState == ConnectionState.done &&
           snapshot.data != null) {
-        return oneAttributeSfCartesianChart(snapshot.data);
+        return _oneAttributeSfCartesianChart(snapshot.data);
       }
 
       // chart data arrived but no data found
@@ -63,7 +63,7 @@ Widget futureOneAttributeScatterPlot(attributeName) {
   );
 }
 
-Widget futureTwoAttributeScatterPlot(attributeName1, attributeName2) {
+Widget futureTwoAttributeScatterPlot(attributeName2, attributeName1) {
   if (attributeName1 != attributeName2) {
     return FutureBuilder(
       future: twoAttributeChartData(attributeName1, attributeName2),
@@ -71,7 +71,7 @@ Widget futureTwoAttributeScatterPlot(attributeName1, attributeName2) {
         // chart data arrived && data found
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return twoAttributeSfCartesianChart(snapshot.data, attributeName1);
+          return _twoAttributeSfCartesianChart(snapshot.data, attributeName1);
         }
 
         // chart data arrived but no data found
@@ -90,42 +90,42 @@ Widget futureTwoAttributeScatterPlot(attributeName1, attributeName2) {
   }
 }
 
-Widget oneAttributeSfCartesianChart(chartDataList) {
+Widget _oneAttributeSfCartesianChart(chartDataList) {
   return SfCartesianChart(
       primaryXAxis:
           DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
       primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
       series: <ChartSeries>[
-        oneAttributeScatterSeries(chartDataList),
+        _oneAttributeScatterSeries(chartDataList),
       ]);
 }
 
-Widget twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
+Widget _twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
   return SfCartesianChart(
       primaryXAxis: NumericAxis(
-        labelStyle: TextStyle(color: Colors.green),
+        labelStyle: TextStyle(color: Colors.blue),
         title: AxisTitle(
           text: attributeName1,
           textStyle: TextStyle(
-              color: Colors.green,
+              color: Colors.blue,
               fontFamily: 'Roboto',
               fontSize: 17,
               fontWeight: FontWeight.w300),
         ),
       ),
       primaryYAxis: NumericAxis(
-          labelStyle: TextStyle(color: Colors.blue),
+          labelStyle: TextStyle(color: Colors.green),
 
           // title: AxisTitle(text: 'Y-Axis'),
           rangePadding: ChartRangePadding.round),
       // zoomPanBehavior: _zoomPanBehavior, // todo
       // tooltipBehavior: _tooltipBehavior, // todo
       series: <ChartSeries>[
-        twoAttributeScatterSeries(chartDataOptimizeList),
+        _twoAttributeScatterSeries(chartDataOptimizeList),
       ]);
 }
 
-oneAttributeScatterSeries(chartDataList) {
+_oneAttributeScatterSeries(chartDataList) {
 // Renders scatter chart
   return ScatterSeries<ChartData, DateTime>(
     opacity: 0.4,
@@ -149,7 +149,7 @@ oneAttributeScatterSeries(chartDataList) {
   );
 }
 
-twoAttributeScatterSeries(chartDataOptimizeList) {
+_twoAttributeScatterSeries(chartDataOptimizeList) {
 // Renders scatter chart
   return ScatterSeries<ChartDataOptimize, num>(
     opacity: 0.4,
