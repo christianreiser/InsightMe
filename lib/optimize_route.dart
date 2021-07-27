@@ -85,10 +85,9 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                 snapshot.data != null) {
               Map<String, double> coeffsMap = snapshot.data;
               return Container(
-                  height: 800, // constrain height
-                  child:
-                  // att2 == 'all' ?
-                  ListView.builder(
+                  height: 800, // constrain height, to avoid unbounded error
+                  child: att2 == 'all'
+                      ? ListView.builder(
                           itemCount: coeffsMap.length,
                           itemBuilder: (BuildContext context, int position) {
                             String att2 =
@@ -100,8 +99,8 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                                 att1, att2, corrCoeff);
                           },
                         )
-                      // : _oneOptimizeNameAndChart(att1, att2, coeffsMap.entries.toList()[position].value)
-              );
+                      : _oneOptimizeNameAndChart(att1, att2,
+                          coeffsMap[att2]));
             }
 
             // chart data arrived but no data found
