@@ -94,7 +94,7 @@ Widget _oneAttributeSfCartesianChart(chartDataList) {
   return SfCartesianChart(
       primaryXAxis:
           DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
-      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.round),
+      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.additional),
       series: <ChartSeries>[
         _oneAttributeScatterSeries(chartDataList),
       ]);
@@ -102,11 +102,16 @@ Widget _oneAttributeSfCartesianChart(chartDataList) {
 
 Widget _twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
   return SfCartesianChart(
+      // borderWidth: 0,
+      // plotAreaBorderWidth: 0,
+      margin: EdgeInsets.fromLTRB(6,8,2,0),
+
       primaryXAxis: NumericAxis(
-        labelStyle: TextStyle(color: Colors.blue),
+        rangePadding: ChartRangePadding.round,
+        labelStyle: TextStyle(color: Colors.blue, height: 0.7),
         title: AxisTitle(
           text: attributeName1,
-          textStyle: TextStyle(
+          textStyle: TextStyle(height: 0.8,
               color: Colors.blue,
               fontFamily: 'Roboto',
               fontSize: 17,
@@ -114,10 +119,10 @@ Widget _twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
         ),
       ),
       primaryYAxis: NumericAxis(
-          labelStyle: TextStyle(color: Colors.green),
+          labelStyle: TextStyle(color: Colors.green, height: 1),
 
           // title: AxisTitle(text: 'Y-Axis'),
-          rangePadding: ChartRangePadding.round),
+          rangePadding: ChartRangePadding.additional),
       // zoomPanBehavior: _zoomPanBehavior, // todo
       // tooltipBehavior: _tooltipBehavior, // todo
       series: <ChartSeries>[
@@ -128,7 +133,7 @@ Widget _twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
 _oneAttributeScatterSeries(chartDataList) {
 // Renders scatter chart
   return ScatterSeries<ChartData, DateTime>(
-    opacity: 0.4,
+    opacity: 0.3,
     markerSettings:
         MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
     animationDuration: 3000,
@@ -152,7 +157,7 @@ _oneAttributeScatterSeries(chartDataList) {
 _twoAttributeScatterSeries(chartDataOptimizeList) {
 // Renders scatter chart
   return ScatterSeries<ChartDataOptimize, num>(
-    opacity: 0.4,
+    opacity: 0.23,
     markerSettings:
         MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
     animationDuration: 3000,

@@ -99,8 +99,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                                 att1, att2, corrCoeff);
                           },
                         )
-                      : _oneOptimizeNameAndChart(att1, att2,
-                          coeffsMap[att2]));
+                      : _oneOptimizeNameAndChart(att1, att2, coeffsMap[att2]));
             }
 
             // chart data arrived but no data found
@@ -119,15 +118,13 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
   Widget _oneOptimizeNameAndChart(att1, att2, corrCoeff) {
     return Column(children: [
       Padding(
-        padding: const EdgeInsets.all(0.0),
+        padding: const EdgeInsets.fromLTRB(0,0,0,0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           /// visualize chart
           SizedBox(
-            height: 450, // todo check if good
-
-            /// height constraint
+            height: 450, // height constraint
             child: SizedBox.expand(
-              /// for max width
+              // for max width
               child: futureTwoAttributeScatterPlot(att1, att2),
             ),
           ),

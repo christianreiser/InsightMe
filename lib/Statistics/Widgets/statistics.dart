@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 Widget statistics(context, corrCoeff, _pValue) {
   /// correlation coefficient and p-value widgets
   return Padding(
-    padding: const EdgeInsets.fromLTRB(8.0,0,8,0),
+    padding: const EdgeInsets.fromLTRB(8.0,0,0,0),
     child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -18,11 +18,11 @@ Widget statistics(context, corrCoeff, _pValue) {
             _correlationBar(corrCoeff),
             Text(' correlation ', textScaleFactor: 1.3),
             TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.fromLTRB(5, 0, 5, 0), tapTargetSize: MaterialTapTargetSize.shrinkWrap),
               /* info note for correlation coefficient */
               // to reduce height of correlation info button
               child: Icon(Icons.info, color: Colors.grey),
               onPressed: () {
-                debugPrint('info pressed');
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
                       'Pearson correlation coefficient = $corrCoeff.'
