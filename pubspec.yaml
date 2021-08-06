@@ -76,7 +76,6 @@ flutter:
     - ./assets/icon/logo_todoist.png
     - ./assets/icon/logo_twitter.png
     - ./assets/icon/logo_withings.png
-    - ./assets/icon/logo_android.png
 
 
   # To add custom fonts to your application, add a fonts section here,

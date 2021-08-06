@@ -305,6 +305,7 @@ class _GFitState extends State<GFit> {
               heroTag: "btn1",
               onPressed: () {
                 print('GFit connect button pressed');
+                fetchData();
                 final cron = Cron();
                 cron.schedule(Schedule.parse('* * * * *'), () async {
                   print('Cron triggered GFit pull at: ${DateTime.now()}');
