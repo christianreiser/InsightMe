@@ -30,7 +30,6 @@ dependencies:
   cron: ^0.3.1
   built_value: ^8.0.6
   supercharged: ^2.0.0 # aggregation: groupby
-  cron: ^0.3.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
