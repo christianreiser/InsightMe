@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 
 import './strings.dart' as strings;
 import 'scaffold.dart';
+import 'package:cron/cron.dart';
 
-void main() => runApp(LifeTrackerApp());
+void main() {
+  runApp(new LifeTrackerApp());
+
+  final cron = Cron();
+  cron.schedule(Schedule.parse('* * * * *'), () async {
+    print('__cron: Every minute');
+  });
+}
 
 class LifeTrackerApp extends StatelessWidget {
   @override
