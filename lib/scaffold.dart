@@ -81,6 +81,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     * standard scaffold with bottom navigation bar and floating action button
     * */
     initializeGlobals();
+    /// TODO timer https://stackoverflow.com/a/63556183
     return Scaffold(
       appBar: AppBar(
         title: Text(

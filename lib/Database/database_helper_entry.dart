@@ -109,8 +109,6 @@ class DatabaseHelperEntry {
         where: whereString,
         whereArgs: whereArguments);
 
-    //result.forEach((row) => print(row)); // needed?
-
     return result;
   }
 
@@ -129,6 +127,57 @@ class DatabaseHelperEntry {
     var result = await db.update(entryTable, entry.toMap(),
         where: '$colId = ?', whereArgs: [entry.id]);
     return result;
+  }
+
+  // CHREI: Update Operation: Update a entry based on date and title
+  Future<List<Entry>> saveOrUpdateEntry(Entry entry, context) async {
+    /// check if entry already exists with given date and title
+    var db = await this.database;
+    String whereString =
+        '${DatabaseHelperEntry.colTitle} = ? and ${DatabaseHelperEntry.colDate} = ?';
+    List<dynamic> whereArguments = [entry.title, entry.date];
+    List<String> columnsToSelect = [
+      DatabaseHelperEntry.colValue,
+      DatabaseHelperEntry.colDate,
+      DatabaseHelperEntry.colId,
+      DatabaseHelperEntry.colTitle,
+      DatabaseHelperEntry.colComment,
+    ];
+
+    var queryMapList = await db.query(entryTable,
+        // orderBy: '$colDate ASC',
+        columns: columnsToSelect,
+        where: whereString,
+        whereArgs: whereArguments);
+
+    /// if entry does not exist, save it
+    if (queryMapList.isEmpty) {
+      await insertEntry(entry);
+      debugPrint('saved entry from: ${entry.date}');
+    }
+
+    /// if it does exist, then update with new value
+    else if (queryMapList.isNotEmpty) {
+      /// from map List to list
+      int countQueryMapList =
+          queryMapList.length; // Count the number of map entries in db table
+      List<Entry> queryList = [];
+      // For loop to create a 'entry List' from a 'Map List'
+      for (int i = 0; i < countQueryMapList; i++) {
+        queryList.add(Entry.fromMapObject(queryMapList[i]));
+      }
+
+      /// update entry if value changed
+      Entry entryUpdated = queryList[0];
+      if (entryUpdated.value != entry.value) {
+        entryUpdated.value = entry.value;
+        await updateEntry(entryUpdated);
+        debugPrint('updated entry from: ${entry.date}');
+      }
+      else {
+        print('value not updated as it\'s the same');
+      }
+    }
   }
 
   // CHREI: Rename Operation: Rename all entry object with given title and save it
@@ -199,7 +248,7 @@ class DatabaseHelperEntry {
 // SAVE
 Future<int> save(entry, context) async {
   final DatabaseHelperEntry helperEntry = // error when static
-  DatabaseHelperEntry();
+      DatabaseHelperEntry();
   // Update Operation: Update a to-do object and save it to database
   int result;
   if (entry.id != null) {
@@ -217,7 +266,8 @@ Future<int> save(entry, context) async {
     //importSuccessCounter++;
   } else {
     // Failure
-    showAlertDialog('Status', 'Problem Saving Entry. Title: ${entry.title}', context);
+    showAlertDialog(
+        'Status', 'Problem Saving Entry. Title: ${entry.title}', context);
     //importFailureCounter++;
   }
   return result;
