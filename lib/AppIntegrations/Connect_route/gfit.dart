@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cron/cron.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -41,17 +42,18 @@ class _GFitState extends State<GFit> {
     super.initState();
   }
 
-  void _dateToLogFile(String filename) async {
+  Future<void> _dateToLogFile(String filename) async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     final path = '${appDocDir.path}/$filename';
     final file = File(path);
     print("_log file saved to: $path");
 
     DateTime currentDate = DateTime.now();
-    await file.writeAsString(currentDate.toString());
+    DateTime dateTwoWeeksAgo = currentDate.subtract(const Duration(days: 14));
+    await file.writeAsString(currentDate.toString() + "\n" + dateTwoWeeksAgo.toString());
   }
 
-  Future<String> _readDateFromLogFile(String filename) async {
+  void _readDateFromLogFile(String filename) async {
     String content;
     try {
       Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -61,18 +63,18 @@ class _GFitState extends State<GFit> {
       print("Error reading the file.");
     }
 
-    return content;
+    print("_date from log file: $content");
   }
 
   Future fetchData() async {
     /// Get everything from midnight until now
-    DateTime endDate = DateTime.parse(await _readDateFromLogFile("lastGFitPull.txt"));
-    DateTime startDate = endDate.subtract(const Duration(days: 10000));
-    print("__(DEBUG)__ startDate: $endDate" + "\n__(DEBUG)__ endDate: $startDate");
     /*
     DateTime startDate = DateTime.now();
     DateTime endDate = new DateTime(startDate.year, startDate.month, startDate.day - 14);
     */
+
+    DateTime startDate = DateTime(2020, 10, 01, 0, 0, 0);
+    DateTime endDate = DateTime(2025, 10, 02, 23, 59, 59);
 
     HealthFactory health = HealthFactory();
 
@@ -302,8 +304,13 @@ class _GFitState extends State<GFit> {
           FloatingActionButton.extended(
               heroTag: "btn1",
               onPressed: () {
-                _dateToLogFile("lastGFitPull.txt");
-                fetchData();
+                print('GFit connect button pressed');
+                final cron = Cron();
+                cron.schedule(Schedule.parse('* * * * *'), () async {
+                  print('Cron triggered GFit pull at: ${DateTime.now()}');
+                  fetchData();
+                });
+
               },
               icon: const Icon(Icons.add),
               label: Text('connect')),
@@ -312,10 +319,18 @@ class _GFitState extends State<GFit> {
               heroTag: "btn2",
               onPressed: () {
                 //TODO: save log file
-                _dateToLogFile("lastGFitPull.txt");
+                _dateToLogFile("lastPulledGFitDate.txt");
               },
               icon: const Icon(Icons.add),
-              label: Text('Save date data (DEBUG)'))
+              label: Text('Save date data (DEBUG)')),
+          SizedBox(height: 20),
+          FloatingActionButton.extended(
+              onPressed: () {
+                //TODO: read log file
+                _readDateFromLogFile("lastPulledGFitDate.txt");
+              },
+              icon: const Icon(Icons.add),
+              label: Text('Read date data (DEBUG)'))
         ]),
       ),
     ); // type lineChart
