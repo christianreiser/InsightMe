@@ -29,10 +29,10 @@ enum AppState {
 
 class _GFitState extends State<GFit> {
   final DatabaseHelperEntry helperEntry = // error when static
-  DatabaseHelperEntry();
+      DatabaseHelperEntry();
 
   static DatabaseHelperAttribute databaseHelperAttribute =
-  DatabaseHelperAttribute();
+      DatabaseHelperAttribute();
 
   List<HealthDataPoint> _healthDataList = [];
   AppState _state = AppState.DATA_NOT_FETCHED;
@@ -49,32 +49,31 @@ class _GFitState extends State<GFit> {
     print("_log file saved to: $path");
 
     DateTime currentDate = DateTime.now();
-    DateTime dateTwoWeeksAgo = currentDate.subtract(const Duration(days: 14));
-    await file.writeAsString(currentDate.toString() + "\n" + dateTwoWeeksAgo.toString());
+    await file
+        .writeAsString(currentDate.toString() + "\n" + currentDate.toString());
   }
 
-  void _readDateFromLogFile(String filename) async {
-    String content;
+  Future<DateTime> _readDateFromLogFile(String filename) async {
+    DateTime content;
     try {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       final file = File('${appDocDir.path}/$filename');
-      content = await file.readAsString();
+      content = DateTime.parse(await file.readAsString());
     } catch (e) {
-      print("Error reading the file.");
-    }
-
+      content = DateTime.now().subtract(Duration(days: 1000));
+      }
     print("_date from log file: $content");
+    return content;
   }
 
-  Future fetchData() async {
-    /// Get everything from midnight until now
-    /*
-    DateTime startDate = DateTime.now();
-    DateTime endDate = new DateTime(startDate.year, startDate.month, startDate.day - 14);
-    */
-
-    DateTime startDate = DateTime(2020, 10, 01, 0, 0, 0);
-    DateTime endDate = DateTime(2025, 10, 02, 23, 59, 59);
+  Future _fetchData() async {
+    /// Get everything from 1 week before last fetch
+    DateTime lastPullDate = await _readDateFromLogFile("lastGFitPull.txt");
+    final startDate = lastPullDate.subtract(Duration(days: 7));
+    final DateTime endDate = DateTime.now();
+    print("__(DEBUG)__ startDate: $startDate" +
+        "\n__(DEBUG)__ endDate: $endDate" +
+        "\n__(DEBUG)__ lastPullDate: $lastPullDate");
 
     HealthFactory health = HealthFactory();
 
@@ -110,7 +109,7 @@ class _GFitState extends State<GFit> {
       try {
         /// Fetch new data
         List<HealthDataPoint> healthData =
-        await health.getHealthDataFromTypes(startDate, endDate, types);
+            await health.getHealthDataFromTypes(startDate, endDate, types);
 
         /// add all the new data points
         _healthDataList.addAll(healthData);
@@ -126,8 +125,8 @@ class _GFitState extends State<GFit> {
       List<String> attributeTitleList = List.filled(types.length + 1, null);
       attributeTitleList[0] = 'date';
       for (int attributeCount = 0;
-      attributeCount < types.length;
-      attributeCount++) {
+          attributeCount < types.length;
+          attributeCount++) {
         attributeTitleList[attributeCount + 1] =
             (types[attributeCount]).toString();
       }
@@ -136,9 +135,9 @@ class _GFitState extends State<GFit> {
 
       // get attribute list as a sting such that searching if new requires only one db query
       DatabaseHelperAttribute databaseHelperAttribute =
-      DatabaseHelperAttribute();
+          DatabaseHelperAttribute();
       List<Attribute> _dBAttributeList =
-      await databaseHelperAttribute.getAttributeList();
+          await databaseHelperAttribute.getAttributeList();
       debugPrint('got attribute list from db');
 
       /// Print the results
@@ -202,11 +201,13 @@ class _GFitState extends State<GFit> {
 
         /// save to DB
         final DatabaseHelperEntry helperEntry = // error when static
-        DatabaseHelperEntry();
+            DatabaseHelperEntry();
 
         Entry entry = Entry(
-            label, _healthData.value.toString(),
-            _healthData.dateFrom.toString(), 'Google API import'); // title, value, time, comment
+            label,
+            _healthData.value.toString(),
+            _healthData.dateFrom.toString(),
+            'Google API import'); // title, value, time, comment
         // save(entry, context);
         helperEntry.saveOrUpdateEntry(entry, context);
       });
@@ -214,12 +215,14 @@ class _GFitState extends State<GFit> {
       /// Update the UI to display the results
       setState(() {
         _state =
-        _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
+            _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
       });
     } else {
       print("Authorization not granted");
       setState(() => _state = AppState.DATA_NOT_FETCHED);
     }
+
+    _dateToLogFile("lastGFitPull.txt");
   }
 
   Widget _contentFetchingData() {
@@ -280,7 +283,6 @@ class _GFitState extends State<GFit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         title: Text('Google Fit'),
       ),
       body: Padding(
@@ -305,13 +307,12 @@ class _GFitState extends State<GFit> {
               heroTag: "btn1",
               onPressed: () {
                 print('GFit connect button pressed');
-                fetchData();
+                _fetchData();
                 final cron = Cron();
                 cron.schedule(Schedule.parse('* * * * *'), () async {
                   print('Cron triggered GFit pull at: ${DateTime.now()}');
-                  fetchData();
+                  _fetchData();
                 });
-
               },
               icon: const Icon(Icons.add),
               label: Text('connect')),
