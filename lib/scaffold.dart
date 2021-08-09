@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:insightme/Onboarding/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'AppIntegrations/overview_route.dart';
 import 'Import/import_from_json_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
 import 'Statistics/Functions/computeCorrelations.dart';
@@ -250,11 +251,11 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             context,
             MaterialPageRoute(builder: (context) => Import()),
           );
-        // } else if (result == Choice.appIntegrations) {
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
-        //   );
+        } else if (result == Choice.appIntegrations) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
+          );
         } else if (result == Choice.deleteAllData) {
           //todo deleteAllData
           // DatabaseHelperEntry().deleteDb();
@@ -301,21 +302,21 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             ],
           ),
         ),
-        // PopupMenuItem<Choice>(
-        //   value: Choice.appIntegrations,
-        //   child: Row(
-        //     children: [
-        //       Icon(
-        //         Icons.exit_to_app,
-        //         color: iconColor,
-        //       ),
-        //       SizedBox(
-        //         width: 5,
-        //       ),
-        //       Text('Other app integrations'),
-        //     ],
-        //   ),
-        // ),
+        PopupMenuItem<Choice>(
+          value: Choice.appIntegrations,
+          child: Row(
+            children: [
+              Icon(
+                Icons.exit_to_app,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Other app integrations'),
+            ],
+          ),
+        ),
         // PopupMenuItem<Choice>(
         //   value: Choice.exportDailySummaries,
         //   child: Row(

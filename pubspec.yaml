@@ -22,7 +22,7 @@ dependencies:
   permission_handler: ^8.1.1 # permission handler for device
   starfruit: ^1.0.0+1 # correlation
   sqflite_migration: ^0.3.0 # database version update
-  health: 3.0.4 # TODO workaround: v^ & remove IDE -> Run -> edit configurations -> Additional run args: "--no-sound-null-safety"
+  health: 3.0.4 #^3.1.1+1 # TODO workaround: v^ & remove IDE -> Run -> edit configurations -> Additional run args: "--no-sound-null-safety"
   http: ^0.13.3 # future-based library for making HTTP requests
   fit_kit: ^1.1.2
   cron: ^0.3.1
