@@ -17,9 +17,9 @@ int attributeListLength;
 
 class Global {
   Future<List<Attribute>> updateAttributeList() async {
-    debugPrint('called updateAttributeList');
+    // debugPrint('called updateAttributeList');
     attributeList = await DatabaseHelperAttribute().getAttributeList();
-    debugPrint('done await DatabaseHelperAttribute().getAttributeList()');
+    // debugPrint('done await DatabaseHelperAttribute().getAttributeList()');
     attributeListLength = attributeList.length;
     debugPrint('attributeList.length: ${attributeList.length}');
     return attributeList;

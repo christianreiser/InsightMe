@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:insightme/navigation_helper.dart';
+import 'package:insightme/Core/functions/navigation_helper.dart';
 
 import './../../globals.dart' as globals;
 import './../entry.dart';
@@ -81,7 +81,7 @@ class EditAttributeState extends State<EditAttribute> {
                 style: textStyle,
                 onChanged: (value) {
                   debugPrint('Something changed in Title Text Field');
-                  updateTitle();
+                  _updateTitle();
                 },
                 decoration: InputDecoration(
                     labelText: 'Name of Label',
@@ -102,7 +102,7 @@ class EditAttributeState extends State<EditAttribute> {
                 style: textStyle,
                 onChanged: (value) {
                   debugPrint('Something changed in note Text Field');
-                  updateNote();
+                  _updateNote();
                 },
                 decoration: InputDecoration(
                     labelText: 'Note',
@@ -113,7 +113,7 @@ class EditAttributeState extends State<EditAttribute> {
             ),
 
             // color picker
-            colorPicker(context),
+            _colorPicker(context),
 
             Padding(
               /*
@@ -163,7 +163,7 @@ class EditAttributeState extends State<EditAttribute> {
     );
   }
 
-  Widget aggregationSwitch() {
+  Widget _aggregationSwitch() {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black38),
@@ -232,7 +232,7 @@ class EditAttributeState extends State<EditAttribute> {
     showDialog(context: context, builder: (_) => alertDialog);
   }
 
-  Widget colorPicker(BuildContext context) {
+  Widget _colorPicker(BuildContext context) {
     debugPrint('currentColor $currentColor');
     return ElevatedButton(
       onPressed: () {
@@ -244,7 +244,7 @@ class EditAttributeState extends State<EditAttribute> {
               content: SingleChildScrollView(
                 child: BlockPicker(
                   pickerColor: currentColor,
-                  onColorChanged: changeColor,
+                  onColorChanged: _changeColor,
                   availableColors: [
                     Colors.white,
                     Colors.greenAccent,
@@ -294,23 +294,21 @@ class EditAttributeState extends State<EditAttribute> {
     );
   }
 
-  void changeColor(Color color) => setState(() {
-        debugPrint('currentColor.toString(): ${currentColor.toString()}');
+  void _changeColor(Color color) => setState(() {
         currentColor = color;
-        debugPrint(
-            'int color: ${int.parse(currentColor.toString().split('(0x')[1].split(')')[0], radix: 16)}');
         attribute.color = int.parse(
             currentColor.toString().split('(0x')[1].split(')')[0],
             radix: 16);
       });
 
   // Update the title of attribute object
-  void updateTitle() {
-    attribute.title = titleController.text;
+  void _updateTitle() {
+    /// TODO "0" or "null" breaks reading correlation matrix as there are also 0 and "null"
+    attribute.title = titleController.text.toString();
   }
 
   // Update the note of attribute object
-  void updateNote() {
+  void _updateNote() {
     attribute.note = noteController.text;
   }
 

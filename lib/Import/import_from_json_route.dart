@@ -7,13 +7,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/functions/misc.dart';
-import 'package:insightme/Core/widgets/misc.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
+import '../Core/functions/navigation_helper.dart';
 import '../Database/entry.dart';
-import '../navigation_helper.dart';
+import '../Journal/searchOrCreateAttribute.dart' as soca;
+import '../strings.dart';
 
 class Import extends StatefulWidget {
   @override
@@ -54,9 +55,9 @@ class _ImportState extends State<Import> {
                   textScaleFactor: 1.5,
                 ),
                 onPressed: () {
-                  showAlertDialog('Status',
-                      'Import started in the background. This might take a while.', context);
-                  importCSVFile();
+                  _showAlertDialog('Status',
+                      'Import started in the background. This might take a while.');
+                  _importCSVFile();
                 },
               ),
             ]),
@@ -64,7 +65,7 @@ class _ImportState extends State<Import> {
     ); // type lineChart
   }
 
-  void importCSVFile() async {
+  void _importCSVFile() async {
     ///  imports data from the picked file.
     /// adds attributes if new
     /// todo importing same data twice only updates and does not add again
@@ -78,7 +79,7 @@ class _ImportState extends State<Import> {
 
     File file = File(result.files.single.path);
     //todo userXP: handle if user does not pick file
-    
+
     debugPrint('file picked');
 
     /* ini */
@@ -108,11 +109,11 @@ class _ImportState extends State<Import> {
         .listen((String line) {
       List column = line.split(','); // split by comma
       lineCounter++;
-      debugPrint('lineCounter $lineCounter');
+      debugPrint('day: $lineCounter');
 
       // iterate through columns
-      for (int columnCount = 0; columnCount < column.length; columnCount++) {
-        //debugPrint('\ncolumnCount $columnCount');
+      final int columnLength = column.length;
+      for (int columnCount = 0; columnCount < columnLength; columnCount++) {
         String _cellContent = column[columnCount];
 
         if (lineCounter > 0 && columnCount > 0) {
@@ -132,7 +133,6 @@ class _ImportState extends State<Import> {
         else if (lineCounter > 0 && columnCount == 0) {
           // temporarily store dateTime
           dateTimeStamp = DateTime.parse(_cellContent);
-          debugPrint('got dateTime $_cellContent and stored temporarily');
         }
 
         // get attribute names
@@ -154,10 +154,85 @@ class _ImportState extends State<Import> {
         // TODO userXP: feedback if import was successful
       }
     }, onDone: () {
-      print('File is now closed!');
+      debugPrint('Done!');
     }, onError: (e) {
-      print(e.toString());
+      debugPrint('ERROR! ${e.toString()}');
     });
+  }
+
+
+// DIALOG
+  void _showAlertDialog(String title, String message) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
+  }
+
+// SAVE
+  Future<int> _save(entry) async {
+    // Update Operation: Update a to-do object and save it to database
+    int result;
+    if (entry.id != null) {
+      // Case 1: Update operation
+      result = await helperEntry.updateEntry(entry);
+    } else {
+      // Case 2: Insert Operation
+      result = await helperEntry.insertEntry(entry);
+    }
+
+    // SUCCESS FAILURE STATUS DIALOG
+    // Success
+    if (result != 0) {
+      //importSuccessCounter++;
+    } else {
+      // Failure
+      _showAlertDialog('Status', 'Problem Saving Entry. Title: ${entry.title}');
+      //importFailureCounter++;
+    }
+    return result;
+  }
+
+// add attributes to DB if new
+  Future<bool> _saveAttributeToDBIfNew(_attribute, _dBAttributeList) async {
+    bool addedNewAttributeToDB;
+    bool _exactMatch = false;
+
+    // go through all db attributes one by one and compare
+    //debugPrint('_exactMatch before search: $_exactMatch');
+    for (int i = 0; i < _dBAttributeList.length; i++) {
+      // check if there is a exact attribute match
+      if (_dBAttributeList[i]
+              .title
+              .toLowerCase()
+              .compareTo(_attribute.toLowerCase()) ==
+          0) {
+        _exactMatch = true;
+        //debugPrint('exact match: ${_dBAttributeList[i].title} vs $_attribute');
+      }
+    }
+
+    // save attribute if new
+    if (_exactMatch == false) {
+      //debugPrint('create new attribute: $_attribute');
+
+      // add to faster searchable list
+      // todo important: ask user if additive or average
+      _dBAttributeList.add(Attribute(
+          _attribute, 'imported', defaultLabelColor, defaultAggregation));
+
+      // save to db
+      // todo important performance: await and result feedback
+      soca.SearchOrCreateAttributeState().saveAttribute(Attribute(
+          _attribute, 'imported', defaultLabelColor, defaultAggregation));
+
+      addedNewAttributeToDB = true;
+    } else {
+      //debugPrint('not creating new attribute as there is a exact match: $_attribute exists in $_dBAttributeList');
+      addedNewAttributeToDB = false;
+    }
+    return addedNewAttributeToDB;
   }
 
   Container _hintInImport() {

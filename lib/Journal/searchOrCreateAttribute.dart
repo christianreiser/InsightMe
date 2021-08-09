@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:insightme/Core/functions/misc.dart';
 
 import './../globals.dart' as globals;
+import '../Core/functions/navigation_helper.dart';
 import '../Database/attribute.dart';
 import '../Database/database_helper_attribute.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
-import '../navigation_helper.dart';
 import '../strings.dart';
 
 // Define SearchOrCreateAttribute widget.
@@ -24,7 +24,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   List<Attribute> _attributesToDisplay = globals.attributeList;
 
   // ini _isSelected
-  //debugPrint('${globals.attributeList.length}');
+  //debugPrint('globals.attributeList.length: ${globals.attributeList.length}');
   List<bool> _isSelected =
       List.filled(globals.attributeListLength, false); // true if long pressed
   bool _createButtonVisible = false; // initially don't show create button
@@ -142,7 +142,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           suffixIcon: IconButton(
             onPressed: () {
               _attributeInputController.clear();
-              getAttributesToDisplay(); // needed to refresh
+              _getAttributesToDisplay(); // needed to refresh
               setState(() {}); // needed to refresh
             },
             icon: Icon(Icons.clear),
@@ -150,9 +150,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         ),
         controller: _attributeInputController,
         onChanged: (value) {
-          debugPrint("Something changed search or create new attribute:"
-              " ${_attributeInputController.text}");
-          getAttributesToDisplay();
+          _getAttributesToDisplay();
           setState(() {});
         },
       ),
@@ -201,7 +199,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           globals.attributeList =
               await databaseHelperAttribute.getAttributeList();
           globals.attributeListLength = globals.attributeList.length;
-          getAttributesToDisplay();
+          _getAttributesToDisplay();
           setState(() {});
         },
         child:
@@ -309,7 +307,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         Center(
           child: Container(
             padding: EdgeInsets.all(10),
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             child: Column(
               children: [
                 Icon(
@@ -341,7 +339,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         Center(
           child: Container(
             padding: EdgeInsets.all(10),
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             child: Column(
               children: [
                 Icon(
@@ -404,7 +402,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return [_searchResult, userInput, match, exactMatch];
   }
 
-  List getAttributesToDisplay() {
+  List _getAttributesToDisplay() {
     /*
     calls: _searchOperation()
     sets: _isSelected to all false
@@ -447,11 +445,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       _createButtonVisible = false;
     }
     _isSelected = List.filled(_attributesToDisplay.length, false);
-    debugPrint('_attributesToDisplay $_attributesToDisplay');
     return [_attributesToDisplay, _createButtonVisible, _createButtonVisible];
   }
 
   Future<int> saveAttribute(attribute) async {
+    // not private as used elsewhere
     /*
     * Update Operation: Update a attribute object and save it to database
     */
@@ -480,7 +478,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   void _saveAttributeAndRefreshView(attribute) async {
     await saveAttribute(attribute);
-    getAttributesToDisplay();
+    _getAttributesToDisplay();
     setState(() {});
   }
 
@@ -539,7 +537,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       // catch error when user closes context
       globals.attributeList = await databaseHelperAttribute.getAttributeList();
       globals.attributeListLength = globals.attributeList.length;
-      getAttributesToDisplay();
+      _getAttributesToDisplay();
       setState(() {});
     }
 

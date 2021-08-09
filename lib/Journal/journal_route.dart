@@ -4,9 +4,9 @@ import 'package:insightme/Core/functions/misc.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
 import './../globals.dart' as globals;
+import '../Core/functions/navigation_helper.dart';
 import '../Database/database_helper_entry.dart';
 import '../Database/entry.dart';
-import '../navigation_helper.dart';
 
 class JournalRoute extends StatefulWidget {
   final String attributeName;
@@ -43,7 +43,7 @@ class JournalRouteState extends State<JournalRoute> {
     if (_entryList == null) {
       _entryList = [];
       if (context != null) {
-        updateEntryListView();
+        _updateEntryListView();
       }
     }
 
@@ -67,9 +67,9 @@ class JournalRouteState extends State<JournalRoute> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          updateEntryListView();
+          _updateEntryListView();
         },
-        child: journalHintVisibleLogic() == true
+        child: _journalHintVisibleLogic() == true
             // HINT
             ? _makeEntryHint()
 
@@ -79,7 +79,7 @@ class JournalRouteState extends State<JournalRoute> {
     );
   }
 
-  bool journalHintVisibleLogic() {
+  bool _journalHintVisibleLogic() {
     /*
     * hint visible if entry list is not empty
     * not visible if list == null
@@ -106,7 +106,7 @@ class JournalRouteState extends State<JournalRoute> {
           children: [
             Container(
               padding: EdgeInsets.all(5),
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
               child: Row(
                 children: [
                   Text(
@@ -175,7 +175,7 @@ class JournalRouteState extends State<JournalRoute> {
                 )
               ],
             ),
-            backgroundColor: Theme.of(context).accentColor,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
           )
         : Container();
   }
@@ -277,8 +277,7 @@ class JournalRouteState extends State<JournalRoute> {
 
   // updateEntryListView depends on state
   // function also in createAttribute.dart but using it from there breaks it
-  void updateEntryListView() async {
-    debugPrint('attributeName $attributeName');
+  void _updateEntryListView() async {
     _entryList = await databaseHelperEntry.getFilteredEntryList(attributeName);
     globals.entryListLength = _entryList.length;
 
@@ -324,7 +323,7 @@ class JournalRouteState extends State<JournalRoute> {
         await databaseHelperEntry.deleteEntry(_entryList[position].id);
       }
     }
-    updateEntryListView();
+    _updateEntryListView();
 //_showAlertDialog('Deleted', 'Pull to Refresh');
   }
 

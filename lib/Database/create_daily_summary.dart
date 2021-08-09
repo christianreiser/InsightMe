@@ -1,6 +1,8 @@
+import 'dart:io';
 
+import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:insightme/Core/functions/misc.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'attribute.dart';
 import 'database_helper_attribute.dart';
@@ -8,7 +10,7 @@ import 'database_helper_entry.dart';
 import 'entry.dart';
 
 class WriteDailySummariesCSV {
-  Future<String> writeDailySummariesCSV() async {
+  Future<File> writeDailySummariesCSV() async {
     /*
     * reads from db,
     * writes daily summaries csv
@@ -31,10 +33,9 @@ class WriteDailySummariesCSV {
     dailySummariesList = await addEntriesToDailySummaries(
         attributeListLength, attributeTitleList, dailySummariesList);
 
-    debugPrint('dailySummariesList $dailySummariesList');
 
     // save to file
-    return await save2DListToCSVFile(dailySummariesList, "/daily_summaries.csv");
+    return await _saveDailySummariesToFile(dailySummariesList);
   }
 
   Future<List<String>> getAttributeTitleList(
@@ -52,9 +53,6 @@ class WriteDailySummariesCSV {
         attributeCount++) {
       attributeTitleList[attributeCount + 1] =
           attributeList[attributeCount].title;
-      debugPrint('attributeCount $attributeCount');
-      debugPrint(
-          'attributeTitleList[attributeCount + 1]: ${attributeTitleList[attributeCount + 1]}');
     }
     return attributeTitleList;
   }
@@ -73,14 +71,14 @@ class WriteDailySummariesCSV {
     List<dynamic> rowToAdd = List.filled(attributeListLength + 1, null);
 
     rowToAdd[0] = entryList[0].date.substring(0, 10); // add newest date as date
-    debugPrint('date: ${entryList[0].date}');
     int entryListLength = entryList.length;
 
     /* fill rowToAdd with data and add to dailySummariesList */
     debugPrint('starting creating daily summaries csv');
-
+//sudo kiss
     // iterate through all entries
     for (int entryCount = 0; entryCount < entryListLength; entryCount++) {
+      // debugPrint('progress: $entryCount of $entryListLength.');
       // if date of entry matches row date:
       if (entryList[entryCount].date.substring(0, 10) == rowToAdd[0]) {
         // get column index:
@@ -107,7 +105,17 @@ class WriteDailySummariesCSV {
       }
     }
     dailySummariesList.add(rowToAdd); // add to dailySummariesList
-    //debugPrint('rowToAdd $rowToAdd');
     return dailySummariesList;
+  }
+
+
+  Future<File> _saveDailySummariesToFile(dailySummariesList) async {
+    /// save dailySummariesList to file and returns csv
+    final directory = await getApplicationDocumentsDirectory();
+    final pathOfTheFileToWrite = directory.path + "/daily_summaries.csv";
+    File file = File(pathOfTheFileToWrite);
+    String csv = const ListToCsvConverter().convert(dailySummariesList);
+    await file.writeAsString(csv);
+    return file;
   }
 }

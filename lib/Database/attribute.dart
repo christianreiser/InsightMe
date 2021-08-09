@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 
 class Attribute {
   /* initialize */
@@ -66,7 +66,6 @@ class Attribute {
 
   // Extract a Note object from a Map object
   Attribute.fromMapObject(Map<String, dynamic> map) {
-    debugPrint(map['title']);
     this._id = map['id'];
     this._title = map['title'];
     this._note = map['note'];

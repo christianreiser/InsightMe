@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_migration/sqflite_migration.dart';
@@ -30,9 +28,6 @@ class DatabaseHelperAttribute {
     return _databaseHelperAttribute;
   }
 
-
-
-
 /*
 * create the database object and provide it with a getter where we will
 * instantiate the database if it’s not. This is called lazy initialization.
@@ -51,7 +46,6 @@ class DatabaseHelperAttribute {
 * name of the database
 * */
   Future<Database> initializeDatabase() async {
-
     // Open/create the database at a given path
 //    var attributesDatabase =
 //        await openDatabase('attributes.db', version: 1, onCreate: _createDb);
@@ -74,20 +68,21 @@ class DatabaseHelperAttribute {
     final config = MigrationConfig(
         initializationScript: initialScript, migrationScripts: migrations);
 
-
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, 'attributes.db');
 
     return await openDatabaseWithMigration(path, config);
   }
 
-  /*creating the table*/ /// todo important: needed when starting app the first time?
-  void _createDb(Database db, int newVersion) async {
-    await db.execute(
-        'CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'
-            ' $colTitle TEXT, $colNote TEXT, '
-            '$colColor TEXT, $colAdditive TEXT)');
-  }
+  /*creating the table*/
+
+  /// todo important: needed when starting app the first time?
+  // void _createDb(Database db, int newVersion) async {
+  //   await db.execute(
+  //       'CREATE TABLE $attributeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'
+  //       ' $colTitle TEXT, $colNote TEXT, '
+  //       '$colColor TEXT, $colAdditive TEXT)');
+  // }
 
   // Fetch Operation: Get all attribute objects from database
   Future<List<Map<String, dynamic>>> getAttributeMapList() async {
@@ -138,7 +133,6 @@ class DatabaseHelperAttribute {
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'attribute List' [ List<Attribute> ]
   Future<List<Attribute>> getAttributeList() async {
-
     await this.database;
     var attributeMapList =
         await getAttributeMapList(); // Get 'Map List' from database
@@ -148,7 +142,7 @@ class DatabaseHelperAttribute {
     List<Attribute> attributeList = [];
     // For loop to create a 'attribute List' from a 'Map List'
     for (int i = 0; i < countAttribute; i++) {
-      debugPrint('${attributeMapList[i]}');
+      // debugPrint('attributeMapList[i]: ${attributeMapList[i]}');
       attributeList.add(Attribute.fromMapObject(attributeMapList[i]));
     }
 

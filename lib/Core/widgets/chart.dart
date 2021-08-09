@@ -1,23 +1,58 @@
-import 'package:fl_animated_linechart/chart/animated_line_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Core/functions/chart.dart';
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
-Widget futureOneAttributeAnimatedLineChart(attributeName) {
-  // calls AnimatedLineChart(chart) in a future builder
+/// TODO: zoom, tooltip, trackball
+/// Error: Cannot run with sound null safety, because the following dependencies
+/// don't support null safety:
+///
+///  - package:syncfusion_flutter_charts
+///  - package:starfruit
+///  - package:fit_kit
+///  - package:intl
+///  - package:syncfusion_flutter_core
+///  - package:fl_animated_linechart
+///  - package:flutter_datetime_picker
+///  - package:linalg
+/*
+late TooltipBehavior _tooltipBehavior;
+late ZoomPanBehavior _zoomPanBehavior;
+late TrackballBehavior _trackballBehavior;
+
+
+@override
+void initState() {
+  _tooltipBehavior = TooltipBehavior(enable: true);
+  _zoomPanBehavior = ZoomPanBehavior(
+      // Enables pinch zooming
+      enablePinching: true,
+      enableDoubleTapZooming: true
+  );
+  _trackballBehavior = TrackballBehavior(
+    // Enables the trackball
+      enable: true,
+      tooltipSettings: InteractiveTooltip(
+          enable: true,
+          color: Colors.red
+      )
+  );
+}*/
+
+Widget futureOneAttributeScatterPlot(attributeName) {
   return FutureBuilder(
-    future: oneAttributeChart(attributeName), //schedule.selectedAttribute1
+    future: oneAttributeChartData(attributeName), //schedule.selectedAttribute1
     builder: (context, snapshot) {
       // chart data arrived && data found
       if (snapshot.connectionState == ConnectionState.done &&
-          chart != null && snapshot.data != null) {
-        debugPrint('snapshot.data: ${snapshot.data}');
-        return AnimatedLineChart(snapshot.data);
+          snapshot.data != null) {
+        return _oneAttributeSfCartesianChart(snapshot.data);
       }
 
       // chart data arrived but no data found
       else if (snapshot.connectionState == ConnectionState.done &&
-          (chart == null || snapshot.data == null)) {
+          (snapshot.data == null)) {
         return Text('No data found for this label');
 
         // else: i.e. data didn't arrive
@@ -28,26 +63,132 @@ Widget futureOneAttributeAnimatedLineChart(attributeName) {
   );
 }
 
-Widget futureTwoAttributeAnimatedLineChart(attributeName1, attributeName2) {
-  // calls AnimatedLineChart(chart) in a future builder
-  return FutureBuilder(
-    future: twoAttributeChart(attributeName1, attributeName2), //schedule.selectedAttribute1
-    builder: (context, snapshot) {
-      // chart data arrived && data found
-      if (snapshot.connectionState == ConnectionState.done &&
-          chart != null && snapshot.data != null) {
-        return AnimatedLineChart(snapshot.data);
-      }
+Widget futureTwoAttributeScatterPlot(attributeName2, attributeName1) {
+  if (attributeName1 != attributeName2) {
+    return FutureBuilder(
+      future: twoAttributeChartData(attributeName1, attributeName2),
+      builder: (context, snapshot) {
+        // chart data arrived && data found
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.data != null) {
+          return _twoAttributeSfCartesianChart(snapshot.data, attributeName1);
+        }
 
-      // chart data arrived but no data found
-      else if (snapshot.connectionState == ConnectionState.done &&
-          (chart == null || snapshot.data == null)) {
-        return Text('No data found for this label');
+        // chart data arrived but no data found
+        else if (snapshot.connectionState == ConnectionState.done &&
+            (snapshot.data == null)) {
+          return Text('No data found for this label');
 
-        // else: i.e. data didn't arrive
-      } else {
-        return CircularProgressIndicator(); // when Future doesn't get data
-      } // snapshot is current state of future
-    },
+          // else: i.e. data didn't arrive
+        } else {
+          return CircularProgressIndicator(); // when Future doesn't get data
+        } // snapshot is current state of future
+      },
+    );
+  } else {
+    return Text('No data found for this label');
+  }
+}
+
+Widget _oneAttributeSfCartesianChart(chartDataList) {
+  return SfCartesianChart(
+      primaryXAxis:
+          DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
+      primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.additional),
+      series: <ChartSeries>[
+        _oneAttributeScatterSeries(chartDataList),
+      ]);
+}
+
+Widget _twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
+  return SfCartesianChart(
+      // borderWidth: 0,
+      // plotAreaBorderWidth: 0,
+      margin: EdgeInsets.fromLTRB(6,8,2,0),
+
+      primaryXAxis: NumericAxis(
+        rangePadding: ChartRangePadding.round,
+        labelStyle: TextStyle(color: Colors.blue, height: 0.7),
+        title: AxisTitle(
+          text: attributeName1,
+          textStyle: TextStyle(height: 0.8,
+              color: Colors.blue,
+              fontFamily: 'Roboto',
+              fontSize: 17,
+              fontWeight: FontWeight.w300),
+        ),
+      ),
+      primaryYAxis: NumericAxis(
+          labelStyle: TextStyle(color: Colors.green, height: 1),
+
+          // title: AxisTitle(text: 'Y-Axis'),
+          rangePadding: ChartRangePadding.additional),
+      // zoomPanBehavior: _zoomPanBehavior, // todo
+      // tooltipBehavior: _tooltipBehavior, // todo
+      series: <ChartSeries>[
+        _twoAttributeScatterSeries(chartDataOptimizeList),
+      ]);
+}
+
+_oneAttributeScatterSeries(chartDataList) {
+// Renders scatter chart
+  return ScatterSeries<ChartData, DateTime>(
+    opacity: 0.3,
+    markerSettings:
+        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+    animationDuration: 3000,
+    enableTooltip: true,
+    dataSource: chartDataList,
+    trendlines: <Trendline>[
+      Trendline(
+          type: TrendlineType.movingAverage,
+          color: Colors.teal,
+          width: 2,
+          opacity: 0.7,
+          enableTooltip: true,
+          period: 7,
+          animationDuration: 5000.0)
+    ],
+    xValueMapper: (ChartData data, _) => data.dateTime,
+    yValueMapper: (ChartData data, _) => data.value,
   );
+}
+
+_twoAttributeScatterSeries(chartDataOptimizeList) {
+// Renders scatter chart
+  return ScatterSeries<ChartDataOptimize, num>(
+    opacity: 0.23,
+    markerSettings:
+        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+    animationDuration: 3000,
+    enableTooltip: true,
+    dataSource: chartDataOptimizeList,
+    xValueMapper: (ChartDataOptimize data, _) => data.value1,
+    yValueMapper: (ChartDataOptimize data, _) => data.value2,
+    trendlines: <Trendline>[
+      Trendline(
+          type: TrendlineType.polynomial,
+          color: Colors.grey,
+          width: 2,
+          opacity: 0.4,
+          enableTooltip: true,
+          period: 7,
+          animationDuration: 5000.0),
+      Trendline(
+          type: TrendlineType.linear,
+          color: Colors.teal,
+          width: 2,
+          opacity: 0.4,
+          enableTooltip: true,
+          period: 7,
+          animationDuration: 5000.0)
+    ],
+  );
+}
+
+class ChartData {
+  ChartData(this.dateTime, this.value);
+
+  final DateTime dateTime;
+  final double value;
 }

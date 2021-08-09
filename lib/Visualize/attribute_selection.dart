@@ -20,6 +20,7 @@ class DropDown extends StatefulWidget {
 
 class _DropDownState extends State<DropDown> {
   List<DropdownMenuItem<String>> _dropdownMenuItems;
+
   @override
   Widget build(BuildContext context) {
     final changeNotifier = Provider.of<OptimizationChangeNotifier>(
@@ -34,7 +35,7 @@ class _DropDownState extends State<DropDown> {
               // needed
 
               child: DropdownButton<String>(
-                dropdownColor: Colors.green[100],
+                dropdownColor: Colors.green[50],
                 iconEnabledColor: Colors.green,
                 focusColor: Colors.green,
                 underline: Container(
@@ -46,6 +47,11 @@ class _DropDownState extends State<DropDown> {
                 isExpanded: true,
                 //hint: Text('select label'), // widget shown before selection
                 value: changeNotifier.selectedAttribute1,
+                style: TextStyle(
+                    color: Colors.green,
+                    fontFamily: 'Roboto',
+                    fontSize: 17,
+                    fontWeight: FontWeight.w400),
                 // selected item
                 items: _dropdownMenuItems,
                 // list of all items
@@ -59,9 +65,14 @@ class _DropDownState extends State<DropDown> {
             return Expanded(
               // needed
               child: DropdownButton<String>(
-                dropdownColor: Colors.blue[100],
+                dropdownColor: Colors.blue[50],
                 iconEnabledColor: Colors.blue,
                 focusColor: Colors.blue,
+                style: TextStyle(
+                    color: Colors.blue,
+                    fontFamily: 'Roboto',
+                    fontSize: 17,
+                    fontWeight: FontWeight.w400),
                 underline: Container(
                   color: Colors.blue,
                   child: SizedBox(height: 1),
@@ -103,18 +114,14 @@ class _DropDownState extends State<DropDown> {
 
     /// to correlate with everything
     for (int ele = 0; ele < attributeList.length; ele++) {
-      itemList[ele + 1] = attributeList[ele].title;
-
-      /// +1 for 'all'
-      //debugPrint('itemList $itemList');
+      itemList[ele + 1] = attributeList[ele].title; // +1 for 'all'
     }
-    debugPrint('itemList: $itemList');
 
-    _dropdownMenuItems = buildDropdownMenuItems(itemList);
+    _dropdownMenuItems = _buildDropdownMenuItems(itemList);
     return itemList;
   }
 
-  List<DropdownMenuItem<String>> buildDropdownMenuItems(List itemList) {
+  List<DropdownMenuItem<String>> _buildDropdownMenuItems(List itemList) {
     List<DropdownMenuItem<String>> items = [];
     for (String item in itemList) {
       items.add(

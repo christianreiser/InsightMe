@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 
+import 'Core/functions/navigation_helper.dart';
 import 'Core/widgets/entryHint.dart';
 import 'globals.dart' as globals;
-import 'navigation_helper.dart';
 
 class DataRoute extends StatefulWidget {
   @override
@@ -36,12 +36,12 @@ class _DataRouteState extends State<DataRoute> {
               : globals.entryListLength == 1
                   ? Column(
                       children: [
-                        Expanded(child: (dataListView(snapshot.data))),
+                        Expanded(child: (_dataListView(snapshot.data))),
                         entryHint()
                       ],
                     )
                   : globals.entryListLength > 1
-                      ? dataListView(snapshot.data)
+                      ? _dataListView(snapshot.data)
                       : Text('?');
         }
 
@@ -58,21 +58,20 @@ class _DataRouteState extends State<DataRoute> {
     );
   }
 
-  // Future<void> read() async {
-
-  Widget dataListView(attributeList) {
+  Widget _dataListView(attributeList) {
     return ListView.builder(
       itemCount: globals.attributeListLength,
       itemBuilder: (BuildContext context, int position) {
-        return oneAttributeNameAndChart(attributeList[position].title, context);
+        return _oneAttributeNameAndChart(
+            attributeList[position].title, context);
       },
     );
   }
 
-  Widget oneAttributeNameAndChart(attributeName, context) {
+  Widget _oneAttributeNameAndChart(attributeName, context) {
     // creates chart widget of one Attribute with name as heading
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.fromLTRB(1, 10, 1, 10),
       child: Column(
           mainAxisSize: MainAxisSize.max,
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,9 +81,15 @@ class _DataRouteState extends State<DataRoute> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  attributeName,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                Row(
+                  children: [
+                    SizedBox(width: 16),
+                    Text(
+                      attributeName,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.w500),
+                    ),
+                  ],
                 ),
                 IconButton(
                   icon: Icon(Icons.chevron_right),
@@ -97,8 +102,8 @@ class _DataRouteState extends State<DataRoute> {
             ),
             SizedBox(height: 10),
             SizedBox(
-              height: 200,
-              child: futureOneAttributeAnimatedLineChart(attributeName),
+              height: 300,
+              child: futureOneAttributeScatterPlot(attributeName),
             )
           ]),
     );

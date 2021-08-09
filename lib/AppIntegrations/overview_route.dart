@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insightme/Core/functions/navigation_helper.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
 
-import '../navigation_helper.dart';
 import 'Connect_route/gfit.dart';
 
 class AppIntegrationsOverview extends StatelessWidget {

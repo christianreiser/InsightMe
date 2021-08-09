@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../navigation_helper.dart';
+import '../Core/functions/navigation_helper.dart';
 
 class OnboardingRoute extends StatefulWidget {
   OnboardingRoute({Key key, this.title}) : super(key: key);
@@ -63,7 +63,7 @@ class _OnboardingRouteState extends State<OnboardingRoute> {
                         onPressed: () {
                           setState(() {
                             debugPrint("What can you do? button clicked");
-                            setHideWelcomeToTrue(); // set flag to hide Welcome screen from now on
+                            _setHideWelcomeToTrue(); // set flag to hide Welcome screen from now on
                           });
                           //NavigationHelper().navigateTo
                         },
@@ -74,7 +74,7 @@ class _OnboardingRouteState extends State<OnboardingRoute> {
                       TextButton(
                         onPressed: () {
                           NavigationHelper().navigateToFutureDesign(context);
-                          setHideWelcomeToTrue(); // set flag to hide Welcome screen from now on
+                          _setHideWelcomeToTrue(); // set flag to hide Welcome screen from now on
                         },
                         child: Row(
                           children: [Text('Skip Onboarding')],
@@ -95,14 +95,14 @@ class _OnboardingRouteState extends State<OnboardingRoute> {
     );
   }
 
-  void setHideWelcomeToTrue() async {
+  void _setHideWelcomeToTrue() async {
     // obtain shared preferences
     final prefs = await SharedPreferences.getInstance();
     // set value
     prefs.setBool('hideWelcome', true);
   }
 
-  void setFirstAppRunToFalse() async {
+  void _setFirstAppRunToFalse() async {
     // obtain shared preferences
     final prefs = await SharedPreferences.getInstance();
     // set value

@@ -34,10 +34,8 @@ class DatabaseHelperEntry {
   * instantiate the database if it’s not. This is called lazy initialization.
   */
   Future<Database> get database async {
-    debugPrint('_database1 $_database');
     if (_database == null) {
       _database = await initializeDatabase();
-      debugPrint('_database2 $_database');
     }
     return _database;
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/AppIntegrations/overview_route.dart';
 import 'package:insightme/Onboarding/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +10,6 @@ import 'data_route.dart';
 import 'globals.dart' as globals;
 import 'optimize_route.dart';
 import 'strings.dart' as strings;
-//import 'package:starflut/starflut.dart';
 
 enum Choice {
   exportDailySummaries,
@@ -33,14 +31,14 @@ class ScaffoldRouteDesign extends StatefulWidget {
 class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   @override
   Widget build(BuildContext context) {
-    return standardScaffold(); //welcomeOrStandardScaffold(); // todo Onboarding back in
+    return _standardScaffold(); //welcomeOrStandardScaffold(); // todo Onboarding back in
   }
 
   static const Color iconColor = Colors.black87;
 
 
 
-  FutureBuilder welcomeOrStandardScaffold() {
+  FutureBuilder _welcomeOrStandardScaffold() {
     /*
     * decides if standard scaffold or welcome screen should be shown
     * Logic:
@@ -57,9 +55,9 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
           (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
-            return standardScaffold();
+            return _standardScaffold();
           case ConnectionState.waiting:
-            return standardScaffold();
+            return _standardScaffold();
           default:
             if (!snapshot.hasError) {
               //@ToDo("Return a welcome screen")
@@ -67,7 +65,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
                   ? OnboardingRoute()
                   : snapshot.data.getBool("hideWelcome") == false
                       ? OnboardingRoute()
-                      : standardScaffold();
+                      : _standardScaffold();
             } else {
               return Text('error: ${snapshot.error}');
             }
@@ -76,13 +74,14 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     );
   }
 
-  Scaffold standardScaffold() {
+  Scaffold _standardScaffold() {
     /*
     * standard scaffold with bottom navigation bar and floating action button
     * */
-    configuration();
-    initializeGlobals();
+    _configuration();
+    _initializeGlobals();
     /// TODO timer https://stackoverflow.com/a/63556183
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -228,7 +227,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     // HomeRoute(), // TODO feature
     DataRoute(),
     OptimizeRoute(),
-    OnboardingRoute(),
+    //OnboardingRoute(),
   ];
 
   void _onItemTapped(int index) {
@@ -251,17 +250,17 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             context,
             MaterialPageRoute(builder: (context) => Import()),
           );
-        } else if (result == Choice.appIntegrations) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
-          );
+        // } else if (result == Choice.appIntegrations) {
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
+        //   );
         } else if (result == Choice.deleteAllData) {
           //todo deleteAllData
           // DatabaseHelperEntry().deleteDb();
           // DatabaseHelperAttribute().deleteDb();
         } else if (result == Choice.tmpFunction) {
-          //tmpFunction();
+          _tmpFunction();
           // DatabaseHelperEntry().deleteDb();
           // DatabaseHelperAttribute().deleteDb();
         }
@@ -288,36 +287,6 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
           ),
         ),
         PopupMenuItem<Choice>(
-          value: Choice.appIntegrations,
-          child: Row(
-            children: [
-              Icon(
-                Icons.exit_to_app,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Other app integrations'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
-          value: Choice.exportDailySummaries,
-          child: Row(
-            children: [
-              Icon(
-                Icons.file_upload,
-                color: iconColor,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Export daily summaries'),
-            ],
-          ),
-        ),
-        PopupMenuItem<Choice>(
           value: Choice.importFromCSV,
           child: Row(
             children: [
@@ -332,42 +301,72 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             ],
           ),
         ),
-        PopupMenuItem<Choice>(
-          value: Choice.deleteAllData,
-          child: Row(
-            children: [
-              Icon(
-                Icons.delete_forever,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('Delete all data'),
-            ],
-          ),
-        ),
         // PopupMenuItem<Choice>(
-        //   value: Choice.tmpFunction,
+        //   value: Choice.appIntegrations,
         //   child: Row(
         //     children: [
         //       Icon(
-        //         Icons.directions_run,
+        //         Icons.exit_to_app,
+        //         color: iconColor,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('Other app integrations'),
+        //     ],
+        //   ),
+        // ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.exportDailySummaries,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.file_upload,
+        //         color: iconColor,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('Export daily summaries'),
+        //     ],
+        //   ),
+        // ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.deleteAllData,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.delete_forever,
         //         color: Colors.red,
         //       ),
         //       SizedBox(
         //         width: 5,
         //       ),
-        //       Text('tmpFunction'),
+        //       Text('Delete all data'),
         //     ],
         //   ),
         // ),
+        PopupMenuItem<Choice>(
+          value: Choice.tmpFunction,
+          child: Row(
+            children: [
+              Icon(
+                Icons.directions_run,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text('tmpFunction'),
+            ],
+          ),
+        ),
       ],
     );
 
   }
 
-  initializeGlobals() {
+  _initializeGlobals() {
     // async update local attribute list if null to load for other routes later on
     if (globals.attributeListLength == null) {
       debugPrint('call updateAttributeList');
@@ -376,9 +375,17 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       print('globals.attributeListLength ${globals.attributeListLength}');
     }
   }
+
+  _tmpFunction() {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => TmpRoute()),
+    // );
+
+  }
 }
 
-void configuration() async {
+void _configuration() async {
   final prefs = await SharedPreferences.getInstance();
   final gFitConnected = prefs.getBool('Connected') ?? false;
   debugPrint('got gFitConnected shared pref: $gFitConnected');

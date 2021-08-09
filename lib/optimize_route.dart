@@ -10,6 +10,7 @@ import 'package:insightme/Visualize/change_notifier.dart';
 import 'package:provider/provider.dart';
 
 import 'Core/widgets/entryHint.dart';
+import 'Statistics/Functions/readCorrelation.dart';
 import 'globals.dart' as globals;
 
 class OptimizeRoute extends StatefulWidget {
@@ -47,65 +48,92 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 // max chart width
                 children: <Widget>[
+                  /// HEADING
                   Text(
-                    /// HEADING
                     'What do you want to correlate?',
                     style:
                         TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
                   ),
+
+                  ///dropdown
                   Row(
-                      ///dropdown
-                      // start: child as close to the start of the main axis as possible
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         // true/false do discriminate first and second
                         DropDown(true),
                         SizedBox(width: 15),
                         DropDown(false),
-                        // true/false do discriminate first and second
                       ]),
                 ]),
           ),
-          optimizeNameAndChart(), //'Happiness', 'Resting Heart Rate'
-          //optimizeNameAndChart('Body weight', 'Calories in'),
+          _optimizeListView(),
         ]),
       ),
     );
   }
 
-  Widget optimizeNameAndChart() {
+  Widget _optimizeListView() {
     return Consumer<OptimizationChangeNotifier>(
-      builder: (context, schedule, _) => Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            /// SEPARATOR
-            Text(
-              '${schedule.selectedAttribute1} & ${schedule.selectedAttribute2}',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+        builder: (context, schedule, _) {
+      final String att1 = schedule.selectedAttribute1;
+      String att2 = schedule.selectedAttribute2;
+      return FutureBuilder(
+          future: readCorrelationCoefficientsOfOneAttribute(att1),
+          builder: (context, snapshot) {
+            // chart data arrived && data found
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.data != null) {
+              Map<String, double> coeffsMap = snapshot.data;
+              return Container(
+                  height: 800, // constrain height, to avoid unbounded error
+                  child: att2 == 'all'
+                      ? ListView.builder(
+                          itemCount: coeffsMap.length,
+                          itemBuilder: (BuildContext context, int position) {
+                            String att2 =
+                                coeffsMap.entries.toList()[position].key;
+                            final double corrCoeff =
+                                coeffsMap.entries.toList()[position].value;
+
+                            return _oneOptimizeNameAndChart(
+                                att1, att2, corrCoeff);
+                          },
+                        )
+                      : _oneOptimizeNameAndChart(att1, att2, coeffsMap[att2]));
+            }
+
+            // chart data arrived but no data found
+            else if (snapshot.connectionState == ConnectionState.done &&
+                (snapshot.data == null)) {
+              return Text('No data found for this label');
+
+              // else: i.e. data didn't arrive
+            } else {
+              return CircularProgressIndicator(); // when Future doesn't get data
+            } // snapshot is current state of future
+          });
+    });
+  }
+
+  Widget _oneOptimizeNameAndChart(att1, att2, corrCoeff) {
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          /// visualize chart
+          SizedBox(
+            height: 450, // height constraint
+            child: SizedBox.expand(
+              // for max width
+              child: futureTwoAttributeScatterPlot(att1, att2),
             ),
-            SizedBox(height: 20), // needed above chart
+          ),
 
-            /// visualize chart
-            SizedBox(
-              height: 250,
-
-              /// height constraint
-              child: SizedBox.expand(
-                /// for max width
-                child: futureTwoAttributeAnimatedLineChart(
-                    schedule.selectedAttribute1, schedule.selectedAttribute2),
-              ),
-            ),
-
-            /// statistics: correlation and confidence
-            futureStatistics(
-                schedule.selectedAttribute1, schedule.selectedAttribute2)
-          ]),
-        ),
-        greyLineSeparator(),
-      ]),
-    );
+          /// statistics: correlation and confidence
+          statistics(context, corrCoeff, 0.02) // todo pvalue not hardcoded
+        ]),
+      ),
+      greyLineSeparator(),
+    ]);
   }
 }

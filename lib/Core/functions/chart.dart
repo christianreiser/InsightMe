@@ -1,61 +1,56 @@
-import 'package:fl_animated_linechart/chart/line_chart.dart';
-import 'package:fl_animated_linechart/fl_animated_linechart.dart';
-import 'package:flutter/material.dart';
+import 'package:insightme/Core/widgets/chart.dart';
+import 'package:path_provider/path_provider.dart';
 
+import './aggregatedData.dart';
 import '../../Database/database_helper_entry.dart';
 import '../../Database/entry.dart';
 
 final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
-//  reset chart
-LineChart chart; // = null;
-
-Future<Map<DateTime, double>> getDateTimeValueMap(attributeName) async {
+Future<List<ChartData>> oneAttributeChartData(attributeName) async {
   // Get dateTime and values of entries from database and set as state
-  // input: selectedAttribute
-  // returns: dateTimeValueMap
-  List<Entry> filteredEntryList =
-      await databaseHelperEntry.getFilteredEntryList(attributeName);
+  final List<Entry> filteredEntryList =
+  await databaseHelperEntry.getFilteredEntryList(attributeName);
 
-  // create dateTimeValueMap:
-  Map<DateTime, double> dateTimeValueMap = {};
-  dateTimeValueMap[DateTime.parse(
-    (filteredEntryList[0].date),
-  )] = 1.0; // =1 is needed
-  debugPrint('filteredEntryList.length ${filteredEntryList.length}');
+  // create chartDataList:
+  List<ChartData> chartDataList = <ChartData>[];
+
+  // fill chartDataList
   for (int ele = 0; ele < filteredEntryList.length; ele++) {
-    dateTimeValueMap[DateTime.parse(
-      (filteredEntryList[ele].date),
-    )] = double.parse(filteredEntryList[ele].value);
+    chartDataList.add(
+      ChartData(
+        DateTime.parse(filteredEntryList[ele].date),
+        double.parse(filteredEntryList[ele].value),
+      ),
+    );
   }
-  return dateTimeValueMap;
+  return chartDataList;
 }
 
-Future<LineChart> oneAttributeChart(attributeName) async {
-  // used in data tab
-  Map<DateTime, double> dateTimeValueMap1 =
-      await getDateTimeValueMap(attributeName);
-  // debugPrint('dateTimeValueMap1: $dateTimeValueMap1');
-  chart = LineChart.fromDateTimeMaps(
-    [dateTimeValueMap1],
-    [Colors.blue],
-    [attributeName], // axis numbers
-    tapTextFontWeight: FontWeight.w600,
-  );
-  debugPrint('chart: $chart');
-  return chart;
+
+Future<List<ChartDataOptimize>> twoAttributeChartData(
+    attributeName1, attributeName2) async {
+  final rowForEachDay = await getDailySummariesInRowForEachDayFormat(
+      await getApplicationDocumentsDirectory());
+  final List<dynamic> labels = await getLabels(rowForEachDay);
+  final int row = labels.indexOf(attributeName1) + 1;
+  final int column = labels.indexOf(attributeName2) + 1;
+  final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
+  List<ChartDataOptimize> chartDataOptimizeList = [];
+  if (rowForEachDay.isNotEmpty) {
+    final Map<num, num> xYStats =
+    getXYStats(rowForEachAttribute, rowForEachDay.length, row, column);
+
+    xYStats.forEach((k, v) => chartDataOptimizeList.add(
+      ChartDataOptimize(k, v),
+    ));
+  }
+  return chartDataOptimizeList;
 }
 
-Future<LineChart> twoAttributeChart(attributeName1, attributeName2) async {
-  Map<DateTime, double> dateTimeValueMap1 =
-      await getDateTimeValueMap(attributeName1);
-  Map<DateTime, double> dateTimeValueMap2 =
-      await getDateTimeValueMap(attributeName2);
-  chart = LineChart.fromDateTimeMaps(
-    [dateTimeValueMap1, dateTimeValueMap2],
-    [Colors.green, Colors.blue],
-    [attributeName1, attributeName2],
-    tapTextFontWeight: FontWeight.w600,
-  );
-  return chart;
+class ChartDataOptimize {
+  ChartDataOptimize(this.value1, this.value2);
+
+  final num value1;
+  final num value2;
 }
