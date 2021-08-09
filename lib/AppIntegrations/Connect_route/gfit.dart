@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:health/health.dart';
+import 'package:insightme/AppIntegrations/Core/functions.dart';
 import 'package:insightme/Core/functions/misc.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
@@ -61,7 +62,7 @@ class _GFitState extends State<GFit> {
       content = DateTime.parse(await file.readAsString());
     } catch (e) {
       content = DateTime.now().subtract(Duration(days: 1000));
-      }
+    }
     print("_date from log file: $content");
     return content;
   }
@@ -306,6 +307,7 @@ class _GFitState extends State<GFit> {
           FloatingActionButton.extended(
               heroTag: "btn1",
               onPressed: () {
+                saveConnectionSetting('gFit');
                 print('GFit connect button pressed');
                 _fetchData();
                 final cron = Cron();
