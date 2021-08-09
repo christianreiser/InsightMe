@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
 import '../../Core/functions/navigation_helper.dart';
@@ -181,42 +180,37 @@ class EditEntryState extends State<EditEntry> {
     );
   }
 
-  // todo remove
-  DateTime _oldDateTimePicker(_dateTime) {
-    DatePicker.showDateTimePicker(context,
-        showTitleActions: true,
-        minTime: DateTime(2000, 1, 1),
-        maxTime: DateTime.now(), onChanged: (_dateTime) {
-      debugPrint('Text Field change: entry.date: ${entry.date}, '
-          'dateController.text: ${dateController.text}');
-      debugPrint('change $_dateTime');
-    }, onConfirm: (dateTime) {
-      _updateDate(dateTime);
-      debugPrint('confirm $dateTime');
-      setState(() {
-        _dateTime = dateTime;
-      });
-    }, currentTime: _dateTime, locale: LocaleType.en);
-    return _dateTime;
-  }
-
-
-  Future<DateTime> _dateTimePicker(_dateTime) async {
-    var order = await _getDate(_dateTime);
+  _dateTimePicker(_dateTime) async {
+    final DateTime dateOrder = await _getDate(_dateTime);
+    final TimeOfDay timeOrder = await _getTime(_dateTime);
+    final DateTime finalDateTime = DateTime(dateOrder.year, dateOrder.month,
+        dateOrder.day, timeOrder.hour, timeOrder.minute);
+    _updateDate(finalDateTime);
     setState(() {
-      _dateTime = order;
-      print('datetime in picker: $_dateTime');
+      _dateTime = finalDateTime;
+      print('datetime in picker: $finalDateTime');
     });
   }
 
   Future<DateTime> _getDate(_dateTime) {
-    // Imagine that this function is
-    // more complex and slow.
     return showDatePicker(
       context: context,
       initialDate: _dateTime,
-      firstDate: DateTime(2018),
-      lastDate: DateTime(2030),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Future<TimeOfDay> _getTime(_dateTime) {
+    return showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_dateTime),
       builder: (BuildContext context, Widget child) {
         return Theme(
           data: ThemeData.light(),
