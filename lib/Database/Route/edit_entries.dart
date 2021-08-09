@@ -116,20 +116,9 @@ class EditEntryState extends State<EditEntry> {
               ),
               child: TextButton(
                 onPressed: () {
-                  DatePicker.showDateTimePicker(context,
-                      showTitleActions: true,
-                      minTime: DateTime(2000, 1, 1),
-                      maxTime: DateTime.now(), onChanged: (_dateTime) {
-                    debugPrint('Text Field change: entry.date: ${entry.date}, '
-                        'dateController.text: ${dateController.text}');
-                    debugPrint('change $_dateTime');
-                  }, onConfirm: (dateTime) {
-                    _updateDate(dateTime);
-                    debugPrint('confirm $dateTime');
-                    setState(() {
-                      _dateTime = dateTime;
-                    });
-                  }, currentTime: _dateTime, locale: LocaleType.en);
+                  _dateTimePicker(_dateTime);
+                  _updateDate(_dateTime);
+                  print('datetime: $_dateTime');
                 },
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -189,6 +178,51 @@ class EditEntryState extends State<EditEntry> {
           ]),
         ),
       ),
+    );
+  }
+
+  // todo remove
+  DateTime _oldDateTimePicker(_dateTime) {
+    DatePicker.showDateTimePicker(context,
+        showTitleActions: true,
+        minTime: DateTime(2000, 1, 1),
+        maxTime: DateTime.now(), onChanged: (_dateTime) {
+      debugPrint('Text Field change: entry.date: ${entry.date}, '
+          'dateController.text: ${dateController.text}');
+      debugPrint('change $_dateTime');
+    }, onConfirm: (dateTime) {
+      _updateDate(dateTime);
+      debugPrint('confirm $dateTime');
+      setState(() {
+        _dateTime = dateTime;
+      });
+    }, currentTime: _dateTime, locale: LocaleType.en);
+    return _dateTime;
+  }
+
+
+  Future<DateTime> _dateTimePicker(_dateTime) async {
+    var order = await _getDate(_dateTime);
+    setState(() {
+      _dateTime = order;
+      print('datetime in picker: $_dateTime');
+    });
+  }
+
+  Future<DateTime> _getDate(_dateTime) {
+    // Imagine that this function is
+    // more complex and slow.
+    return showDatePicker(
+      context: context,
+      initialDate: _dateTime,
+      firstDate: DateTime(2018),
+      lastDate: DateTime(2030),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child,
+        );
+      },
     );
   }
 
@@ -274,7 +308,6 @@ class EditEntryState extends State<EditEntry> {
         // Success
         _showSnackBar('Entry Saved Successfully', scaffoldContext);
         globals.Global().updateEntryList();
-
       } else {
         // Failure
         _showAlertDialog('Status', 'Problem Saving Entry');
