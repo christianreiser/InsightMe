@@ -128,7 +128,7 @@ class DatabaseHelperEntry {
   }
 
   // CHREI: Update Operation: Update a entry based on date and title
-  Future<List<Entry>> saveOrUpdateEntry(Entry entry, context) async {
+  Future<List<Entry>> saveOrUpdateEntry(Entry entry) async {
     /// check if entry already exists with given date and title
     var db = await this.database;
     String whereString =

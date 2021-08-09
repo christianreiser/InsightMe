@@ -123,7 +123,7 @@ class _ImportState extends State<Import> {
             Entry entry = Entry(attributeNames[columnCount], _cellContent,
                 '$dateTimeStamp', 'csv import'); // title, value, time, comment
 
-            helperEntry.saveOrUpdateEntry(entry, context);
+            helperEntry.saveOrUpdateEntry(entry);
           } else {
             //debugPrint('skip empty entry cell');
           }

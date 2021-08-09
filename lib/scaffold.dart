@@ -1,8 +1,10 @@
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:insightme/Onboarding/first.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'AppIntegrations/Connect_route/gfit.dart';
 import 'AppIntegrations/overview_route.dart';
 import 'Import/import_from_json_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
@@ -388,7 +390,14 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 
 void _configuration() async {
   final prefs = await SharedPreferences.getInstance();
-  final gFitConnected = prefs.getBool('Connected') ?? false;
+  final gFitConnected = prefs.getBool('gFit Connected') ?? false;
   debugPrint('got gFitConnected shared pref: $gFitConnected');
 
+  if (gFitConnected) {
+    final cron = Cron();
+    cron.schedule(Schedule.parse('* * * * *'), () async {
+      print('Cron triggered GFit pull at: ${DateTime.now()}');
+      fetchData();
+    });
+  }
 }
