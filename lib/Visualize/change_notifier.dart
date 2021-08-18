@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
+import 'package:insightme/globals.dart';
 
 // ChangeNotifier adds listening capabilities
 class OptimizationChangeNotifier with ChangeNotifier {
   static DatabaseHelperAttribute databaseHelperAttribute =
       DatabaseHelperAttribute();
 
-  String _selectedAttribute1 = 'mood'; // default value
+  String _selectedAttribute1 = attributeList[0].title;//'mood'; // default value
   String get selectedAttribute1 => _selectedAttribute1;
 
   set selectedAttribute1(String newValue) {
