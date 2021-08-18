@@ -191,7 +191,8 @@ class JournalRouteState extends State<JournalRoute> {
           child: ListView.builder(
             itemCount: _countEntry,
             itemBuilder: (BuildContext context, int position) {
-              return Container( // container wrapping tiles
+              return Container(
+                // container wrapping tiles
                 padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
                 color: Theme.of(context).backgroundColor,
                 child: Card(
@@ -292,27 +293,6 @@ class JournalRouteState extends State<JournalRoute> {
         _multiEntrySelectionActive = false;
         _isSelectedList = null;
       }
-
-      // take two most recent entries as defaults for visualization.
-      _getDefaultVisAttributes();
-    }
-  }
-
-  void _getDefaultVisAttributes() {
-    // take two most recent entries as defaults for visualization.
-    // if statements are needed to catch error if list is empty.
-    if (globals.entryListLength == null) {
-      globals.mostRecentAddedEntryName = null;
-      globals.secondMostRecentAddedEntryName = null;
-    } else if (globals.entryListLength > 0) {
-      globals.mostRecentAddedEntryName = _entryList[0].title;
-      if (globals.entryListLength > 1) {
-        globals.secondMostRecentAddedEntryName = _entryList[1].title;
-      } else {
-        globals.secondMostRecentAddedEntryName = null;
-      }
-    } else {
-      globals.mostRecentAddedEntryName = null;
     }
   }
 
@@ -324,7 +304,6 @@ class JournalRouteState extends State<JournalRoute> {
       }
     }
     _updateEntryListView();
-//_showAlertDialog('Deleted', 'Pull to Refresh');
   }
 
   void _showAlertDialogWithDelete(String title, String message) {
