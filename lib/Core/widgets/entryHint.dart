@@ -7,17 +7,17 @@ Column entryHint() {
     children: [
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
+        textDirection: TextDirection.ltr,
         children: [
           Container(
             padding: EdgeInsets.all(5),
             color: Colors.tealAccent,
             child: Row(
+              textDirection: TextDirection.ltr,
               children: [
-                Text(
-                  'Create new entries ',
-                  textScaleFactor: 1.2,
-                ),
-                Icon(Icons.arrow_forward),
+                Text('Create new entries ',
+                    textScaleFactor: 1.2, textDirection: TextDirection.ltr),
+                Icon(Icons.arrow_forward, textDirection: TextDirection.ltr),
               ],
             ),
           ),

@@ -35,7 +35,6 @@ class JournalRouteState extends State<JournalRoute> {
 
   int _countEntry = 0;
 
-  //bool _showHint = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +48,7 @@ class JournalRouteState extends State<JournalRoute> {
 
     // async update local attribute list if null to load for other routes later on
     if (globals.attributeListLength == null) {
-      debugPrint('call updateAttributeList');
       globals.Global().updateAttributeList();
-      debugPrint('attributeListLength ${globals.attributeListLength}');
-      print('globals.attributeListLength ${globals.attributeListLength}');
     }
 
     return Scaffold(
@@ -69,67 +65,12 @@ class JournalRouteState extends State<JournalRoute> {
         onRefresh: () async {
           _updateEntryListView();
         },
-        child: _journalHintVisibleLogic() == true
-            // HINT
-            ? _makeEntryHint()
-
-            // ENTRY LIST
-            : _getEntryListView(), //_entryListFutureBuilder(),
+        child: _getEntryListView(), //_entryListFutureBuilder(),
       ),
     );
   }
 
-  bool _journalHintVisibleLogic() {
-    /*
-    * hint visible if entry list is not empty
-    * not visible if list == null
-    * */
-    bool entryListEmpty;
-    if (_entryList == null) {
-      entryListEmpty = false;
-    } else {
-      if (_entryList.isEmpty) {
-        entryListEmpty = true;
-      } else {
-        entryListEmpty = false;
-      }
-    }
-    return entryListEmpty;
-  }
 
-  Column _makeEntryHint() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(5),
-              color: Theme.of(context).colorScheme.secondary,
-              child: Row(
-                children: [
-                  Text(
-                    'To create new entries tab here ',
-                    textScaleFactor: 1.2,
-                  ),
-                  Icon(Icons.arrow_forward),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: 30,
-            )
-          ],
-        ),
-        SizedBox(
-          height: 27, // height of button
-        )
-      ],
-    );
-  }
-
-  // MULTIPLE SELECTION DELETION BAR
   Widget _actionBarWithActionBarCapability() {
     return _multiEntrySelectionActive
         ? AppBar(
