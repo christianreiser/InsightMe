@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
   sqflite: ^2.0.0+3 # SQLite
   path_provider: ^2.0.2 # SQLite
-  file_picker: ^3.0.3 # csv file
+  file_picker: ^4.0.0 # csv file
   flutter_charts: ^0.2.0 # modified transpose
   provider: ^5.0.0 # state management
   shared_preferences: ^2.0.6 # for persistence data. 1.Onboarding-seen-flag
@@ -22,14 +22,13 @@ dependencies:
   flutter_colorpicker: ^0.5.0  # color for label
   cupertino_icons: ^1.0.3 # iOS style
   syncfusion_flutter_charts: ^19.1.69+1 # scatter chart
-  test: ^1.17.9 # automated testing
+  test: # automated testing
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0
   flutter_test: # testing widgets
     sdk: flutter
-  flutter_driver:
-    sdk: flutter
+
 
 
 
