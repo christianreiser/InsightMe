@@ -55,9 +55,9 @@ class _ImportState extends State<Import> {
                   textScaleFactor: 1.5,
                 ),
                 onPressed: () {
+                  _importCSVFile();
                   _showAlertDialog('Status',
                       'Import started in the background. This might take a while.');
-                  _importCSVFile();
                 },
               ),
             ]),

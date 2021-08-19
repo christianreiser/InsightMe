@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
 import '../../Core/functions/navigation_helper.dart';
@@ -116,20 +115,9 @@ class EditEntryState extends State<EditEntry> {
               ),
               child: TextButton(
                 onPressed: () {
-                  DatePicker.showDateTimePicker(context,
-                      showTitleActions: true,
-                      minTime: DateTime(2000, 1, 1),
-                      maxTime: DateTime.now(), onChanged: (_dateTime) {
-                    debugPrint('Text Field change: entry.date: ${entry.date}, '
-                        'dateController.text: ${dateController.text}');
-                    debugPrint('change $_dateTime');
-                  }, onConfirm: (dateTime) {
-                    _updateDate(dateTime);
-                    debugPrint('confirm $dateTime');
-                    setState(() {
-                      _dateTime = dateTime;
-                    });
-                  }, currentTime: _dateTime, locale: LocaleType.en);
+                  _dateTimePicker(_dateTime);
+                  _updateDate(_dateTime);
+                  print('datetime: $_dateTime');
                 },
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -189,6 +177,46 @@ class EditEntryState extends State<EditEntry> {
           ]),
         ),
       ),
+    );
+  }
+
+  _dateTimePicker(_dateTime) async {
+    final DateTime dateOrder = await _getDate(_dateTime);
+    final TimeOfDay timeOrder = await _getTime(_dateTime);
+    final DateTime finalDateTime = DateTime(dateOrder.year, dateOrder.month,
+        dateOrder.day, timeOrder.hour, timeOrder.minute);
+    _updateDate(finalDateTime);
+    setState(() {
+      _dateTime = finalDateTime;
+      print('datetime in picker: $finalDateTime');
+    });
+  }
+
+  Future<DateTime> _getDate(_dateTime) {
+    return showDatePicker(
+      context: context,
+      initialDate: _dateTime,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Future<TimeOfDay> _getTime(_dateTime) {
+    return showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_dateTime),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child,
+        );
+      },
     );
   }
 
@@ -274,7 +302,6 @@ class EditEntryState extends State<EditEntry> {
         // Success
         _showSnackBar('Entry Saved Successfully', scaffoldContext);
         globals.Global().updateEntryList();
-
       } else {
         // Failure
         _showAlertDialog('Status', 'Problem Saving Entry');

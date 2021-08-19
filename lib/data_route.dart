@@ -15,9 +15,6 @@ class DataRoute extends StatefulWidget {
 class _DataRouteState extends State<DataRoute> {
   @override
   Widget build(BuildContext context) {
-    debugPrint('globals.attributeList: ${globals.attributeList}');
-    debugPrint('globals.entryListLength: ${globals.entryListLength}');
-
     if (globals.entryListLength == null || globals.entryListLength == 0) {
       globals.Global().updateEntryList();
       globals.Global().updateAttributeList();
@@ -25,11 +22,9 @@ class _DataRouteState extends State<DataRoute> {
 
     return FutureBuilder(
       future: globals.Global().updateAttributeList(),
-      //schedule.selectedAttribute1
       builder: (context, snapshot) {
         // chart data arrived && data found
         if (snapshot.connectionState == ConnectionState.done &&
-            globals.attributeList != null &&
             snapshot.data != null) {
           return globals.entryListLength == 0
               ? entryHint() // type lineChart;
