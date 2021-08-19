@@ -343,21 +343,21 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
         //     ],
         //   ),
         // ),
-        PopupMenuItem<Choice>(
-          value: Choice.tmpFunction,
-          child: Row(
-            children: [
-              Icon(
-                Icons.directions_run,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('tmpFunction'),
-            ],
-          ),
-        ),
+        // PopupMenuItem<Choice>(
+        //   value: Choice.tmpFunction,
+        //   child: Row(
+        //     children: [
+        //       Icon(
+        //         Icons.directions_run,
+        //         color: Colors.red,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text('tmpFunction'),
+        //     ],
+        //   ),
+        // ),
       ],
     );
 
