@@ -48,10 +48,7 @@ class JournalRouteState extends State<JournalRoute> {
 
     // async update local attribute list if null to load for other routes later on
     if (globals.attributeListLength == null) {
-      debugPrint('call updateAttributeList');
       globals.Global().updateAttributeList();
-      debugPrint('attributeListLength ${globals.attributeListLength}');
-      print('globals.attributeListLength ${globals.attributeListLength}');
     }
 
     return Scaffold(

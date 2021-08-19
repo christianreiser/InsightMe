@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insightme/Onboarding/first.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Import/import_from_json_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
@@ -38,41 +36,41 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 
 
 
-  FutureBuilder _welcomeOrStandardScaffold() {
-    /*
-    * decides if standard scaffold or welcome screen should be shown
-    * Logic:
-    * Welcome if:
-    *   1. hideWelcome == null (as not shown before)
-    *   2. hideWelcome == false
-    * StandardScaffold if:
-    *   1. problems with connection state (i.e. none, waiting)
-    *   2. hide == true
-    * */
-    return FutureBuilder<SharedPreferences>(
-      future: SharedPreferences.getInstance(),
-      builder:
-          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return _standardScaffold();
-          case ConnectionState.waiting:
-            return _standardScaffold();
-          default:
-            if (!snapshot.hasError) {
-              //@ToDo("Return a welcome screen")
-              return snapshot.data.getBool("hideWelcome") == null
-                  ? OnboardingRoute()
-                  : snapshot.data.getBool("hideWelcome") == false
-                      ? OnboardingRoute()
-                      : _standardScaffold();
-            } else {
-              return Text('error: ${snapshot.error}');
-            }
-        }
-      },
-    );
-  }
+  // FutureBuilder _welcomeOrStandardScaffold() {
+  //   /*
+  //   * decides if standard scaffold or welcome screen should be shown
+  //   * Logic:
+  //   * Welcome if:
+  //   *   1. hideWelcome == null (as not shown before)
+  //   *   2. hideWelcome == false
+  //   * StandardScaffold if:
+  //   *   1. problems with connection state (i.e. none, waiting)
+  //   *   2. hide == true
+  //   * */
+  //   return FutureBuilder<SharedPreferences>(
+  //     future: SharedPreferences.getInstance(),
+  //     builder:
+  //         (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+  //       switch (snapshot.connectionState) {
+  //         case ConnectionState.none:
+  //           return _standardScaffold();
+  //         case ConnectionState.waiting:
+  //           return _standardScaffold();
+  //         default:
+  //           if (!snapshot.hasError) {
+  //             //@ToDo("Return a welcome screen")
+  //             return snapshot.data.getBool("hideWelcome") == null
+  //                 ? OnboardingRoute()
+  //                 : snapshot.data.getBool("hideWelcome") == false
+  //                     ? OnboardingRoute()
+  //                     : _standardScaffold();
+  //           } else {
+  //             return Text('error: ${snapshot.error}');
+  //           }
+  //       }
+  //     },
+  //   );
+  // }
 
   Scaffold _standardScaffold() {
     /*
@@ -366,10 +364,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   _initializeGlobals() {
     // async update local attribute list if null to load for other routes later on
     if (globals.attributeListLength == null) {
-      debugPrint('call updateAttributeList');
       globals.Global().updateAttributeList();
-      debugPrint('attributeListLength ${globals.attributeListLength}');
-      print('globals.attributeListLength ${globals.attributeListLength}');
     }
   }
 
