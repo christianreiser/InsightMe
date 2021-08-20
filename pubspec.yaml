@@ -19,7 +19,7 @@ dependencies:
   csv: ^5.0.0 # write csv for daily summaries
   starfruit: ^1.0.0+1 # correlation
   sqflite_migration: ^0.3.0 # database version update
-  flutter_colorpicker: ^0.5.0  # color for label
+  flutter_colorpicker: 0.4.0  # color for label # android: 0.5.0 iOS 0.4.0 https://github.com/mchome/flutter_colorpicker/issues/49
   cupertino_icons: ^1.0.3 # iOS style
   syncfusion_flutter_charts: ^19.1.69+1 # scatter chart
   test: ^1.16.8 # automated unit testing

@@ -19,14 +19,14 @@ class ComputeCorrelations {
     final rowForEachDay =
         await getDailySummariesInRowForEachDayFormat(directory);
 
-    debugPrint('right before getLabels.');
+    debugPrint('get labels');
     final List<dynamic> labels = await getLabels(rowForEachDay);
 
     // getNumDays has to be after getDailySummariesInRowForEachDayFormat because there it is set
     int numDays = rowForEachDay.length;
 
     final int numLabels = labels.length;
-    debugPrint('numLabels: $numLabels');
+    debugPrint('got # Labels: $numLabels');
 
     final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
 
@@ -120,9 +120,7 @@ class ComputeCorrelations {
 
     debugPrint('targetPath: $pathOfTheFileToWrite');
     File file = File(pathOfTheFileToWrite);
-    debugPrint('file: $file');
     String csv = const ListToCsvConverter().convert(correlationMatrix);
-    debugPrint('correlation matrix csv: $csv');
     file.writeAsString(csv);
     debugPrint('correlation_matrix.csv written');
   }
