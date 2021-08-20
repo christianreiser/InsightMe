@@ -22,7 +22,7 @@ dependencies:
   flutter_colorpicker: ^0.5.0  # color for label
   cupertino_icons: ^1.0.3 # iOS style
   syncfusion_flutter_charts: ^19.1.69+1 # scatter chart
-  test: # automated testing
+  test: ^1.16.8 # automated unit testing
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0
