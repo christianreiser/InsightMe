@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 
 import 'Import/import_from_json_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
+import 'Prediction/visualization.dart';
 import 'Statistics/Functions/computeCorrelations.dart';
 import 'data_route.dart';
 import 'globals.dart' as globals;
@@ -16,7 +17,7 @@ enum Choice {
   appIntegrations,
   futureDesign,
   deleteAllData,
-  tmpFunction
+  tmpFunction,
 }
 
 class ScaffoldRouteDesign extends StatefulWidget {
@@ -33,8 +34,6 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   }
 
   static const Color iconColor = Colors.black87;
-
-
 
   // FutureBuilder _welcomeOrStandardScaffold() {
   //   /*
@@ -208,6 +207,10 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
 //            icon: Icon(Icons.arrow_downward),
 //            label: 'Onboarding',
 //          ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.online_prediction),
+          label: 'Prediction',
+        ),
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: Theme.of(context).primaryColorDark,
@@ -222,6 +225,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     // HomeRoute(), // TODO feature
     DataRoute(),
     OptimizeRoute(),
+    PredictionRoute(),
     //OnboardingRoute(),
   ];
 
@@ -245,11 +249,11 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
             context,
             MaterialPageRoute(builder: (context) => Import()),
           );
-        // } else if (result == Choice.appIntegrations) {
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
-        //   );
+          // } else if (result == Choice.appIntegrations) {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => AppIntegrationsOverview()),
+          //   );
         } else if (result == Choice.deleteAllData) {
           //todo deleteAllData
           // DatabaseHelperEntry().deleteDb();
@@ -358,7 +362,6 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
         // ),
       ],
     );
-
   }
 
   _initializeGlobals() {
@@ -373,6 +376,5 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     //   context,
     //   MaterialPageRoute(builder: (context) => TmpRoute()),
     // );
-
   }
 }
