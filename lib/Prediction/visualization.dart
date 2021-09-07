@@ -21,35 +21,63 @@ class PredictionRoute extends StatelessWidget {
       );
     }
 
+    Widget _scaledBar(start, end, scaleBounds) {
+      final int startCorrected = ((start-scaleBounds[0])*10).toInt();
+      print('$start $end $scaleBounds');
+
+      final int endCorrected = ((end-scaleBounds[0])*10).toInt();
+      print('$startCorrected $endCorrected $scaleBounds');
+      return Row(children: [
+        /// empty space
+        Expanded(flex: (startCorrected), child: Container(height: 12)),
+
+        /// prediction
+        Expanded(
+            flex: (endCorrected - startCorrected),
+            child: Container(height: 12, color: Colors.blue)),
+
+        /// empty space
+        Expanded(
+          flex: ((scaleBounds[1] * 10).toInt() - 10 - endCorrected),
+          child: Container(height: 12),
+        ),
+      ]);
+    }
+
     Container _gradientColorScale() {
+      final num predictedMood = 7.0;
+      final List<double> scaleBounds = [1, 9];
+      final double startPredictedMood = predictedMood - 0.1;
+      final double endPredictedMood = (predictedMood + 0.1);
       return Container(
         height: 30.0,
         decoration: _predictionBoxDecoration(),
         child: FractionallySizedBox(
-          widthFactor: 1,
-          child: Row(children: [
-            /// empty space
-            Expanded(flex: (19), child: Container(height: 12)),
+            widthFactor: 1,
+            child:
+                /*    Row(children: [
+      /// empty space
+      Expanded(flex: (19), child: Container(height: 12)),
 
-            /// prediction interval
-            Expanded(
-                flex: (3), child: Container(height: 5, color: Colors.blue)),
+      /// prediction interval
+      Expanded(
+          flex: (3), child: Container(height: 5, color: Colors.blue)),
 
-            /// prediction
-            Expanded(
-                flex: (1), child: Container(height: 12, color: Colors.blue)),
+      /// prediction
+      Expanded(
+          flex: (1), child: Container(height: 12, color: Colors.blue)),
 
-            /// PI
-            Expanded(
-                flex: (3), child: Container(height: 5, color: Colors.blue)),
+      /// PI
+      Expanded(
+          flex: (3), child: Container(height: 5, color: Colors.blue)),
 
-            /// empty space
-            Expanded(
-              flex: (10),
-              child: Container(height: 12),
-            ),
-          ]),
-        ),
+      /// empty space
+      Expanded(
+        flex: (10),
+        child: Container(height: 12),
+      ),
+    ]),*/
+                _scaledBar(startPredictedMood, endPredictedMood, scaleBounds)),
       );
     }
 
