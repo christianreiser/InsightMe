@@ -43,8 +43,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - ./assets/tmp_phone_io/feature_values.json
-    - ./assets/tmp_phone_io/feature_weights.json
+    - ./assets/tmp_phone_io/feature_data.csv
     - ./assets/tmp_phone_io/prediction.json
     - ./assets/icon/logo_googlefit.png
   #    - ./assets/icon/who-96.png
