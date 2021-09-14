@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:insightme/Core/functions/navigation_helper.dart';
+import 'package:insightme/Core/widgets/dialogue.dart';
 
 import './../../globals.dart' as globals;
 import './../entry.dart';
@@ -354,10 +355,10 @@ class EditAttributeState extends State<EditAttribute> {
     // SUCCESS FAILURE STATUS DIALOG
     if (_result != 0) {
       // Success
-      _showAlertDialog('Status', 'Attribute Saved Successfully');
+      showAlertDialog('Status', 'Attribute Saved Successfully', context);
     } else {
       // Failure
-      _showAlertDialog('Status', 'Problem Saving Attribute');
+      showAlertDialog('Status', 'Problem Saving Attribute', context);
     }
   }
 
@@ -369,7 +370,7 @@ class EditAttributeState extends State<EditAttribute> {
     // found no attribute to delete
 
     if (attribute.id == null) {
-      _showAlertDialog('Status', 'No Attribute was deleted');
+      showAlertDialog('Status', 'No Attribute was deleted', context);
       return;
 
       // found attribute to delete
@@ -397,9 +398,9 @@ class EditAttributeState extends State<EditAttribute> {
 
       // Success Failure evaluation
       if (_resultList.contains(0)) {
-        _showAlertDialog('Status', 'Error occurred while Deleting Attribute');
+        showAlertDialog('Status', 'Error occurred while Deleting Attribute', context);
       } else {
-        _showAlertDialog('Status', 'Attribute Deleted Successfully');
+        showAlertDialog('Status', 'Attribute Deleted Successfully', context);
       }
     }
   }
@@ -431,11 +432,5 @@ class EditAttributeState extends State<EditAttribute> {
     showDialog(context: context, builder: (_) => alertDialog);
   }
 
-  void _showAlertDialog(String title, String message) {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text(title),
-      content: Text(message),
-    );
-    showDialog(context: context, builder: (_) => alertDialog);
-  }
+
 }
