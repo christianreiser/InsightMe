@@ -100,9 +100,9 @@ class _PredictionRouteState extends State<PredictionRoute> {
             child: Container(
               height: height,
               color: color,
-              child: color == const Color(0xFF9dbc95)
+              child: color == Colors.green//Color(Colors.green)//const Color(0xFF9dbc95)
                   ? FittedBox(child: Icon(Icons.arrow_forward_sharp))
-                  : color == const Color(0xFF855e78)
+                  : color == Colors.red//const Color(0xFF855e78)
                       ? FittedBox(child: Icon(Icons.arrow_back_sharp))
                       : Container(),
             )),
@@ -121,7 +121,7 @@ class _PredictionRouteState extends State<PredictionRoute> {
           Image(image: AssetImage('assets/tmp_phone_io/tokyo_crop.png'),height: 30,),
           Container(
             height: 30.0,
-            // decoration: _predictionBoxDecoration(),
+            decoration: _predictionBoxDecoration(),
             child: FractionallySizedBox(
               widthFactor: 1,
               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -167,9 +167,9 @@ class _PredictionRouteState extends State<PredictionRoute> {
               List<Widget> list = List();
               //i<5, pass your dynamic limit as per your requirment
               for (int i = 1; i < featureEndStarts.length; i++) {
-                Color color = const Color(0xFF855e78);
+                Color color = Colors.red;//const Color(0xFF855e78);
                 if ((featureEndStarts[i][3]) == 'True') {
-                  color = const Color(0xFF9dbc95);
+                  color = Colors.green;//const Color(0xFF9dbc95);
                 }
                 list.add(
                   _scaledBar(featureEndStarts[i][1], featureEndStarts[i][2],
