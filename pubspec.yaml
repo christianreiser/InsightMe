@@ -24,6 +24,7 @@ dependencies:
   syncfusion_flutter_charts: ^19.1.69+1 # scatter chart
   test: ^1.16.8 # automated unit testing
   ext_storage: ^1.0.3 # prediction IO_phone file
+  flutter_svg: ^0.22.0 # colorscale
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0
@@ -44,7 +45,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - ./assets/tmp_phone_io/feature_data.csv
-    - ./assets/tmp_phone_io/hawaii.svg
+    - ./assets/tmp_phone_io/tokyo_crop.png
     - ./assets/tmp_phone_io/prediction.json
     - ./assets/icon/logo_googlefit.png
   #    - ./assets/icon/who-96.png

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
@@ -99,9 +100,9 @@ class _PredictionRouteState extends State<PredictionRoute> {
             child: Container(
               height: height,
               color: color,
-              child: color == Colors.green
+              child: color == const Color(0xFF9dbc95)
                   ? FittedBox(child: Icon(Icons.arrow_forward_sharp))
-                  : color == Colors.red
+                  : color == const Color(0xFF855e78)
                       ? FittedBox(child: Icon(Icons.arrow_back_sharp))
                       : Container(),
             )),
@@ -114,38 +115,43 @@ class _PredictionRouteState extends State<PredictionRoute> {
       ]);
     }
 
-    Container _gradientColorScale(predictions) {
-      return Container(
-        height: 30.0,
-        decoration: _predictionBoxDecoration(),
-        child: FractionallySizedBox(
-          widthFactor: 1,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            _scaledBar(
-                predictions.prediction - 0.1,
-                predictions.prediction + 0.1,
-                predictions.scaleBounds,
-                Colors.blue,
-                8.0,
-                ''),
-            _scaledBar(
-              predictions.prediction - predictions.ci68,
-              predictions.prediction + predictions.ci68,
-              predictions.scaleBounds,
-              Colors.blue,
-              6.0,
-              '',
+    Widget _gradientColorScale(predictions) {
+      return Stack(
+        children: <Widget>[
+          Image(image: AssetImage('assets/tmp_phone_io/tokyo_crop.png'),height: 30,),
+          Container(
+            height: 30.0,
+            // decoration: _predictionBoxDecoration(),
+            child: FractionallySizedBox(
+              widthFactor: 1,
+              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                _scaledBar(
+                    predictions.prediction - 0.1,
+                    predictions.prediction + 0.1,
+                    predictions.scaleBounds,
+                    Colors.black,
+                    8.0,
+                    ''),
+                _scaledBar(
+                  predictions.prediction - predictions.ci68,
+                  predictions.prediction + predictions.ci68,
+                  predictions.scaleBounds,
+                  Colors.black,
+                  6.0,
+                  '',
+                ),
+                _scaledBar(
+                  predictions.prediction - predictions.ci95,
+                  predictions.prediction + predictions.ci95,
+                  predictions.scaleBounds,
+                  Colors.black,
+                  3.0,
+                  '',
+                ),
+              ]),
             ),
-            _scaledBar(
-              predictions.prediction - predictions.ci95,
-              predictions.prediction + predictions.ci95,
-              predictions.scaleBounds,
-              Colors.blue,
-              3.0,
-              '',
-            ),
-          ]),
-        ),
+          ),
+        ],
       );
     }
 
@@ -161,9 +167,9 @@ class _PredictionRouteState extends State<PredictionRoute> {
               List<Widget> list = List();
               //i<5, pass your dynamic limit as per your requirment
               for (int i = 1; i < featureEndStarts.length; i++) {
-                Color color = Colors.red;
+                Color color = const Color(0xFF855e78);
                 if ((featureEndStarts[i][3]) == 'True') {
-                  color = Colors.green;
+                  color = const Color(0xFF9dbc95);
                 }
                 list.add(
                   _scaledBar(featureEndStarts[i][1], featureEndStarts[i][2],
@@ -229,15 +235,15 @@ class _PredictionRouteState extends State<PredictionRoute> {
       );
     }
 
-    return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.all(8),
-        child: FutureBuilder(
-            future: _readPhonePredictionIOFiles(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                print('snapshot.data: ${snapshot.data.prediction}');
-                return Column(
+    return Container(
+      margin: const EdgeInsets.all(8),
+      child: FutureBuilder(
+          future: _readPhonePredictionIOFiles(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              print('snapshot.data: ${snapshot.data.prediction}');
+              return SingleChildScrollView(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
@@ -255,14 +261,14 @@ class _PredictionRouteState extends State<PredictionRoute> {
                     _numericScale(snapshot.data.scaleBounds),
                     _showExplanation(),
                   ],
-                );
-              } else {
-                return Container(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            }),
-      ),
+                ),
+              );
+            } else {
+              return Container(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
     );
   }
 }
