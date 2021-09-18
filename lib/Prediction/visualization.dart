@@ -52,7 +52,7 @@ class _PredictionRouteState extends State<PredictionRoute> {
 
     Future<List<List<dynamic>>> _readPhoneFeatureDataIOFiles() async {
       final String data = await DefaultAssetBundle.of(context)
-          .loadString("assets/tmp_phone_io/feature_data.csv");
+          .loadString("assets/tmp_phone_io/gantt_chart.csv");
       final List<List<dynamic>> featureDataListList =
           const CsvToListConverter().convert(data);
       return featureDataListList;
@@ -76,9 +76,9 @@ class _PredictionRouteState extends State<PredictionRoute> {
     }
 
     Widget _scaledBar(start, end, scaleBounds, color, height, textBeforeBar) {
-      final int startCorrected = ((start - scaleBounds[0]) * 100).toInt();
+      final int startCorrected = ((start - scaleBounds[0]) * 1000).toInt();
 
-      final int endCorrected = ((end - scaleBounds[0]) * 100).toInt();
+      final int endCorrected = ((end - scaleBounds[0]) * 1000).toInt();
       return Row(children: [
         /// empty space
         Expanded(
@@ -109,7 +109,7 @@ class _PredictionRouteState extends State<PredictionRoute> {
 
         /// empty space
         Expanded(
-          flex: ((scaleBounds[1] * 100).toInt() - 100 - endCorrected),
+          flex: ((scaleBounds[1] * 1000).toInt() - 1000 - endCorrected),
           child: Container(height: height),
         ),
       ]);
@@ -164,7 +164,45 @@ class _PredictionRouteState extends State<PredictionRoute> {
             const double height = 16.0;
 
             List<Widget> _ganttChildren(featureEndStarts) {
-              List<Widget> list = List();
+              List<Widget> list = [];
+              //i<5, pass your dynamic limit as per your requirment
+              for (int i = 1; i < featureEndStarts.length; i++) {
+                Color color = Colors.red;//const Color(0xFF855e78);
+                if ((featureEndStarts[i][3]) == 'True') {
+                  color = Colors.green;//const Color(0xFF9dbc95);
+                }
+                list.add(
+                  _scaledBar(featureEndStarts[i][1], featureEndStarts[i][2],
+                      scaleBounds, color, height, featureEndStarts[i][0]),
+                ); //add any Widget in place of Text("Index $i")
+              }
+              return list; // all widget added now retrun the list here
+            }
+
+            return Column(
+              children: _ganttChildren(featureEndStarts),
+            );
+          } else {
+            return Container(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      );
+    }
+
+
+
+    Widget _wvcChart(scaleBounds) {
+      return FutureBuilder(
+        future: _readPhoneFeatureDataIOFiles(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            final List<List<dynamic>> featureEndStarts = snapshot.data;
+            const double height = 16.0;
+
+            List<Widget> _ganttChildren(featureEndStarts) {
+              List<Widget> list = [];
               //i<5, pass your dynamic limit as per your requirment
               for (int i = 1; i < featureEndStarts.length; i++) {
                 Color color = Colors.red;//const Color(0xFF855e78);
@@ -258,11 +296,11 @@ class _PredictionRouteState extends State<PredictionRoute> {
                             fontSize: 15.5, fontWeight: FontWeight.w500),
                       ),
                     ),
-                    _showGanttExplanation(),
                     _biDirectionalGanttChart(snapshot.data.scaleBounds),
                     SizedBox(height: 3),
                     _gradientColorScale(snapshot.data),
                     _numericScale(snapshot.data.scaleBounds),
+                    _showGanttExplanation(),
                   ],
                 ),
               );
