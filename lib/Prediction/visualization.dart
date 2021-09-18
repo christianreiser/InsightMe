@@ -215,7 +215,7 @@ class _PredictionRouteState extends State<PredictionRoute> {
       );
     }
 
-    Widget _showExplanation() {
+    Widget _showGanttExplanation() {
       return TextButton(
         style: TextButton.styleFrom(
             padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -226,10 +226,13 @@ class _PredictionRouteState extends State<PredictionRoute> {
         onPressed: () {
           showAlertDialog(
               'Explaination',
-              'The top blue bar shows your predicted mood\n'
-                  'The other larger blue bars show its 68% and 95% confidence intervals.\n'
-                  'The green and red bars show positive and negative contributions of the prediction.\n'
-                  'One contribution consists of today\'s value multiplied by a coefficient obtained through multiple linear regression.',
+              'The top black bar shows your predicted mood\n'
+                  'The other larger black bars show its 68% and 95% confidence '
+                  'intervals.\n'
+                  'The green and red bars show positive and negative '
+                  'contributions of the prediction.\n'
+                  'One contribution consists of today\'s value multiplied by a '
+                  'coefficient obtained through multiple linear regression.',
               context);
         },
       );
@@ -255,11 +258,11 @@ class _PredictionRouteState extends State<PredictionRoute> {
                             fontSize: 15.5, fontWeight: FontWeight.w500),
                       ),
                     ),
+                    _showGanttExplanation(),
                     _biDirectionalGanttChart(snapshot.data.scaleBounds),
                     SizedBox(height: 3),
                     _gradientColorScale(snapshot.data),
                     _numericScale(snapshot.data.scaleBounds),
-                    _showExplanation(),
                   ],
                 ),
               );

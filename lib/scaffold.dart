@@ -87,9 +87,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
           _popupMenu(),
         ],
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
 
       // use below when more then one floatingActionButton and remove top block
       floatingActionButton: _floatingActionButton(), //_speedDial(),
