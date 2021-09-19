@@ -58,6 +58,14 @@ class _PredictionRouteState extends State<PredictionRoute> {
       return featureDataListList;
     }
 
+    Future<List<List<dynamic>>> _readPhoneWVCIOFiles() async {
+      final String data = await DefaultAssetBundle.of(context)
+          .loadString("assets/tmp_phone_io/wvc_chart.csv");
+      final List<List<dynamic>> featureDataListList =
+          const CsvToListConverter().convert(data);
+      return featureDataListList;
+    }
+
     BoxDecoration _predictionBoxDecoration() {
       return BoxDecoration(
         border: Border.all(width: 1.5),
@@ -75,12 +83,17 @@ class _PredictionRouteState extends State<PredictionRoute> {
       );
     }
 
-    Widget _scaledBar(start, end, scaleBounds, color, height, textBeforeBar) {
+    Widget _scaledBar(
+        start, end, scaleBounds, color, height, textBeforeBar, arrow) {
+      if (start > end) {
+        var tmp = start;
+        start = end;
+        end = tmp;
+      }
       final int startCorrected = ((start - scaleBounds[0]) * 1000).toInt();
-
       final int endCorrected = ((end - scaleBounds[0]) * 1000).toInt();
       return Row(children: [
-        /// empty space
+        /// left empty space
         Expanded(
             flex: (startCorrected),
             child: Container(
@@ -100,16 +113,22 @@ class _PredictionRouteState extends State<PredictionRoute> {
             child: Container(
               height: height,
               color: color,
-              child: color == Colors.green//Color(Colors.green)//const Color(0xFF9dbc95)
-                  ? FittedBox(child: Icon(Icons.arrow_forward_sharp))
-                  : color == Colors.red//const Color(0xFF855e78)
-                      ? FittedBox(child: Icon(Icons.arrow_back_sharp))
-                      : Container(),
+              child: arrow == true
+                  ? color ==
+                          Colors
+                              .green //Color(Colors.green)//const Color(0xFF9dbc95)
+                      ? FittedBox(child: Icon(Icons.arrow_forward_sharp))
+                      : color == Colors.red //const Color(0xFF855e78)
+                          ? FittedBox(child: Icon(Icons.arrow_back_sharp))
+                          : Container()
+                  : Container(),
             )),
 
-        /// empty space
+        /// right empty space
         Expanded(
-          flex: ((scaleBounds[1] * 1000).toInt() - 1000 - endCorrected),
+          flex: (((scaleBounds[1] - scaleBounds[0] + 1) * 1000).toInt() -
+              1000 -
+              endCorrected),
           child: Container(height: height),
         ),
       ]);
@@ -118,37 +137,43 @@ class _PredictionRouteState extends State<PredictionRoute> {
     Widget _gradientColorScale(predictions) {
       return Stack(
         children: <Widget>[
-          Image(image: AssetImage('assets/tmp_phone_io/tokyo_crop.png'),height: 30,),
+          Image(
+            image: AssetImage('assets/tmp_phone_io/tokyo_crop.png'),
+            height: 30,
+          ),
           Container(
             height: 30.0,
             decoration: _predictionBoxDecoration(),
             child: FractionallySizedBox(
               widthFactor: 1,
-              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                _scaledBar(
-                    predictions.prediction - 0.1,
-                    predictions.prediction + 0.1,
-                    predictions.scaleBounds,
-                    Colors.black,
-                    8.0,
-                    ''),
-                _scaledBar(
-                  predictions.prediction - predictions.ci68,
-                  predictions.prediction + predictions.ci68,
-                  predictions.scaleBounds,
-                  Colors.black,
-                  6.0,
-                  '',
-                ),
-                _scaledBar(
-                  predictions.prediction - predictions.ci95,
-                  predictions.prediction + predictions.ci95,
-                  predictions.scaleBounds,
-                  Colors.black,
-                  3.0,
-                  '',
-                ),
-              ]),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _scaledBar(
+                        predictions.prediction - 0.1,
+                        predictions.prediction + 0.1,
+                        predictions.scaleBounds,
+                        Colors.black,
+                        8.0,
+                        '',
+                        true),
+                    _scaledBar(
+                        predictions.prediction - predictions.ci68,
+                        predictions.prediction + predictions.ci68,
+                        predictions.scaleBounds,
+                        Colors.black,
+                        6.0,
+                        '',
+                        true),
+                    _scaledBar(
+                        predictions.prediction - predictions.ci95,
+                        predictions.prediction + predictions.ci95,
+                        predictions.scaleBounds,
+                        Colors.black,
+                        3.0,
+                        '',
+                        true),
+                  ]),
             ),
           ),
         ],
@@ -167,13 +192,13 @@ class _PredictionRouteState extends State<PredictionRoute> {
               List<Widget> list = [];
               //i<5, pass your dynamic limit as per your requirment
               for (int i = 1; i < featureEndStarts.length; i++) {
-                Color color = Colors.red;//const Color(0xFF855e78);
+                Color color = Colors.red; //const Color(0xFF855e78);
                 if ((featureEndStarts[i][3]) == 'True') {
-                  color = Colors.green;//const Color(0xFF9dbc95);
+                  color = Colors.green; //const Color(0xFF9dbc95);
                 }
                 list.add(
                   _scaledBar(featureEndStarts[i][1], featureEndStarts[i][2],
-                      scaleBounds, color, height, featureEndStarts[i][0]),
+                      scaleBounds, color, height, featureEndStarts[i][0], true),
                 ); //add any Widget in place of Text("Index $i")
               }
               return list; // all widget added now retrun the list here
@@ -191,34 +216,49 @@ class _PredictionRouteState extends State<PredictionRoute> {
       );
     }
 
-
-
-    Widget _wvcChart(scaleBounds) {
+    Widget _wvcChart() {
+      /// header: [0]featureName [1]contribution	[2]weight
+      /// [3]value_today_not_normalized	[4]value_today_normalized
+      /// [5]extrema[max,min]
       return FutureBuilder(
-        future: _readPhoneFeatureDataIOFiles(),
+        future: _readPhoneWVCIOFiles(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            final List<List<dynamic>> featureEndStarts = snapshot.data;
+            final List<List<dynamic>> featureData = snapshot.data;
             const double height = 16.0;
+            List<double> scaleBounds = [featureData[2][5], featureData[1][5]];
 
-            List<Widget> _ganttChildren(featureEndStarts) {
+            List<Widget> _ganttChildren(featureData) {
               List<Widget> list = [];
-              //i<5, pass your dynamic limit as per your requirment
-              for (int i = 1; i < featureEndStarts.length; i++) {
-                Color color = Colors.red;//const Color(0xFF855e78);
-                if ((featureEndStarts[i][3]) == 'True') {
-                  color = Colors.green;//const Color(0xFF9dbc95);
-                }
+              for (int i = 1; i < featureData.length; i++) {
+                //
+                const Color contributionColor = Colors.red;
+                const Color weightColor = Colors.blue;
+                const Color valueTodayColor = Colors.deepPurple;
+                list.add(Text('${featureData[i][0]}:'));
                 list.add(
-                  _scaledBar(featureEndStarts[i][1], featureEndStarts[i][2],
-                      scaleBounds, color, height, featureEndStarts[i][0]),
-                ); //add any Widget in place of Text("Index $i")
+                  _scaledBar(0, featureData[i][1], scaleBounds,
+                      contributionColor, height, '', false), //
+                );
+                list.add(
+                  _scaledBar(0, featureData[i][2], scaleBounds, weightColor,
+                      height, '', false), //featureData[i][0]
+                );
+                list.add(
+                  _scaledBar(0, featureData[i][4], scaleBounds, valueTodayColor,
+                      height, '', false), //featureData[i][0]
+                );
+                list.add(
+                  SizedBox(
+                    height: 8,
+                  ),
+                );
               }
-              return list; // all widget added now retrun the list here
+              return list;
             }
 
             return Column(
-              children: _ganttChildren(featureEndStarts),
+              children: _ganttChildren(featureData),
             );
           } else {
             return Container(
@@ -301,6 +341,7 @@ class _PredictionRouteState extends State<PredictionRoute> {
                     _gradientColorScale(snapshot.data),
                     _numericScale(snapshot.data.scaleBounds),
                     _showGanttExplanation(),
+                    _wvcChart(),
                   ],
                 ),
               );

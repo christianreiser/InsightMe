@@ -1,0 +1,13 @@
+,start_contribution,end_contribution,positive_effect
+average_mood,5.0,6.109,True
+wInCO2Median,6.109,6.383,True
+wOutPressMin_yesterday,6.383,6.506,True
+VitaminD,6.506,6.622,True
+weight,6.622,6.723,True
+wInNoiseMax95_yesterday,6.723,6.807,True
+mood_yesterday,6.807,6.87,True
+wInHumidityMax95,6.87,6.909,True
+Steps,6.909,6.935,True
+Heart Points,6.912,6.935,False
+Running_min,6.891,6.912,False
+distracting_min,6.871,6.891,False
