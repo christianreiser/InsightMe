@@ -51,4 +51,5 @@ android/app/src/main/res/*
 android/settings_aar.gradle
 android/key.properties
 android/google-services.json
-.lock.*
+*.~lock.*
+assets/tmp_phone_io/.~lock*

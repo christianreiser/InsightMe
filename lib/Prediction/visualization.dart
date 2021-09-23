@@ -75,9 +75,9 @@ class _PredictionRouteState extends State<PredictionRoute> {
           end: Alignment(0.8, 0.0),
           // 10% of the width, so there are ten blinds.
           colors: const <Color>[
-            Colors.red,
-            Colors.yellow,
-            Colors.green
+            const Color(0xFFE15554),
+            const Color(0xFFffd97d),
+            const Color(0xFF7DD181)
           ], // red to yellow
         ),
       );
@@ -85,13 +85,16 @@ class _PredictionRouteState extends State<PredictionRoute> {
 
     Widget _scaledBar(
         start, end, scaleBounds, color, height, textBeforeBar, arrow) {
+      const int accuracyFactor = 1000;
       if (start > end) {
-        var tmp = start;
+        int tmp = start;
         start = end;
         end = tmp;
       }
-      final int startCorrected = ((start - scaleBounds[0]) * 1000).toInt();
-      final int endCorrected = ((end - scaleBounds[0]) * 1000).toInt();
+      final int startCorrected =
+          ((start - scaleBounds[0]) * accuracyFactor).toInt();
+      final int endCorrected =
+          ((end - scaleBounds[0]) * accuracyFactor).toInt();
       return Row(children: [
         /// left empty space
         Expanded(
@@ -114,11 +117,10 @@ class _PredictionRouteState extends State<PredictionRoute> {
               height: height,
               color: color,
               child: arrow == true
-                  ? color ==
-                          Colors
-                              .green //Color(Colors.green)//const Color(0xFF9dbc95)
+                  ? color == const Color(0xFF7DD181) //const Color(0xFF9dbc95)
                       ? FittedBox(child: Icon(Icons.arrow_forward_sharp))
-                      : color == Colors.red //const Color(0xFF855e78)
+                      : color ==
+                              const Color(0xFFE15554) //const Color(0xFF855e78)
                           ? FittedBox(child: Icon(Icons.arrow_back_sharp))
                           : Container()
                   : Container(),
@@ -126,8 +128,9 @@ class _PredictionRouteState extends State<PredictionRoute> {
 
         /// right empty space
         Expanded(
-          flex: (((scaleBounds[1] - scaleBounds[0] + 1) * 1000).toInt() -
-              1000 -
+          flex: (((scaleBounds[1] - scaleBounds[0] + 1) * accuracyFactor)
+                  .toInt() -
+              accuracyFactor -
               endCorrected),
           child: Container(height: height),
         ),
@@ -192,9 +195,10 @@ class _PredictionRouteState extends State<PredictionRoute> {
               List<Widget> list = [];
               //i<5, pass your dynamic limit as per your requirment
               for (int i = 1; i < featureEndStarts.length; i++) {
-                Color color = Colors.red; //const Color(0xFF855e78);
+                Color color =
+                    const Color(0xFFE15554); //const Color(0xFF855e78);
                 if ((featureEndStarts[i][3]) == 'True') {
-                  color = Colors.green; //const Color(0xFF9dbc95);
+                  color = const Color(0xFF7DD181); //const Color(0xFF9dbc95);
                 }
                 list.add(
                   _scaledBar(featureEndStarts[i][1], featureEndStarts[i][2],
@@ -206,59 +210,6 @@ class _PredictionRouteState extends State<PredictionRoute> {
 
             return Column(
               children: _ganttChildren(featureEndStarts),
-            );
-          } else {
-            return Container(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      );
-    }
-
-    Widget _wvcChart() {
-      /// header: [0]featureName [1]contribution	[2]weight
-      /// [3]value_today_not_normalized	[4]value_today_normalized
-      /// [5]extrema[max,min]
-      return FutureBuilder(
-        future: _readPhoneWVCIOFiles(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            final List<List<dynamic>> featureData = snapshot.data;
-            const double height = 16.0;
-            List<double> scaleBounds = [featureData[2][5], featureData[1][5]];
-
-            List<Widget> _ganttChildren(featureData) {
-              List<Widget> list = [];
-              for (int i = 1; i < featureData.length; i++) {
-                //
-                const Color contributionColor = Colors.red;
-                const Color weightColor = Colors.blue;
-                const Color valueTodayColor = Colors.deepPurple;
-                list.add(Text('${featureData[i][0]}:'));
-                list.add(
-                  _scaledBar(0, featureData[i][1], scaleBounds,
-                      contributionColor, height, '', false), //
-                );
-                list.add(
-                  _scaledBar(0, featureData[i][2], scaleBounds, weightColor,
-                      height, '', false), //featureData[i][0]
-                );
-                list.add(
-                  _scaledBar(0, featureData[i][4], scaleBounds, valueTodayColor,
-                      height, '', false), //featureData[i][0]
-                );
-                list.add(
-                  SizedBox(
-                    height: 8,
-                  ),
-                );
-              }
-              return list;
-            }
-
-            return Column(
-              children: _ganttChildren(featureData),
             );
           } else {
             return Container(
@@ -303,9 +254,9 @@ class _PredictionRouteState extends State<PredictionRoute> {
         child: Icon(Icons.info, color: Colors.grey),
         onPressed: () {
           showAlertDialog(
-              'Explaination',
+              'Explanation',
               'The top black bar shows your predicted mood\n'
-                  'The other larger black bars show its 68% and 95% confidence '
+                  'The other larger black bars show its 68% and 95% prediction '
                   'intervals.\n'
                   'The green and red bars show positive and negative '
                   'contributions of the prediction.\n'
@@ -316,6 +267,141 @@ class _PredictionRouteState extends State<PredictionRoute> {
       );
     }
 
+    Widget _showWVCExplanation(
+        contributionColor, weightColor, valueTodayColor) {
+      return TextButton(
+        style: TextButton.styleFrom(
+            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+        /* info note for correlation coefficient */
+        // to reduce height of correlation info button
+        child: Icon(Icons.info, color: Colors.grey),
+        onPressed: () {
+          AlertDialog alertDialog = AlertDialog(
+            title: Text('Explanation'),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(children: [
+                  Container(
+                      color: contributionColor, height: 16.0, width: 16.0),
+                  Text(' Contribution:'),
+                ]),
+                Text(                    'Contribution = Weight · Measurement.\n'
+                    'Prediction = Sum(Contributions)\n    + Average Mood\n'
+                    'In the example below it has a medium positive effect.\n'),
+                Row(children: [
+                  Container(color: weightColor, height: 16.0, width: 16.0),
+                  Text(' Weight:'),
+                ]),
+                Text(
+                    'Indicates how strong the effect is and if it\'s negative or positive.\n'
+                        'In the example below Humidity has a strong negative weight.\n'),
+                Row(children: [
+                  Container(color: valueTodayColor, height: 16.0, width: 16.0),
+                  Text(' Today\'s measurement:'),
+                ]),
+                Text('Indicates if today\'s humidity measurement is below or above average.\n'
+                    'In the example Humidity is a little below average.\n'),
+                Text('Example Humidity:'),
+                _scaledBar(5, 6.7, [1,9], contributionColor,
+                    16.0, '', false),
+                _scaledBar(1.5, 5, [1,9], weightColor,
+                    16.0, '', false),
+                _scaledBar(4.5, 5, [1,9], valueTodayColor,
+                    16.0, '', false),
+
+                Text('\nAbout the model:\n'
+                    'Multiple linear regression with lasso variable selection and regularization.'),
+              ],
+            ),
+          );
+          showDialog(context: context, builder: (_) => alertDialog);
+        },
+      );
+    }
+
+    Widget _wvcChart() {
+      /// header: [0]featureName [1]contribution	[2]weight
+      /// [3]value_today_not_normalized	[4]value_today_normalized
+      /// [5]extrema[max,min]
+      const Color contributionColor = const Color(0xFF946fc4);
+      const Color weightColor = const Color(0xFF00b5b2); //Colors.teal;
+      const Color valueTodayColor = const Color(0xFF5dddd7);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 8),
+          Row(children: [
+            Container(color: contributionColor, height: 16.0, width: 16.0),
+            Text(' Contribution  '),
+            Container(color: weightColor, height: 16.0, width: 16.0),
+            Text(' Weight  '),
+            Container(color: valueTodayColor, height: 16.0, width: 16.0),
+            Text(' Today\'s measurement  '),
+          ]),
+          SizedBox(height: 6),
+          FutureBuilder(
+            future: _readPhoneWVCIOFiles(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                final List<List<dynamic>> featureData = snapshot.data;
+                const double height = 16.0;
+                List<double> scaleBounds = [
+                  featureData[2][5],
+                  featureData[1][5]
+                ];
+
+                List<Widget> _ganttChildren(featureData) {
+                  List<Widget> list = [];
+                  for (int i = 1; i < featureData.length; i++) {
+                    list.add(Text('${featureData[i][0]}:'));
+                    list.add(
+                      _scaledBar(0, featureData[i][1], scaleBounds,
+                          contributionColor, height, '', false), //
+                    );
+                    list.add(
+                      _scaledBar(0, featureData[i][2], scaleBounds, weightColor,
+                          height, '', false), //featureData[i][0]
+                    );
+                    list.add(
+                      _scaledBar(
+                          0,
+                          featureData[i][4],
+                          scaleBounds,
+                          valueTodayColor,
+                          height,
+                          '',
+                          false), //featureData[i][0]
+                    );
+                    list.add(
+                      SizedBox(
+                        height: 10,
+                      ),
+                    );
+                  }
+                  return list;
+                }
+
+                return Column(
+                  children: _ganttChildren(featureData),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                );
+              } else {
+                return Container(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+          _showWVCExplanation(contributionColor, weightColor, valueTodayColor),
+        ],
+      );
+    }
+
+    const bool _wvcChartEnabled = true;
+    const bool _ganttChartEnabled = true;
     return Container(
       margin: const EdgeInsets.all(8),
       child: FutureBuilder(
@@ -331,17 +417,21 @@ class _PredictionRouteState extends State<PredictionRoute> {
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
                       // padding: const EdgeInsets.fromLTRB(1, 8, 8, 8),
                       child: Text(
-                        'Mood prediction for today with confidence interval:',
+                        'Mood prediction for today with prediction interval:',
                         style: TextStyle(
                             fontSize: 15.5, fontWeight: FontWeight.w500),
                       ),
                     ),
-                    _biDirectionalGanttChart(snapshot.data.scaleBounds),
+                    _ganttChartEnabled == true
+                        ? _biDirectionalGanttChart(snapshot.data.scaleBounds)
+                        : Container(),
                     SizedBox(height: 3),
                     _gradientColorScale(snapshot.data),
                     _numericScale(snapshot.data.scaleBounds),
-                    _showGanttExplanation(),
-                    _wvcChart(),
+                    _ganttChartEnabled == true
+                        ? _showGanttExplanation()
+                        : Container(),
+                    _wvcChartEnabled == true ? _wvcChart() : Container(),
                   ],
                 ),
               );
