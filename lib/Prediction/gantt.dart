@@ -27,9 +27,9 @@ Widget biDirectionalGanttChart(scaleBounds, context) {
           List<Widget> list = [];
           //i<5, pass your dynamic limit as per your requirment
           for (int i = 1; i < featureEndStarts.length; i++) {
-            Color color = const Color(0xFFE15554); //const Color(0xFF855e78);
+            Color color = kindaRed; //const Color(0xFF855e78);
             if ((featureEndStarts[i][3]) == 'True') {
-              color = const Color(0xFF7DD181); //const Color(0xFF9dbc95);
+              color = kindaGreen; //const Color(0xFF9dbc95);
             }
             list.add(
               scaledBar(featureEndStarts[i][1], featureEndStarts[i][2],

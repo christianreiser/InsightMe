@@ -31,8 +31,11 @@ Widget _showWVCExplanation(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(children: [
-              Container(color: contributionColor, height: 16.0, width: 16.0),
-              Text(' Contribution:'),
+              _greenRedLegendBox(context),
+              Text(' = '),
+              Container(color: weightColor, height: 16.0, width: 16.0),
+              Text(' · '),
+              Container(color: valueTodayColor, height: 16.0, width: 16.0),
             ]),
             Text('Contribution = Weight · Measurement.\n'
                 'Prediction = Sum(Contributions)\n    + Average Mood\n'
@@ -65,19 +68,50 @@ Widget _showWVCExplanation(
   );
 }
 
+class CustomClipPath extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(16, 0);
+    path.lineTo(0, 16);
+    path.lineTo(0, 0);
+    // path.lineTo(16, 0);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+Widget _greenRedLegendBox(context) {
+  return Container(
+      child: Stack(children: [
+        Container(color: kindaRed),
+        ClipPath(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            color: kindaGreen,
+          ),
+          clipper: CustomClipPath(),
+        )
+      ]),
+      height: 16.0,
+      width: 16.0);
+}
+
 Widget wvcChart(context) {
   /// header: [0]featureName [1]contribution	[2]weight
   /// [3]value_today_not_normalized	[4]value_today_normalized
   /// [5]extrema[max,min]
-  const Color contributionColor = const Color(0xFF946fc4);
-  const Color weightColor = const Color(0xFF00b5b2); //Colors.teal;
+  Color contributionColor = kindaGreen;
+  const Color weightColor = Colors.teal; //const Color(0xFF00b5b2); //
   const Color valueTodayColor = const Color(0xFF5dddd7);
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       SizedBox(height: 8),
       Row(children: [
-        Container(color: contributionColor, height: 16.0, width: 16.0),
+        _greenRedLegendBox(context),
         Text(' Contribution  '),
         Container(color: weightColor, height: 16.0, width: 16.0),
         Text(' Weight  '),
@@ -97,6 +131,12 @@ Widget wvcChart(context) {
               List<Widget> list = [];
               for (int i = 1; i < featureData.length; i++) {
                 list.add(Text('${featureData[i][0]}:'));
+
+                // if positive then green; red if negative
+                if (featureData[i][1] < 0) {
+                  contributionColor = kindaRed;
+                }
+
                 list.add(
                   scaledBar(0, featureData[i][1], scaleBounds,
                       contributionColor, height, '', false), //

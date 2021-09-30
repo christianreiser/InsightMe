@@ -52,3 +52,6 @@ Widget scaledBar(start, end, scaleBounds, color, height, textBeforeBar, arrow) {
     ),
   ]);
 }
+
+const kindaGreen = Color(0xFF7DD181);
+const kindaRed = Color(0xFFE15554);
