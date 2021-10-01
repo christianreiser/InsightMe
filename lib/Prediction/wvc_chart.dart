@@ -9,9 +9,9 @@ import 'core.dart';
 Future<List<List<dynamic>>> _readPhoneWVCIOFiles(context) async {
   final String data = await DefaultAssetBundle.of(context)
       .loadString("assets/tmp_phone_io/wvc_chart.csv");
-  final List<List<dynamic>> featureDataListList =
+  final List<List<dynamic>> wVCIODataListList =
       const CsvToListConverter().convert(data);
-  return featureDataListList;
+  return wVCIODataListList;
 }
 
 Widget _showWVCExplanation(
@@ -123,32 +123,41 @@ Widget wvcChart(context) {
         future: _readPhoneWVCIOFiles(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            final List<List<dynamic>> featureData = snapshot.data;
             const double height = 16.0;
-            List<double> scaleBounds = [featureData[2][5], featureData[1][5]];
+            List<double> scaleBounds = [
+              snapshot.data[2][5],
+              snapshot.data[1][5]
+            ];
 
-            List<Widget> _ganttChildren(featureData) {
+            List<Widget> _ganttChildren(wVCIOData) {
               List<Widget> list = [];
-              for (int i = 1; i < featureData.length; i++) {
-                list.add(Text('${featureData[i][0]}:'));
+              for (int i = 1; i < wVCIOData.length; i++) {
+                /// Name
+                list.add(Text('${wVCIOData[i][0]}:'));
 
                 // if positive then green; red if negative
-                if (featureData[i][1] < 0) {
+                if (wVCIOData[i][1] < 0) {
                   contributionColor = kindaRed;
                 }
 
+                /// Contribution
                 list.add(
-                  scaledBar(0, featureData[i][1], scaleBounds,
-                      contributionColor, height, '', false), //
+                  scaledBar(0, wVCIOData[i][1], scaleBounds,
+                      contributionColor, height, '', false),
                 );
+
+                /// Weight
                 list.add(
-                  scaledBar(0, featureData[i][2], scaleBounds, weightColor,
-                      height, '', false), //featureData[i][0]
+                  scaledBar(0, wVCIOData[i][2], scaleBounds, weightColor,
+                      height, '', false),
                 );
-                list.add(
-                  scaledBar(0, featureData[i][4], scaleBounds, valueTodayColor,
-                      height, '', false), //featureData[i][0]
-                );
+
+                /// Today's measurement
+                list.add(Stack(children: <Widget>[
+                  scaledBar(0, wVCIOData[i][4], scaleBounds, valueTodayColor,
+                      height, '', false),
+                  Text('Today - average${wVCIOData[i][0]}:')
+                ]));
                 list.add(
                   SizedBox(
                     height: 10,
@@ -159,7 +168,7 @@ Widget wvcChart(context) {
             }
 
             return Column(
-              children: _ganttChildren(featureData),
+              children: _ganttChildren(snapshot.data),
               crossAxisAlignment: CrossAxisAlignment.start,
             );
           } else {
