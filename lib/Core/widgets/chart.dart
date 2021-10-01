@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Core/functions/chart.dart';
@@ -132,10 +134,11 @@ Widget _twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
 
 _oneAttributeScatterSeries(chartDataList) {
 // Renders scatter chart
+  final double size = _sizeManager(chartDataList.length);
   return ScatterSeries<ChartData, DateTime>(
-    opacity: 0.3,
+    opacity: min(_opacityManager(chartDataList.length)*2,1),
     markerSettings:
-        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+        MarkerSettings(height: size, width: size, shape: DataMarkerType.circle),
     animationDuration: 3000,
     enableTooltip: true,
     dataSource: chartDataList,
@@ -154,12 +157,46 @@ _oneAttributeScatterSeries(chartDataList) {
   );
 }
 
+double _opacityManager(num){
+  double opacity = 0.1;
+  if (num < 3) { opacity = 1.0;} else
+  if (num < 10) { opacity = 0.9;} else
+  if (num < 25) { opacity = 0.8;} else
+  if (num < 50) { opacity = 0.7;} else
+  if (num < 100) { opacity = 0.6;} else
+  if (num < 200) { opacity = 0.5;} else
+  if (num < 400) { opacity = 0.3;} else
+  if (num < 800) { opacity = 0.25;} else
+  if (num < 1600) { opacity = 0.2;} else
+  if (num < 3200) { opacity = 0.15;} else
+  if (num <= 6400) { opacity = 0.1;}
+  return opacity;
+}
+
+double _sizeManager(num){
+  double size = 13.0;
+  if (num < 3) { size = 12.0;} else
+  if (num < 10) { size = 11.0;} else
+  if (num < 25) { size = 10.0;} else
+  if (num < 50) { size = 9.0;} else
+  if (num < 100) { size = 8.0;} else
+  if (num < 200) { size = 7.0;} else
+  if (num < 400) { size = 5.0;} else
+  if (num < 800) { size = 4.5;} else
+  if (num < 1600) { size = 4.0;} else
+  if (num < 3200) { size = 3.0;} else
+  if (num < 6400) { size = 2.0;} else
+  if (num < 15000) { size = 1.0;}
+  return size;
+}
+
 _twoAttributeScatterSeries(chartDataOptimizeList) {
 // Renders scatter chart
+  final double size = _sizeManager(chartDataOptimizeList.length);
   return ScatterSeries<ChartDataOptimize, num>(
-    opacity: 0.23,
+    opacity: _opacityManager(chartDataOptimizeList.length),// //0.23,
     markerSettings:
-        MarkerSettings(height: 6, width: 6, shape: DataMarkerType.circle),
+        MarkerSettings(height: size, width: size, shape: DataMarkerType.circle),
     animationDuration: 3000,
     enableTooltip: true,
     dataSource: chartDataOptimizeList,
@@ -170,15 +207,17 @@ _twoAttributeScatterSeries(chartDataOptimizeList) {
           type: TrendlineType.polynomial,
           color: Colors.grey,
           width: 2,
-          opacity: 0.4,
+          opacity: 0.9,
           enableTooltip: true,
           period: 7,
           animationDuration: 5000.0),
       Trendline(
           type: TrendlineType.linear,
+          // forwardForecast:400,
+          // backwardForecast: 400,
           color: Colors.teal,
           width: 2,
-          opacity: 0.4,
+          opacity: 0.9,
           enableTooltip: true,
           period: 7,
           animationDuration: 5000.0)
