@@ -142,8 +142,8 @@ Widget wvcChart(context) {
 
                 /// Contribution
                 list.add(
-                  scaledBar(0, wVCIOData[i][1], scaleBounds,
-                      contributionColor, height, '', false),
+                  scaledBar(0, wVCIOData[i][1], scaleBounds, contributionColor,
+                      height, '', false),
                 );
 
                 /// Weight
@@ -156,7 +156,7 @@ Widget wvcChart(context) {
                 list.add(Stack(children: <Widget>[
                   scaledBar(0, wVCIOData[i][4], scaleBounds, valueTodayColor,
                       height, '', false),
-                  Text('Today - average${wVCIOData[i][0]}:')
+                  // Text('Today - average${wVCIOData[i][0]}:')
                 ]));
                 list.add(
                   SizedBox(

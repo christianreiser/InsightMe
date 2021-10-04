@@ -34,32 +34,50 @@ Widget gradientColorScale(predictions) {
         decoration: _predictionBoxDecoration(),
         child: FractionallySizedBox(
           widthFactor: 1,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            scaledBar(
-                predictions.prediction - 0.1,
-                predictions.prediction + 0.1,
-                predictions.scaleBounds,
-                Colors.black,
-                8.0,
-                '',
-                true),
-            scaledBar(
-                predictions.prediction - predictions.ci68,
-                predictions.prediction + predictions.ci68,
-                predictions.scaleBounds,
-                Colors.black,
-                6.0,
-                '',
-                true),
-            scaledBar(
-                predictions.prediction - predictions.ci95,
-                predictions.prediction + predictions.ci95,
-                predictions.scaleBounds,
-                Colors.black,
-                3.0,
-                '',
-                true),
-          ]),
+          child: Stack(
+            children: [
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                scaledBar(
+                    predictions.prediction - 0.1,
+                    predictions.prediction + 0.1,
+                    predictions.scaleBounds,
+                    Colors.black,
+                    12.0,
+                    '',
+                    false),
+              ]),
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                scaledBar(
+                    predictions.prediction - predictions.ci95,
+                    predictions.prediction + predictions.ci95,
+                    predictions.scaleBounds,
+                    Colors.black,
+                    2.0,
+                    '',
+                    false),
+              ]),
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                scaledBar(
+                    predictions.prediction - predictions.ci95,
+                    predictions.prediction - predictions.ci95 + 0.05,
+                    predictions.scaleBounds,
+                    Colors.black,
+                    12.0,
+                    '',
+                    false),
+              ]),
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                scaledBar(
+                    predictions.prediction + predictions.ci95 - 0.05,
+                    predictions.prediction + predictions.ci95,
+                    predictions.scaleBounds,
+                    Colors.black,
+                    12.0,
+                    '',
+                    false),
+              ])
+            ],
+          ),
         ),
       ),
     ],
