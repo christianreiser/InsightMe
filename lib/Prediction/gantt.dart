@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:insightme/Core/widgets/dialogue.dart';
 
 import 'core.dart';
 
@@ -59,17 +58,59 @@ Widget showGanttExplanation(context) {
     /* info note for correlation coefficient */
     // to reduce height of correlation info button
     child: Icon(Icons.info, color: Colors.grey),
+    // onPressed: () {
+    //   showAlertDialog(
+    //       'Explanation',
+    //       ';
+    // },
     onPressed: () {
-      showAlertDialog(
-          'Explanation',
-          'The top black bar shows your predicted mood\n'
-              'The other larger black bars show its 68% and 95% prediction '
-              'intervals.\n'
-              'The green and red bars show positive and negative '
-              'contributions of the prediction.\n'
-              'One contribution consists of today\'s value multiplied by a '
-              'coefficient obtained through multiple linear regression.',
-          context);
+      AlertDialog alertDialog = AlertDialog(
+        title: Text('Explanation'),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 30.0,
+              child: FractionallySizedBox(
+                widthFactor: 1,
+                child: Stack(
+                  children: [
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          scaledBar(7 - 0.1, 7 + 0.1, [1, 9], Colors.black,
+                              12.0, '', false),
+                        ]),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          scaledBar(5, 9, [1, 9], Colors.black, 2.0, '', false),
+                        ]),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          scaledBar(5, 5 + 0.05, [1, 9], Colors.black, 12.0, '',
+                              false),
+                        ]),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          scaledBar(9 - 0.05, 9, [1, 9], Colors.black, 12.0, '',
+                              false),
+                        ]),
+
+                  ],
+                ),
+              ),
+            ),
+            Text(
+                'Predicted mood with 95% prediction interval in black.\n'
+                    'The green and red bars show positive and negative '
+                    'contributions of the prediction.')],
+        ),
+      );
+      showDialog(context: context, builder: (_) => alertDialog);
     },
   );
 }

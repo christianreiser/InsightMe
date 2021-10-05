@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'core.dart';
 
-BoxDecoration _predictionBoxDecoration() {
+BoxDecoration predictionBoxDecoration() {
   return BoxDecoration(
     border: Border.all(width: 1.5),
     borderRadius: BorderRadius.all(Radius.circular(1.0)),
@@ -22,65 +22,57 @@ BoxDecoration _predictionBoxDecoration() {
   );
 }
 
-Widget gradientColorScale(predictions) {
-  return Stack(
-    children: <Widget>[
-      Image(
-        image: AssetImage('assets/tmp_phone_io/tokyo_crop.png'),
-        height: 30,
+Widget predictionWidget(predictions){
+  return Container(
+    height: 30.0,
+    decoration: predictionBoxDecoration(),
+    child: FractionallySizedBox(
+      widthFactor: 1,
+      child: Stack(
+        children: [
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            scaledBar(
+                predictions.prediction - 0.1,
+                predictions.prediction + 0.1,
+                predictions.scaleBounds,
+                Colors.black,
+                12.0,
+                '',
+                false),
+          ]),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            scaledBar(
+                predictions.ci95[0],
+                predictions.ci95[1],
+                predictions.scaleBounds,
+                Colors.black,
+                2.0,
+                '',
+                false),
+          ]),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            scaledBar(
+                predictions.ci95[0],
+                predictions.ci95[0] + 0.05,
+                predictions.scaleBounds,
+                Colors.black,
+                12.0,
+                '',
+                false),
+          ]),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            scaledBar(
+                predictions.ci95[1] - 0.05,
+                predictions.ci95[1],
+                predictions.scaleBounds,
+                Colors.black,
+                12.0,
+                '',
+                false),
+          ])
+        ],
       ),
-      Container(
-        height: 30.0,
-        decoration: _predictionBoxDecoration(),
-        child: FractionallySizedBox(
-          widthFactor: 1,
-          child: Stack(
-            children: [
-              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                scaledBar(
-                    predictions.prediction - 0.1,
-                    predictions.prediction + 0.1,
-                    predictions.scaleBounds,
-                    Colors.black,
-                    12.0,
-                    '',
-                    false),
-              ]),
-              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                scaledBar(
-                    predictions.prediction - predictions.ci95,
-                    predictions.prediction + predictions.ci95,
-                    predictions.scaleBounds,
-                    Colors.black,
-                    2.0,
-                    '',
-                    false),
-              ]),
-              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                scaledBar(
-                    predictions.prediction - predictions.ci95,
-                    predictions.prediction - predictions.ci95 + 0.05,
-                    predictions.scaleBounds,
-                    Colors.black,
-                    12.0,
-                    '',
-                    false),
-              ]),
-              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                scaledBar(
-                    predictions.prediction + predictions.ci95 - 0.05,
-                    predictions.prediction + predictions.ci95,
-                    predictions.scaleBounds,
-                    Colors.black,
-                    12.0,
-                    '',
-                    false),
-              ])
-            ],
-          ),
-        ),
-      ),
-    ],
+    ),
   );
 }
 
