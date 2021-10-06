@@ -21,7 +21,6 @@ class OptimizeRoute extends StatefulWidget {
 class _OptimizeRouteState extends State<OptimizeRoute> {
   @override
   Widget build(BuildContext context) {
-    debugPrint('entryListLength ${globals.entryListLength}');
     if (globals.entryListLength == null || globals.entryListLength == 0) {
       // todo entryListLength == 0 needed?
       globals.Global().updateEntryList();

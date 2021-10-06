@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'entry.dart';
@@ -47,16 +46,12 @@ class DatabaseHelperEntry {
   * */
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
-    debugPrint('getApplicationDocumentsDirectory');
 //    Directory directory = await getApplicationDocumentsDirectory();
 //    debugPrint('directory');
 //    String path = directory.path + 'entries.db';
-
-    debugPrint('openDatabase');
     // Open/create the database at a given path
     var entriesDatabase =
         await openDatabase('entries.db', version: 1, onCreate: _createDb);
-    debugPrint('done ini $_database');
     return entriesDatabase;
   }
 

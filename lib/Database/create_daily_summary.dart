@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:csv/csv.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'attribute.dart';
@@ -74,8 +73,6 @@ class WriteDailySummariesCSV {
     int entryListLength = entryList.length;
 
     /* fill rowToAdd with data and add to dailySummariesList */
-    debugPrint('starting creating daily summaries csv');
-//sudo kiss
     // iterate through all entries
     for (int entryCount = 0; entryCount < entryListLength; entryCount++) {
       // debugPrint('progress: $entryCount of $entryListLength.');

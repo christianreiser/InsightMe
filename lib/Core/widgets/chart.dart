@@ -197,7 +197,7 @@ class ChartData {
 }
 
 double _opacityManager(num) {
-  print('num dots:$num');
+  // print('num dots:$num');
   double opacity = 0.1;
   if (num < 3) {
     opacity = 1.0;

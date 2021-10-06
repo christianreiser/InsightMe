@@ -230,8 +230,6 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      debugPrint('_selectedIndex= $_selectedIndex');
-      // navigation for editing entry
     });
   }
 

@@ -58,8 +58,6 @@ Container _correlationBar(_correlationCoefficient) {
   /// output: Widget: _correlationBar
 
   final int _absIntCorrCoeff = (_correlationCoefficient.abs() * 100).toInt();
-  debugPrint('_absIntCorrCoeff: $_absIntCorrCoeff');
-
   return Container(
     /// correlation / correlation bar
     decoration: _statisticsBoxDecoration(),

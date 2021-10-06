@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
@@ -103,8 +102,6 @@ class _DropDownState extends State<DropDown> {
   }
 
   Future<List<String>> _getAttributeList(boolFirst) async {
-    debugPrint('_getAttributeList');
-
     List<Attribute> attributeList =
         await DropDown.databaseHelperAttribute.getAttributeList();
     List<String> itemList = List.filled(attributeList.length + 1, null);
