@@ -57,13 +57,13 @@ class _DataRouteState extends State<DataRoute> {
     return ListView.builder(
       itemCount: globals.attributeListLength,
       itemBuilder: (BuildContext context, int position) {
-        return _oneAttributeNameAndChart(
+        return _timeSeriesNameAndChart(
             attributeList[position].title, context);
       },
     );
   }
 
-  Widget _oneAttributeNameAndChart(attributeName, context) {
+  Widget _timeSeriesNameAndChart(attributeName, context) {
     // creates chart widget of one Attribute with name as heading
     return Padding(
       padding: const EdgeInsets.fromLTRB(1, 10, 1, 10),
@@ -98,7 +98,7 @@ class _DataRouteState extends State<DataRoute> {
             SizedBox(height: 10),
             SizedBox(
               height: 300,
-              child: futureOneAttributeScatterPlot(attributeName),
+              child: futureTimeSeriesPlot(attributeName),
             )
           ]),
     );

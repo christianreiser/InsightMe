@@ -42,7 +42,7 @@ void initState() {
   );
 }*/
 
-Widget futureOneAttributeScatterPlot(attributeName) {
+Widget futureTimeSeriesPlot(attributeName) {
   return FutureBuilder(
     future: oneAttributeChartData(attributeName), //schedule.selectedAttribute1
     builder: (context, snapshot) {
@@ -98,7 +98,7 @@ Widget _oneAttributeSfCartesianChart(chartDataList) {
           DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
       primaryYAxis: NumericAxis(rangePadding: ChartRangePadding.additional),
       series: <ChartSeries>[
-        _oneAttributeScatterSeries(chartDataList),
+        _timeScatterSeries(chartDataList),
       ]);
 }
 
@@ -132,7 +132,7 @@ Widget _twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
       ]);
 }
 
-_oneAttributeScatterSeries(chartDataList) {
+_timeScatterSeries(chartDataList) {
 // Renders scatter chart
   final double size = _sizeManager(chartDataList.length);
   return ScatterSeries<ChartData, DateTime>(
