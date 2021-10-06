@@ -95,11 +95,11 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                             final double corrCoeff =
                                 coeffsMap.entries.toList()[position].value;
 
-                            return _oneOptimizeNameAndChart(
+                            return _singleScatterPlotAndStatistics(
                                 att1, att2, corrCoeff);
                           },
                         )
-                      : _oneOptimizeNameAndChart(att1, att2, coeffsMap[att2]));
+                      : _singleScatterPlotAndStatistics(att1, att2, coeffsMap[att2]));
             }
 
             // chart data arrived but no data found
@@ -115,7 +115,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
     });
   }
 
-  Widget _oneOptimizeNameAndChart(att1, att2, corrCoeff) {
+  Widget _singleScatterPlotAndStatistics(att1, att2, corrCoeff) {
     return Column(children: [
       Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -130,7 +130,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
           ),
 
           /// statistics: correlation and confidence
-          statistics(context, corrCoeff, 0.02) // todo pvalue not hardcoded
+          statistics(context, corrCoeff, 0.02) // todo p-value not hardcoded
         ]),
       ),
       greyLineSeparator(),

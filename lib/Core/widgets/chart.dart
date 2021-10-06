@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,29 +18,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 ///  - package:fl_animated_linechart
 ///  - package:flutter_datetime_picker
 ///  - package:linalg
-/*
-late TooltipBehavior _tooltipBehavior;
-late ZoomPanBehavior _zoomPanBehavior;
-late TrackballBehavior _trackballBehavior;
-
-
-@override
-void initState() {
-  _tooltipBehavior = TooltipBehavior(enable: true);
-  _zoomPanBehavior = ZoomPanBehavior(
-      // Enables pinch zooming
-      enablePinching: true,
-      enableDoubleTapZooming: true
-  );
-  _trackballBehavior = TrackballBehavior(
-    // Enables the trackball
-      enable: true,
-      tooltipSettings: InteractiveTooltip(
-          enable: true,
-          color: Colors.red
-      )
-  );
-}*/
 
 Widget futureTimeSeriesPlot(attributeName) {
   return FutureBuilder(
@@ -73,7 +50,7 @@ Widget futureScatterPlot(attributeName2, attributeName1) {
         // chart data arrived && data found
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return _scatterPlotSfCartesianChart(snapshot.data, attributeName1);
+          return _scatterPlot(snapshot.data, attributeName1);
         }
 
         // chart data arrived but no data found
@@ -84,7 +61,7 @@ Widget futureScatterPlot(attributeName2, attributeName1) {
           // else: i.e. data didn't arrive
         } else {
           return CircularProgressIndicator(); // when Future doesn't get data
-        } // snapshot is current state of future
+        }
       },
     );
   } else {
@@ -102,7 +79,7 @@ Widget _timeSeriesSfCartesianChart(chartDataList) {
       ]);
 }
 
-Widget _scatterPlotSfCartesianChart(chartDataOptimizeList, attributeName1) {
+Widget _scatterPlot(chartDataOptimizeList, attributeName1) {
   return SfCartesianChart(
       margin: EdgeInsets.fromLTRB(6, 8, 2, 0),
       primaryXAxis: NumericAxis(
@@ -120,8 +97,6 @@ Widget _scatterPlotSfCartesianChart(chartDataOptimizeList, attributeName1) {
       ),
       primaryYAxis: NumericAxis(
           labelStyle: TextStyle(color: Colors.green, height: 1),
-
-          // title: AxisTitle(text: 'Y-Axis'),
           rangePadding: ChartRangePadding.additional),
       series: <ChartSeries>[
         _scatterPlotScatterSeries(chartDataOptimizeList),
@@ -129,10 +104,10 @@ Widget _scatterPlotSfCartesianChart(chartDataOptimizeList, attributeName1) {
 }
 
 _timeScatterSeries(chartDataList) {
-// Renders scatter chart
+// Renders scatter series
   final double size = _sizeManager(chartDataList.length);
   return ScatterSeries<ChartData, DateTime>(
-    opacity: min(_opacityManager(chartDataList.length) * 2, 1),
+    opacity: math.min(_opacityManager(chartDataList.length) * 2, 1),
     markerSettings:
         MarkerSettings(height: size, width: size, shape: DataMarkerType.circle),
     animationDuration: 3000,
@@ -153,8 +128,33 @@ _timeScatterSeries(chartDataList) {
   );
 }
 
+// todo remove after trend line fix
+// List<ChartDataOptimize> _updateDataSource() {
+//   List<ChartDataOptimize> chartDataOptimizeList = <ChartDataOptimize>[];
+//
+//   chartDataOptimizeList.add(ChartDataOptimize(45, 150));
+//
+//   for (int i = 36; i < 60; i++) {
+//     int values = _getRandomInt(1, 15);
+//     for (int j = 0; j < values; j++) {
+//       chartDataOptimizeList.add(ChartDataOptimize(i, _getRandomInt(150, 650)));
+//     }
+//   }
+//
+//   chartDataOptimizeList.add(ChartDataOptimize(50, 650));
+//
+//   return chartDataOptimizeList;
+// }
+//
+// int _getRandomInt(int min, int max) {
+//   final math.Random _random = math.Random();
+//   return min + _random.nextInt(max - min);
+// }
+
 _scatterPlotScatterSeries(chartDataOptimizeList) {
-// Renders scatter chart
+  // chartDataOptimizeList = _updateDataSource(); // todo remove after trend line fix
+
+  // Renders scatter chart
   final double size = _sizeManager(chartDataOptimizeList.length);
   return ScatterSeries<ChartDataOptimize, num>(
     opacity: _opacityManager(chartDataOptimizeList.length),
@@ -197,6 +197,7 @@ class ChartData {
 }
 
 double _opacityManager(num) {
+  print('num dots:$num');
   double opacity = 0.1;
   if (num < 3) {
     opacity = 1.0;
@@ -217,9 +218,9 @@ double _opacityManager(num) {
   } else if (num < 1600) {
     opacity = 0.2;
   } else if (num < 3200) {
-    opacity = 0.15;
+    opacity = 0.2;
   } else if (num <= 6400) {
-    opacity = 0.1;
+    opacity = 0.2;
   }
   return opacity;
 }
