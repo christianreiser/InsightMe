@@ -7,7 +7,7 @@ import '../../Database/entry.dart';
 
 final DatabaseHelperEntry databaseHelperEntry = DatabaseHelperEntry();
 
-Future<List<ChartData>> oneAttributeChartData(attributeName) async {
+Future<List<ChartData>> timeSeriesChartData(attributeName) async {
   // Get dateTime and values of entries from database and set as state
   final List<Entry> filteredEntryList =
       await databaseHelperEntry.getFilteredEntryList(attributeName);
@@ -27,7 +27,7 @@ Future<List<ChartData>> oneAttributeChartData(attributeName) async {
   return chartDataList;
 }
 
-Future<List<ChartDataOptimize>> twoAttributeChartData(
+Future<List<ChartDataOptimize>> scatterPlotData(
     attributeName1, attributeName2) async {
   final rowForEachDay = await getDailySummariesInRowForEachDayFormat(
       await getApplicationDocumentsDirectory());

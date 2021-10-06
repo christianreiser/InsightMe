@@ -78,7 +78,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
       final String att1 = schedule.selectedAttribute1;
       String att2 = schedule.selectedAttribute2;
       return FutureBuilder(
-          future: readCorrelationCoefficientsOfOneAttribute(att1),
+          future: readCorrelationCoefficients(att1),
           builder: (context, snapshot) {
             // chart data arrived && data found
             if (snapshot.connectionState == ConnectionState.done &&
@@ -125,7 +125,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             height: 450, // height constraint
             child: SizedBox.expand(
               // for max width
-              child: futureTwoAttributeScatterPlot(att1, att2),
+              child: futureScatterPlot(att1, att2),
             ),
           ),
 

@@ -17,7 +17,7 @@ Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
   return correlationCoefficient;
 }
 
-Future<Map<String, double>> readCorrelationCoefficientsOfOneAttribute(
+Future<Map<String, double>> readCorrelationCoefficients(
     attribute) async {
   // corr matrix
   var correlationMatrix = await _readCorrelationMatrix();

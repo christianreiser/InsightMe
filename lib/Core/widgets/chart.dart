@@ -44,12 +44,12 @@ void initState() {
 
 Widget futureTimeSeriesPlot(attributeName) {
   return FutureBuilder(
-    future: oneAttributeChartData(attributeName), //schedule.selectedAttribute1
+    future: timeSeriesChartData(attributeName), //schedule.selectedAttribute1
     builder: (context, snapshot) {
       // chart data arrived && data found
       if (snapshot.connectionState == ConnectionState.done &&
           snapshot.data != null) {
-        return _oneAttributeSfCartesianChart(snapshot.data);
+        return _timeSeriesSfCartesianChart(snapshot.data);
       }
 
       // chart data arrived but no data found
@@ -65,15 +65,15 @@ Widget futureTimeSeriesPlot(attributeName) {
   );
 }
 
-Widget futureTwoAttributeScatterPlot(attributeName2, attributeName1) {
+Widget futureScatterPlot(attributeName2, attributeName1) {
   if (attributeName1 != attributeName2) {
     return FutureBuilder(
-      future: twoAttributeChartData(attributeName1, attributeName2),
+      future: scatterPlotData(attributeName1, attributeName2),
       builder: (context, snapshot) {
         // chart data arrived && data found
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return _twoAttributeSfCartesianChart(snapshot.data, attributeName1);
+          return _scatterPlotSfCartesianChart(snapshot.data, attributeName1);
         }
 
         // chart data arrived but no data found
@@ -92,7 +92,7 @@ Widget futureTwoAttributeScatterPlot(attributeName2, attributeName1) {
   }
 }
 
-Widget _oneAttributeSfCartesianChart(chartDataList) {
+Widget _timeSeriesSfCartesianChart(chartDataList) {
   return SfCartesianChart(
       primaryXAxis:
           DateTimeAxis(dateFormat: DateFormat.yMMMd(), desiredIntervals: 3),
@@ -102,18 +102,16 @@ Widget _oneAttributeSfCartesianChart(chartDataList) {
       ]);
 }
 
-Widget _twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
+Widget _scatterPlotSfCartesianChart(chartDataOptimizeList, attributeName1) {
   return SfCartesianChart(
-      // borderWidth: 0,
-      // plotAreaBorderWidth: 0,
-      margin: EdgeInsets.fromLTRB(6,8,2,0),
-
+      margin: EdgeInsets.fromLTRB(6, 8, 2, 0),
       primaryXAxis: NumericAxis(
         rangePadding: ChartRangePadding.round,
         labelStyle: TextStyle(color: Colors.blue, height: 0.7),
         title: AxisTitle(
           text: attributeName1,
-          textStyle: TextStyle(height: 0.8,
+          textStyle: TextStyle(
+              height: 0.8,
               color: Colors.blue,
               fontFamily: 'Roboto',
               fontSize: 17,
@@ -125,10 +123,8 @@ Widget _twoAttributeSfCartesianChart(chartDataOptimizeList, attributeName1) {
 
           // title: AxisTitle(text: 'Y-Axis'),
           rangePadding: ChartRangePadding.additional),
-      // zoomPanBehavior: _zoomPanBehavior, // todo
-      // tooltipBehavior: _tooltipBehavior, // todo
       series: <ChartSeries>[
-        _twoAttributeScatterSeries(chartDataOptimizeList),
+        _scatterPlotScatterSeries(chartDataOptimizeList),
       ]);
 }
 
@@ -136,7 +132,7 @@ _timeScatterSeries(chartDataList) {
 // Renders scatter chart
   final double size = _sizeManager(chartDataList.length);
   return ScatterSeries<ChartData, DateTime>(
-    opacity: min(_opacityManager(chartDataList.length)*2,1),
+    opacity: min(_opacityManager(chartDataList.length) * 2, 1),
     markerSettings:
         MarkerSettings(height: size, width: size, shape: DataMarkerType.circle),
     animationDuration: 3000,
@@ -157,44 +153,12 @@ _timeScatterSeries(chartDataList) {
   );
 }
 
-double _opacityManager(num){
-  double opacity = 0.1;
-  if (num < 3) { opacity = 1.0;} else
-  if (num < 10) { opacity = 0.9;} else
-  if (num < 25) { opacity = 0.8;} else
-  if (num < 50) { opacity = 0.7;} else
-  if (num < 100) { opacity = 0.6;} else
-  if (num < 200) { opacity = 0.5;} else
-  if (num < 400) { opacity = 0.3;} else
-  if (num < 800) { opacity = 0.25;} else
-  if (num < 1600) { opacity = 0.2;} else
-  if (num < 3200) { opacity = 0.15;} else
-  if (num <= 6400) { opacity = 0.1;}
-  return opacity;
-}
-
-double _sizeManager(num){
-  double size = 13.0;
-  if (num < 3) { size = 12.0;} else
-  if (num < 10) { size = 11.0;} else
-  if (num < 25) { size = 10.0;} else
-  if (num < 50) { size = 9.0;} else
-  if (num < 100) { size = 8.0;} else
-  if (num < 200) { size = 7.0;} else
-  if (num < 400) { size = 5.0;} else
-  if (num < 800) { size = 4.5;} else
-  if (num < 1600) { size = 4.0;} else
-  if (num < 3200) { size = 3.0;} else
-  if (num < 6400) { size = 2.0;} else
-  if (num < 15000) { size = 1.0;}
-  return size;
-}
-
-_twoAttributeScatterSeries(chartDataOptimizeList) {
+_scatterPlotScatterSeries(chartDataOptimizeList) {
 // Renders scatter chart
   final double size = _sizeManager(chartDataOptimizeList.length);
   return ScatterSeries<ChartDataOptimize, num>(
-    opacity: _opacityManager(chartDataOptimizeList.length),// //0.23,
+    opacity: _opacityManager(chartDataOptimizeList.length),
+    // //0.23,
     markerSettings:
         MarkerSettings(height: size, width: size, shape: DataMarkerType.circle),
     animationDuration: 3000,
@@ -230,4 +194,62 @@ class ChartData {
 
   final DateTime dateTime;
   final double value;
+}
+
+double _opacityManager(num) {
+  double opacity = 0.1;
+  if (num < 3) {
+    opacity = 1.0;
+  } else if (num < 10) {
+    opacity = 0.9;
+  } else if (num < 25) {
+    opacity = 0.8;
+  } else if (num < 50) {
+    opacity = 0.7;
+  } else if (num < 100) {
+    opacity = 0.6;
+  } else if (num < 200) {
+    opacity = 0.5;
+  } else if (num < 400) {
+    opacity = 0.3;
+  } else if (num < 800) {
+    opacity = 0.25;
+  } else if (num < 1600) {
+    opacity = 0.2;
+  } else if (num < 3200) {
+    opacity = 0.15;
+  } else if (num <= 6400) {
+    opacity = 0.1;
+  }
+  return opacity;
+}
+
+double _sizeManager(num) {
+  double size = 13.0;
+  if (num < 3) {
+    size = 12.0;
+  } else if (num < 10) {
+    size = 11.0;
+  } else if (num < 25) {
+    size = 10.0;
+  } else if (num < 50) {
+    size = 9.0;
+  } else if (num < 100) {
+    size = 8.0;
+  } else if (num < 200) {
+    size = 7.0;
+  } else if (num < 400) {
+    size = 5.0;
+  } else if (num < 800) {
+    size = 4.5;
+  } else if (num < 1600) {
+    size = 4.0;
+  } else if (num < 3200) {
+    size = 3.0;
+  } else if (num < 6400) {
+    size = 2.0;
+  } else if (num < 15000) {
+    size = 1.0;
+  }
+  return size;
 }
