@@ -3,9 +3,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:insightme/Prediction/wvc_chart.dart';
+import 'package:insightme/Core/widgets/chart.dart';
 
 import 'color_scale.dart';
+import 'core.dart';
 import 'gantt.dart';
 
 /// json_to_dart https://javiercbk.github.io/json_to_dart/
@@ -50,8 +51,6 @@ class _PredictionRouteState extends State<PredictionRoute> {
       return predictions;
     }
 
-    const bool _wvcChartEnabled = true;
-    const bool _ganttChartEnabled = true;
     return Container(
       margin: const EdgeInsets.all(8),
       child: FutureBuilder(
@@ -60,30 +59,60 @@ class _PredictionRouteState extends State<PredictionRoute> {
             if (snapshot.connectionState == ConnectionState.done) {
               return SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                      // padding: const EdgeInsets.fromLTRB(1, 8, 8, 8),
-                      child: Text(
-                        'Mood prediction for today with prediction interval:',
-                        style: TextStyle(
-                            fontSize: 15.5, fontWeight: FontWeight.w500),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        // padding: const EdgeInsets.fromLTRB(1, 8, 8, 8),
+                        child: Text(
+                          'Mood prediction for today with prediction interval:',
+                          style: TextStyle(
+                              fontSize: 15.5, fontWeight: FontWeight.w500),
+                        ),
                       ),
-                    ),
-                    _ganttChartEnabled == true
-                        ? biDirectionalGanttChart(
-                            snapshot.data.scaleBounds, context)
-                        : Container(),
-                    SizedBox(height: 3),
-                    predictionWidget(snapshot.data),
-                    numericScale(snapshot.data.scaleBounds),
-                    _ganttChartEnabled == true
-                        ? showGanttExplanation(context)
-                        : Container(),
-                    _wvcChartEnabled == true ? wvcChart(context) : Container(),
-                  ],
-                ),
+                      biDirectionalGanttChart(
+                          snapshot.data.scaleBounds, context),
+                      SizedBox(height: 3),
+                      predictionWidget(snapshot.data),
+                      numericScale(snapshot.data.scaleBounds),
+                      showGanttExplanation(context),
+
+                      /// ---------------
+                      Stack(children: [
+                        SizedBox(
+                          height: 450, // height constraint
+                          child: SizedBox.expand(
+                            /// scatter plot
+                            child: futureScatterPlot('HumidInMax()', 'Mood'),
+                          ),
+                        ),
+                        Column(children: [
+                          SizedBox(height: 7),
+
+                          Row(children: [
+                            SizedBox(width: 30),
+                            Container(
+                                child: Stack(children: [
+                                  Container(
+                                      color: Colors.grey.withOpacity(0.1)),
+                                  ClipPath(
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      color: kindaGreen.withOpacity(0.5),
+                                    ),
+                                    clipper: TriangleClipPath(400,350),
+                                  )
+                                ]),
+                                height: 407.0,
+                                width: 365.0),
+                            // RotatedBox(
+                            //     quarterTurns: 1,
+                            //     child: Text('Mood Contribution')),
+                          ]),
+                          // Text('Today\'s-Average Humidity')
+                        ])
+                      ]),
+                    ]),
               );
             } else {
               return Container(
@@ -93,4 +122,29 @@ class _PredictionRouteState extends State<PredictionRoute> {
           }),
     );
   }
+}
+
+class TriangleClipPath extends CustomClipper<Path> {
+  final int height;
+  final int width;
+
+  TriangleClipPath(this.height, this.width);
+
+  @override
+  Path getClip(Size size) {
+    double heightHalf = height / 2;
+    double widthHalf = width / 2;
+
+    double contribution = -45.0;
+    double today = 120.0;
+    Path path = Path();
+    path.lineTo(widthHalf, heightHalf); //start in middle
+    path.lineTo(today + widthHalf, heightHalf); //right/left
+    path.lineTo(today + widthHalf, -contribution + heightHalf); //up/down
+    path.lineTo(widthHalf, heightHalf); //end in middle
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

@@ -83,7 +83,7 @@ Widget _scatterPlot(chartDataOptimizeList, attributeName1) {
   return SfCartesianChart(
       margin: EdgeInsets.fromLTRB(6, 8, 2, 0),
       primaryXAxis: NumericAxis(
-        rangePadding: ChartRangePadding.round,
+        rangePadding: ChartRangePadding.normal,
         labelStyle: TextStyle(color: Colors.blue, height: 0.7),
         title: AxisTitle(
           text: attributeName1,

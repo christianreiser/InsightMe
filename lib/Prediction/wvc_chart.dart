@@ -68,7 +68,7 @@ Widget _showWVCExplanation(
   );
 }
 
-class CustomClipPath extends CustomClipper<Path> {
+class DiagonalClipPath extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
@@ -92,14 +92,14 @@ Widget _greenRedLegendBox(context) {
             width: MediaQuery.of(context).size.width,
             color: kindaGreen,
           ),
-          clipper: CustomClipPath(),
+          clipper: DiagonalClipPath(),
         )
       ]),
       height: 16.0,
       width: 16.0);
 }
 
-Widget wvcChart(context) {
+Widget wvcChart(context,i) {
   /// header: [0]featureName [1]contribution	[2]weight
   /// [3]value_today_not_normalized	[4]value_today_normalized
   /// [5]extrema[max,min]
@@ -110,13 +110,25 @@ Widget wvcChart(context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       SizedBox(height: 8),
-      Row(children: [
-        _greenRedLegendBox(context),
-        Text(' Contribution  '),
-        Container(color: weightColor, height: 16.0, width: 16.0),
-        Text(' Weight  '),
-        Container(color: valueTodayColor, height: 16.0, width: 16.0),
-        Text(' Today\'s measurement  '),
+      Column(children: [
+        Row(
+          children: [
+            _greenRedLegendBox(context),
+            Text(' Contribution  '),
+          ],
+        ),
+        Row(
+          children: [
+            Container(color: weightColor, height: 16.0, width: 16.0),
+            Text(' Weight  '),
+          ],
+        ),
+        Row(
+          children: [
+            Container(color: valueTodayColor, height: 16.0, width: 16.0),
+            Text(' Today\'s measurement  '),
+          ],
+        ),
       ]),
       SizedBox(height: 6),
       FutureBuilder(
@@ -131,7 +143,6 @@ Widget wvcChart(context) {
 
             List<Widget> _ganttChildren(wVCIOData) {
               List<Widget> list = [];
-              for (int i = 1; i < wVCIOData.length; i++) {
                 /// Name
                 list.add(Text('${wVCIOData[i][0]}:'));
 
@@ -163,7 +174,6 @@ Widget wvcChart(context) {
                     height: 10,
                   ),
                 );
-              }
               return list;
             }
 
@@ -182,4 +192,12 @@ Widget wvcChart(context) {
           contributionColor, weightColor, valueTodayColor, context),
     ],
   );
+}
+
+void showFeatureDetails(context, i) {
+  AlertDialog alertDialog = AlertDialog(
+    title: Text('Explanation'),
+    content: wvcChart(context,i-1),
+  );
+  showDialog(context: context, builder: (_) => alertDialog);
 }

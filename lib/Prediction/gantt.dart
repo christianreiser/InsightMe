@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:insightme/Prediction/wvc_chart.dart';
 
 import 'core.dart';
 
@@ -33,7 +34,9 @@ Widget biDirectionalGanttChart(scaleBounds, context) {
               SizedBox(
                 height: height,
                 child: TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    showFeatureDetails(context, i);
+                  },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     textStyle: const TextStyle(fontSize: 14),
@@ -91,29 +94,13 @@ Widget showGanttExplanation(context) {
                 widthFactor: 1,
                 child: Stack(
                   children: [
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          scaledBar(7 - 0.1, 7 + 0.1, [1, 9], Colors.black,
-                              12.0, '', false),
-                        ]),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          scaledBar(5, 9, [1, 9], Colors.black, 2.0, '', false),
-                        ]),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          scaledBar(5, 5 + 0.05, [1, 9], Colors.black, 12.0, '',
-                              false),
-                        ]),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          scaledBar(9 - 0.05, 9, [1, 9], Colors.black, 12.0, '',
-                              false),
-                        ]),
+                    scaledBar(7 - 0.1, 7 + 0.1, [1, 9], Colors.black, 12.0, '',
+                        false),
+                    scaledBar(5, 9, [1, 9], Colors.black, 2.0, '', false),
+                    scaledBar(
+                        5, 5 + 0.05, [1, 9], Colors.black, 12.0, '', false),
+                    scaledBar(
+                        9 - 0.05, 9, [1, 9], Colors.black, 12.0, '', false),
                   ],
                 ),
               ),
@@ -128,3 +115,5 @@ Widget showGanttExplanation(context) {
     },
   );
 }
+
+
