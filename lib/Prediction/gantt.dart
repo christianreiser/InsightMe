@@ -30,8 +30,24 @@ Widget biDirectionalGanttChart(scaleBounds, context) {
               color = kindaGreen;
             }
             list.add(
-              scaledBar(featureEndStarts[i][1], featureEndStarts[i][2],
-                  scaleBounds, color, height, featureEndStarts[i][0], true),
+              SizedBox(
+                height: height,
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    textStyle: const TextStyle(fontSize: 14),
+                  ),
+                  child: scaledBar(
+                      featureEndStarts[i][1],
+                      featureEndStarts[i][2],
+                      scaleBounds,
+                      color,
+                      height,
+                      featureEndStarts[i][0],
+                      true),
+                ),
+              ),
             );
           }
           return list;
@@ -112,6 +128,3 @@ Widget showGanttExplanation(context) {
     },
   );
 }
-
-
-

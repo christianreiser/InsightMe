@@ -24,52 +24,44 @@ BoxDecoration predictionBoxDecoration() {
 
 Widget predictionWidget(predictions){
   return Container(
-    height: 30.0,
+    height: 32.0,
     decoration: predictionBoxDecoration(),
     child: FractionallySizedBox(
       widthFactor: 1,
       child: Stack(
         children: [
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            scaledBar(
-                predictions.prediction - 0.1,
-                predictions.prediction + 0.1,
-                predictions.scaleBounds,
-                Colors.black,
-                12.0,
-                '',
-                false),
-          ]),
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            scaledBar(
-                predictions.ci95[0],
-                predictions.ci95[1],
-                predictions.scaleBounds,
-                Colors.black,
-                2.0,
-                '',
-                false),
-          ]),
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            scaledBar(
-                predictions.ci95[0],
-                predictions.ci95[0] + 0.05,
-                predictions.scaleBounds,
-                Colors.black,
-                12.0,
-                '',
-                false),
-          ]),
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            scaledBar(
-                predictions.ci95[1] - 0.05,
-                predictions.ci95[1],
-                predictions.scaleBounds,
-                Colors.black,
-                12.0,
-                '',
-                false),
-          ])
+          scaledBar(
+              predictions.prediction - 0.1,
+              predictions.prediction + 0.1,
+              predictions.scaleBounds,
+              Colors.black,
+              12.0,
+              '',
+              false),
+          scaledBar(
+              predictions.ci95[0],
+              predictions.ci95[1],
+              predictions.scaleBounds,
+              Colors.black,
+              2.0,
+              '',
+              false),
+          scaledBar(
+              predictions.ci95[0],
+              predictions.ci95[0] + 0.05,
+              predictions.scaleBounds,
+              Colors.black,
+              12.0,
+              '',
+              false),
+          scaledBar(
+              predictions.ci95[1] - 0.05,
+              predictions.ci95[1],
+              predictions.scaleBounds,
+              Colors.black,
+              12.0,
+              '',
+              false)
         ],
       ),
     ),
