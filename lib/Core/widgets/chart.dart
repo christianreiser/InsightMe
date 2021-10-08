@@ -6,19 +6,6 @@ import 'package:insightme/Core/functions/chart.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-/// TODO: zoom, tooltip, trackball
-/// Error: Cannot run with sound null safety, because the following dependencies
-/// don't support null safety:
-///
-///  - package:syncfusion_flutter_charts
-///  - package:starfruit
-///  - package:fit_kit
-///  - package:intl
-///  - package:syncfusion_flutter_core
-///  - package:fl_animated_linechart
-///  - package:flutter_datetime_picker
-///  - package:linalg
-
 Widget futureTimeSeriesPlot(attributeName) {
   return FutureBuilder(
     future: timeSeriesChartData(attributeName), //schedule.selectedAttribute1
@@ -42,7 +29,7 @@ Widget futureTimeSeriesPlot(attributeName) {
   );
 }
 
-Widget futureScatterPlot(attributeName2, attributeName1) {
+Widget futureScatterPlot(attributeName2, attributeName1,trendLineOn) {
   if (attributeName1 != attributeName2) {
     return FutureBuilder(
       future: scatterPlotData(attributeName1, attributeName2),
@@ -50,7 +37,7 @@ Widget futureScatterPlot(attributeName2, attributeName1) {
         // chart data arrived && data found
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return _scatterPlot(snapshot.data, attributeName1);
+          return _scatterPlot(snapshot.data, attributeName1,trendLineOn);
         }
 
         // chart data arrived but no data found
@@ -79,11 +66,11 @@ Widget _timeSeriesSfCartesianChart(chartDataList) {
       ]);
 }
 
-Widget _scatterPlot(chartDataOptimizeList, attributeName1) {
+Widget _scatterPlot(chartDataOptimizeList, attributeName1, trendLineOn) {
   return SfCartesianChart(
       margin: EdgeInsets.fromLTRB(6, 8, 2, 0),
       primaryXAxis: NumericAxis(
-        rangePadding: ChartRangePadding.normal,
+        rangePadding: ChartRangePadding.none,
         labelStyle: TextStyle(color: Colors.blue, height: 0.7),
         title: AxisTitle(
           text: attributeName1,
@@ -97,9 +84,9 @@ Widget _scatterPlot(chartDataOptimizeList, attributeName1) {
       ),
       primaryYAxis: NumericAxis(
           labelStyle: TextStyle(color: Colors.green, height: 1),
-          rangePadding: ChartRangePadding.additional),
+          rangePadding: ChartRangePadding.none),
       series: <ChartSeries>[
-        _scatterPlotScatterSeries(chartDataOptimizeList),
+        _scatterPlotScatterSeries(chartDataOptimizeList, trendLineOn),
       ]);
 }
 
@@ -128,32 +115,28 @@ _timeScatterSeries(chartDataList) {
   );
 }
 
-// todo remove after trend line fix
-// List<ChartDataOptimize> _updateDataSource() {
-//   List<ChartDataOptimize> chartDataOptimizeList = <ChartDataOptimize>[];
-//
-//   chartDataOptimizeList.add(ChartDataOptimize(45, 150));
-//
-//   for (int i = 36; i < 60; i++) {
-//     int values = _getRandomInt(1, 15);
-//     for (int j = 0; j < values; j++) {
-//       chartDataOptimizeList.add(ChartDataOptimize(i, _getRandomInt(150, 650)));
-//     }
-//   }
-//
-//   chartDataOptimizeList.add(ChartDataOptimize(50, 650));
-//
-//   return chartDataOptimizeList;
-// }
-//
-// int _getRandomInt(int min, int max) {
-//   final math.Random _random = math.Random();
-//   return min + _random.nextInt(max - min);
-// }
-
-_scatterPlotScatterSeries(chartDataOptimizeList) {
-  // chartDataOptimizeList = _updateDataSource(); // todo remove after trend line fix
-
+_scatterPlotScatterSeries(chartDataOptimizeList, trendLineOn) {
+  List<Trendline> trendLine;
+  if (trendLineOn){
+    trendLine = <Trendline>[
+      Trendline(
+          type: TrendlineType.polynomial,
+          color: Colors.grey,
+          width: 2,
+          opacity: 0.9,
+          enableTooltip: true,
+          period: 7,
+          animationDuration: 5000.0),
+      Trendline(
+          type: TrendlineType.linear,
+          color: Colors.teal,
+          width: 2,
+          opacity: 0.9,
+          enableTooltip: true,
+          period: 7,
+          animationDuration: 5000.0)
+    ];
+  }
   // Renders scatter chart
   final double size = _sizeManager(chartDataOptimizeList.length);
   return ScatterSeries<ChartDataOptimize, num>(
@@ -166,26 +149,7 @@ _scatterPlotScatterSeries(chartDataOptimizeList) {
     dataSource: chartDataOptimizeList,
     xValueMapper: (ChartDataOptimize data, _) => data.value1,
     yValueMapper: (ChartDataOptimize data, _) => data.value2,
-    trendlines: <Trendline>[
-      Trendline(
-          type: TrendlineType.polynomial,
-          color: Colors.grey,
-          width: 2,
-          opacity: 0.9,
-          enableTooltip: true,
-          period: 7,
-          animationDuration: 5000.0),
-      Trendline(
-          type: TrendlineType.linear,
-          // forwardForecast:400,
-          // backwardForecast: 400,
-          color: Colors.teal,
-          width: 2,
-          opacity: 0.9,
-          enableTooltip: true,
-          period: 7,
-          animationDuration: 5000.0)
-    ],
+    trendlines: trendLine,
   );
 }
 

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:insightme/Prediction/wvc_chart.dart';
+import 'package:insightme/Prediction/visualization.dart';
 
 import 'core.dart';
 
@@ -15,7 +15,8 @@ Future<List<List<dynamic>>> _readPhoneFeatureDataIOFiles(context) async {
   return featureDataListList;
 }
 
-Widget biDirectionalGanttChart(scaleBounds, context) {
+Widget biDirectionalGanttChart(scaleBounds, context, wVCIOData) {
+  int showDetails = -1;
   return FutureBuilder(
     future: _readPhoneFeatureDataIOFiles(context),
     builder: (context, snapshot) {
@@ -31,26 +32,34 @@ Widget biDirectionalGanttChart(scaleBounds, context) {
               color = kindaGreen;
             }
             list.add(
-              SizedBox(
-                height: height,
-                child: TextButton(
-                  onPressed: () {
-                    showFeatureDetails(context, i);
-                  },
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    textStyle: const TextStyle(fontSize: 14),
+              Column(children: [
+                SizedBox(
+                  height: height,
+                  child: TextButton(
+                    onPressed: () {
+                      showDetails = i-1;
+                      print('showDetails:$showDetails');
+
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      textStyle: const TextStyle(fontSize: 14),
+                    ),
+                    child: scaledBar(
+                        featureEndStarts[i][1],
+                        featureEndStarts[i][2],
+                        scaleBounds,
+                        color,
+                        height,
+                        featureEndStarts[i][0],
+                        true),
                   ),
-                  child: scaledBar(
-                      featureEndStarts[i][1],
-                      featureEndStarts[i][2],
-                      scaleBounds,
-                      color,
-                      height,
-                      featureEndStarts[i][0],
-                      true),
                 ),
-              ),
+                i > 1
+                    ? triangleScatterPlot(context, featureEndStarts[i][0],
+                        wVCIOData[i - 1], scaleBounds)
+                    : Container(), // todo Average explanation
+              ]),
             );
           }
           return list;
@@ -85,35 +94,32 @@ Widget showGanttExplanation(context) {
       AlertDialog alertDialog = AlertDialog(
         title: Text('Explanation'),
         content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height: 30.0,
-              child: FractionallySizedBox(
-                widthFactor: 1,
-                child: Stack(
-                  children: [
-                    scaledBar(7 - 0.1, 7 + 0.1, [1, 9], Colors.black, 12.0, '',
-                        false),
-                    scaledBar(5, 9, [1, 9], Colors.black, 2.0, '', false),
-                    scaledBar(
-                        5, 5 + 0.05, [1, 9], Colors.black, 12.0, '', false),
-                    scaledBar(
-                        9 - 0.05, 9, [1, 9], Colors.black, 12.0, '', false),
-                  ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: 30.0,
+                child: FractionallySizedBox(
+                  widthFactor: 1,
+                  child: Stack(
+                    children: [
+                      scaledBar(7 - 0.1, 7 + 0.1, [1, 9], Colors.black, 12.0,
+                          '', false),
+                      scaledBar(5, 9, [1, 9], Colors.black, 2.0, '', false),
+                      scaledBar(
+                          5, 5 + 0.05, [1, 9], Colors.black, 12.0, '', false),
+                      scaledBar(
+                          9 - 0.05, 9, [1, 9], Colors.black, 12.0, '', false),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Text('Predicted mood with 95% prediction interval in black.\n'
-                'The green and red bars show positive and negative '
-                'contributions of the prediction.')
-          ],
-        ),
+              Text('Predicted mood with 95% prediction interval in black.\n'
+                  'The green and red bars show positive and negative '
+                  'contributions of the prediction.'),
+            ]),
       );
       showDialog(context: context, builder: (_) => alertDialog);
     },
   );
 }
-
-

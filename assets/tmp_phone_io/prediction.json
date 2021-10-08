@@ -1,1 +1,1 @@
-{"prediction": 6.892, "ci68": 1.24, "ci95": [4.533, 9.0], "scale_bounds": [1.0, 9.0], "target_mean": 6.109}
+{"prediction": 6.843, "ci68": 1.193, "ci95": [4.522, 9.0], "scale_bounds": [1.0, 9.0, 6.11], "target_mean": 6.109}

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'core.dart';
 
-Future<List<List<dynamic>>> _readPhoneWVCIOFiles(context) async {
+Future<List<List<dynamic>>> readPhoneWVCIOFiles(context) async {
   final String data = await DefaultAssetBundle.of(context)
       .loadString("assets/tmp_phone_io/wvc_chart.csv");
   final List<List<dynamic>> wVCIODataListList =
@@ -132,7 +132,7 @@ Widget wvcChart(context,i) {
       ]),
       SizedBox(height: 6),
       FutureBuilder(
-        future: _readPhoneWVCIOFiles(context),
+        future: readPhoneWVCIOFiles(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             const double height = 16.0;

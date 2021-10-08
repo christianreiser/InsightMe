@@ -98,7 +98,8 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                                 att1, att2, corrCoeff);
                           },
                         )
-                      : _singleScatterPlotAndStatistics(att1, att2, coeffsMap[att2]));
+                      : _singleScatterPlotAndStatistics(
+                          att1, att2, coeffsMap[att2]));
             }
 
             // chart data arrived but no data found
@@ -124,7 +125,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             height: 450, // height constraint
             child: SizedBox.expand(
               // for max width
-              child: futureScatterPlot(att1, att2),
+              child: futureScatterPlot(att1, att2, true),
             ),
           ),
 
