@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:insightme/Prediction/visualization.dart';
+import 'package:insightme/Prediction/regression_triangle_chart.dart';
 
 import 'core.dart';
 
@@ -18,23 +18,23 @@ Future<List<List<dynamic>>> _readPhoneGanttIOFiles(context) async {
 class BiDirectionalGanttChart extends StatefulWidget {
   final scaleBounds;
   final context;
-  final wVCIOData;
+  final regressionTriangleIOData;
 
-  BiDirectionalGanttChart(this.scaleBounds, this.context, this.wVCIOData);
+  BiDirectionalGanttChart(this.scaleBounds, this.context, this.regressionTriangleIOData);
 
   @override
   BiDirectionalGanttChartState createState() {
     return BiDirectionalGanttChartState(
-        this.scaleBounds, this.context, this.wVCIOData);
+        this.scaleBounds, this.context, this.regressionTriangleIOData);
   }
 }
 
 class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
   final scaleBounds;
-  var context;
-  var wVCIOData;
+  final context;
+  final regressionTriangleIOData;
 
-  BiDirectionalGanttChartState(this.scaleBounds, this.context, this.wVCIOData);
+  BiDirectionalGanttChartState(this.scaleBounds, this.context, this.regressionTriangleIOData);
 
   List<bool> _expandedList = []; // which gantt
   @override
@@ -94,7 +94,7 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                               ? triangleScatterPlot(
                                   context,
                                   featureEndStarts[i][0],
-                                  wVCIOData[i - 1],
+                                  regressionTriangleIOData[i - 1],
                                   scaleBounds)
                               : Container()
                           : Container()

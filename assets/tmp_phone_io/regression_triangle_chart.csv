@@ -1,0 +1,10 @@
+,mean_x_coord,mean_y_coord,dosage_coord,response_coord
+CO2Median(),135.738,147.098,12.346,132.187
+VitaminDSup,55.945,147.098,365.0,139.269
+NoiseMax()Yesterday,152.676,147.098,69.524,141.992
+PressOutMin()Yesterday,201.221,147.098,255.5,142.229
+Weight,167.212,147.098,220.976,143.228
+MoodYesterday,233.089,147.098,273.75,143.853
+HeartPoints,99.572,147.098,83.575,149.427
+DistractingScreentime,54.449,147.098,154.21,149.1
+HumidInMax(),157.597,147.098,146.734,145.253
