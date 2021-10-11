@@ -79,10 +79,10 @@ class _PredictionRouteState extends State<PredictionRoute> {
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
-                            biDirectionalGanttChart(
+                            BiDirectionalGanttChart(
                                 predictionIOData.scaleBounds,
                                 context,
-                                wVCIOData,-1),
+                                wVCIOData),
                             SizedBox(height: 3),
                             predictionWidget(predictionIOData),
                             numericScale(predictionIOData.scaleBounds),

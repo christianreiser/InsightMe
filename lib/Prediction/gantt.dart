@@ -15,72 +15,107 @@ Future<List<List<dynamic>>> _readPhoneGanttIOFiles(context) async {
   return featureDataListList;
 }
 
-Widget biDirectionalGanttChart(scaleBounds, context, wVCIOData,showDetails) {
-  print('\nshowDetails beginning of function: $showDetails');
-  return FutureBuilder(
-    future: _readPhoneGanttIOFiles(context),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.done) {
-        final List<List<dynamic>> featureEndStarts = snapshot.data;
-        const double height = 16.0;
+class BiDirectionalGanttChart extends StatefulWidget {
+  final scaleBounds;
+  final context;
+  final wVCIOData;
 
-        List<Widget> _ganttChildren(featureEndStarts) {
-          List<Widget> list = [];
-          for (int i = 1; i < featureEndStarts.length; i++) {
-            Color color = kindaRed;
-            if ((featureEndStarts[i][3]) == 'True') {
-              color = kindaGreen;
-            }
-            list.add(
-              Column(children: [
-                SizedBox(
-                  height: height,
-                  child: TextButton(
-                    onPressed: () {
-                      print('showDetails before:$showDetails');
-                      if (showDetails < 0) {
-                        showDetails = i - 1;
-                      } else {
-                        showDetails = -1;
-                      }
-                      print('showDetails after:$showDetails');
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      textStyle: const TextStyle(fontSize: 14),
+  BiDirectionalGanttChart(this.scaleBounds, this.context, this.wVCIOData);
+
+  @override
+  BiDirectionalGanttChartState createState() {
+    return BiDirectionalGanttChartState(
+        this.scaleBounds, this.context, this.wVCIOData);
+  }
+}
+
+class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
+  final scaleBounds;
+  var context;
+  var wVCIOData;
+
+  BiDirectionalGanttChartState(this.scaleBounds, this.context, this.wVCIOData);
+
+  List<bool> _expandedList = []; // which gantt
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _readPhoneGanttIOFiles(context),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          final List<List<dynamic>> featureEndStarts = snapshot.data;
+          const double height = 16.0;
+
+          List<Widget> _ganttChildren(featureEndStarts) {
+            List<Widget> list = [];
+            for (int i = 1; i < featureEndStarts.length; i++) {
+              Color color = kindaRed;
+              if ((featureEndStarts[i][3]) == 'True') {
+                color = kindaGreen;
+              }
+              list.add(
+                Column(children: [
+                  SizedBox(
+                    height: height,
+                    child: TextButton(
+                      onPressed: () {
+                        print('_expandedList before:$_expandedList');
+                        if (_expandedList.isEmpty ||
+                            _expandedList.isNotEmpty && !_expandedList[i - 1]) {
+                          _expandedList =
+                              List.filled(featureEndStarts.length, false);
+                          _expandedList[i - 1] = true;
+                        } else if (_expandedList.isNotEmpty &&
+                            _expandedList[i - 1]) {
+                          _expandedList =
+                              List.filled(featureEndStarts.length, false);
+                        }
+                        setState(() {
+                          print('_expandedList after:$_expandedList');
+                        });
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        textStyle: const TextStyle(fontSize: 14),
+                      ),
+                      child: scaledBar(
+                          featureEndStarts[i][1],
+                          featureEndStarts[i][2],
+                          scaleBounds,
+                          color,
+                          height,
+                          featureEndStarts[i][0],
+                          true),
                     ),
-                    child: scaledBar(
-                        featureEndStarts[i][1],
-                        featureEndStarts[i][2],
-                        scaleBounds,
-                        color,
-                        height,
-                        featureEndStarts[i][0],
-                        true),
                   ),
-                ),
-                i > 1
-                    ? showDetails != i - 1
-                        ? triangleScatterPlot(context, featureEndStarts[i][0],
-                            wVCIOData[i - 1], scaleBounds)
-                        : Container()
-                    : Container(), // todo Average explanation
-              ]),
-            );
+                  i > 1
+                      ? _expandedList.isNotEmpty
+                          ? _expandedList[i - 1] == true
+                              ? triangleScatterPlot(
+                                  context,
+                                  featureEndStarts[i][0],
+                                  wVCIOData[i - 1],
+                                  scaleBounds)
+                              : Container()
+                          : Container()
+                      : Container(),
+                ]),
+              );
+            }
+            return list;
           }
-          return list;
-        }
 
-        return Column(
-          children: _ganttChildren(featureEndStarts),
-        );
-      } else {
-        return Container(
-          child: CircularProgressIndicator(),
-        );
-      }
-    },
-  );
+          return Column(
+            children: _ganttChildren(featureEndStarts),
+          );
+        } else {
+          return Container(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
 }
 
 Widget showGanttExplanation(context) {
