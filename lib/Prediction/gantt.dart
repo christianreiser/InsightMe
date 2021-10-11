@@ -7,7 +7,7 @@ import 'package:insightme/Prediction/visualization.dart';
 
 import 'core.dart';
 
-Future<List<List<dynamic>>> _readPhoneFeatureDataIOFiles(context) async {
+Future<List<List<dynamic>>> _readPhoneGanttIOFiles(context) async {
   final String data = await DefaultAssetBundle.of(context)
       .loadString("assets/tmp_phone_io/gantt_chart.csv");
   final List<List<dynamic>> featureDataListList =
@@ -15,10 +15,10 @@ Future<List<List<dynamic>>> _readPhoneFeatureDataIOFiles(context) async {
   return featureDataListList;
 }
 
-Widget biDirectionalGanttChart(scaleBounds, context, wVCIOData) {
-  int showDetails = -1;
+Widget biDirectionalGanttChart(scaleBounds, context, wVCIOData,showDetails) {
+  print('\nshowDetails beginning of function: $showDetails');
   return FutureBuilder(
-    future: _readPhoneFeatureDataIOFiles(context),
+    future: _readPhoneGanttIOFiles(context),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.done) {
         final List<List<dynamic>> featureEndStarts = snapshot.data;
@@ -37,9 +37,13 @@ Widget biDirectionalGanttChart(scaleBounds, context, wVCIOData) {
                   height: height,
                   child: TextButton(
                     onPressed: () {
-                      showDetails = i-1;
-                      print('showDetails:$showDetails');
-
+                      print('showDetails before:$showDetails');
+                      if (showDetails < 0) {
+                        showDetails = i - 1;
+                      } else {
+                        showDetails = -1;
+                      }
+                      print('showDetails after:$showDetails');
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -56,8 +60,10 @@ Widget biDirectionalGanttChart(scaleBounds, context, wVCIOData) {
                   ),
                 ),
                 i > 1
-                    ? triangleScatterPlot(context, featureEndStarts[i][0],
-                        wVCIOData[i - 1], scaleBounds)
+                    ? showDetails != i - 1
+                        ? triangleScatterPlot(context, featureEndStarts[i][0],
+                            wVCIOData[i - 1], scaleBounds)
+                        : Container()
                     : Container(), // todo Average explanation
               ]),
             );

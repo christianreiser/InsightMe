@@ -82,7 +82,7 @@ class _PredictionRouteState extends State<PredictionRoute> {
                             biDirectionalGanttChart(
                                 predictionIOData.scaleBounds,
                                 context,
-                                wVCIOData),
+                                wVCIOData,-1),
                             SizedBox(height: 3),
                             predictionWidget(predictionIOData),
                             numericScale(predictionIOData.scaleBounds),
@@ -107,19 +107,18 @@ class _PredictionRouteState extends State<PredictionRoute> {
 Widget triangleScatterPlot(context, doseName, wVCIOData, scaleBounds) {
   print('wVCIOData:$wVCIOData');
 
-  /// header: [0]featureName [1]contribution	[2]weight
-  /// [3]value_today_not_normalized	[4]value_today_normalized
-  /// [5]extrema[max,min]
+  /// header: [0]featureName [1]mean_y_coord	[2]mean_x_coord
+  /// [3]dosage_coord	[4]response_coord
+  final String label = wVCIOData[0];
+  final double xMeanCoord = wVCIOData[1];
+  final double yMeanCoord = wVCIOData[2];
+  final double dosageCoord = wVCIOData[3];
+  final double responseCoord = wVCIOData[4];
   const double height = 407;
-  const double width = 365;
+  const double width = 370;
 
-  final double scalingFactorHeight = height / (scaleBounds[1] - scaleBounds[0]);
-
-  final double dose = wVCIOData[4] * width * 0.3;
-  print('dose:$dose');
-  final double response = wVCIOData[1] * scalingFactorHeight; //height*-0.1;
   Color triangleColor = kindaGreen;
-  if (response < 0) {
+  if (yMeanCoord - responseCoord < 0) {
     triangleColor = kindaRed;
   }
   return Stack(children: [
@@ -127,14 +126,14 @@ Widget triangleScatterPlot(context, doseName, wVCIOData, scaleBounds) {
       height: 450, // height constraint
       child: SizedBox.expand(
         /// scatter plot
-        child: futureScatterPlot('Mood', wVCIOData[0],false),
+        child: futureScatterPlot('Mood', label, false),
       ),
     ),
     Column(children: [
       SizedBox(height: 7),
 
       Row(children: [
-        SizedBox(width: 30),
+        SizedBox(width: 24),
         Container(
             child: Stack(children: [
               Container(color: Colors.grey.withOpacity(0.1)),
@@ -143,8 +142,8 @@ Widget triangleScatterPlot(context, doseName, wVCIOData, scaleBounds) {
                   width: MediaQuery.of(context).size.width,
                   color: triangleColor.withOpacity(0.5),
                 ),
-                clipper:
-                    TriangleClipPath(height / 2, width / 2, dose, response),
+                clipper: TriangleClipPath(
+                    xMeanCoord, yMeanCoord, dosageCoord, responseCoord),
               )
             ]),
             height: height,
@@ -159,20 +158,21 @@ Widget triangleScatterPlot(context, doseName, wVCIOData, scaleBounds) {
 }
 
 class TriangleClipPath extends CustomClipper<Path> {
-  final double heightHalf;
-  final double widthHalf;
+  final double xMean;
+  final double yMean;
   final double dose;
   final double response;
 
-  TriangleClipPath(this.heightHalf, this.widthHalf, this.dose, this.response);
+  TriangleClipPath(this.xMean, this.yMean, this.dose, this.response);
 
   @override
   Path getClip(Size size) {
+    print('xMean...:$xMean,$yMean, $dose, $response');
     Path path = Path();
-    path.lineTo(229, 142); //start in middle dosage; mean response
-    path.lineTo(dose + 229, 142); //right/left
-    path.lineTo(dose + 229, -response + 229); //up/down
-    path.lineTo(229, 142); //end in middle
+    path.lineTo(xMean, yMean); //start in middle dosage; mean response
+    path.lineTo(dose, yMean); //right/left
+    path.lineTo(dose, response); //up/down
+    path.lineTo(xMean, yMean); //end in middle
     return path;
   }
 
