@@ -53,7 +53,7 @@ class ComputeCorrelations {
         if (column > row) {
           /// get xYStats which are needed to compute correlations
           Map<num, num> xYStats =
-              getXYStats(rowForEachAttribute, numDays, row, column);
+              getXYStats(rowForEachAttribute, numDays, row, column,0);
 
           correlationCoefficient = _computeCorrelationCoefficient(xYStats);
           // debugPrint('row: $row; '

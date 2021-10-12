@@ -7,7 +7,7 @@ import 'package:insightme/Database/create_daily_summary.dart';
 
 import 'misc.dart';
 
-Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
+Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column, daysOffset) {
   /// get xYStats which are needed to compute correlations
 
   /// ini xYStats
@@ -29,12 +29,11 @@ Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column) {
     /// ini keys to keep track of key uniqueness
     List<double> keys = [];
 
-    for (int day = 0; day < numDays; day++) {
-      if (rowForEachAttribute[row - 1][day].runtimeType != String) {
-        key = (rowForEachAttribute[row - 1][day]).toDouble();
+    for (int day = 0+daysOffset; day < numDays; day++) {
+      /// get keys and values, convert to doubles, skip 'null' Strings
+      if (rowForEachAttribute[row - 1][day-daysOffset].runtimeType != String) {
+        key = (rowForEachAttribute[row - 1][day-daysOffset]).toDouble();
       }
-
-      // convert to doubles, skip 'null' Strings
       if (rowForEachAttribute[column - 1][day].runtimeType != String) {
         value = (rowForEachAttribute[column - 1][day]).toDouble();
       }

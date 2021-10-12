@@ -29,16 +29,27 @@ Future<List<ChartData>> timeSeriesChartData(attributeName) async {
 
 Future<List<ChartDataOptimize>> scatterPlotData(
     attributeName1, attributeName2) async {
+
   final rowForEachDay = await getDailySummariesInRowForEachDayFormat(
       await getApplicationDocumentsDirectory());
   final List<dynamic> labels = await getLabels(rowForEachDay);
+
+  /// handle yesterday: if String contains 'Yesterday' set dayOffset to 1 and
+  /// remove yesterday from String
+  int daysOffset = 0;
+  String tmp = attributeName1.substring(attributeName1.length - 9);
+  if (tmp=='Yesterday') {
+    daysOffset = 1;
+    attributeName1 = attributeName1.substring(0,attributeName1.length - 9);
+  }
+
   final int row = labels.indexOf(attributeName1) + 1;
   final int column = labels.indexOf(attributeName2) + 1;
   final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
   List<ChartDataOptimize> chartDataOptimizeList = [];
   if (rowForEachDay.isNotEmpty) {
     final Map<num, num> xYStats =
-    getXYStats(rowForEachAttribute, rowForEachDay.length, row, column);
+    getXYStats(rowForEachAttribute, rowForEachDay.length, row, column, daysOffset);
 
     xYStats.forEach((k, v) => chartDataOptimizeList.add(
       ChartDataOptimize(k, v),
