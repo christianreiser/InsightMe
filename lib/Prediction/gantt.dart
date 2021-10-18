@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Prediction/regression_triangle_chart.dart';
 
+import 'color_scale.dart';
 import 'core.dart';
 
 Future<List<List<dynamic>>> _readPhoneGanttIOFiles(context) async {
@@ -20,7 +21,8 @@ class BiDirectionalGanttChart extends StatefulWidget {
   final context;
   final regressionTriangleIOData;
 
-  BiDirectionalGanttChart(this.scaleBounds, this.context, this.regressionTriangleIOData);
+  BiDirectionalGanttChart(
+      this.scaleBounds, this.context, this.regressionTriangleIOData);
 
   @override
   BiDirectionalGanttChartState createState() {
@@ -34,7 +36,8 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
   final context;
   final regressionTriangleIOData;
 
-  BiDirectionalGanttChartState(this.scaleBounds, this.context, this.regressionTriangleIOData);
+  BiDirectionalGanttChartState(
+      this.scaleBounds, this.context, this.regressionTriangleIOData);
 
   List<bool> _expandedList = []; // which gantt
   @override
@@ -126,38 +129,44 @@ Widget showGanttExplanation(context) {
     /* info note for correlation coefficient */
     // to reduce height of correlation info button
     child: Icon(Icons.info, color: Colors.grey),
-    // onPressed: () {
-    //   showAlertDialog(
-    //       'Explanation',
-    //       ';
-    // },
     onPressed: () {
       AlertDialog alertDialog = AlertDialog(
-        title: Text('Explanation'),
+        title: Text('Example'),
         content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Text('Prediction', style: TextStyle(fontWeight: FontWeight.bold)),
+              SizedBox(height: 8.0),
               Container(
                 height: 30.0,
+                decoration: predictionBoxDecoration(),
                 child: FractionallySizedBox(
                   widthFactor: 1,
                   child: Stack(
                     children: [
                       scaledBar(7 - 0.1, 7 + 0.1, [1, 9], Colors.black, 12.0,
                           '', false),
-                      scaledBar(5, 9, [1, 9], Colors.black, 2.0, '', false),
+                      scaledBar(6, 8, [1, 9], Colors.black, 2.0, '', false),
                       scaledBar(
-                          5, 5 + 0.05, [1, 9], Colors.black, 12.0, '', false),
+                          6, 6 + 0.05, [1, 9], Colors.black, 12.0, '', false),
                       scaledBar(
-                          9 - 0.05, 9, [1, 9], Colors.black, 12.0, '', false),
+                          8 - 0.05, 8, [1, 9], Colors.black, 12.0, '', false),
                     ],
                   ),
                 ),
               ),
-              Text('Predicted mood with 95% prediction interval in black.\n'
-                  'The green and red bars show positive and negative '
-                  'contributions of the prediction.'),
+              numericScale([1, 9]),
+              Text('Predicted mood of 7 on a scale from 1 to 9.\n'
+                  '95% prediction interval from 6 to 8.\n\n'),
+              Text('Contributions',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              SizedBox(height: 6.0),
+              scaledBar(5, 7, [1, 9], kindaGreen, 16.0, 'Steps', true),
+              scaledBar(7, 6, [1, 9], kindaRed, 16.0, 'CO2 level', true),
+              Text(
+                  'The green bar shows a large positive contribution of \'Steps\' on today\'s mood prediction.\n'
+                  'The red bar shows a smaller negative contribution of \'CO2 level\'.'),
             ]),
       );
       showDialog(context: context, builder: (_) => alertDialog);

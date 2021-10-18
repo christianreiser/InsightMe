@@ -22,7 +22,7 @@ class ComputeCorrelations {
     debugPrint('get labels');
     final List<dynamic> labels = await getLabels(rowForEachDay);
 
-    // getNumDays has to be after getDailySummariesInRowForEachDayFormat because there it is set
+    /// getNumDays has to be after getDailySummariesInRowForEachDayFormat because there it is set
     int numDays = rowForEachDay.length;
 
     final int numLabels = labels.length;
@@ -56,10 +56,6 @@ class ComputeCorrelations {
               getXYStats(rowForEachAttribute, numDays, row, column,0);
 
           correlationCoefficient = _computeCorrelationCoefficient(xYStats);
-          // debugPrint('row: $row; '
-          //     'column: $column; '
-          //     'correlationCoefficient: $correlationCoefficient; ');
-          // debugPrint('xYStats: $xYStats;');
 
           /// writeCorrelationCoefficients
           correlationMatrix = _fillCorrelationCoefficientMatrix(
@@ -79,33 +75,26 @@ class ComputeCorrelations {
     if (xYStats.length > 2) {
       correlationCoefficient = StarStatsXY(xYStats).corCoefficient;
 
-      // catch if correlationCoefficient == NaN(, due indifferent y values?)
+      /// catch if correlationCoefficient == NaN(, due indifferent y values?)
       if (correlationCoefficient.isNaN) {
         correlationCoefficient = null;
-        // debugPrint(
-        //     'correlationCoefficient.isNaN: ${correlationCoefficient.isNaN}');
       }
 
       /// round if too many decimals
-      //if (correlation != 0 && correlation != 1 && correlation != -1) {
       try {
         correlationCoefficient = _roundDouble(correlationCoefficient, 2);
       } catch (e) {
-        //debugPrint('correlation= $correlationCoefficient was not rounded');
       }
     } else {
       debugPrint(
           'skipping: requirement not full-filled: at least 3 values needed for correlation\n');
       correlationCoefficient = 0;
     }
-    //debugPrint('correlationCoefficient: $correlationCoefficient');
     return correlationCoefficient;
   }
 
   _fillCorrelationCoefficientMatrix(
       correlation, correlationMatrix, row, column) {
-    //debugPrint('correlationMatrix: $correlationMatrix');
-    //debugPrint('correlation: $correlation');
     correlationMatrix[row][column] = correlation;
     correlationMatrix[column][row] = correlation;
     return correlationMatrix;
@@ -113,10 +102,7 @@ class ComputeCorrelations {
 
   void _writeCorrelationsToFile(correlationMatrix, directory) {
     /// save correlations
-    //debugPrint('correlationMatrix: $correlationMatrix');
-
     final pathOfTheFileToWrite = directory.path + "/correlation_matrix.csv";
-//  debugPrint('directoryTarget $directoryTarget');
 
     debugPrint('targetPath: $pathOfTheFileToWrite');
     File file = File(pathOfTheFileToWrite);
@@ -126,9 +112,7 @@ class ComputeCorrelations {
   }
 
   double _roundDouble(double value, int places) {
-    /*
-    * round to double
-    * */
+    /// round to double
     double mod = pow(10.0, places);
     return ((value * mod).round().toDouble() / mod);
   }

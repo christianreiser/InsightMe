@@ -62,7 +62,6 @@ class _PredictionRouteState extends State<PredictionRoute> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     final List<List<dynamic>> regressionTriangleIOData = snapshot.data;
-                    print('regressionTriangleIOData:,$regressionTriangleIOData');
                     return SingleChildScrollView(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
