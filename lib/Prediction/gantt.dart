@@ -91,15 +91,17 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                           true),
                     ),
                   ),
-                  i > 1
-                      ? _expandedList.isNotEmpty
-                          ? _expandedList[i - 1] == true
+                  _expandedList.isNotEmpty
+                      ? _expandedList[i - 1] == true
+                          ? i > 1
                               ? triangleScatterPlot(
                                   context,
                                   featureEndStarts[i][0],
                                   regressionTriangleIOData[i - 1],
                                   scaleBounds)
-                              : Container()
+                              : Text(
+                                  '\n${featureEndStarts[1][2].toStringAsFixed(1)} is your average mood over all time.\n'
+                                      'It is the starting point of your mood prediction.\n')
                           : Container()
                       : Container(),
                 ]),
