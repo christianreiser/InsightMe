@@ -4,6 +4,7 @@ import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Prediction/regression_triangle_chart.dart';
+import 'package:insightme/Prediction/wvc.dart';
 
 import 'color_scale.dart';
 import 'core.dart';
@@ -42,6 +43,7 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
   List<bool> _expandedList = []; // which gantt
   @override
   Widget build(BuildContext context) {
+    bool triangle = false;
     return FutureBuilder(
       future: _readPhoneGanttIOFiles(context),
       builder: (context, snapshot) {
@@ -91,19 +93,22 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                           true),
                     ),
                   ),
-                  _expandedList.isNotEmpty
-                      ? _expandedList[i - 1] == true
-                          ? i > 1
-                              ? triangleScatterPlot(
-                                  context,
-                                  featureEndStarts[i][0],
-                                  regressionTriangleIOData[i - 1],
-                                  scaleBounds)
+                  _expandedList.isNotEmpty // check if enough attributes
+                      ? _expandedList[i - 1] == true // if selected
+                          ? i > 1 // check if not average
+                              ? triangle == true // triangle vs wvc
+                                  ? triangleScatterPlot(
+                                      // triangle
+                                      context,
+                                      featureEndStarts[i][0],
+                                      regressionTriangleIOData[i - 1],
+                                      scaleBounds)
+                                  : wcv(context, i - 1) // wvc
                               : Text(
                                   '\n${featureEndStarts[1][2].toStringAsFixed(1)} is your average mood over all time.\n'
-                                      'It is the starting point of your mood prediction.\n')
-                          : Container()
-                      : Container(),
+                                  'It is the starting point of your mood prediction.\n') // average
+                          : Container() // not selected
+                      : Container(), // empty
                 ]),
               );
             }
