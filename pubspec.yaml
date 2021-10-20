@@ -43,9 +43,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - ./assets/tmp_phone_io//regression_triangle_chart.csv
+    - ./assets/tmp_phone_io/regression_triangle_chart.csv
+    - ./assets/tmp_phone_io/wvc_chart.csv
     - ./assets/tmp_phone_io/gantt_chart.csv
-    - ./assets/tmp_phone_io/tokyo_crop.png
     - ./assets/tmp_phone_io/prediction.json
     - ./assets/icon/logo_googlefit.png
   #    - ./assets/icon/who-96.png

@@ -19,7 +19,7 @@ Widget scaledBar(start, end, scaleBounds, color, height, textBeforeBar, arrow) {
         flex: (startCorrected),
         child: Container(
           alignment: Alignment.centerLeft,
-          height: 32,
+          height: 16,
           child: Row(
             children: [
               SizedBox(width: 2),

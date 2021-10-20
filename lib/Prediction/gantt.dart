@@ -58,8 +58,11 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
               if ((featureEndStarts[i][3]) == 'True') {
                 color = kindaGreen;
               }
+
+              /// gantt list
               list.add(
                 Column(children: [
+                  /// one gantt
                   SizedBox(
                     height: height,
                     child: TextButton(
@@ -74,8 +77,7 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                           _expandedList =
                               List.filled(featureEndStarts.length, false);
                         }
-                        setState(() {
-                        });
+                        setState(() {});
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -91,9 +93,11 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                           true),
                     ),
                   ),
+
+                  /// decide if show details
                   _expandedList.isNotEmpty // check if enough attributes
                       ? _expandedList[i - 1] == true // if selected
-                          ? i > 1 // check if not average
+                           ?i > 1 // check if not TargetAverage()
                               ? triangle == true // triangle vs wvc
                                   ? triangleScatterPlot(
                                       // triangle
@@ -104,7 +108,7 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                                   : wcv(context, i - 1) // wvc
                               : Text(
                                   '\n${featureEndStarts[1][2].toStringAsFixed(1)} is your average mood over all time.\n'
-                                  'It is the starting point of your mood prediction.\n') // average
+                                  'It is the starting point of your mood prediction.\n') // TargetAverage()
                           : Container() // not selected
                       : Container(), // empty
                 ]),

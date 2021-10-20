@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 
 import 'core.dart';
 
-Widget wcv(context,i) {
+Widget wcv(context, i) {
   Color contributionColor = kindaGreen;
   const Color weightColor = Colors.teal; //const Color(0xFF00b5b2); //
   const Color valueTodayColor = const Color(0xFF5dddd7);
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
     children: [
       SizedBox(height: 8),
       Row(children: [
@@ -24,68 +25,60 @@ Widget wcv(context,i) {
       FutureBuilder(
         future: _readPhoneWVCIOFiles(context),
         builder: (context, snapshot) {
+          final List<List<dynamic>> wvcData = snapshot.data;
           if (snapshot.connectionState == ConnectionState.done) {
             const double height = 16.0;
-            List<double> scaleBounds = [
-              snapshot.data[2][5],
-              snapshot.data[1][5]
-            ];
+            List<double> scaleBounds = [wvcData[2][5], wvcData[1][5]];
 
-            List<Widget> _ganttChildren(wVCIOData) {
+            /// def _wvcChildren
+            List<Widget> _wvcChildren(wVCIOData) {
               List<Widget> list = [];
               // if positive then green; red if negative
-                if (wVCIOData[i][1] < 0) {
-                  contributionColor = kindaRed;
-                }
+              if (wVCIOData[i][1] < 0) {
+                contributionColor = kindaRed;
+              }
 
-                /// Contribution
+              /// Contribution
               list.add(
-                  scaledBar(
-                      0,
-                      wVCIOData[i][1],
-                      scaleBounds,
-                      contributionColor,
-                      height,
-                      '',
-                      false),
-                );
+                scaledBar(0, wVCIOData[i][1], scaleBounds, contributionColor,
+                    height, '', false),
+              );
 
-                /// Weight
-                list.add(
-                  scaledBar(
-                      0,
-                      wVCIOData[i][2],
-                      scaleBounds,
-                      weightColor,
-                      height,
-                      '',
-                      false),
-                );
+              /// Weight
+              list.add(
+                scaledBar(0, wVCIOData[i][2], scaleBounds, weightColor, height,
+                    '', false),
+              );
 
-                /// Today's measurement
-                list.add(Stack(children: <Widget>[
-                  scaledBar(
-                      0,
-                      wVCIOData[i][4],
-                      scaleBounds,
-                      valueTodayColor,
-                      height,
-                      '',
-                      false),
+              /// Today's measurement
+              list.add(Stack(children: <Widget>[
+                scaledBar(0, wVCIOData[i][4], scaleBounds, valueTodayColor,
+                    height, '', false),
 // Text('Today - average${wVCIOData[i][0]}:')
-                ]));
-                list.add(
-                  SizedBox(
-                    height: 10,
-                  ),
-                );
+              ]));
+              list.add(
+                SizedBox(
+                  height: 10,
+                ),
+              );
               return list;
-            }
+            } // end def _wvcChildren
 
-            return Column(
-              children: _ganttChildren(snapshot.data),
-              crossAxisAlignment: CrossAxisAlignment.start,
-            );
+            return Stack(children: [
+              Column(
+                children: _wvcChildren(wvcData),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+              ),
+              Column(
+                children: [
+                  scaledBar(0, 0.01, scaleBounds, Colors.black,
+                      height*3, '', false),
+                ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+              )
+            ]);
           } else {
             return Container(
               child: CircularProgressIndicator(),
@@ -131,7 +124,7 @@ Widget _showWVCExplanation(
             ]),
             Text(
                 'Indicates how strong the effect is and if it\'s negative or positive.\n'
-                    'In the example below Humidity has a strong negative weight.\n'),
+                'In the example below Humidity has a strong negative weight.\n'),
             Row(children: [
               Container(color: valueTodayColor, height: 16.0, width: 16.0),
               Text(' Today\'s measurement:'),
@@ -187,6 +180,7 @@ Future<List<List<dynamic>>> _readPhoneWVCIOFiles(context) async {
   final String data = await DefaultAssetBundle.of(context)
       .loadString("assets/tmp_phone_io/wvc_chart.csv");
   final List<List<dynamic>> wVCIODataListList =
-  const CsvToListConverter().convert(data);
+      const CsvToListConverter().convert(data);
+  print('wVCIODataListList: $wVCIODataListList');
   return wVCIODataListList;
 }
