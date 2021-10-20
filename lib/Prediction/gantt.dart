@@ -64,7 +64,6 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                     height: height,
                     child: TextButton(
                       onPressed: () {
-                        print('_expandedList before:$_expandedList');
                         if (_expandedList.isEmpty ||
                             _expandedList.isNotEmpty && !_expandedList[i - 1]) {
                           _expandedList =
@@ -76,7 +75,6 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                               List.filled(featureEndStarts.length, false);
                         }
                         setState(() {
-                          print('_expandedList after:$_expandedList');
                         });
                       },
                       style: TextButton.styleFrom(

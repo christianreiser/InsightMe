@@ -119,14 +119,14 @@ _scatterPlotScatterSeries(chartDataOptimizeList, trendLineOn) {
   List<Trendline> trendLine;
   if (trendLineOn){
     trendLine = <Trendline>[
-      Trendline(
+/*      Trendline(
           type: TrendlineType.polynomial,
           color: Colors.grey,
           width: 2,
           opacity: 0.9,
           enableTooltip: true,
           period: 7,
-          animationDuration: 5000.0),
+          animationDuration: 5000.0),*/
       Trendline(
           type: TrendlineType.linear,
           color: Colors.teal,
