@@ -8,87 +8,92 @@ Widget wcv(context, i) {
   Color contributionColor = kindaGreen;
   const Color weightColor = Colors.teal; //const Color(0xFF00b5b2); //
   const Color valueTodayColor = const Color(0xFF5dddd7);
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      SizedBox(height: 8),
-      Row(children: [
-        _greenRedLegendBox(context),
-        Text(' Contribution  '),
-        Container(color: weightColor, height: 16.0, width: 16.0),
-        Text(' Weight  '),
-        Container(color: valueTodayColor, height: 16.0, width: 16.0),
-        Text(' Today\'s measurement  '),
-      ]),
-      SizedBox(height: 6),
-      FutureBuilder(
-        future: _readPhoneWVCIOFiles(context),
-        builder: (context, snapshot) {
-          final List<List<dynamic>> wvcData = snapshot.data;
-          if (snapshot.connectionState == ConnectionState.done) {
-            const double height = 16.0;
-            List<double> scaleBounds = [wvcData[2][5], wvcData[1][5]];
+  return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+      child: Container(color: Colors.black12,
+        child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height: 8),
+          Row(children: [
+            _greenRedLegendBox(context),
+            Text(' Contribution  '),
+            Container(color: weightColor, height: 16.0, width: 16.0),
+            Text(' Weight  '),
+            Container(color: valueTodayColor, height: 16.0, width: 16.0),
+            Text(' Today\'s measurement  '),
+          ]),
+          SizedBox(height: 6),
+          FutureBuilder(
+            future: _readPhoneWVCIOFiles(context),
+            builder: (context, snapshot) {
+              final List<List<dynamic>> wvcData = snapshot.data;
+              if (snapshot.connectionState == ConnectionState.done) {
+                const double height = 16.0;
+                List<double> scaleBounds = [wvcData[2][5], wvcData[1][5]];
 
-            /// def _wvcChildren
-            List<Widget> _wvcChildren(wVCIOData) {
-              List<Widget> list = [];
-              // if positive then green; red if negative
-              if (wVCIOData[i][1] < 0) {
-                contributionColor = kindaRed;
-              }
+                /// def _wvcChildren
+                List<Widget> _wvcChildren(wVCIOData) {
+                  List<Widget> list = [];
+                  // if positive then green; red if negative
+                  if (wVCIOData[i][1] < 0) {
+                    contributionColor = kindaRed;
+                  }
+                  print('wVCIOData[i][1] ${wVCIOData[i][1]}');
+                  /// Contribution
+                  list.add(
+                    scaledBar(0, wVCIOData[i][1], scaleBounds, contributionColor,
+                        height, '', false),
+                  );
 
-              /// Contribution
-              list.add(
-                scaledBar(0, wVCIOData[i][1], scaleBounds, contributionColor,
-                    height, '', false),
-              );
+                  /// Weight
+                  list.add(
+                    scaledBar(0, wVCIOData[i][2], scaleBounds, weightColor, height,
+                        '', false),
+                  );
 
-              /// Weight
-              list.add(
-                scaledBar(0, wVCIOData[i][2], scaleBounds, weightColor, height,
-                    '', false),
-              );
-
-              /// Today's measurement
-              list.add(Stack(children: <Widget>[
-                scaledBar(0, wVCIOData[i][4], scaleBounds, valueTodayColor,
-                    height, '', false),
+                  /// Today's measurement
+                  list.add(Stack(children: <Widget>[
+                    scaledBar(0, wVCIOData[i][4], scaleBounds, valueTodayColor,
+                        height, '', false),
 // Text('Today - average${wVCIOData[i][0]}:')
-              ]));
-              list.add(
-                SizedBox(
-                  height: 10,
-                ),
-              );
-              return list;
-            } // end def _wvcChildren
+                  ]));
+                  list.add(
+                    SizedBox(
+                      height: 10,
+                    ),
+                  );
+                  return list;
+                } // end def _wvcChildren
 
-            return Stack(children: [
-              Column(
-                children: _wvcChildren(wvcData),
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-              ),
-              Column(
-                children: [
-                  scaledBar(0, 0.01, scaleBounds, Colors.black,
-                      height*3, '', false),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-              )
-            ]);
-          } else {
-            return Container(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+                return Stack(children: [
+                  Column(
+                    children: _wvcChildren(wvcData),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                  ),
+                  Column(
+                    children: [
+                      scaledBar(0, 0.01, scaleBounds, Colors.black,
+                          height*3, '', false),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                  )
+                ]);
+              } else {
+                return Container(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+          _showWVCExplanation(
+              contributionColor, weightColor, valueTodayColor, context),
+        ],
       ),
-      _showWVCExplanation(
-          contributionColor, weightColor, valueTodayColor, context),
-    ],
+    ),
   );
 }
 

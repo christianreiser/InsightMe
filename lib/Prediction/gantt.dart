@@ -43,7 +43,7 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
   List<bool> _expandedList = []; // which gantt
   @override
   Widget build(BuildContext context) {
-    bool triangle = false;
+    bool triangle = true; /// TRIANGLE
     return FutureBuilder(
       future: _readPhoneGanttIOFiles(context),
       builder: (context, snapshot) {
@@ -105,7 +105,7 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                                       featureEndStarts[i][0],
                                       regressionTriangleIOData[i - 1],
                                       scaleBounds)
-                                  : wcv(context, i - 1) // wvc
+                                  : wcv(context, i-1) // wvc
                               : Text(
                                   '\n${featureEndStarts[1][2].toStringAsFixed(1)} is your average mood over all time.\n'
                                   'It is the starting point of your mood prediction.\n') // TargetAverage()
@@ -175,7 +175,8 @@ Widget showGanttExplanation(context) {
               scaledBar(7, 6, [1, 9], kindaRed, 16.0, 'CO2 level', true),
               Text(
                   'The green bar shows a large positive contribution of \'Steps\' on today\'s mood prediction.\n'
-                  'The red bar shows a smaller negative contribution of \'CO2 level\'.'),
+                  'The red bar shows a smaller negative contribution of \'CO2 level\'.\n\n'
+                      'For more information press one of the Contributions'),
             ]),
       );
       showDialog(context: context, builder: (_) => alertDialog);

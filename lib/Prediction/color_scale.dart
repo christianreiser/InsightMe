@@ -22,46 +22,35 @@ BoxDecoration predictionBoxDecoration() {
   );
 }
 
-Widget predictionWidget(predictions){
+Widget predictionWidget(predictions) {
   return Container(
     height: 32.0,
     decoration: predictionBoxDecoration(),
     child: FractionallySizedBox(
       widthFactor: 1,
-      child: Stack(
+      child: Column(
         children: [
-          scaledBar(
-              predictions.prediction - 0.1,
-              predictions.prediction + 0.1,
-              predictions.scaleBounds,
-              Colors.black,
-              12.0,
-              '',
-              false),
-          scaledBar(
-              predictions.ci95[0],
-              predictions.ci95[1],
-              predictions.scaleBounds,
-              Colors.black,
-              2.0,
-              '',
-              false),
-          scaledBar(
-              predictions.ci95[0],
-              predictions.ci95[0] + 0.05,
-              predictions.scaleBounds,
-              Colors.black,
-              12.0,
-              '',
-              false),
-          scaledBar(
-              predictions.ci95[1] - 0.05,
-              predictions.ci95[1],
-              predictions.scaleBounds,
-              Colors.black,
-              12.0,
-              '',
-              false)
+          // height adjustment between prediction and rainbow top
+          SizedBox(height: 5),
+
+          Stack(
+            children: [
+              scaledBar(
+                  predictions.prediction - 0.1,
+                  predictions.prediction + 0.1,
+                  predictions.scaleBounds,
+                  Colors.black,
+                  12.0,
+                  '',
+                  false),
+              scaledBar(predictions.ci95[0], predictions.ci95[1],
+                  predictions.scaleBounds, Colors.black, 2.0, '', false),
+              scaledBar(predictions.ci95[0], predictions.ci95[0] + 0.05,
+                  predictions.scaleBounds, Colors.black, 12.0, '', false),
+              scaledBar(predictions.ci95[1] - 0.05, predictions.ci95[1],
+                  predictions.scaleBounds, Colors.black, 12.0, '', false)
+            ],
+          ),
         ],
       ),
     ),
