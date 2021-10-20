@@ -83,7 +83,7 @@ Widget _scatterPlot(chartDataOptimizeList, attributeName1, trendLineOn) {
         ),
       ),
       primaryYAxis: NumericAxis(
-          labelStyle: TextStyle(color: Colors.green, height: 1),
+          labelStyle: TextStyle(color: Colors.deepPurple, height: 1),
           rangePadding: ChartRangePadding.none),
       series: <ChartSeries>[
         _scatterPlotScatterSeries(chartDataOptimizeList, trendLineOn),

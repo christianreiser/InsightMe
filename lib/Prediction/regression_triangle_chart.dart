@@ -121,40 +121,51 @@ Widget triangleScatterPlot(context, doseName, regressionTriangleIOData, scaleBou
   if (yMeanCoord - responseCoord < 0) {
     triangleColor = kindaRed;
   }
-  return Stack(children: [
-    SizedBox(
-      height: 450, // height constraint
-      child: SizedBox.expand(
-        /// scatter plot
-        child: futureScatterPlot('Mood', label, false),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        children: [
+          SizedBox(width: 8),
+          Text('Mood',style: TextStyle(color: Colors.deepPurple)),
+        ],
       ),
-    ),
-    Column(children: [
-      SizedBox(height: 7),
+      Stack(children: [
+        SizedBox(
+          height: 450, // height constraint
+          child: SizedBox.expand(
+            /// scatter plot
+            child: futureScatterPlot('Mood', label, false),
+          ),
+        ),
+        Column(children: [
+          SizedBox(height: 7),
 
-      Row(children: [
-        SizedBox(width: 24),
-        Container(
-            child: Stack(children: [
-              Container(color: Colors.grey.withOpacity(0.1)),
-              ClipPath(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: triangleColor.withOpacity(0.5),
-                ),
-                clipper: TriangleClipPath(
-                    xMeanCoord, yMeanCoord, dosageCoord, responseCoord),
-              )
-            ]),
-            height: height,
-            width: width),
-        // RotatedBox(
-        //     quarterTurns: 1,
-        //     child: Text('Mood Contribution')),
+          Row(children: [
+            SizedBox(width: 24),
+            Container(
+                child: Stack(children: [
+                  Container(color: Colors.grey.withOpacity(0.1)),
+                  ClipPath(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: triangleColor.withOpacity(0.5),
+                    ),
+                    clipper: TriangleClipPath(
+                        xMeanCoord, yMeanCoord, dosageCoord, responseCoord),
+                  )
+                ]),
+                height: height,
+                width: width),
+            // RotatedBox(
+            //     quarterTurns: 1,
+            //     child: Text('Mood Contribution')),
+          ]),
+          // Text('Today\'s-Average Humidity')
+        ])
       ]),
-      // Text('Today\'s-Average Humidity')
-    ])
-  ]);
+    ],
+  );
 }
 
 class TriangleClipPath extends CustomClipper<Path> {

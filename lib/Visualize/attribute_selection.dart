@@ -34,11 +34,11 @@ class _DropDownState extends State<DropDown> {
               // needed
 
               child: DropdownButton<String>(
-                dropdownColor: Colors.green[50],
-                iconEnabledColor: Colors.green,
-                focusColor: Colors.green,
+                dropdownColor: Colors.deepPurple[50],
+                iconEnabledColor: Colors.deepPurple,
+                focusColor: Colors.deepPurple,
                 underline: Container(
-                  color: Colors.green,
+                  color: Colors.deepPurple,
                   child: SizedBox(height: 1),
                 ),
                 // isExpanded: true is needed due to flutter bug:
@@ -47,7 +47,7 @@ class _DropDownState extends State<DropDown> {
                 //hint: Text('select label'), // widget shown before selection
                 value: changeNotifier.selectedAttribute1,
                 style: TextStyle(
-                    color: Colors.green,
+                    color: Colors.deepPurple,
                     fontFamily: 'Roboto',
                     fontSize: 17,
                     fontWeight: FontWeight.w400),
