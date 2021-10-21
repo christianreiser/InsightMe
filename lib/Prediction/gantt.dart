@@ -43,7 +43,9 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
   List<bool> _expandedList = []; // which gantt
   @override
   Widget build(BuildContext context) {
-    bool triangle = true; /// TRIANGLE
+    bool triangle = true;
+
+    /// TRIANGLE
     return FutureBuilder(
       future: _readPhoneGanttIOFiles(context),
       builder: (context, snapshot) {
@@ -83,21 +85,48 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                         padding: EdgeInsets.zero,
                         textStyle: const TextStyle(fontSize: 14),
                       ),
-                      child: scaledBar(
-                          featureEndStarts[i][1],
-                          featureEndStarts[i][2],
-                          scaleBounds,
-                          color,
-                          height,
-                          featureEndStarts[i][0],
-                          true),
+                      child: Stack(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(child: Container(),),
+                              IconButton(
+                                padding: EdgeInsets.all(0),
+                                icon: Icon(Icons.chevron_right),
+                                onPressed: () {
+                                  if (_expandedList.isEmpty ||
+                                      _expandedList.isNotEmpty &&
+                                          !_expandedList[i - 1]) {
+                                    _expandedList =
+                                        List.filled(featureEndStarts.length, false);
+                                    _expandedList[i - 1] = true;
+                                  } else if (_expandedList.isNotEmpty &&
+                                      _expandedList[i - 1]) {
+                                    _expandedList =
+                                        List.filled(featureEndStarts.length, false);
+                                  }
+                                  setState(() {});
+                                },
+                              ),
+                            ],
+                          ),
+                          scaledBar(
+                              featureEndStarts[i][1],
+                              featureEndStarts[i][2],
+                              scaleBounds,
+                              color,
+                              height,
+                              featureEndStarts[i][0],
+                              true),
+                        ],
+                      ),
                     ),
                   ),
 
                   /// decide if show details
                   _expandedList.isNotEmpty // check if enough attributes
                       ? _expandedList[i - 1] == true // if selected
-                           ?i > 1 // check if not TargetAverage()
+                          ? i > 1 // check if not TargetAverage()
                               ? triangle == true // triangle vs wvc
                                   ? triangleScatterPlot(
                                       // triangle
@@ -105,7 +134,7 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
                                       featureEndStarts[i][0],
                                       regressionTriangleIOData[i - 1],
                                       scaleBounds)
-                                  : wcv(context, i-1) // wvc
+                                  : wcv(context, i - 1) // wvc
                               : Text(
                                   '\n${featureEndStarts[1][2].toStringAsFixed(1)} is your average mood over all time.\n'
                                   'It is the starting point of your mood prediction.\n') // TargetAverage()
@@ -177,14 +206,15 @@ Widget showGanttExplanation(context) {
               Text(
                   'The green bar shows a large positive contribution of \'Steps\' on today\'s mood prediction.\n'
                   'The red bar shows a smaller negative contribution of \'CO2 level\'.\n\n'
-                      'For more information close this window and press one of the Contributions'),
+                  'For more information close this window and press one of the Contributions'),
               Text('\nAbout the model:\n'
                   'Multiple linear regression with lasso variable selection and regularization.'),
             ]),
         actions: [
           TextButton(
             child: const Text("Close"),
-            onPressed: () => Navigator.pop(context),          ),
+            onPressed: () => Navigator.pop(context),
+          ),
         ],
       );
       showDialog(context: context, builder: (_) => alertDialog);

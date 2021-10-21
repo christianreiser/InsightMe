@@ -82,14 +82,41 @@ class BiDirectionalGanttChart2State extends State<BiDirectionalGanttChart2> {
                         padding: EdgeInsets.zero,
                         textStyle: const TextStyle(fontSize: 14),
                       ),
-                      child: scaledBar(
-                          featureEndStarts[i][1],
-                          featureEndStarts[i][2],
-                          scaleBounds,
-                          color,
-                          height,
-                          featureEndStarts[i][0],
-                          true),
+                      child: Stack(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(child: Container(),),
+                              IconButton(
+                                padding: EdgeInsets.all(0),
+                                icon: Icon(Icons.chevron_right),
+                                onPressed: () {
+                                  if (_expandedList.isEmpty ||
+                                      _expandedList.isNotEmpty &&
+                                          !_expandedList[i - 1]) {
+                                    _expandedList =
+                                        List.filled(featureEndStarts.length, false);
+                                    _expandedList[i - 1] = true;
+                                  } else if (_expandedList.isNotEmpty &&
+                                      _expandedList[i - 1]) {
+                                    _expandedList =
+                                        List.filled(featureEndStarts.length, false);
+                                  }
+                                  setState(() {});
+                                },
+                              ),
+                            ],
+                          ),
+                          scaledBar(
+                              featureEndStarts[i][1],
+                              featureEndStarts[i][2],
+                              scaleBounds,
+                              color,
+                              height,
+                              featureEndStarts[i][0],
+                              true),
+                        ],
+                      ),
                     ),
                   ),
 
