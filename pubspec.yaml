@@ -48,6 +48,7 @@ flutter:
     - ./assets/tmp_phone_io/gantt_chart.csv
     - ./assets/tmp_phone_io/prediction.json
     - ./assets/icon/logo_googlefit.png
+    - ./assets/triangle-example2.png
   #    - ./assets/icon/who-96.png
   #    - ./assets/icon/who.svg
   #    - ./assets/icon/logo_rescueTime.png

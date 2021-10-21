@@ -100,11 +100,8 @@ Widget _greenRedLegendBox(context) {
       width: 16.0);
 }
 
-
-
-
-
-Widget triangleScatterPlot(context, doseName, regressionTriangleIOData, scaleBounds) {
+Widget triangleScatterPlot(
+    context, doseName, regressionTriangleIOData, scaleBounds) {
   print('regressionTriangleIOData:$regressionTriangleIOData');
 
   /// header: [0]featureName [1]mean_y_coord	[2]mean_x_coord
@@ -121,51 +118,49 @@ Widget triangleScatterPlot(context, doseName, regressionTriangleIOData, scaleBou
   if (yMeanCoord - responseCoord < 0) {
     triangleColor = kindaRed;
   }
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        children: [
-          SizedBox(width: 8),
-          Text('Mood',style: TextStyle(color: Colors.deepPurple)),
-        ],
-      ),
-      Stack(children: [
-        SizedBox(
-          height: 450, // height constraint
-          child: SizedBox.expand(
-            /// scatter plot
-            child: futureScatterPlot('Mood', label, false),
-          ),
+  return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    Row(
+      children: [
+        SizedBox(width: 8),
+        Text('Mood', style: TextStyle(color: Colors.deepPurple)),
+      ],
+    ),
+    Stack(children: [
+      SizedBox(
+        height: 450, // height constraint
+        child: SizedBox.expand(
+          /// scatter plot
+          child: futureScatterPlot('Mood', label, false),
         ),
-        Column(children: [
-          SizedBox(height: 7),
+      ),
+      Column(children: [
+        SizedBox(height: 7),
 
-          Row(children: [
-            SizedBox(width: 24),
-            Container(
-                child: Stack(children: [
-                  Container(color: Colors.grey.withOpacity(0.1)),
-                  ClipPath(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: triangleColor.withOpacity(0.5),
-                    ),
-                    clipper: TriangleClipPath(
-                        xMeanCoord, yMeanCoord, dosageCoord, responseCoord),
-                  )
-                ]),
-                height: height,
-                width: width),
-            // RotatedBox(
-            //     quarterTurns: 1,
-            //     child: Text('Mood Contribution')),
-          ]),
-          // Text('Today\'s-Average Humidity')
-        ])
-      ]),
-    ],
-  );
+        Row(children: [
+          SizedBox(width: 24),
+          Container(
+              child: Stack(children: [
+                Container(color: Colors.grey.withOpacity(0.1)),
+                ClipPath(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: triangleColor.withOpacity(0.5),
+                  ),
+                  clipper: TriangleClipPath(
+                      xMeanCoord, yMeanCoord, dosageCoord, responseCoord),
+                )
+              ]),
+              height: height,
+              width: width),
+          // RotatedBox(
+          //     quarterTurns: 1,
+          //     child: Text('Mood Contribution')),
+        ]),
+        // Text('Today\'s-Average Humidity')
+      ])
+    ]),
+    _showTriangleExplanation(context),
+  ]);
 }
 
 class TriangleClipPath extends CustomClipper<Path> {
@@ -189,4 +184,27 @@ class TriangleClipPath extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+Widget _showTriangleExplanation(context) {
+  return TextButton(
+    style: TextButton.styleFrom(
+        padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+    /* info note for correlation coefficient */
+    // to reduce height of correlation info button
+    child: Icon(Icons.info, color: Colors.grey),
+    onPressed: () {
+      AlertDialog alertDialog = AlertDialog(
+        title: Text('Example'),
+        content: Image(image: AssetImage('./assets/triangle-example2.png')),
+      );
+      showDialog(context: context, builder: (_) => alertDialog);
+    },
+  );
+
+
+
+
+
 }
