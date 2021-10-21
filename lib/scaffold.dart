@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 
 import 'Import/import_from_json_route.dart';
 import 'Journal/searchOrCreateAttribute.dart';
+import 'Prediction/prediction2.dart';
 import 'Prediction/visualization.dart';
 import 'Statistics/Functions/computeCorrelations.dart';
 import 'data_route.dart';
@@ -90,7 +91,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
       body: _widgetOptions.elementAt(_selectedIndex),
 
       // use below when more then one floatingActionButton and remove top block
-      // floatingActionButton: _floatingActionButton(), //_speedDial(),
+      floatingActionButton: _floatingActionButton(), //_speedDial(),
 
       // bottom navigation bar
       bottomNavigationBar: _bottomNavigationBar(),
@@ -192,23 +193,17 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
         //   icon: Icon(Icons.view_list),
         //   label: 'Home',
         // ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.timeline),
-          label: 'Data',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.widgets),
-          label: 'Optimize',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.timeline), label: 'Data'),
+        BottomNavigationBarItem(icon: Icon(Icons.widgets), label: 'Optimize'),
 
 //          BottomNavigationBarItem(
 //            icon: Icon(Icons.arrow_downward),
 //            label: 'Onboarding',
 //          ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.online_prediction),
-          label: 'Prediction',
-        ),
+            icon: Icon(Icons.online_prediction), label: 'Prediction A'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.online_prediction_outlined), label: 'Prediction B'),
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: Theme.of(context).primaryColorDark,
@@ -224,6 +219,7 @@ class _ScaffoldRouteDesignState extends State<ScaffoldRouteDesign> {
     DataRoute(),
     OptimizeRoute(),
     PredictionRoute(),
+    PredictionRoute2(),
     //OnboardingRoute(),
   ];
 

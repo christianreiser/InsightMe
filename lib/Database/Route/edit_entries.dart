@@ -330,10 +330,13 @@ class EditEntryState extends State<EditEntry> {
   }
 
   void _showAlertDialog(String title, String message) {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text(title),
-      content: Text(message),
-    );
+    AlertDialog alertDialog =
+        AlertDialog(title: Text(title), content: Text(message), actions: [
+      TextButton(
+        child: const Text("Close"),
+        onPressed: () => Navigator.pop(context),
+      ),
+    ]);
     showDialog(context: context, builder: (_) => alertDialog);
   }
 

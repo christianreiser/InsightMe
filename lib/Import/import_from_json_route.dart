@@ -165,7 +165,12 @@ class _ImportState extends State<Import> {
   void _showAlertDialog(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
-      content: Text(message),
+      content: Text(message), actions: [
+      TextButton(
+        child: const Text("Close"),
+        onPressed: () => Navigator.pop(context),
+      ),
+    ]
     );
     showDialog(context: context, builder: (_) => alertDialog);
   }

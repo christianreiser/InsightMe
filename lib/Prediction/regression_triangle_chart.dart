@@ -15,60 +15,6 @@ Future<List<List<dynamic>>> readRegressionTriangleIOFiles(context) async {
   return regressionTriangleIODataListList;
 }
 
-Widget _showRegressionTriangleExplanation(
-    contributionColor, weightColor, valueTodayColor, context) {
-  return TextButton(
-    style: TextButton.styleFrom(
-        padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-    /* info note for correlation coefficient */
-    // to reduce height of correlation info button
-    child: Icon(Icons.info, color: Colors.grey),
-    onPressed: () {
-      AlertDialog alertDialog = AlertDialog(
-        title: Text('Explanation'),
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(children: [
-              _greenRedLegendBox(context),
-              Text(' = '),
-              Container(color: weightColor, height: 16.0, width: 16.0),
-              Text(' · '),
-              Container(color: valueTodayColor, height: 16.0, width: 16.0),
-            ]),
-            Text('Contribution = Weight · Measurement.\n'
-                'Prediction = Sum(Contributions)\n    + Average Mood\n'
-                'In the example below it has a medium positive effect.\n'),
-            Row(children: [
-              Container(color: weightColor, height: 16.0, width: 16.0),
-              Text(' Weight:'),
-            ]),
-            Text(
-                'Indicates how strong the effect is and if it\'s negative or positive.\n'
-                'In the example below Humidity has a strong negative weight.\n'),
-            Row(children: [
-              Container(color: valueTodayColor, height: 16.0, width: 16.0),
-              Text(' Today\'s measurement:'),
-            ]),
-            Text(
-                'Indicates if today\'s humidity measurement is below or above average.\n'
-                'In the example Humidity is a little below average.\n'),
-            Text('Example Humidity:'),
-            scaledBar(5, 6.7, [1, 9], contributionColor, 16.0, '', false),
-            scaledBar(1.5, 5, [1, 9], weightColor, 16.0, '', false),
-            scaledBar(4.5, 5, [1, 9], valueTodayColor, 16.0, '', false),
-            Text('\nAbout the model:\n'
-                'Multiple linear regression with lasso variable selection and regularization.'),
-          ],
-        ),
-      );
-      showDialog(context: context, builder: (_) => alertDialog);
-    },
-  );
-}
-
 class _DiagonalClipPath extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -196,15 +142,15 @@ Widget _showTriangleExplanation(context) {
     child: Icon(Icons.info, color: Colors.grey),
     onPressed: () {
       AlertDialog alertDialog = AlertDialog(
-        title: Text('Example'),
-        content: Image(image: AssetImage('./assets/triangle-example2.png')),
-      );
+          title: Text('Example'),
+          content: Image(image: AssetImage('./assets/triangle-example2.png')),
+          actions: [
+            TextButton(
+              child: const Text("Close"),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ]);
       showDialog(context: context, builder: (_) => alertDialog);
     },
   );
-
-
-
-
-
 }

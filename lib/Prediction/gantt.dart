@@ -49,7 +49,7 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           final List<List<dynamic>> featureEndStarts = snapshot.data;
-          const double height = 16.0;
+          const double height = 22.0;
 
           List<Widget> _ganttChildren(featureEndStarts) {
             List<Widget> list = [];
@@ -144,6 +144,7 @@ Widget showGanttExplanation(context) {
         content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text('Prediction', style: TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(height: 8.0),
@@ -176,8 +177,15 @@ Widget showGanttExplanation(context) {
               Text(
                   'The green bar shows a large positive contribution of \'Steps\' on today\'s mood prediction.\n'
                   'The red bar shows a smaller negative contribution of \'CO2 level\'.\n\n'
-                      'For more information press one of the Contributions'),
+                      'For more information close this window and press one of the Contributions'),
+              Text('\nAbout the model:\n'
+                  'Multiple linear regression with lasso variable selection and regularization.'),
             ]),
+        actions: [
+          TextButton(
+            child: const Text("Close"),
+            onPressed: () => Navigator.pop(context),          ),
+        ],
       );
       showDialog(context: context, builder: (_) => alertDialog);
     },

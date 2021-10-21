@@ -485,7 +485,12 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   void _showAlertDialog(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
-      content: Text(message),
+      content: Text(message), actions: [
+      TextButton(
+        child: const Text("Close"),
+        onPressed: () => Navigator.pop(context),
+      ),
+    ]
     );
     if (context != null) {
       // catch error when user closes context
