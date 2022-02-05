@@ -1,11 +1,4 @@
 ,start_contribution,end_contribution,positive_effect
-MoodAverage(),5.37,6.111,True
-CO2Median(),6.111,6.403,True
-VitaminDSup,6.403,6.556,True
-NoiseMax()Yesterday,6.556,6.656,True
-PressOutMin()Yesterday,6.656,6.752,True
-BodyWeight,6.752,6.827,True
-MoodYesterday,6.827,6.89,True
-HeartPoints,6.845,6.89,False
-DistractingScreentime,6.807,6.845,False
-HumidInMax(),6.807,6.843,True
+Screentime,362.752,903.836,True
+DistractingScreentime,780.085,903.836,False
+MoodAverage(),702.59,780.085,False
