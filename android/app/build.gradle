@@ -22,7 +22,7 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -45,8 +45,8 @@ android {
 
     defaultConfig {
         applicationId "com.insightme"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion 21 // 19-> 21 due to cloud_firestorage plugin
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -75,10 +75,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
-    implementation 'com.google.android.gms:play-services-base:17.5.0' //CHREI https://stackoverflow.com/questions/64820697/how-to-fix-exception-thrown-while-unbinding-java-lang-illegalargumentexception
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'//CHREI https://stackoverflow.com/questions/64820697/how-to-fix-exception-thrown-while-unbinding-java-lang-illegalargumentexception
+    implementation 'com.google.android.gms:play-services-base:18.0.1' //CHREI https://stackoverflow.com/questions/64820697/how-to-fix-exception-thrown-while-unbinding-java-lang-illegalargumentexception
+    implementation 'com.google.firebase:firebase-analytics:20.1.0'//CHREI https://stackoverflow.com/questions/64820697/how-to-fix-exception-thrown-while-unbinding-java-lang-illegalargumentexception
 
     // Google Fitness and Google Auth dependencies
-    implementation("com.google.android.gms:play-services-fitness:20.0.0")
-    implementation("com.google.android.gms:play-services-auth:19.0.0")
+    implementation("com.google.android.gms:play-services-fitness:21.0.1")
+    implementation("com.google.android.gms:play-services-auth:20.1.0")
 }

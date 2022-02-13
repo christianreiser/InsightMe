@@ -1,42 +1,51 @@
 {
   "project_info": {
-    "project_number": "539877619122",
-    "project_id": "insightme-bbcfd",
-    "storage_bucket": "insightme-bbcfd.appspot.com"
+    "project_number": "1026153442309",
+    "firebase_url": "https://bubbly-reducer-279907.firebaseio.com",
+    "project_id": "bubbly-reducer-279907",
+    "storage_bucket": "bubbly-reducer-279907.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:539877619122:android:c404aee0c4971cb6e7a0ab",
+        "mobilesdk_app_id": "1:1026153442309:android:b21ac648c38fa371b5806c",
         "android_client_info": {
           "package_name": "com.insightme"
         }
       },
       "oauth_client": [
         {
-          "client_id": "539877619122-iql9l4bre98oikogb7moadablb2vh3qr.apps.googleusercontent.com",
+          "client_id": "1026153442309-hsjev911crk3bgr8dmu0dm1vv4oui9da.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.insightme",
-            "certificate_hash": "349514d7b1da9e30f449257f4c227bbc9a352ee5"
+            "certificate_hash": "0993d73c76dfaaad66df62ac48b57689c4346cc6"
           }
         },
         {
-          "client_id": "539877619122-mdi98g07f1of2ikqb995nut1b0bli8rk.apps.googleusercontent.com",
+          "client_id": "1026153442309-b6isvkpr577ogb1ratna1huj9dmurdup.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCO1NNzeY-EdCPmPz8iuzdh5GysDj281l8"
+          "current_key": "AIzaSyBfGnLIdFpFPKr_NavO7vPCuEZpeg9nizc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "539877619122-mdi98g07f1of2ikqb995nut1b0bli8rk.apps.googleusercontent.com",
+              "client_id": "1026153442309-b6isvkpr577ogb1ratna1huj9dmurdup.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1026153442309-alqrvp3rnll5knm77en2hd0ikpl826cc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.insightme",
+                "app_store_id": "1522480765"
+              }
             }
           ]
         }
