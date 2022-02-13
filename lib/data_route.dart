@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 
 import 'Core/functions/navigation_helper.dart';
@@ -35,7 +33,7 @@ class _DataRouteState extends State<DataRoute> {
                         entryHint()
                       ],
                     )
-                  : globals.entryListLength > 1
+                  : globals.entryListLength! > 1
                       ? _dataListView(snapshot.data)
                       : Text('?');
         }

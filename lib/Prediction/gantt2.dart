@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:csv/csv.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Prediction/regression_triangle_chart.dart';
 import 'package:insightme/Prediction/wvc.dart';
@@ -12,7 +9,7 @@ Future<List<List<dynamic>>> _readPhoneGanttIOFiles(context) async {
   final String data = await DefaultAssetBundle.of(context)
       .loadString("assets/tmp_phone_io/gantt_chart.csv");
   final List<List<dynamic>> featureDataListList =
-  const CsvToListConverter().convert(data);
+      const CsvToListConverter().convert(data);
   return featureDataListList;
 }
 
@@ -33,7 +30,7 @@ class BiDirectionalGanttChart2 extends StatefulWidget {
 
 class BiDirectionalGanttChart2State extends State<BiDirectionalGanttChart2> {
   final scaleBounds;
-  final context;
+  final BuildContext context;
   final regressionTriangleIOData;
 
   BiDirectionalGanttChart2State(
@@ -42,12 +39,15 @@ class BiDirectionalGanttChart2State extends State<BiDirectionalGanttChart2> {
   List<bool> _expandedList = []; // which gantt
   @override
   Widget build(BuildContext context) {
-    bool triangle = false; /// TRIANGLE
+    bool triangle = false;
+
+    /// TRIANGLE
     return FutureBuilder(
       future: _readPhoneGanttIOFiles(context),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final List<List<dynamic>> featureEndStarts = snapshot.data;
+          final List<List<dynamic>> featureEndStarts =
+              snapshot.data as List<List<dynamic>>;
           const double height = 22.0;
 
           List<Widget> _ganttChildren(featureEndStarts) {
@@ -86,7 +86,9 @@ class BiDirectionalGanttChart2State extends State<BiDirectionalGanttChart2> {
                         children: [
                           Row(
                             children: [
-                              Expanded(child: Container(),),
+                              Expanded(
+                                child: Container(),
+                              ),
                               IconButton(
                                 padding: EdgeInsets.all(0),
                                 icon: Icon(Icons.chevron_right),
@@ -94,13 +96,13 @@ class BiDirectionalGanttChart2State extends State<BiDirectionalGanttChart2> {
                                   if (_expandedList.isEmpty ||
                                       _expandedList.isNotEmpty &&
                                           !_expandedList[i - 1]) {
-                                    _expandedList =
-                                        List.filled(featureEndStarts.length, false);
+                                    _expandedList = List.filled(
+                                        featureEndStarts.length, false);
                                     _expandedList[i - 1] = true;
                                   } else if (_expandedList.isNotEmpty &&
                                       _expandedList[i - 1]) {
-                                    _expandedList =
-                                        List.filled(featureEndStarts.length, false);
+                                    _expandedList = List.filled(
+                                        featureEndStarts.length, false);
                                   }
                                   setState(() {});
                                 },
@@ -123,19 +125,19 @@ class BiDirectionalGanttChart2State extends State<BiDirectionalGanttChart2> {
                   /// decide if show details
                   _expandedList.isNotEmpty // check if enough attributes
                       ? _expandedList[i - 1] == true // if selected
-                      ?i > 1 // check if not TargetAverage()
-                      ? triangle == true // triangle vs wvc
-                      ? triangleScatterPlot(
-                    // triangle
-                      context,
-                      featureEndStarts[i][0],
-                      regressionTriangleIOData[i - 1],
-                      scaleBounds)
-                      : wcv(context, i-1) // wvc
-                      : Text(
-                      '\n${featureEndStarts[1][2].toStringAsFixed(1)} is your average mood over all time.\n'
-                          'It is the starting point of your mood prediction.\n') // TargetAverage()
-                      : Container() // not selected
+                          ? i > 1 // check if not TargetAverage()
+                              ? triangle == true // triangle vs wvc
+                                  ? triangleScatterPlot(
+                                      // triangle
+                                      context,
+                                      featureEndStarts[i][0],
+                                      regressionTriangleIOData[i - 1],
+                                      scaleBounds)
+                                  : wcv(context, i - 1) // wvc
+                              : Text(
+                                  '\n${featureEndStarts[1][2].toStringAsFixed(1)} is your average mood over all time.\n'
+                                  'It is the starting point of your mood prediction.\n') // TargetAverage()
+                          : Container() // not selected
                       : Container(), // empty
                 ]),
               );
@@ -155,4 +157,3 @@ class BiDirectionalGanttChart2State extends State<BiDirectionalGanttChart2> {
     );
   }
 }
-

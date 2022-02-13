@@ -1,18 +1,18 @@
 class Entry {
-  int _id;
-  String _title;
-  String _value;
-  String _comment;
-  String _date;
+  int? _id;
+  String? _title;
+  String? _value;
+  String? _comment;
+  String? _date;
 
   Entry(this._title, this._value, this._date, this._comment);
   Entry.withId(this._id, this._title, this._value, this._date, this._comment);
 
-  int get id => _id;
-  String get title => _title;
-  String get value => _value; // TODO Performance: change to double?
-  String get comment => _comment;
-  String get date => _date;
+  int? get id => _id;
+  String get title => _title!;
+  String get value => _value!; // TODO Performance: change to double?
+  String get comment => _comment!;
+  String? get date => _date;
 
   set title(String newTitle) {
     if (newTitle.length <= 255) {
@@ -32,7 +32,7 @@ class Entry {
     }
   }
 
-  set date(String newDate) {
+  set date(String? newDate) {
     this._date = newDate;
   }
 

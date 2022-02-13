@@ -10,10 +10,10 @@ import '../../scaffold.dart';
 
 class NavigationHelper {
   // navigation back to journal and refresh to show new entry
-  Future<bool> navigateToScaffoldRoute(context) async {
+  Future<bool?> navigateToScaffoldRoute(context) async {
     // don't use pop because it doesn't refresh the page
     // RemoveUntil is needed to remove the old outdated journal route
-    bool result =
+    bool? result =
         await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (
       context,
     ) {

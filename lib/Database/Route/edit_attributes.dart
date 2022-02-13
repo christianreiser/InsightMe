@@ -36,20 +36,20 @@ class EditAttributeState extends State<EditAttribute> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController noteController = TextEditingController();
-  Color currentColor;
-  bool aggregationIsAdditive;
+  Color? currentColor;
+  late bool aggregationIsAdditive;
 
   EditAttributeState(this.attribute,
       this.oldAttributeTitle); //todo performance: oldAttributeTitle not a state
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.headline6;
+    TextStyle? textStyle = Theme.of(context).textTheme.headline6;
 
     titleController.text = attribute.title;
     noteController.text = attribute.note;
     debugPrint('attribute.color ${attribute.color}');
-    currentColor = Color(attribute.color);
+    currentColor = Color(attribute.color!);
     if (attribute.aggregation == 1) {
       aggregationIsAdditive = true;
     } else if (attribute.aggregation == 0) {
@@ -244,7 +244,7 @@ class EditAttributeState extends State<EditAttribute> {
               title: Text('Select a color'),
               content: SingleChildScrollView(
                 child: BlockPicker(
-                  pickerColor: currentColor,
+                  pickerColor: currentColor!,
                   onColorChanged: _changeColor,
                   availableColors: [
                     Colors.white,
@@ -391,7 +391,7 @@ class EditAttributeState extends State<EditAttribute> {
 
       // update gloabls // needed otherwise not working
       globals.attributeList = await databaseHelperAttribute.getAttributeList();
-      globals.attributeListLength = globals.attributeList.length;
+      globals.attributeListLength = globals.attributeList!.length;
 
       // Navigate back and update
       NavigationHelper().navigateToSearchOrCreateAttributeRoute(context);

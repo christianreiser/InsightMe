@@ -19,7 +19,7 @@ Future<List<ChartData>> timeSeriesChartData(attributeName) async {
   for (int ele = 0; ele < filteredEntryList.length; ele++) {
     chartDataList.add(
       ChartData(
-        DateTime.parse(filteredEntryList[ele].date),
+        DateTime.parse(filteredEntryList[ele].date!),
         double.parse(filteredEntryList[ele].value),
       ),
     );
@@ -40,7 +40,7 @@ Future<List<ChartDataOptimize>> scatterPlotData(
   // if attribute name has less than 10 characters it has no yesterday
   // (avoids error)
   if (attributeName1.length > 9) {
-    final String attributeName1sLast9Characters =
+    final String? attributeName1sLast9Characters =
         attributeName1.substring(attributeName1.length - 9);
     if (attributeName1sLast9Characters == 'Yesterday') {
       daysOffset = 1;
@@ -53,7 +53,7 @@ Future<List<ChartDataOptimize>> scatterPlotData(
   final rowForEachAttribute = getRowForEachAttribute(rowForEachDay);
   List<ChartDataOptimize> chartDataOptimizeList = [];
   if (rowForEachDay.isNotEmpty) {
-    final Map<num, num> xYStats = getXYStats(
+    final Map<num?, num> xYStats = getXYStats(
         rowForEachAttribute, rowForEachDay.length, row, column, daysOffset);
 
     xYStats.forEach((k, v) => chartDataOptimizeList.add(
@@ -66,6 +66,6 @@ Future<List<ChartDataOptimize>> scatterPlotData(
 class ChartDataOptimize {
   ChartDataOptimize(this.value1, this.value2);
 
-  final num value1;
+  final num? value1;
   final num value2;
 }

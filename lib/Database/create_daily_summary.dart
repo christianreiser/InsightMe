@@ -21,7 +21,7 @@ class WriteDailySummariesCSV {
     int attributeListLength = attributeList.length;
 
     // get Attribute Title List
-    List<String> attributeTitleList =
+    List<String?> attributeTitleList =
         await getAttributeTitleList(attributeList, attributeListLength);
 
     // add Attribute Titles To Daily Summaries
@@ -37,14 +37,14 @@ class WriteDailySummariesCSV {
     return await _saveDailySummariesToFile(dailySummariesList);
   }
 
-  Future<List<String>> getAttributeTitleList(
+  Future<List<String?>> getAttributeTitleList(
       attributeList, attributeListLength) async {
     /*
     adding attribute titles to dailySummariesList
     * for that: create a list of the attribute titles and add it
     * Also: gets
     */
-    List<String> attributeTitleList = List.filled(
+    List<String?> attributeTitleList = List.filled(
         attributeListLength + 1, null); // length = #attributes + 1 for date
     attributeTitleList[0] = 'date';
     for (int attributeCount = 0;
@@ -69,7 +69,7 @@ class WriteDailySummariesCSV {
     // ini first row to add: start with row of nulls
     List<dynamic> rowToAdd = List.filled(attributeListLength + 1, null);
 
-    rowToAdd[0] = entryList[0].date.substring(0, 10); // add newest date as date
+    rowToAdd[0] = entryList[0].date!.substring(0, 10); // add newest date as date
     int entryListLength = entryList.length;
 
     /* fill rowToAdd with data and add to dailySummariesList */
@@ -77,7 +77,7 @@ class WriteDailySummariesCSV {
     for (int entryCount = 0; entryCount < entryListLength; entryCount++) {
       // debugPrint('progress: $entryCount of $entryListLength.');
       // if date of entry matches row date:
-      if (entryList[entryCount].date.substring(0, 10) == rowToAdd[0]) {
+      if (entryList[entryCount].date!.substring(0, 10) == rowToAdd[0]) {
         // get column index:
         int columnIndex =
             attributeTitleList.indexOf(entryList[entryCount].title);
@@ -92,7 +92,7 @@ class WriteDailySummariesCSV {
         // clear rowToAdd from yesterdays values
         rowToAdd = List.filled(attributeListLength + 1, null);
         // set new date
-        rowToAdd[0] = entryList[entryCount].date.substring(0, 10);
+        rowToAdd[0] = entryList[entryCount].date!.substring(0, 10);
         //debugPrint('date: ${entryList[entryCount].date}');
         // get column index (same as above):
         int columnIndex =

@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Core/functions/misc.dart';
 
@@ -21,12 +18,12 @@ class SearchOrCreateAttribute extends StatefulWidget {
 // Define a corresponding State class, which holds data related to the Form.
 class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
   // ini _attributesToDisplay
-  List<Attribute> _attributesToDisplay = globals.attributeList;
+  List<Attribute>? _attributesToDisplay = globals.attributeList;
 
   // ini _isSelected
   //debugPrint('globals.attributeList.length: ${globals.attributeList.length}');
   List<bool> _isSelected =
-      List.filled(globals.attributeListLength, false); // true if long pressed
+      List.filled(globals.attributeListLength!, false); // true if long pressed
   bool _createButtonVisible = false; // initially don't show create button
   var _attributeInputController = TextEditingController();
 
@@ -106,7 +103,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                   ),
                   onPressed: () {
                     _isSelected =
-                        List.filled(_attributesToDisplay.length, true);
+                        List.filled(_attributesToDisplay!.length, true);
                     setState(() {
                       debugPrint("Select all button clicked");
                     });
@@ -198,7 +195,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         onRefresh: () async {
           globals.attributeList =
               await databaseHelperAttribute.getAttributeList();
-          globals.attributeListLength = globals.attributeList.length;
+          globals.attributeListLength = globals.attributeList!.length;
           _getAttributesToDisplay();
           setState(() {});
         },
@@ -208,10 +205,10 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             _attributesToDisplay == null
                 ? _createAttributeHint()
                 // if _attributesToDisplay is empty show hint
-                : _attributesToDisplay.isEmpty
+                : _attributesToDisplay!.isEmpty
                     ? _createAttributeHint()
                     // if ATTRIBUTE LIST is not empty
-                    : globals.attributeListLength < 3
+                    : globals.attributeListLength! < 3
                         ? ListView(
                             children: [
                               _getAttributeListView(),
@@ -227,11 +224,11 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     /// ATTRIBUTE LIST
     return ListView.builder(
       shrinkWrap: true, // needed to give space for entry hint
-      itemCount: _attributesToDisplay.length,
+      itemCount: _attributesToDisplay!.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           color: _isSelected[position] == false
-              ? Color(this._attributesToDisplay[position].color)
+              ? Color(this._attributesToDisplay![position].color!)
               : Colors.grey, //  select
           child: ListTile(
             onLongPress: () {
@@ -243,14 +240,14 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
             leading: CircleAvatar(
               //backgroundColor: Colors.amber,
               child: Text(
-                getFirstLetter(this._attributesToDisplay[position].title),
+                getFirstLetter(this._attributesToDisplay![position].title),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
 
             // TITLE
             title: Text(
-              _attributesToDisplay[position].title,
+              _attributesToDisplay![position].title,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
 
@@ -266,8 +263,8 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 onTap: () {
                   debugPrint("ListTile Tapped");
                   NavigationHelper().navigateToEditAttribute(
-                      _attributesToDisplay[position],
-                      _attributesToDisplay[position].title,
+                      _attributesToDisplay![position],
+                      _attributesToDisplay![position].title,
                       context);
                 },
               ),
@@ -283,7 +280,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
                 } else {
                   NavigationHelper().navigateToEditEntry(
                       // title, value, time, comment
-                      Entry(this._attributesToDisplay[position].title, '',
+                      Entry(this._attributesToDisplay![position].title, '',
                           '${DateTime.now()}', ''),
                       context,
                       true);
@@ -379,18 +376,18 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
     // go through all attributes one by one
     if (userInput) {
-      for (int i = 0; i < globals.attributeListLength; i++) {
+      for (int i = 0; i < globals.attributeListLength!; i++) {
         // PARTIAL OR EXACT SEARCH MATCH
         // search for attributes that contain input
-        if (globals.attributeList[i].title
+        if (globals.attributeList![i].title
             .toLowerCase()
             .contains(_attributeInputController.text.toLowerCase())) {
-          _searchResult.add(globals.attributeList[i]); // list of results
+          _searchResult.add(globals.attributeList![i]); // list of results
           match = true;
           userInput = true;
 
           // hide create button if EXACT search match
-          if (globals.attributeList[i].title
+          if (globals.attributeList![i].title
                   .toLowerCase()
                   .compareTo(_attributeInputController.text.toLowerCase()) ==
               0) {
@@ -427,24 +424,24 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
           // exact match
           _createButtonVisible = false;
           _attributesToDisplay =
-              _searchResult; // show results and not all attributes
+              _searchResult as List<Attribute>?; // show results and not all attributes
         } else {
           // partial match
           _createButtonVisible = true;
           _attributesToDisplay =
-              _searchResult; // show results and not all attributes
+              _searchResult as List<Attribute>?; // show results and not all attributes
         }
       } else {
         // no match
         _createButtonVisible = true;
-        _attributesToDisplay = _searchResult;
+        _attributesToDisplay = _searchResult as List<Attribute>?;
       }
     } else {
       // no input
       _attributesToDisplay = globals.attributeList;
       _createButtonVisible = false;
     }
-    _isSelected = List.filled(_attributesToDisplay.length, false);
+    _isSelected = List.filled(_attributesToDisplay!.length, false);
     return [_attributesToDisplay, _createButtonVisible, _createButtonVisible];
   }
 
@@ -463,7 +460,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     }
 
     globals.attributeList = await databaseHelperAttribute.getAttributeList();
-    globals.attributeListLength = globals.attributeList.length;
+    globals.attributeListLength = globals.attributeList!.length;
 
     // SUCCESS FAILURE STATUS DIALOG
     if (result != 0) {
@@ -523,7 +520,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
       if (_isSelected[position] == true) {
         // Deletion of entries
         List<Entry> filteredEntryList = await databaseHelperEntry
-            .getFilteredEntryList(_attributesToDisplay[position].title);
+            .getFilteredEntryList(_attributesToDisplay![position].title);
         for (int i = 0; i < filteredEntryList.length; i++) {
           _resultList.add(
             await databaseHelperEntry.deleteEntry(filteredEntryList[i].id),
@@ -533,7 +530,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
         // Deletion in Attribute DB
         _resultList.add(
           await databaseHelperAttribute
-              .deleteAttribute(_attributesToDisplay[position].id),
+              .deleteAttribute(_attributesToDisplay![position].id),
         );
       }
     }
@@ -541,7 +538,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     if (context != null) {
       // catch error when user closes context
       globals.attributeList = await databaseHelperAttribute.getAttributeList();
-      globals.attributeListLength = globals.attributeList.length;
+      globals.attributeListLength = globals.attributeList!.length;
       _getAttributesToDisplay();
       setState(() {});
     }
@@ -590,7 +587,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
 
   _deselectAll() {
     setState(() {
-      _isSelected = List.filled(_attributesToDisplay.length, false);
+      _isSelected = List.filled(_attributesToDisplay!.length, false);
     });
   }
 } // class

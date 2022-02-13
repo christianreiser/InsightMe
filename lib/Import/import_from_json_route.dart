@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:insightme/Database/attribute.dart';
 import 'package:insightme/Database/database_helper_attribute.dart';
 import 'package:insightme/Database/database_helper_entry.dart';
@@ -75,9 +73,9 @@ class _ImportState extends State<Import> {
     //    else {skip}
     //  }
 
-    FilePickerResult result = await FilePicker.platform.pickFiles();
+    FilePickerResult result = await (FilePicker.platform.pickFiles() as FutureOr<FilePickerResult>);
 
-    File file = File(result.files.single.path);
+    File file = File(result.files.single.path!);
     //todo userXP: handle if user does not pick file
 
     debugPrint('file picked');
@@ -86,7 +84,7 @@ class _ImportState extends State<Import> {
     int lineCounter = -1;
     List<String> attributeNames = [];
 
-    DateTime dateTimeStamp;
+    DateTime? dateTimeStamp;
 
     // get attribute list as a sting such that searching if new requires only one db query
     List<Attribute> _dBAttributeList =

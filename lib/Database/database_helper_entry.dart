@@ -5,9 +5,9 @@ import 'package:sqflite/sqflite.dart';
 import 'entry.dart';
 
 class DatabaseHelperEntry {
-  static DatabaseHelperEntry
+  static DatabaseHelperEntry?
       _databaseHelperEntry; // Singleton DatabaseHelperEntry
-  static Database _database; // Singleton Database
+  static Database? _database; // Singleton Database
 
   static final String entryTable = 'entry_table';
   static final String colId = 'id';
@@ -24,14 +24,14 @@ class DatabaseHelperEntry {
       _databaseHelperEntry = DatabaseHelperEntry
           ._createInstance(); // This is executed only once, singleton object
     }
-    return _databaseHelperEntry;
+    return _databaseHelperEntry!;
   }
 
   /*
   * create the database object and provide it with a getter where we will
   * instantiate the database if it’s not. This is called lazy initialization.
   */
-  Future<Database> get database async {
+  Future<Database?> get database async {
     if (_database == null) {
       _database = await initializeDatabase();
     }
@@ -65,7 +65,7 @@ class DatabaseHelperEntry {
 
   // Fetch Operation: Get all entry objects from database
   Future<List<Map<String, dynamic>>> getEntryMapList() async {
-    Database db = await this.database;
+    Database db = await (this.database as FutureOr<Database>);
 
 //		var result = await db.rawQuery('SELECT * FROM $entryTable order by $colTitle ASC');
     var result = await db.query(entryTable, orderBy: '$colDate DESC');
@@ -93,7 +93,7 @@ class DatabaseHelperEntry {
     ];
     String whereString = '${DatabaseHelperEntry.colTitle} = ?';
     List<dynamic> whereArguments = [attributeToFilter];
-    Database db = await this.database;
+    Database db = await (this.database as FutureOr<Database>);
 
     var result = await db.query(entryTable,
         orderBy: '$colDate ASC',
@@ -106,7 +106,7 @@ class DatabaseHelperEntry {
   // Insert Operation: Insert a entry object to database
   Future<int> insertEntry(Entry entry) async {
     Database db =
-        await this.database; //  await keyword to wait for a future to complete
+        await (this.database as FutureOr<Database>); //  await keyword to wait for a future to complete
     var result =
         await db.insert(entryTable, entry.toMap()); // insert(table, row)
     return result;
@@ -114,7 +114,7 @@ class DatabaseHelperEntry {
 
   // Update Operation: Update a entry object and save it to database
   Future<int> updateEntry(Entry entry) async {
-    var db = await this.database;
+    var db = await (this.database as FutureOr<Database>);
     var result = await db.update(entryTable, entry.toMap(),
         where: '$colId = ?', whereArgs: [entry.id]);
     return result;
@@ -130,7 +130,7 @@ class DatabaseHelperEntry {
     for (int i = 0; i < filteredEntryList.length; i++) {
       filteredEntryList[i].title = newAttributeTitle;
 
-      var result = await db.update(entryTable, filteredEntryList[i].toMap(),
+      var result = await db!.update(entryTable, filteredEntryList[i].toMap(),
           where: '$colId = ?', whereArgs: [filteredEntryList[i].id]);
       resultList.add(result);
     }
@@ -138,19 +138,19 @@ class DatabaseHelperEntry {
   }
 
   // Delete Operation: Delete a entry object from database
-  Future<int> deleteEntry(int id) async {
-    var db = await this.database;
+  Future<int> deleteEntry(int? id) async {
+    var db = await (this.database as FutureOr<Database>);
     int result =
         await db.rawDelete('DELETE FROM $entryTable WHERE $colId = $id');
     return result;
   }
 
   // Get number of entry objects in database
-  Future<int> getCount() async {
-    Database db = await this.database;
+  Future<int?> getCount() async {
+    Database db = await (this.database as FutureOr<Database>);
     List<Map<String, dynamic>> x =
         await db.rawQuery('SELECT COUNT (*) from $entryTable');
-    int result = Sqflite.firstIntValue(x);
+    int? result = Sqflite.firstIntValue(x);
     return result;
   }
 

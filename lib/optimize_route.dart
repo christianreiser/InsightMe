@@ -1,7 +1,5 @@
 /// everything that's on the optimize route
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 import 'package:insightme/Core/widgets/design.dart';
 import 'package:insightme/Statistics/Widgets/statistics.dart';
@@ -28,7 +26,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
 
     return globals.entryListLength == null
         ? entryHint()
-        : globals.entryListLength > 0
+        : globals.entryListLength! > 0
             ? _attributeSelectionAndChart()
             : entryHint(); // type lineChart
   }
@@ -74,20 +72,20 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
   Widget _optimizeListView() {
     return Consumer<OptimizationChangeNotifier>(
         builder: (context, schedule, _) {
-      final String att1 = schedule.selectedAttribute1;
-      String att2 = schedule.selectedAttribute2;
+      final String? att1 = schedule.selectedAttribute1;
+      String? att2 = schedule.selectedAttribute2;
       return FutureBuilder(
           future: readCorrelationCoefficients(att1),
           builder: (context, snapshot) {
             // chart data arrived && data found
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.data != null) {
-              Map<String, double> coeffsMap = snapshot.data;
+              Map<String, double>? coeffsMap = snapshot.data as Map<String, double>?;
               return Container(
                   height: 800, // constrain height, to avoid unbounded error
                   child: att2 == 'all'
                       ? ListView.builder(
-                          itemCount: coeffsMap.length,
+                          itemCount: coeffsMap!.length,
                           itemBuilder: (BuildContext context, int position) {
                             String att2 =
                                 coeffsMap.entries.toList()[position].key;
@@ -99,7 +97,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
                           },
                         )
                       : _singleScatterPlotAndStatistics(
-                          att1, att2, coeffsMap[att2]));
+                          att1, att2, coeffsMap![att2!]));
             }
 
             // chart data arrived but no data found

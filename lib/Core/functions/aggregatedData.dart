@@ -2,16 +2,15 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 
 import 'package:csv/csv.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:insightme/Database/create_daily_summary.dart';
 
 import 'misc.dart';
 
-Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column, daysOffset) {
+Map<num?, num> getXYStats(rowForEachAttribute, numDays, row, column, daysOffset) {
   /// get xYStats which are needed to compute correlations
 
   /// ini xYStats
-  Map<num, num> xYStats = {};
+  Map<num?, num> xYStats = {};
 
   /// check if there are corrCoeffs but data-points are missing, this could
   /// happen when data is deleted but correlations not updated.
@@ -23,13 +22,13 @@ Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column, daysOffset) 
     int duplicateCount = 0;
 
     /// ini key value which are added to xYStats
-    double key;
-    double value;
+    double? key;
+    double? value;
 
     /// ini keys to keep track of key uniqueness
-    List<double> keys = [];
+    List<double?> keys = [];
 
-    for (int day = 0+daysOffset; day < numDays; day++) {
+    for (int day = 0+daysOffset as int; day < numDays; day++) {
       /// get keys and values, convert to doubles, skip 'null' Strings
       if (rowForEachAttribute[row - 1][day-daysOffset].runtimeType != String) {
         key = (rowForEachAttribute[row - 1][day-daysOffset]).toDouble();
@@ -58,7 +57,7 @@ Map<num, num> getXYStats(rowForEachAttribute, numDays, row, column, daysOffset) 
           key = null;
           value = null;
         } catch (e) {
-          debugPrint('_TypeError');
+          print('_TypeError');
           key = null;
           value = null;
         }

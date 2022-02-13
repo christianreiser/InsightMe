@@ -18,7 +18,7 @@ class DropDown extends StatefulWidget {
 }
 
 class _DropDownState extends State<DropDown> {
-  List<DropdownMenuItem<String>> _dropdownMenuItems;
+  List<DropdownMenuItem<String>>? _dropdownMenuItems;
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +101,10 @@ class _DropDownState extends State<DropDown> {
     );
   }
 
-  Future<List<String>> _getAttributeList(boolFirst) async {
+  Future<List<String?>> _getAttributeList(boolFirst) async {
     List<Attribute> attributeList =
         await DropDown.databaseHelperAttribute.getAttributeList();
-    List<String> itemList = List.filled(attributeList.length + 1, null);
+    List<String?> itemList = List.filled(attributeList.length + 1, null);
 
     /// +1 for 'all'
     itemList[0] = 'all';
@@ -120,11 +120,11 @@ class _DropDownState extends State<DropDown> {
 
   List<DropdownMenuItem<String>> _buildDropdownMenuItems(List itemList) {
     List<DropdownMenuItem<String>> items = [];
-    for (String item in itemList) {
+    for (String? item in itemList as Iterable<String?>) {
       items.add(
         DropdownMenuItem(
           value: item, // The value to return if selected by user
-          child: Text(item), // one item
+          child: Text(item!), // one item
         ),
       );
     }

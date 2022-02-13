@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:insightme/Core/functions/misc.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
@@ -24,16 +23,16 @@ class JournalRouteState extends State<JournalRoute> {
 
   JournalRouteState(this.attributeName);
 
-  List<Entry> _entryList;
+  List<Entry>? _entryList;
 
-  List<bool> _isSelectedList = []; // which entries are selected
+  List<bool>? _isSelectedList = []; // which entries are selected
   bool _multiEntrySelectionActive =
       false; // true if long pressed and any selected
 
   final DatabaseHelperEntry databaseHelperEntry = // error when static
       DatabaseHelperEntry();
 
-  int _countEntry = 0;
+  int? _countEntry = 0;
 
 
   @override
@@ -108,7 +107,7 @@ class JournalRouteState extends State<JournalRoute> {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    _isSelectedList = List.filled(_isSelectedList.length, true);
+                    _isSelectedList = List.filled(_isSelectedList!.length, true);
                     setState(() {
                       debugPrint("Select all button clicked");
                     });
@@ -140,7 +139,7 @@ class JournalRouteState extends State<JournalRoute> {
                   // gives monotone tiles a card shape
                   color:
                       _multiEntrySelectionActive // when multi selected, check each
-                          ? _isSelectedList[position] == false
+                          ? _isSelectedList![position] == false
                               ? Colors.white
                               : Colors.grey
                           : Colors.white, // when none selected always white
@@ -148,9 +147,9 @@ class JournalRouteState extends State<JournalRoute> {
                     onLongPress: () {
                       setState(
                         () {
-                          _isSelectedList = List.filled(globals.entryListLength,
+                          _isSelectedList = List.filled(globals.entryListLength!,
                               false); // might be first ini
-                          _isSelectedList[position] = true;
+                          _isSelectedList![position] = true;
                           _multiEntrySelectionActive = true;
                         },
                       );
@@ -160,21 +159,21 @@ class JournalRouteState extends State<JournalRoute> {
                       backgroundColor: Theme.of(context)
                           .primaryColor, //looks better than default
                       child: Text(
-                        getFirstLetter(this._entryList[position].title),
+                        getFirstLetter(this._entryList![position].title),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
 
                     // Label
                     title: Text(
-                      this._entryList[position].title,
+                      this._entryList![position].title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
 
                     // Value
-                    subtitle: Text(this._entryList[position].value),
+                    subtitle: Text(this._entryList![position].value),
 
                     // Time and comment
                     trailing: Column(
@@ -184,8 +183,8 @@ class JournalRouteState extends State<JournalRoute> {
                         // needs type DateTime as input. DB doesn't support this type,
                         // that's why the workaround with DateTime.parse from string
                         Text(DateFormat.yMMMMd('en_US').add_Hm().format(
-                            DateTime.parse(this._entryList[position].date))),
-                        Text(this._entryList[position].comment),
+                            DateTime.parse(this._entryList![position].date!))),
+                        Text(this._entryList![position].comment),
                       ],
                     ),
 
@@ -194,14 +193,14 @@ class JournalRouteState extends State<JournalRoute> {
                       setState(
                         () {
                           if (_multiEntrySelectionActive) {
-                            _isSelectedList[position] =
-                                !_isSelectedList[position];
-                            if (!_isSelectedList.contains(true)) {
+                            _isSelectedList![position] =
+                                !_isSelectedList![position];
+                            if (!_isSelectedList!.contains(true)) {
                               _multiEntrySelectionActive = false;
                             }
                           } else {
                             NavigationHelper().navigateToEditEntry(
-                                this._entryList[position], context, false);
+                                this._entryList![position], context, false);
                           }
                           debugPrint("ListTile Tapped");
                         },
@@ -221,7 +220,7 @@ class JournalRouteState extends State<JournalRoute> {
   // function also in createAttribute.dart but using it from there breaks it
   void _updateEntryListView() async {
     _entryList = await databaseHelperEntry.getFilteredEntryList(attributeName);
-    globals.entryListLength = _entryList.length;
+    globals.entryListLength = _entryList!.length;
 
     if (context != null) {
       setState(() {
@@ -241,7 +240,7 @@ class JournalRouteState extends State<JournalRoute> {
   void _delete(_isSelectedList) async {
     for (int position = 0; position < _isSelectedList.length; position++) {
       if (_isSelectedList[position] == true) {
-        await databaseHelperEntry.deleteEntry(_entryList[position].id);
+        await databaseHelperEntry.deleteEntry(_entryList![position].id);
       }
     }
     _updateEntryListView();
@@ -267,13 +266,13 @@ class JournalRouteState extends State<JournalRoute> {
   }
 
   int _countSelected() {
-    if (_isSelectedList == null || _isSelectedList.isEmpty) {
+    if (_isSelectedList == null || _isSelectedList!.isEmpty) {
       return 0;
     }
 
     int count = 0;
-    for (int i = 0; i < _isSelectedList.length; i++) {
-      if (_isSelectedList[i] == true) {
+    for (int i = 0; i < _isSelectedList!.length; i++) {
+      if (_isSelectedList![i] == true) {
         count++;
       }
     }
@@ -282,7 +281,7 @@ class JournalRouteState extends State<JournalRoute> {
 
   _deselectAll() {
     setState(() {
-      _isSelectedList = List.filled(globals.entryListLength, false);
+      _isSelectedList = List.filled(globals.entryListLength!, false);
       _multiEntrySelectionActive = false;
     });
   }

@@ -6,18 +6,18 @@ import 'package:csv/csv.dart';
 import 'package:insightme/Core/functions/misc.dart';
 import 'package:path_provider/path_provider.dart';
 
-Future<num> readCorrelationCoefficient(attribute1, attribute2) async {
+Future<num?> readCorrelationCoefficient(attribute1, attribute2) async {
   var correlationMatrix = await _readCorrelationMatrix();
   int attributeIndex1 = correlationMatrix[0].indexOf(attribute1);
   final int attributeIndex2 =
       transposeChr(correlationMatrix)[0].indexOf(attribute2);
 
-  final num correlationCoefficient =
+  final num? correlationCoefficient =
       correlationMatrix[attributeIndex1][attributeIndex2];
   return correlationCoefficient;
 }
 
-Future<Map<String, double>> readCorrelationCoefficients(
+Future<Map<String?, double>> readCorrelationCoefficients(
     attribute) async {
   // corr matrix
   var correlationMatrix = await _readCorrelationMatrix();
@@ -32,7 +32,7 @@ Future<Map<String, double>> readCorrelationCoefficients(
   attributeNames.removeAt(0);
 
   // ini self balancing key tree. key consists of 'value_label'
-  final SplayTreeMap<String, Map<String, double>> corrCoeffTargetSplayTreeMap =
+  final SplayTreeMap<String, Map<String?, double>> corrCoeffTargetSplayTreeMap =
       SplayTreeMap<String, Map<String, double>>();
 
   // fill self balancing tree with coeffs
@@ -56,7 +56,7 @@ Future<Map<String, double>> readCorrelationCoefficients(
   final corrCoeffTargetSortedMapList =
       corrCoeffTargetSplayTreeMap.values.toList();
 
-  final Map<String, double> corrCoeffTargetSortedMap = Map<String, double>();
+  final Map<String?, double> corrCoeffTargetSortedMap = Map<String?, double>();
   for (int i = corrCoeffTargetSortedMapList.length - 1; i >= 0; i--) {
     corrCoeffTargetSortedMap[corrCoeffTargetSortedMapList[i].keys.first] =
         corrCoeffTargetSortedMapList[i].values.first;

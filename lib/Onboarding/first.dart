@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Core/functions/navigation_helper.dart';
 
 class OnboardingRoute extends StatefulWidget {
-  OnboardingRoute({Key key, this.title}) : super(key: key);
-  final String title;
+  OnboardingRoute({Key? key, this.title}) : super(key: key);
+  final String? title;
 
   @override
   _OnboardingRouteState createState() => _OnboardingRouteState();

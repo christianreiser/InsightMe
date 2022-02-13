@@ -2,11 +2,11 @@
 
 class Attribute {
   /* initialize */
-  int _id;
-  String _title;
-  String _note;
-  int _color;
-  int _aggregation;
+  int? _id;
+  String? _title;
+  String? _note;
+  int? _color;
+  int? _aggregation;
 
   Attribute(this._title, this._note, this._color, this._aggregation);
 
@@ -16,15 +16,15 @@ class Attribute {
   /*
   getters
   */
-  int get id => _id;
+  int? get id => _id;
 
-  String get title => _title;
+  String get title => _title!;
 
-  String get note => _note;
+  String get note => _note!;
 
-  int get color => _color;
+  int? get color => _color;
 
-  int get aggregation => _aggregation;
+  int? get aggregation => _aggregation;
 
   /*
   setters
@@ -42,11 +42,11 @@ class Attribute {
     }
   }
 
-  set color(int newColor) {
+  set color(int? newColor) {
     this._color = newColor;
   }
 
-  set aggregation(int newAggregation) {
+  set aggregation(int? newAggregation) {
     this._aggregation = newAggregation;
   }
 

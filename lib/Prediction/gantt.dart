@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:csv/csv.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Prediction/regression_triangle_chart.dart';
 import 'package:insightme/Prediction/wvc.dart';
@@ -34,7 +31,7 @@ class BiDirectionalGanttChart extends StatefulWidget {
 
 class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
   final scaleBounds;
-  final context;
+  final BuildContext context;
   final regressionTriangleIOData;
 
   BiDirectionalGanttChartState(
@@ -50,7 +47,7 @@ class BiDirectionalGanttChartState extends State<BiDirectionalGanttChart> {
       future: _readPhoneGanttIOFiles(context),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final List<List<dynamic>> featureEndStarts = snapshot.data;
+          final List<List<dynamic>> featureEndStarts = snapshot.data as List<List<dynamic>>;
           const double height = 22.0;
 
           List<Widget> _ganttChildren(featureEndStarts) {

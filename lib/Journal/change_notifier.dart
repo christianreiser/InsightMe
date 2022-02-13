@@ -2,20 +2,20 @@ import 'package:flutter/foundation.dart';
 
 // ChangeNotifier adds listening capabilities
 class JournalChangeNotifier with ChangeNotifier {
-  String _selectedAttribute1;
+  String? _selectedAttribute1;
 
-  String get selectedAttribute1 => _selectedAttribute1; // set default value
+  String? get selectedAttribute1 => _selectedAttribute1; // set default value
 
-  set selectedAttribute1(String newValue) {
+  set selectedAttribute1(String? newValue) {
     _selectedAttribute1 = newValue;
     notifyListeners();
   }
 
-  String _selectedAttribute2;
+  String? _selectedAttribute2;
 
-  String get selectedAttribute2 => _selectedAttribute2; // set default value
+  String? get selectedAttribute2 => _selectedAttribute2; // set default value
 
-  set selectedAttribute2(String newValue) {
+  set selectedAttribute2(String? newValue) {
     _selectedAttribute2 = newValue;
     notifyListeners();
   }

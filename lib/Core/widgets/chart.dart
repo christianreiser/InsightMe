@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Core/functions/chart.dart';
 import 'package:intl/intl.dart';
@@ -116,7 +115,7 @@ _timeScatterSeries(chartDataList) {
 }
 
 _scatterPlotScatterSeries(chartDataOptimizeList, trendLineOn) {
-  List<Trendline> trendLine;
+  List<Trendline>? trendLine;
   if (trendLineOn){
     trendLine = <Trendline>[
 /*      Trendline(

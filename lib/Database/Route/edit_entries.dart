@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // for date time formatting
 
@@ -24,7 +26,7 @@ class EditEntryState extends State<EditEntry> {
 
   Entry entry;
   bool thisIsANewEntry;
-  bool _validValue;
+  late bool _validValue;
 
   TextEditingController valueController = TextEditingController();
   TextEditingController commentController = TextEditingController();
@@ -34,13 +36,13 @@ class EditEntryState extends State<EditEntry> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.headline6;
+    TextStyle? textStyle = Theme.of(context).textTheme.headline6;
 
     //titleController.text = entry.title;
     valueController.text = entry.value;
     commentController.text = entry.comment;
-    dateController.text = entry.date;
-    DateTime _dateTime = DateTime.parse(entry.date); // ini datePicker value
+    dateController.text = entry.date!;
+    DateTime _dateTime = DateTime.parse(entry.date!); // ini datePicker value
 
     return Scaffold(
       appBar: AppBar(
@@ -181,8 +183,8 @@ class EditEntryState extends State<EditEntry> {
   }
 
   _dateTimePicker(_dateTime) async {
-    final DateTime dateOrder = await _getDate(_dateTime);
-    final TimeOfDay timeOrder = await _getTime(_dateTime);
+    final DateTime dateOrder = await (_getDate(_dateTime) as FutureOr<DateTime>);
+    final TimeOfDay timeOrder = await (_getTime(_dateTime) as FutureOr<TimeOfDay>);
     final DateTime finalDateTime = DateTime(dateOrder.year, dateOrder.month,
         dateOrder.day, timeOrder.hour, timeOrder.minute);
     _updateDate(finalDateTime);
@@ -192,29 +194,29 @@ class EditEntryState extends State<EditEntry> {
     });
   }
 
-  Future<DateTime> _getDate(_dateTime) {
+  Future<DateTime?> _getDate(_dateTime) {
     return showDatePicker(
       context: context,
       initialDate: _dateTime,
       firstDate: DateTime(2000),
       lastDate: DateTime.now().add(Duration(days: 365)),
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light(),
-          child: child,
+          child: child!,
         );
       },
     );
   }
 
-  Future<TimeOfDay> _getTime(_dateTime) {
+  Future<TimeOfDay?> _getTime(_dateTime) {
     return showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_dateTime),
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light(),
-          child: child,
+          child: child!,
         );
       },
     );
@@ -240,9 +242,9 @@ class EditEntryState extends State<EditEntry> {
   }
 
   // validate value user input for allowed characters
-  String _validateValue(String valueController) {
+  String? _validateValue(String? valueController) {
     _validValue = false;
-    if (valueController.isEmpty) {
+    if (valueController!.isEmpty) {
       // The form is empty
       return "Enter value";
     }

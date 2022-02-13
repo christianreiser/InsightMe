@@ -1,5 +1,4 @@
 import 'package:csv/csv.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'core.dart';
@@ -29,10 +28,10 @@ Widget wcv(context, i) {
           FutureBuilder(
             future: _readPhoneWVCIOFiles(context),
             builder: (context, snapshot) {
-              final List<List<dynamic>> wvcData = snapshot.data;
+              final List<List<dynamic>>? wvcData = snapshot.data as List<List<dynamic>>?;
               if (snapshot.connectionState == ConnectionState.done) {
                 const double height = 16.0;
-                List<double> scaleBounds = [wvcData[2][5], wvcData[1][5]];
+                List<double> scaleBounds = [wvcData![2][5], wvcData[1][5]];
 
                 /// def _wvcChildren
                 List<Widget> _wvcChildren(wVCIOData) {

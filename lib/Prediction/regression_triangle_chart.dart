@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:csv/csv.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insightme/Core/widgets/chart.dart';
 
@@ -52,10 +49,10 @@ Widget triangleScatterPlot(
 
   /// header: [0]featureName [1]mean_y_coord	[2]mean_x_coord
   /// [3]dosage_coord	[4]response_coord
-  final String label = regressionTriangleIOData[0];
-  final double xMeanCoord = regressionTriangleIOData[1];
+  final String? label = regressionTriangleIOData[0];
+  final double? xMeanCoord = regressionTriangleIOData[1];
   final double yMeanCoord = regressionTriangleIOData[2];
-  final double dosageCoord = regressionTriangleIOData[3];
+  final double? dosageCoord = regressionTriangleIOData[3];
   final double responseCoord = regressionTriangleIOData[4];
   const double height = 407;
   const double width = 370;
@@ -110,9 +107,9 @@ Widget triangleScatterPlot(
 }
 
 class TriangleClipPath extends CustomClipper<Path> {
-  final double xMean;
+  final double? xMean;
   final double yMean;
-  final double dose;
+  final double? dose;
   final double response;
 
   TriangleClipPath(this.xMean, this.yMean, this.dose, this.response);
@@ -121,10 +118,10 @@ class TriangleClipPath extends CustomClipper<Path> {
   Path getClip(Size size) {
     print('xMean...:$xMean,$yMean, $dose, $response');
     Path path = Path();
-    path.lineTo(xMean, yMean); //start in middle dosage; mean response
-    path.lineTo(dose, yMean); //right/left
-    path.lineTo(dose, response); //up/down
-    path.lineTo(xMean, yMean); //end in middle
+    path.lineTo(xMean!, yMean); //start in middle dosage; mean response
+    path.lineTo(dose!, yMean); //right/left
+    path.lineTo(dose!, response); //up/down
+    path.lineTo(xMean!, yMean); //end in middle
     return path;
   }
 

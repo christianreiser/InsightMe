@@ -7,9 +7,9 @@ import 'package:sqflite_migration/sqflite_migration.dart';
 import 'attribute.dart';
 
 class DatabaseHelperAttribute {
-  static DatabaseHelperAttribute
+  static DatabaseHelperAttribute?
       _databaseHelperAttribute; // Singleton DatabaseHelperAttribute
-  static Database _database; // Singleton Database
+  static Database? _database; // Singleton Database
 
   String attributeTable = 'attribute_table';
   String colId = 'id';
@@ -25,14 +25,14 @@ class DatabaseHelperAttribute {
       _databaseHelperAttribute = DatabaseHelperAttribute
           ._createInstance(); // This is executed only once, singleton object
     }
-    return _databaseHelperAttribute;
+    return _databaseHelperAttribute!;
   }
 
 /*
 * create the database object and provide it with a getter where we will
 * instantiate the database if it’s not. This is called lazy initialization.
 */
-  Future<Database> get database async {
+  Future<Database?> get database async {
     if (_database == null) {
       _database = await initializeDatabase();
     }
@@ -86,7 +86,7 @@ class DatabaseHelperAttribute {
 
   // Fetch Operation: Get all attribute objects from database
   Future<List<Map<String, dynamic>>> getAttributeMapList() async {
-    Database db = await this.database;
+    Database db = await (this.database as FutureOr<Database>);
 
 //		var result = await db.rawQuery('SELECT * FROM $attributeTable order by $colTitle ASC');
     var result = await db.query(attributeTable, orderBy: '$colTitle ASC');
@@ -101,33 +101,33 @@ class DatabaseHelperAttribute {
 
   // Insert Operation: Insert a attribute object to database
   Future<int> insertAttribute(Attribute attribute) async {
-    Database db = await this.database;
+    Database db = await (this.database as FutureOr<Database>);
     var result = await db.insert(attributeTable, attribute.toMap());
     return result;
   }
 
   // Update Operation: Update a attribute object and save it to database
   Future<int> updateAttribute(Attribute attribute) async {
-    var db = await this.database;
+    var db = await (this.database as FutureOr<Database>);
     var result = await db.update(attributeTable, attribute.toMap(),
         where: '$colId = ?', whereArgs: [attribute.id]);
     return result;
   }
 
   // Delete Operation: Delete a attribute object from database
-  Future<int> deleteAttribute(int id) async {
-    var db = await this.database;
+  Future<int> deleteAttribute(int? id) async {
+    var db = await (this.database as FutureOr<Database>);
     int result =
         await db.rawDelete('DELETE FROM $attributeTable WHERE $colId = $id');
     return result;
   }
 
   // Get number of attribute objects in database
-  Future<int> getCount() async {
-    Database db = await this.database;
+  Future<int?> getCount() async {
+    Database db = await (this.database as FutureOr<Database>);
     List<Map<String, dynamic>> x =
         await db.rawQuery('SELECT COUNT (*) from $attributeTable');
-    int result = Sqflite.firstIntValue(x);
+    int? result = Sqflite.firstIntValue(x);
     return result;
   }
 

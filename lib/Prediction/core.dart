@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget scaledBar(start, end, scaleBounds, color, height, textBeforeBar, arrow) {
