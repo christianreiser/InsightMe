@@ -65,7 +65,8 @@ class DatabaseHelperEntry {
 
   // Fetch Operation: Get all entry objects from database
   Future<List<Map<String, dynamic>>> getEntryMapList() async {
-    Database db = await (this.database as FutureOr<Database>);
+    FutureOr<Database> futureDb = this.database as FutureOr<Database>;
+    Database db = await (futureDb);
 
 //		var result = await db.rawQuery('SELECT * FROM $entryTable order by $colTitle ASC');
     var result = await db.query(entryTable, orderBy: '$colDate DESC');
