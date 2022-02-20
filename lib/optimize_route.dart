@@ -103,6 +103,7 @@ class _OptimizeRouteState extends State<OptimizeRoute> {
             // chart data arrived but no data found
             else if (snapshot.connectionState == ConnectionState.done &&
                 (snapshot.data == null)) {
+              print('optimize_route.dart: chart data arrived but no data found');
               return Text('No data found for this label');
 
               // else: i.e. data didn't arrive

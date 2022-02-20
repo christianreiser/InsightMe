@@ -445,12 +445,12 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     return [_attributesToDisplay, _createButtonVisible, _createButtonVisible];
   }
 
-  Future<int> saveAttribute(attribute) async {
+  Future<int?> saveAttribute(attribute) async {
     // not private as used elsewhere
     /*
     * Update Operation: Update a attribute object and save it to database
     */
-    int result;
+    int? result;
     if (attribute.id != null) {
       // Case 1: Update operation
       result = await helper.updateAttribute(attribute);
@@ -514,7 +514,7 @@ class SearchOrCreateAttributeState extends State<SearchOrCreateAttribute> {
     /*
     * Delete Operation: Delete a attribute from database
     */
-    List<int> _resultList = [];
+    List<int?> _resultList = [];
 
     for (int position = 0; position < _isSelected.length; position++) {
       if (_isSelected[position] == true) {

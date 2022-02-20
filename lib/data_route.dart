@@ -41,6 +41,7 @@ class _DataRouteState extends State<DataRoute> {
         // chart data arrived but no data found
         else if (snapshot.connectionState == ConnectionState.done &&
             (globals.attributeList == null || snapshot.data == null)) {
+          print('data_route: o data found for this label');
           return Text('No data found for this label');
 
           // else: i.e. data didn't arrive

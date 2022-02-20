@@ -174,9 +174,9 @@ class _ImportState extends State<Import> {
   }
 
 // SAVE
-  Future<int> _save(entry) async {
+  Future<int?> _save(entry) async {
     // Update Operation: Update a to-do object and save it to database
-    int result;
+    int? result;
     if (entry.id != null) {
       // Case 1: Update operation
       result = await helperEntry.updateEntry(entry);

@@ -331,7 +331,7 @@ class EditAttributeState extends State<EditAttribute> {
 
   void _save() async {
     // Update Operation: Update a attribute object and save it to database
-    int _result;
+    int? _result;
     List<int> _resultList;
     if (attribute.id != null) {
       // Case 1: Update operation
@@ -340,7 +340,7 @@ class EditAttributeState extends State<EditAttribute> {
       _result = await databaseHelperAttribute.updateAttribute(attribute);
 
       // if result == 0 then s.th. went wrong
-      _resultList.add(_result);
+      _resultList.add(_result!);
       if (_resultList.contains(0)) {
         _result = 0;
       }
@@ -365,7 +365,7 @@ class EditAttributeState extends State<EditAttribute> {
   // DELETE
 
   void _delete() async {
-    List<int> _resultList = [];
+    List<int?> _resultList = [];
 
     // found no attribute to delete
 

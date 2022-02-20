@@ -288,7 +288,7 @@ class EditEntryState extends State<EditEntry> {
   void _save(scaffoldContext) async {
     if (_validValue) {
       // don't save if character not allowed
-      int result;
+      int? result;
 
       // NAVIGATE
       if (thisIsANewEntry == true) {
@@ -323,7 +323,7 @@ class EditEntryState extends State<EditEntry> {
     // navigate and rebuild
     NavigationHelper().navigateToJournalRoute(context, entry.title);
 
-    int result = await databaseHelperEntry.deleteEntry(entry.id);
+    int? result = await databaseHelperEntry.deleteEntry(entry.id);
     if (result != 0) {
       _showAlertDialog('Status', 'Entry Deleted Successfully');
     } else {

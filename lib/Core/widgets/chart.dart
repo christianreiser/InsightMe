@@ -18,7 +18,8 @@ Widget futureTimeSeriesPlot(attributeName) {
       // chart data arrived but no data found
       else if (snapshot.connectionState == ConnectionState.done &&
           (snapshot.data == null)) {
-        return Text('No data found for this label');
+        print('chart.dart: chart data arrived but no data found');
+        return Text('No data found for this label.');
 
         // else: i.e. data didn't arrive
       } else {
@@ -42,6 +43,7 @@ Widget futureScatterPlot(attributeName2, attributeName1,trendLineOn) {
         // chart data arrived but no data found
         else if (snapshot.connectionState == ConnectionState.done &&
             (snapshot.data == null)) {
+          print('chart.dart: chart data arrived but no data found');
           return Text('No data found for this label');
 
           // else: i.e. data didn't arrive
@@ -51,6 +53,7 @@ Widget futureScatterPlot(attributeName2, attributeName1,trendLineOn) {
       },
     );
   } else {
+    print('chart.dart: chart data arrived but no data found');
     return Text('No data found for this label');
   }
 }

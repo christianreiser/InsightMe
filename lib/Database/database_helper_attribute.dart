@@ -85,11 +85,11 @@ class DatabaseHelperAttribute {
   // }
 
   // Fetch Operation: Get all attribute objects from database
-  Future<List<Map<String, dynamic>>> getAttributeMapList() async {
-    Database db = await (this.database as FutureOr<Database>);
+  Future<List<Map<String, dynamic>>?> getAttributeMapList() async {
+    Database? db = await (this.database);
 
 //		var result = await db.rawQuery('SELECT * FROM $attributeTable order by $colTitle ASC');
-    var result = await db.query(attributeTable, orderBy: '$colTitle ASC');
+    var result = await db?.query(attributeTable, orderBy: '$colTitle ASC');
     return result;
   }
 
@@ -100,25 +100,25 @@ class DatabaseHelperAttribute {
   }
 
   // Insert Operation: Insert a attribute object to database
-  Future<int> insertAttribute(Attribute attribute) async {
-    Database db = await (this.database as FutureOr<Database>);
-    var result = await db.insert(attributeTable, attribute.toMap());
+  Future<int?> insertAttribute(Attribute attribute) async {
+    Database? db = await (this.database);// as FutureOr<Database>);
+    var result = await db?.insert(attributeTable, attribute.toMap());
     return result;
   }
 
   // Update Operation: Update a attribute object and save it to database
-  Future<int> updateAttribute(Attribute attribute) async {
-    var db = await (this.database as FutureOr<Database>);
-    var result = await db.update(attributeTable, attribute.toMap(),
+  Future<int?> updateAttribute(Attribute attribute) async {
+    var db = await (this.database);// as FutureOr<Database>);
+    var result = await db?.update(attributeTable, attribute.toMap(),
         where: '$colId = ?', whereArgs: [attribute.id]);
     return result;
   }
 
   // Delete Operation: Delete a attribute object from database
-  Future<int> deleteAttribute(int? id) async {
-    var db = await (this.database as FutureOr<Database>);
-    int result =
-        await db.rawDelete('DELETE FROM $attributeTable WHERE $colId = $id');
+  Future<int?> deleteAttribute(int? id) async {
+    var db = await (this.database);// as FutureOr<Database>);
+    int? result =
+        await db?.rawDelete('DELETE FROM $attributeTable WHERE $colId = $id');
     return result;
   }
 
@@ -136,14 +136,14 @@ class DatabaseHelperAttribute {
     await this.database;
     var attributeMapList =
         await getAttributeMapList(); // Get 'Map List' from database
-    int countAttribute =
-        attributeMapList.length; // Count the number of map entries in db table
+    int? countAttribute =
+        attributeMapList?.length; // Count the number of map entries in db table
 
     List<Attribute> attributeList = [];
     // For loop to create a 'attribute List' from a 'Map List'
-    for (int i = 0; i < countAttribute; i++) {
+    for (int i = 0; i < countAttribute!; i++) {
       // debugPrint('attributeMapList[i]: ${attributeMapList[i]}');
-      attributeList.add(Attribute.fromMapObject(attributeMapList[i]));
+      attributeList.add(Attribute.fromMapObject(attributeMapList![i]));
     }
 
     return attributeList;

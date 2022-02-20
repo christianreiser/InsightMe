@@ -64,12 +64,12 @@ class DatabaseHelperEntry {
   }
 
   // Fetch Operation: Get all entry objects from database
-  Future<List<Map<String, dynamic>>> getEntryMapList() async {
-    FutureOr<Database> futureDb = this.database as FutureOr<Database>;
-    Database db = await (futureDb);
+  Future<List<Map<String, dynamic>>?> getEntryMapList() async {
+    Future<Database?> futureDb = this.database;// as FutureOr<Database>;
+    Database? db = await (futureDb);
 
 //		var result = await db.rawQuery('SELECT * FROM $entryTable order by $colTitle ASC');
-    var result = await db.query(entryTable, orderBy: '$colDate DESC');
+    var result = await db?.query(entryTable, orderBy: '$colDate DESC');
     return result;
   }
 
@@ -82,7 +82,7 @@ class DatabaseHelperEntry {
 
   // CHREI Fetch Operation: Get entry objects from database FILTERED ATTRIBUTES
 
-  Future<List<Map<String, dynamic>>> getFilteredEntryMapList(
+  Future<List<Map<String, dynamic>>?> getFilteredEntryMapList(
       attributeToFilter) async {
     // get single row
     List<String> columnsToSelect = [
@@ -94,9 +94,9 @@ class DatabaseHelperEntry {
     ];
     String whereString = '${DatabaseHelperEntry.colTitle} = ?';
     List<dynamic> whereArguments = [attributeToFilter];
-    Database db = await (this.database as FutureOr<Database>);
+    Database? db = await (this.database);// as FutureOr<Database>);
 
-    var result = await db.query(entryTable,
+    var result = await db?.query(entryTable,
         orderBy: '$colDate ASC',
         columns: columnsToSelect,
         where: whereString,
@@ -105,18 +105,18 @@ class DatabaseHelperEntry {
   }
 
   // Insert Operation: Insert a entry object to database
-  Future<int> insertEntry(Entry entry) async {
-    Database db =
-        await (this.database as FutureOr<Database>); //  await keyword to wait for a future to complete
+  Future<int?> insertEntry(Entry entry) async {
+    Database? db =
+        await (this.database);// as FutureOr<Database>); //  await keyword to wait for a future to complete
     var result =
-        await db.insert(entryTable, entry.toMap()); // insert(table, row)
+        await db?.insert(entryTable, entry.toMap()); // insert(table, row)
     return result;
   }
 
   // Update Operation: Update a entry object and save it to database
-  Future<int> updateEntry(Entry entry) async {
-    var db = await (this.database as FutureOr<Database>);
-    var result = await db.update(entryTable, entry.toMap(),
+  Future<int?> updateEntry(Entry entry) async {
+    var db = await (this.database);// as FutureOr<Database>);
+    var result = await db?.update(entryTable, entry.toMap(),
         where: '$colId = ?', whereArgs: [entry.id]);
     return result;
   }
@@ -139,32 +139,32 @@ class DatabaseHelperEntry {
   }
 
   // Delete Operation: Delete a entry object from database
-  Future<int> deleteEntry(int? id) async {
-    var db = await (this.database as FutureOr<Database>);
-    int result =
-        await db.rawDelete('DELETE FROM $entryTable WHERE $colId = $id');
+  Future<int?> deleteEntry(int? id) async {
+    var db = await (this.database);// as FutureOr<Database>);
+    int? result =
+        await db?.rawDelete('DELETE FROM $entryTable WHERE $colId = $id');
     return result;
   }
 
   // Get number of entry objects in database
   Future<int?> getCount() async {
-    Database db = await (this.database as FutureOr<Database>);
-    List<Map<String, dynamic>> x =
-        await db.rawQuery('SELECT COUNT (*) from $entryTable');
-    int? result = Sqflite.firstIntValue(x);
+    Database? db = await (this.database);// as FutureOr<Database>);
+    List<Map<String, Object?>>? x =
+        await db?.rawQuery('SELECT COUNT (*) from $entryTable');
+    int? result = Sqflite.firstIntValue(x!);
     return result;
   }
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'entry List' [ List<Entry> ]
   Future<List<Entry>> getEntryList() async {
     var entryMapList = await getEntryMapList(); // Get 'Map List' from database
-    int countEntry =
-        entryMapList.length; // Count the number of map entries in db table
+    int? countEntry =
+        entryMapList?.length; // Count the number of map entries in db table
 
     List<Entry> entryList = [];
     // For loop to create a 'entry List' from a 'Map List'
-    for (int i = 0; i < countEntry; i++) {
-      entryList.add(Entry.fromMapObject(entryMapList[i]));
+    for (int i = 0; i < countEntry!; i++) {
+      entryList.add(Entry.fromMapObject(entryMapList![i]));
     }
 
     return entryList;
@@ -174,13 +174,13 @@ class DatabaseHelperEntry {
   Future<List<Entry>> getFilteredEntryList(attributeNameToFilter) async {
     var filteredEntryMapList = await getFilteredEntryMapList(
         attributeNameToFilter); // Get 'Map List' from database
-    int countEntryFiltered = filteredEntryMapList
-        .length; // Count the number of map entries in db table
+    int? countEntryFiltered = filteredEntryMapList
+        ?.length; // Count the number of map entries in db table
 
     List<Entry> filteredEntryList = [];
     // For loop to create a 'entry List' from a 'Map List'
-    for (int i = 0; i < countEntryFiltered; i++) {
-      filteredEntryList.add(Entry.fromMapObject(filteredEntryMapList[i]));
+    for (int i = 0; i < countEntryFiltered!; i++) {
+      filteredEntryList.add(Entry.fromMapObject(filteredEntryMapList![i]));
     }
     return filteredEntryList;
   }
