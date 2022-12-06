@@ -4,7 +4,7 @@
 <a href="https://apps.apple.com/de/app/insightme/id1522480765"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" width="187"></img></a>
 
 InsightMe is a personal data-driven journal.
-Users can explore data via time-series with a seven-day moving aver-age trend-line:
+Users can explore data via time-series with a seven-day moving average trend-line:
 
 <img src="https://github.com/christianreiser/InsightMe/blob/master/assets/readme/timeline.png" width="300">
 
