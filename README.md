@@ -1,7 +1,6 @@
 # InsightMe
-<a href="https://play.google.com/store/apps/details?id=com.insightme"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200"></img></a> 
-
-<a href="https://apps.apple.com/de/app/insightme/id1522480765"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" width="187"></img></a>
+| <a href="https://play.google.com/store/apps/details?id=com.insightme"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200"></img></a> | <a href="https://apps.apple.com/de/app/insightme/id1522480765"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" width="187"></img></a> |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 InsightMe is a personal data-driven journal.
 
