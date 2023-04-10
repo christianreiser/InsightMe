@@ -20,10 +20,6 @@ resource "google_storage_bucket" "extract_g_fit_bucket" {
   name          = "extract-g-fit-bucket"
   location      = "EU"
   force_destroy = true
-  lifecycle {
-    ignore_changes      = [all]
-    create_before_destroy = true
-  }
 }
 
 resource "google_storage_bucket_object" "extract_g_fit_object" {
