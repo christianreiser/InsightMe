@@ -1,4 +1,4 @@
-# version 2 cloud function to extract data from G Fit and insert into BigQuery. Triggered by a pubsub message.
+# version 2 cloud function to data_import data from G Fit and insert into BigQuery. Triggered by a pubsub message.
 resource "google_cloudfunctions2_function" "extract_g_fit_function" {
   name        = "extract-g-fit-function"
   description = "Extract data from G Fit and insert into BigQuery"
@@ -30,6 +30,6 @@ resource "google_storage_bucket_object" "extract_g_fit_object" {
 
 data "archive_file" "extract_g_fit_file" {
   type        = "zip"
-  source_dir  = "${path.module}/../backend/extract/g_fit/"
+  source_dir  = "${path.module}/../backend/data_import/g_fit/"
   output_path = "extract-g-fit.zip"
 }

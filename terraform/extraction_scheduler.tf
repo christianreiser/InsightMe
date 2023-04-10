@@ -1,6 +1,6 @@
 # scheduler that triggers the extraction of data via pubsub
 
-# Topic extract-data-topic should be in the format "projects/<PROJECT_ID>/topics/<TOPIC_ID>" var.project_id/extract-data-topic/extract-data-topic
+# Topic data_import-data-topic should be in the format "projects/<PROJECT_ID>/topics/<TOPIC_ID>" var.project_id/data_import-data-topic/data_import-data-topic
 resource "google_cloud_scheduler_job" "extraction_scheduler" {
   region      = "europe-west1"
   name        = "extraction-scheduler"
