@@ -11,7 +11,6 @@ terraform {
   backend "gcs" {
     bucket      = "insightme-terraform-state"
     prefix      = "terraform/state"
-    credentials = file("/workspace/credentials.json")
   }
 }
 
