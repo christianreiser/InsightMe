@@ -5,7 +5,7 @@ resource "google_cloud_scheduler_job" "extraction_scheduler" {
   region      = "europe-west1"
   name        = "extraction-scheduler"
   description = "Triggers the extraction of data"
-  schedule    = "*/60 * * * *" # format: minute hour day_of_month month day_of_week
+  schedule    = "*/30 * * * *" # format: minute hour day_of_month month day_of_week
   time_zone   = "UTC"
   pubsub_target {
     topic_name = "projects/${var.project_id}/topics/${google_pubsub_topic.extract_data_topic.name}"
