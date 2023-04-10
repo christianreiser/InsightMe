@@ -15,10 +15,10 @@ from requests_oauthlib import OAuth2Session
 def extract_g_fit(request):
     try:
         # Define the authorization endpoint and token endpoint URLs
-        authorization_base_url = "https://accounts.google.com/o/oauth2/auth"
-        token_url = "https://oauth2.googleapis.com/token"
+        # authorization_base_url = "https://accounts.google.com/o/oauth2/auth"
+        # token_url = "https://oauth2.googleapis.com/token"
 
-        # Authenticate and build the Google Fit API client with oauth2client in python. don't use default credentials
+        # Authenticate and build the Google Fit API client with oauth2client
         client_id = '1026153442309-bb3d0p1kspjtu0c0m0fakm7itvnd75ln.apps.googleusercontent.com'
         client_secret = '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'
         redirect_uri = 'https://app.insightme.org/'
@@ -51,6 +51,7 @@ def extract_g_fit(request):
             # force to always make user click authorize
             access_type="offline", prompt="select_account")
         print('Please go here and authorize:', authorization_url)
+        return authorization_url # todo remove this line
 
         # Get the authorization verifier code from the callback url
         redirect_response = input('Paste the full redirect URL here: ')
