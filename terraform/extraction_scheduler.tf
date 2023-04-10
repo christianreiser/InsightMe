@@ -18,4 +18,8 @@ resource "google_cloud_scheduler_job" "extraction_scheduler" {
 # topic that triggers the extraction of data
 resource "google_pubsub_topic" "extract_data_topic" {
   name = "extract-data-topic"
+  lifecycle {
+    ignore_changes      = [all]
+    create_before_destroy = true
+  }
 }
