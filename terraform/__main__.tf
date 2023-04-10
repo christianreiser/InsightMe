@@ -19,8 +19,7 @@ terraform {
 provider "google" {
   credentials = file("/workspace/credentials.json")
   project     = var.project_id
-  region  = "europe-west3"
-  zone    = "europe-west1-b"
+  region  = "EU"
 }
 
 resource "google_cloudbuild_trigger" "dev_incl_backend" {
