@@ -53,6 +53,6 @@ steps:
     args: [ 'apply', '-auto-approve', '-var=project_id=${PROJECT_ID}' ]
     waitFor: [ 'initialize-terraform' ]
 
-options:
-  env:
-    - 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/credentials.json'
+#options:
+#  env:
+#    - 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/credentials.json'
