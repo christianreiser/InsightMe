@@ -2,19 +2,12 @@ substitutions:
   _ENVIRONMENT_NAME: 'dev'
 
 steps:
-#  - id: get-credentials
-#    name: gcr.io/cloud-builders/gcloud
-#    entrypoint: 'bash'
-#    args:
-#      - '-c'
-#      - 'gcloud secrets versions access latest --secret=terraform-credentials > /workspace/credentials.json'
-#
-#  - id: print-credentials
-#    name: 'gcr.io/cloud-builders/docker'
-#    entrypoint: 'bash'
-#    args:
-#      - '-c'
-#      - 'cat /workspace/credentials.json'
+  - id: get-credentials
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'gcloud secrets versions access latest --secret=terraform-credentials > /workspace/credentials.json'
 
   - id: create-terraform-state-bucket
     name: 'gcr.io/cloud-builders/gsutil'
@@ -53,6 +46,6 @@ steps:
     args: [ 'apply', '-auto-approve', '-var=project_id=${PROJECT_ID}' ]
     waitFor: [ 'initialize-terraform' ]
 
-#options:
-#  env:
-#    - 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/credentials.json'
+options:
+  env:
+    - 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/credentials.json'
