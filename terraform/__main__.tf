@@ -11,14 +11,14 @@ terraform {
   backend "gcs" {
     bucket      = "insightme-terraform-state"
     prefix      = "terraform/state"
-    credentials = "~/Downloads/terraform-im.json"
+#    credentials = "~/Downloads/terraform-im.json"
   }
 }
 
 # We define the "google" provider with the project and the general region + zone
 provider "google" {
-  credentials = file("~/Downloads/terraform-im.json")
-#  credentials = file("/workspace/credentials.json")
+#  credentials = file("~/Downloads/terraform-im.json")
+  credentials = file("/workspace/credentials.json")
   project     = var.project_id
   region  = "europe-west3"
   zone    = "europe-west3-a"
