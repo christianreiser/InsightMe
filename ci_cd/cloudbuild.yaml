@@ -1,38 +1,37 @@
 steps:
-  steps:
-    - id: create-terraform-state-bucket
-      name: 'gcr.io/cloud-builders/gsutil'
-      entrypoint: bash
-      args:
-        - '-c'
-        - |
-          gsutil ls -b 'gs://${PROJECT_ID}-terraform' || gsutil mb -l EU 'gs://${PROJECT_ID}-terraform'      
+  - id: create-terraform-state-bucket
+    name: 'gcr.io/cloud-builders/gsutil'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        gsutil ls -b 'gs://${PROJECT_ID}-terraform' || gsutil mb -l EU 'gs://${PROJECT_ID}-terraform'      
 
-      waitFor: [ '-' ] # Build immediately
+    waitFor: [ '-' ] # Build immediately
 
-    - id: generate-terraform-backend
-      name: gcr.io/cloud-builders/gsutil
-      entrypoint: bash
-      args:
-        - '-c'
-        - |
-            echo -e "bucket = \"${PROJECT_ID}-terraform\"" > /workspace/config.gcs.tfbackend
-            echo -e "prefix = \"${ENVIRONMENT_NAME}\"" >> /workspace/config.gcs.tfbackend
-            echo "generated backend configuration:"
-            cat /workspace/config.gcs.tfbackend
+  - id: generate-terraform-backend
+    name: gcr.io/cloud-builders/gsutil
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        echo -e "bucket = \"${PROJECT_ID}-terraform\"" > /workspace/config.gcs.tfbackend
+        echo -e "prefix = \"${ENVIRONMENT_NAME}\"" >> /workspace/config.gcs.tfbackend
+        echo "generated backend configuration:"
+        cat /workspace/config.gcs.tfbackend
 
-      waitFor: [ '-' ] # Build immediately
+    waitFor: [ '-' ] # Build immediately
 
-    - id: initialize-terraform
-      name: hashicorp/terraform:1.4.4
-      entrypoint: terraform
-      dir: terraform
-      args: [ 'init', '-backend-config=/workspace/config.gcs.tfbackend' ]
-      waitFor: [ 'create-terraform-state-bucket', 'generate-terraform-backend' ]
+  - id: initialize-terraform
+    name: hashicorp/terraform:1.4.4
+    entrypoint: terraform
+    dir: terraform
+    args: [ 'init', '-backend-config=/workspace/config.gcs.tfbackend' ]
+    waitFor: [ 'create-terraform-state-bucket', 'generate-terraform-backend' ]
 
-    - id: apply-terraform
-      name: hashicorp/terraform:1.4.4
-      entrypoint: terraform
-      dir: terraform
-      args: [ 'apply', '-auto-approve', '-var=project_id=${PROJECT_ID}' ]
-      waitFor: [ 'initialize-terraform' ]
+  - id: apply-terraform
+    name: hashicorp/terraform:1.4.4
+    entrypoint: terraform
+    dir: terraform
+    args: [ 'apply', '-auto-approve', '-var=project_id=${PROJECT_ID}' ]
+    waitFor: [ 'initialize-terraform' ]
