@@ -19,7 +19,7 @@ steps:
       - '-c'
       - |
         echo -e "bucket = \"${PROJECT_ID}-terraform\"" > /workspace/config.gcs.tfbackend
-        echo -e "prefix = \"${ENVIRONMENT_NAME}\"" >> /workspace/config.gcs.tfbackend
+        echo -e "prefix = \"${_ENVIRONMENT_NAME}\"" >> /workspace/config.gcs.tfbackend
         echo "generated backend configuration:"
         cat /workspace/config.gcs.tfbackend
 
