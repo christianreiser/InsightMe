@@ -20,10 +20,6 @@ resource "google_bigquery_dataset" "dataset" {
 
 resource "google_service_account" "bqowner" {
   account_id = "bqowner"
-    lifecycle {
-      ignore_changes      = [all]
-      create_before_destroy = true
-    }
 
     depends_on = [
     google_project_service.cloudresourcemanager,
