@@ -30,6 +30,6 @@ resource "google_storage_bucket_object" "extract_g_fit_object" {
 
 data "archive_file" "extract_g_fit_file" {
   type        = "zip"
-  source_dir  = "${path.module}/../extract/g_fit/"
+  source_dir  = "${path.module}/../backend/extract/g_fit/"
   output_path = "extract-g-fit.zip"
 }
