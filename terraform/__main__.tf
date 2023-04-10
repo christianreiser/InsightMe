@@ -7,8 +7,7 @@ terraform {
     }
   }
 
-  # backend configuration telling Terraform that the
-  # created state should be saved in some Google Cloud Bucket with some prefix
+  # save state in Google Cloud Bucket
   backend "gcs" {
     bucket      = "insightme-terraform-state"
     prefix      = "terraform/state"
@@ -20,56 +19,22 @@ terraform {
 provider "google" {
   credentials = file("~/Downloads/terraform-im.json")
   project     = var.project_id
-  region      = "eu"
+  region  = "europe-west3"
+  zone    = "europe-west1-b"
+}
+
+resource "google_cloudbuild_trigger" "dev_incl_backend" {
+  project  = "bubbly-reducer-279907"
+  name     = "dev_incl_backend_trigger"
+  disabled = false
+
+  trigger_template {
+    repo_name   = "christianreiser/InsightMe"
+    branch_name = "dev_incl_backend"
+  }
+
+  filename = "cloudbuild.yaml"
 }
 
 
-#Enable the bigquery API
-resource "google_project_service" "bigquery" {
-  project            = var.project_id
-  service            = "compute.googleapis.com"
-  disable_on_destroy = false
-}
-
-# enable the Cloud Build API
-resource "google_project_service" "cloudbuild" {
-  project            = var.project_id
-  service            = "cloudbuild.googleapis.com"
-  disable_on_destroy = false
-}
-
-# Enable the Cloud Resource Manager API
-resource "google_project_service" "cloudresourcemanager" {
-  project            = var.project_id
-  service            = "cloudresourcemanager.googleapis.com"
-  disable_on_destroy = false
-}
-
-# enable IAM API
-resource "google_project_service" "iam" {
-  project            = var.project_id
-  service            = "iam.googleapis.com"
-  disable_on_destroy = false
-}
-
-# enable cloud scheduler API
-resource "google_project_service" "cloudscheduler" {
-  project            = var.project_id
-  service            = "cloudscheduler.googleapis.com"
-  disable_on_destroy = false
-}
-
-# enable cloud run API
-resource "google_project_service" "cloudrun" {
-  project            = var.project_id
-  service            = "run.googleapis.com"
-  disable_on_destroy = false
-}
-
-#enable the Fitness API
-resource "google_project_service" "fitness" {
-  project            = var.project_id
-  service            = "fitness.googleapis.com"
-  disable_on_destroy = false
-}
 
