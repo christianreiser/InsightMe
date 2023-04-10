@@ -11,7 +11,7 @@ terraform {
   backend "gcs" {
     bucket      = "insightme-terraform-state"
     prefix      = "terraform/state"
-    credentials = "~/Downloads/terraform-im.json"
+    credentials = file("/workspace/credentials.json")
   }
 }
 
@@ -19,11 +19,12 @@ terraform {
 provider "google" {
   credentials = file("/workspace/credentials.json")
   project     = var.project_id
-  region  = "EU"
+  region  = "europe-west3"
+  zone    = "europe-west3-a"
 }
 
 resource "google_cloudbuild_trigger" "dev_incl_backend" {
-  project  = "bubbly-reducer-279907"
+  project  = var.project_id
   name     = "dev_incl_backend_trigger"
   disabled = false
 
