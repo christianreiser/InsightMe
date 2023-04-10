@@ -1,3 +1,6 @@
+substitutions:
+  _ENVIRONMENT_NAME: 'dev'
+
 steps:
   - id: create-terraform-state-bucket
     name: 'gcr.io/cloud-builders/gsutil'
