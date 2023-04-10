@@ -17,7 +17,7 @@ terraform {
 
 # We define the "google" provider with the project and the general region + zone
 provider "google" {
-  credentials = file("~/Downloads/terraform-im.json")
+  credentials = file("/workspace/credentials.json")
   project     = var.project_id
   region  = "europe-west3"
   zone    = "europe-west1-b"
