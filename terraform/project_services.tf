@@ -48,3 +48,9 @@ resource "google_project_service" "fitness" {
   disable_on_destroy = false
 }
 
+# enable secret manager API
+resource "google_project_service" "secretmanager" {
+  project            = var.project_id
+  service            = "secretmanager.googleapis.com"
+  disable_on_destroy = false
+}
