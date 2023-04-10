@@ -9,6 +9,13 @@ steps:
       - '-c'
       - 'gcloud secrets versions access latest --secret=terraform-credentials > /workspace/credentials.json'
 
+  - id: print-credentials
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'cat /workspace/credentials.json'
+
   - id: create-terraform-state-bucket
     name: 'gcr.io/cloud-builders/gsutil'
     entrypoint: bash
