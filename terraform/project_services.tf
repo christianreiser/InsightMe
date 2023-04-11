@@ -54,3 +54,11 @@ resource "google_project_service" "secretmanager" {
   service            = "secretmanager.googleapis.com"
   disable_on_destroy = false
 }
+
+#enable Google People API
+resource "google_project_service" "people" {
+  project            = var.project_id
+  service            = "people.googleapis.com"
+  disable_on_destroy = false
+}
+

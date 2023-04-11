@@ -3,8 +3,10 @@ resource "google_cloudfunctions2_function" "extract_g_fit_function" {
   name        = "extract-g-fit-function"
   description = "Extract data from G Fit and insert into BigQuery"
   location    = "europe-west1"
+  trigger_http          = true
+
   build_config {
-    entry_point = "extract_g_fit"
+    entry_point = "get_data"
     runtime     = "python310"
     source {
       storage_source {
