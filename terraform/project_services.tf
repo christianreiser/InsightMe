@@ -62,3 +62,9 @@ resource "google_project_service" "people" {
   disable_on_destroy = false
 }
 
+# eventarc API
+resource "google_project_service" "eventarc" {
+  project            = var.project_id
+  service            = "eventarc.googleapis.com"
+  disable_on_destroy = false
+}
