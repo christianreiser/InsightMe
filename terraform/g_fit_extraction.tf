@@ -18,6 +18,8 @@ resource "google_cloudfunctions2_function" "extract_g_fit_function" {
       }
     }
   }
+  # depends on event arc api enabled
+  depends_on = [google_project_service.eventarc]
 }
 
 resource "google_pubsub_topic" "topic" {
