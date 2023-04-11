@@ -2,8 +2,11 @@
 resource "google_cloudfunctions2_function" "extract_g_fit_function" {
   name        = "extract-g-fit-function"
   description = "Extract data from G Fit and insert into BigQuery"
-  location    = "europe-west1"
-  trigger_http          = true
+  location    = "europe-west3"
+  event_trigger {
+    event_type = "google.cloud.pubsub.topic.v1.messagePublished"
+    pubsub_topic = google_pubsub_topic.topic.id
+  }
 
   build_config {
     entry_point = "get_data"
@@ -15,6 +18,10 @@ resource "google_cloudfunctions2_function" "extract_g_fit_function" {
       }
     }
   }
+}
+
+resource "google_pubsub_topic" "topic" {
+  name = "extract-g-fit-topic"
 }
 
 # create the bucket
